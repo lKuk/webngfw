@@ -1,0 +1,76 @@
+{% extends "rules/base.html" %}
+{% load static %}
+{% block content %}
+
+    <h1>Правило ID:{{ details.id }}</h1>
+
+    <table class="main-table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Тип</th>
+            <th>Название</th>
+            <th>Описание</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                </td>
+                <td>{{ details.id }}</td>
+                <td>{{ details.rtype }}</td>
+                <td><a href="{% url 'rule' details.id %}">{{ details.name }}</a></td>
+                <td>{{ details.description }}</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td colspan="3">
+                    <table class="sub-table">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>fid_or_val</th>
+                            <th>ar_id</th>
+                            <th>is_invert</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for s in details.sub %}
+                            <tr>
+                                <td>{{ s.id }}</td>
+                                <td>{{ s.fid_or_val }}</td>
+                                <td>{{ s.ar_id }}</td>
+                                <td>{{ s.is_invert }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+
+    <form action = "{% url 'rules' %}" method = "post" >
+        {% csrf_token %}
+        <input name="details" type="hidden" value="{{ details }}"/>
+        <label>ID правила:</label></br>
+        <input class="control" type="text" name="id" value="{{ details.id }}" {{ readonly }}></br></br>
+        <label>Тип правила:</label></br>
+        <select class="control" name="rtype" value="{{ details.rtype }}">
+            <option disabled>Тип правила</option>
+            <option value="black">black</option>
+            <option value="white">white</option>
+        </select></br></br>
+        <label>Название:</label></br>
+        <input class="control" name="name" type="text" value="{{ details.name }}"/></br></br>
+        <label>Описание:</label></br>
+        <textarea class="control" name="description">{{ details.description }}</textarea><br></br>
+        <input class="btn" type="submit" value="Сохранить"/>
+        {#<input class="btn" type="submit" value="Удалить"/>#}
+    </form>
+
+{% endblock content %}

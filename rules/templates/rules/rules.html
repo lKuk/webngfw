@@ -1,0 +1,72 @@
+{% extends "rules/base.html" %}
+{% load static %}
+{% block content %}
+
+    <h1>{{ title }}</h1>
+
+    <form action = "{% url 'rule' 0 %}" method = "post" >
+        {% csrf_token %}
+        <input class="btn" style="font-weight: bold" type="submit" value="Новое правило"/>
+    </form>
+    </br>
+    <button class="btn" id="slideUp">Свернуть всё</button>
+    <button class="btn" id="slideDown">Развернуть всё</button>
+
+    <table class="main-table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Тип</th>
+            <th>Название</th>
+            <th>Описание</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for d in details %}
+            <tr>
+                <td>
+                    <label class="toggler">
+                        <input type="checkbox">
+                    </label>
+                </td>
+                <td>{{ d.id }}</td>
+                <td>{{ d.rtype }}</td>
+                <td><a href="{% url 'rule' d.id %}">{{ d.name }}</a></td>
+                <td>{{ d.description }}</td>
+            </tr>
+
+            <tr class="dropdown" data-level="1">
+                <td></td>
+                <td></td>
+                <td colspan="3">
+                    <table class="sub-table">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>fid_or_val</th>
+                            <th>ar_id</th>
+                            <th>is_invert</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for s in d.sub %}
+                            <tr>
+                                <td>{{ s.id }}</td>
+                                <td>{{ s.fid_or_val }}</td>
+                                <td>{{ s.ar_id }}</td>
+                                <td>{{ s.is_invert }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script type="text/javascript" src={% static "js/collapsedtable.js" %}></script>
+
+
+{% endblock content %}
+
