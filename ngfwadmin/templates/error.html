@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+        <li>
+        <div class="card-header">
+            <h5>Что-то пошло не так!</h5>
+        </div>
+    </li>
+{% endblock header %}
+
+{% block content %}
+   <!-- Exception -->
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="table-responsive">
+                <H5>{{ name }}</H5>
+                {% for arg in ex.args  %}
+                    <br/><H6>{{ arg }}</H6>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

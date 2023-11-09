@@ -1,0 +1,111 @@
+{% load static %}
+
+    <!-- [Модальное окно правила] start -->
+    {% if action == 'insert' %}
+        <div class="modal fade" id="subruleInsert" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+    {% else %}
+        <div class="modal fade" id="subruleUpdate_{{ s.id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+    {% endif %}
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="" method="post">
+                {% csrf_token %}
+                    <div class="modal-header">
+                        {% if action == 'insert' %}
+                            <h5>Создать новое подправило</h5>
+                        {% else %}
+                            <h5>Редактировать подправило</h5>
+                        {% endif %}
+                    </div>
+                    <div class="modal-body">
+
+                        <input name="id" value="{{ s.id }}" type="hidden">
+                        <!-- Atomic -->
+                        <div class="form-group">
+                            <label>Атомарное правило:</label>
+                            <select name="atomic-id" class="form-control" id="ar_id" onchange="ar_id_onchange()">
+                                {% for key, value in atomic.items %}
+                                    <option value="{{ value }}">{{ value.description }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- List -->
+                        <div class="form-group">
+                            <label>Список:</label>
+                            <select name="list" class="form-control">
+                                {% for list in lists %}
+                                    <option value="{{ list }}">{{ list.description }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- IP -->
+                        <div class="form-group">
+                            <label>IP адрес:</label>
+                            <input name="ip-address" type="text" class="form-control">
+                        </div>
+                        <!-- MAC -->
+                        <div class="form-group">
+                            <label>MAC адрес:</label>
+                            <input name="mac-address" type="text" class="form-control">
+                        </div>
+                        <!-- PORT -->
+                        <div class="form-group">
+                            <label>Порт:</label>
+                            <input name="port" type="text" value="80" class="form-control">
+                        </div>
+                        <!-- PROPONAME -->
+                        <div class="form-group">
+                            <label>Протокол:</label>
+                            <select name="protocol" class="form-control">
+                                {% for value in protocol %}
+                                    <option>{{ value }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- SERVICENAME -->
+                        <div class="form-group">
+                            <label>Сервис:</label>
+                            <select name="service" class="form-control">
+                                {% for value in service %}
+                                    <option>{{ value }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- GATEGORYNAME -->
+                        <div class="form-group">
+                            <label>Категория:</label>
+                            <select name="category" class="form-control">
+                                <option></option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        {% if action == 'insert' %}
+                            <button type="submit" class="btn btn-primary" name="btnInsert" style="width: 120px;">Создать</button>
+                        {% else %}
+                            <button type="submit" name="btnDelete" class="btn btn-icon btn-outline-danger mr-auto" title="Удалить подправило" onclick="return confirm('Выполнить удаление правила?');">
+                                <i class="feather icon-trash-2"></i>
+                            </button>
+                            <button type="submit" name="btnUpdate" class="btn btn-primary" style="width: 120px;">Сохранить</button>
+                        {% endif %}
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 120px;">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- [Модальное окно правила] end -->
+
+
+    <script>
+        function ar_id_onchange() {
+            ar_id = document.getElementById("ar_id");
+            value = ar_id.value;
+            alert(value);
+
+            //if(ar_type == file)
+            file_text = document.getElementById("file_text");
+        }
+    </script>
+

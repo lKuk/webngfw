@@ -1,0 +1,23 @@
+
+    <!-- [Модальное окно] start -->
+    <div class="modal fade" id="history_{{ history.id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="" method="post">
+                {% csrf_token %}
+                    <div class="modal-header">
+                        <h5>Восстановить настройки правил NGFW?</h5>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Дата: {{ history.date }}</h5>
+                        <input name="date" value="{{ history.date }}" type="hidden">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" name="btnRecover" class="btn btn-primary" title="Сохранить список" style="width: 140px;" onclick="return confirm('Выполнить восстановление правил?');">Восстановить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Отменить действие" style="width: 120px;">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- [Модальное окно] end -->

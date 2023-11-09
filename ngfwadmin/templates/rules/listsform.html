@@ -1,0 +1,55 @@
+
+    <!-- [Модальное окно] start -->
+    {% if action == 'insert' %}
+        <div class="modal fade" id="listsInsert" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+    {% else %}
+        <div class="modal fade" id="listsUpdate_{{ l.id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+    {% endif %}
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="" method="post">
+                {% csrf_token %}
+                    <div class="modal-header">
+                        {% if action == 'insert' %}
+                            <h5>Создать новый список</h5>
+                        {% else %}
+                            <h5>Редактировать список</h5>
+                        {% endif %}
+                    </div>
+                    <div class="modal-body">
+                        <input name="id" value="{{ l.id }}" type="hidden">
+                        <div class="form-group">
+                            <label>Описание:</label>
+                            <input name="description" value="{{ l.description }}" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Тип списка:</label>
+                            <select class="form-control" value="{{ l.ftype }}">
+                                {% for f in format %}
+                                    <option value="{{ f }}" {% if f == l.ftype %} selected {% endif %}>{{ f }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {% if action == 'insert' %}
+                            <button type="submit" name="btnInsertGo" class="btn btn-icon btn-primary" title="Создать и перейти к редактированию списка">
+                                <i class="feather icon-flag"></i>
+                            </button>
+                            <button type="submit" class="btn btn-primary" name="btnInsert" style="width: 120px;">Создать</button>
+                        {% else %}
+                            <button type="submit" name="btnDelete" class="btn btn-icon btn-outline-danger mr-auto" title="Удалить список" onclick="return confirm('Выполнить удаление списка?');">
+                                <i class="feather icon-trash-2"></i>
+                            </button>
+                            <button type="submit" name="btnUpdateGo" class="btn btn-icon btn-primary" title="Сохранить и перейти к редактированию списка">
+                                <i class="feather icon-save"></i>
+                            </button>
+                            <button type="submit" name="btnUpdate" class="btn btn-primary" style="width: 120px;">Сохранить</button>
+                        {% endif %}
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 120px;">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- [Модальное окно] end -->
