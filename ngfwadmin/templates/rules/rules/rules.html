@@ -71,7 +71,8 @@
                                     {% else %}
                                         <i title="Инвертированное" class="feather icon-arrow-down-left"></i>
                                     {% endif %}
-                                    {{ s.ar_format }} {{ s.ar_type }}
+                                    {{ s.ar_format }}
+                                    {{ s.ar_type }}
                                     {{ s.ar_description|truncatechars:50 }}
                                     <br/>
                                 {% endfor %}

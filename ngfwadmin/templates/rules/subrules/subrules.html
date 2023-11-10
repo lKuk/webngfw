@@ -43,7 +43,7 @@
                         <th>Атомарное правило</th>
                         <th>Тип</th>
                         <th>Формат</th>
-                        <th>Список</th>
+                        <th>Значение</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -69,6 +69,8 @@
                                 <td style="display: table-cell;">
                                     {% if s.ar_format == 'file' %}
                                         <a href="{% url 'content' s.list_id %}">{{ s.list_description }}</a>
+                                    {%  else %}
+                                        {{ s.fid_or_val }}
                                     {% endif %}
                                 </td>
                             </tr>
