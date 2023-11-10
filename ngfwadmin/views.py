@@ -50,9 +50,11 @@ def rules(request):
             if 'btnDelete' in request.POST:
                 do_rule_delete(url, request)
         ruleall = rule_select_all(url)
+        # сортировка списков
+        sorted_ruleall = sorted(ruleall, key=lambda k: k['name'])
         for rule in ruleall:
             do_sub_warp(url, rule)
-        context = {'rules': ruleall}
+        context = {'rules': sorted_ruleall}
         return render(request, 'rules/rules/rules.html', context=context)
     except Exception as ex:
         return do_show_error(request, ex)
