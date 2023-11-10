@@ -5,8 +5,13 @@ from ngfwadmin.rest.rules.content import *
 from ngfwadmin.rest.rules.history import *
 from django.shortcuts import render
 
-
+login = 'admin'
+password = '111111'
 url = 'http://192.168.1.145:18888'
+
+
+def test(request):
+    return render(request, 'test.html')
 
 
 # Страница ошибки
@@ -48,7 +53,7 @@ def rules(request):
         for rule in ruleall:
             do_sub_warp(url, rule)
         context = {'rules': ruleall}
-        return render(request, 'rules/rules.html', context=context)
+        return render(request, 'rules/rules/rules.html', context=context)
     except Exception as ex:
         return do_show_error(request, ex)
 
@@ -56,19 +61,27 @@ def rules(request):
 # Страница подправила
 def subrules(request, id):
     try:
+        if request.method == 'POST':
+            # создать правило
+            if 'btnInsert' in request.POST:
+                do_subrule_insert(url, request, id)
+        # Получить зависимости
         rule = rule_select(url, id)
         lists = list_select_all(url)
         atomic = enum_atomic_get(url)
         service = enum_services_get(url)
         protocol = enum_protocols_get(url)
         do_sub_warp(url, rule)
+        # сортировка списков
+        sorted_lists = sorted(lists, key=lambda k: k['ftype'])
+        # содержимое данных
         context = {'id': id,
                    'rule': rule,
-                   'lists': lists,
                    'atomic': atomic,
                    'service': service,
-                   'protocol': protocol}
-        return render(request, 'rules/subrules.html', context=context)
+                   'protocol': protocol,
+                   'lists': sorted_lists,}
+        return render(request, 'rules/subrules/subrules.html', context=context)
     except Exception as ex:
         return do_show_error(request, ex)
 
@@ -79,13 +92,13 @@ def lists(request):
         if request.method == 'POST':
             # создать правило
             if 'btnInsert' in request.POST:
-                do_list_insert(url, request)
+                do_list_insert(url, login, password, request)
             # изменить правило
             if 'btnUpdate' in request.POST:
-                do_list_update(url, request)
+                do_list_update(url, login, password, request)
             # удалить правило
             if 'btnDelete' in request.POST:
-                do_list_delete(url, request)
+                do_list_delete(url, login, password, request)
         listall = list_select_all(url)
         dict = enum_format_get(url)
         format = []
@@ -95,7 +108,7 @@ def lists(request):
                 format.append(name)
         context = {'lists': listall,
                    'format': format}
-        return render(request, 'rules/lists.html', context=context)
+        return render(request, 'rules/lists/lists.html', context=context)
     except Exception as ex:
         return do_show_error(request, ex)
 
@@ -106,13 +119,14 @@ def content(request, id):
         if request.method == 'POST':
             # сохранить список
             if 'btnSet' in request.POST:
-                do_content_set(url, request)
+                do_content_set(url, login, password, request)
+                return lists(request)
         list = list_select(url, id)
         filetext = content_get(url, id)
         context = {'id': id,
                    'list': list,
                    'filetext': filetext}
-        return render(request, 'rules/content.html', context=context)
+        return render(request, 'rules/lists/lists_content.html', context=context)
     except Exception as ex:
         return do_show_error(request, ex)
 
@@ -130,7 +144,7 @@ def history(request):
             row = { 'id': i, 'date': result['date'][i] }
             history.append(row)
         context = {'history': history }
-        return render(request, 'rules/history.html', context=context)
+        return render(request, 'rules/history/history.html', context=context)
     except Exception as ex:
         return do_show_error(request, ex)
 

@@ -29,7 +29,7 @@
                 <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#subruleInsert" >
                     <i class="feather icon-flag"></i>Новое подправило
                 </button>
-                {% include "rules/subrulesform.html" with action='insert' %}
+                {% include "rules/subrules/subrules_form.html" with action='insert' %}
                 <!-- [Новое подправило] end -->
 
                 <!-- [Отображение списка подправил] end -->
@@ -68,7 +68,7 @@
                             </tr>
 
                             <!-- [Модальное окно редактирования правила] -->
-                            {% include "rules/subrulesform.html" with sub=s action='update' %}
+                            {% include "rules/subrules/subrules_form.html" with sub=s action='update' %}
 
                         {% endfor %}
                     </tbody>

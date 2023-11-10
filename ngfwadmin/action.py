@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from ngfwadmin.rest.rules.sub import *
 from ngfwadmin.rest.rules.enum import *
 from ngfwadmin.rest.rules.lists import *
 from ngfwadmin.rest.rules.rules import *
@@ -95,41 +96,86 @@ def do_rule_delete(url, request):
     return
 
 
-def do_list_insert(url, request):
+def do_subrule_insert(url, request, id):
     # Получить параметры
-    ftype = request.POST.get('rtype')
-    description = request.POST.get('description')
-    # добавить список
-    result = list_insert(url, ftype, description)
+    port = request.POST.get('port')
+    invert = request.POST.get('invert')
+    ip = request.POST.get('ip_address')
+    mac = request.POST.get('mac_address')
+    service = request.POST.get('service')
+    protocol = request.POST.get('protocol')
+    category = request.POST.get('category')
+    invert = int(invert)
+    # Параметры атомарного правила
+    atomic = request.POST.get('atomic')
+    atomic = atomic.replace("\'", "\"")
+    atomic = json.loads(atomic)
+    ar_id = atomic['id']
+    arg_type = atomic['arg_type']
+    file_type = atomic['file_type']
+    # Параметры списка
+    list = request.POST.get('list')
+    list = list.replace("\'", "\"")
+    list = json.loads(list)
+    fid = list['id'];
+    # определить значение
+    fid_or_val = ''
+    if arg_type == 'IP':
+        fid_or_val = ip;
+    if arg_type == 'MAC':
+        fid_or_val = mac;
+    if arg_type == 'PORT':
+        fid_or_val = port
+    if arg_type == 'PROTNAME':
+        fid_or_val = protocol
+    if arg_type == 'CATEGNAME':
+        fid_or_val = category
+    if arg_type == 'SERVICENAME':
+        fid_or_val = service
+    if arg_type == 'file':
+        fid_or_val = fid
+
+    result = sub_insert(url, id, ar_id, fid_or_val, invert)
     details = json.loads(result)
     return details['id']
 
 
-def do_list_update(url, request):
+
+def do_list_insert(url, login, passw0rd, request):
+    # Получить параметры
+    ftype = request.POST.get('ftype')
+    description = request.POST.get('description')
+    # добавить список
+    result = list_insert(url, login, passw0rd, ftype, description)
+    details = json.loads(result)
+    return details['id']
+
+
+def do_list_update(url, login, password, request):
     # Получить параметры
     id = request.POST.get('id')
     ftype = request.POST.get('ftype')
     description = request.POST.get('description')
     # обновить список
-    list_update(url, id, ftype, description)
+    list_update(url, login, password, id, ftype, description)
     return
 
 
-def do_list_delete(url, request):
+def do_list_delete(url, login, password, request):
     # Получить id
     id = request.POST.get('id')
     # удалить список
-    list_delete(url, id)
+    list_delete(url, login, password, id)
     return
 
 
-def do_content_set(url, request):
+def do_content_set(url, login, password, request):
     # Получить id
     id = request.POST.get('id')
     # Получить текст списка
     filetext = request.POST.get('filetext')
     # установить список
-    content_set(url, id, filetext)
+    content_set(url, login, password, id, filetext)
     return
 
 

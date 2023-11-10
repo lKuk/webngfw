@@ -31,7 +31,7 @@
                 <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#ruleInsert" >
                     <i class="feather icon-flag"></i>Новое правило
                 </button>
-                {% include "rules/rulesform.html" with action='insert' %}
+                {% include "rules/rules/rules_form.html" with action='insert' %}
                 <!-- [Новое правило] end -->
 
                 <!-- [Таблица правил] start -->
@@ -81,7 +81,7 @@
                         <!-- [Строка правила] end -->
 
                         <!-- [Модальное окно редактирования правила] -->
-                        {% include "rules/rulesform.html" with rule=r action='update' %}
+                        {% include "rules/rules/rules_form.html" with rule=r action='update' %}
 
                     {% endfor %}
                     </tbody>

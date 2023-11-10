@@ -23,38 +23,39 @@
                         <!-- Atomic -->
                         <div class="form-group">
                             <label>Атомарное правило:</label>
-                            <select name="atomic-id" class="form-control" id="ar_id" onchange="ar_id_onchange()">
+                            <select name="atomic" class="form-control" id="ar_id" onchange="ar_id_onchange()">
                                 {% for key, value in atomic.items %}
                                     <option value="{{ value }}">{{ value.description }}</option>
                                 {% endfor %}
+                                <option selected="selected" value=""></option>
                             </select>
                         </div>
                         <!-- List -->
-                        <div class="form-group">
+                        <div class="form-group" id="dev_list" hidden="hidden">
                             <label>Список:</label>
                             <select name="list" class="form-control">
                                 {% for list in lists %}
-                                    <option value="{{ list }}">{{ list.description }}</option>
+                                    <option value="{{ list }}">{{ list.ftype }} - {{ list.description }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <!-- IP -->
-                        <div class="form-group">
+                        <div class="form-group" id="dev_ip" hidden="hidden">
                             <label>IP адрес:</label>
-                            <input name="ip-address" type="text" class="form-control">
+                            <input name="ip_address" type="text" class="form-control">
                         </div>
                         <!-- MAC -->
-                        <div class="form-group">
+                        <div class="form-group" id="dev_mac" hidden="hidden">
                             <label>MAC адрес:</label>
-                            <input name="mac-address" type="text" class="form-control">
+                            <input name="mac_address" type="text" class="form-control">
                         </div>
                         <!-- PORT -->
-                        <div class="form-group">
+                        <div class="form-group"  id="dev_port" hidden="hidden">
                             <label>Порт:</label>
                             <input name="port" type="text" value="80" class="form-control">
                         </div>
                         <!-- PROPONAME -->
-                        <div class="form-group">
+                        <div class="form-group" id="dev_proto" hidden="hidden">
                             <label>Протокол:</label>
                             <select name="protocol" class="form-control">
                                 {% for value in protocol %}
@@ -63,7 +64,7 @@
                             </select>
                         </div>
                         <!-- SERVICENAME -->
-                        <div class="form-group">
+                        <div class="form-group" id="dev_service" hidden="hidden">
                             <label>Сервис:</label>
                             <select name="service" class="form-control">
                                 {% for value in service %}
@@ -72,10 +73,18 @@
                             </select>
                         </div>
                         <!-- GATEGORYNAME -->
-                        <div class="form-group">
+                        <div class="form-group" id="dev_category" hidden="hidden">
                             <label>Категория:</label>
                             <select name="category" class="form-control">
                                 <option></option>
+                            </select>
+                        </div>
+                        <!-- invert -->
+                        <div class="form-group" id="dev_category">
+                            <label>Инвертация:</label>
+                            <select name="invert" class="form-control">
+                                <option value="0" selected="selected">Не инвертировано</option>
+                                <option value="1">Инвертировано</option>
                             </select>
                         </div>
 
@@ -100,12 +109,53 @@
 
     <script>
         function ar_id_onchange() {
+            // определить контролы
             ar_id = document.getElementById("ar_id");
-            value = ar_id.value;
-            alert(value);
+            dev_ip = document.getElementById("dev_ip");
+            dev_mac = document.getElementById("dev_mac");
+            dev_list = document.getElementById("dev_list");
+            dev_port = document.getElementById("dev_port");
+            dev_proto = document.getElementById("dev_proto");
+            dev_service = document.getElementById("dev_service");
+            dev_gategory = document.getElementById("dev_category");
 
-            //if(ar_type == file)
-            file_text = document.getElementById("file_text");
+            // скрыть все контролы
+            dev_ip.hidden = true;
+            dev_mac.hidden = true;
+            dev_list.hidden = true;
+            dev_port.hidden = true;
+            dev_proto.hidden = true;
+            dev_service.hidden = true;
+            dev_gategory.hidden = true;
+
+            // получить json
+            let str = ar_id.value.replaceAll("'", "\"");
+            json = JSON.parse(str);
+            // получить тип файла
+            file_type = json['file_type'];
+            // получить тип аргумента
+            arg_type = json['arg_type'];
+
+            // настроить видимость
+            if(arg_type === 'IP')
+                dev_ip.hidden = false;
+            if(arg_type === 'MAC')
+                dev_mac.hidden = false;
+            if(arg_type === 'PORT')
+                dev_port.hidden = false;
+            if(arg_type === 'PROTNAME')
+                dev_proto.hidden = false;
+            if(arg_type === 'CATEGNAME')
+                dev_gategory.hidden = false;
+            if(arg_type === 'SERVICENAME')
+                dev_service.hidden = false;
+
+            // видимость списков
+            if(arg_type === 'file') {
+                dev_list.hidden = false
+                // сюда вставить фильтрацию списков;
+            }
+            //alert( 'file_type: ' + file_type + '    arg_type: ' + arg_type );
         }
     </script>
 

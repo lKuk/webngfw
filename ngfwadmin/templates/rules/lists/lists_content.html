@@ -26,11 +26,10 @@
                 <style>{% include "codemirrior/codemirror.css" %}</style>
                 <form action="" method="post">
                 {% csrf_token %}
-                    <input name="id" value="{{ id }}" type="hidden">
+                    <input name="id" value="{{ id }}" type="hidden"><br/>
+                    <button type="submit" name="btnSet" class="btn btn-primary" style="width: 120px;" onclick="return confirm('Выполнить сохранение списка?')">Сохранить</button><br/>
                     <label>Содержимое списка:</label>
                     <textarea id="demotext" name="filetext" class="form-control" rows="40">{{ filetext }}</textarea>
-                    <br/>
-                    <button type="submit" name="btnSet" class="btn btn-primary" style="width: 120px;">Сохранить</button>
                 </form>
                 <!-- [Содержимое файла] end-->
 
