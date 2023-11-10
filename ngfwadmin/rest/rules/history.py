@@ -9,7 +9,7 @@ def history_set(url, date):
     details = json.loads(sjson)
     response = requests.post(f"{url}/rules/history", json=details)
     if response.status_code != 200:
-        raise Exception(response.url, response.text)
+        raise Exception(response.url, response.text, details)
     return response.content
 
 

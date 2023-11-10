@@ -6,13 +6,13 @@ import requests
 def sub_insert(url, idrule, arid, fidorval, isinvert):
     dic = {
         'ar_id': arid,
-        'is_invert': isinvert,
-        'fid_or_val': fidorval}
+        'is_invert': str(isinvert),
+        'fid_or_val': str(fidorval)}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
     response = requests.post(f"{url}/rules/{idrule}/sub", json=details)
     if response.status_code != 200:
-        raise Exception(response.url, response.text)
+        raise Exception(response.url, response.text, details)
     return response.content
 
 
@@ -21,13 +21,13 @@ def sub_update(url, idrule, idsub, arid, fidorval, isinvert):
     dic = {
         'id': idsub,
         'ar_id': arid,
-        'is_invert': isinvert,
-        'fid_or_val': fidorval}
+        'is_invert': str(isinvert),
+        'fid_or_val': str(fidorval)}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
     response = requests.put(f"{url}/rules/{idrule}/sub/{idsub}", json=details)
     if response.status_code != 200:
-        raise Exception(response.url, response.text)
+        raise Exception(response.url, response.text, details)
     return response.content
 
 

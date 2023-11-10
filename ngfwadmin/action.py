@@ -53,6 +53,7 @@ def do_sub_warp(url, rule):
                 if s2['ar_format'] == 'file':
                     idlist = int(fid_or_val)
                     list = list_select(url, idlist)
+                    s2['list_id'] = list['id']
                     s2['list_description'] = list['description']
             sub2.append(s2)
         rule['sub2'] = sub2
@@ -105,7 +106,10 @@ def do_subrule_insert(url, request, id):
     service = request.POST.get('service')
     protocol = request.POST.get('protocol')
     category = request.POST.get('category')
-    invert = int(invert)
+    # эти параметры требуют в кавычках
+    ip = "\"" + str(ip).replace("\"", "") + "\""
+    mac = "\"" + str(mac).replace("\"", "") + "\""
+    port = "\"" + str(port).replace("\"", "") + "\""
     # Параметры атомарного правила
     atomic = request.POST.get('atomic')
     atomic = atomic.replace("\'", "\"")
@@ -117,7 +121,7 @@ def do_subrule_insert(url, request, id):
     list = request.POST.get('list')
     list = list.replace("\'", "\"")
     list = json.loads(list)
-    fid = list['id'];
+    fid = list['id']
     # определить значение
     fid_or_val = ''
     if arg_type == 'IP':
@@ -139,6 +143,13 @@ def do_subrule_insert(url, request, id):
     details = json.loads(result)
     return details['id']
 
+
+def do_subrule_delete(url, request, id):
+    # Получить параметры
+    sub_id = request.POST.get('sub_id')
+    rule_id = request.POST.get('rule_id')
+    sub_delete(url, rule_id, sub_id)
+    return
 
 
 def do_list_insert(url, login, passw0rd, request):

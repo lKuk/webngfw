@@ -1,0 +1,25 @@
+
+    <!-- [Модальное окно удаления] start -->
+    <div class="modal fade" id="subruleDelete{{ s.id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="" method="post">
+                {% csrf_token %}
+                    <div class="modal-header">
+                        <h5>Удалить подправило?</h5>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Правило: {{ rule.name }}</h5>
+                        <h5>Подправило: {{ s.ar_description }}</h5>
+                        <input name="sub_id" value="{{ s.id }}" type="hidden">
+                        <input name="rule_id" value="{{ rule.id }}" type="hidden">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" name="btnDelete" class="btn btn-outline-danger" style="width: 140px;" onclick="return confirm('Выполнить удаление подправила?');">Удалить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 120px;">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- [Модальное окно удаления] end -->

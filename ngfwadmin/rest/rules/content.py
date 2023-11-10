@@ -5,7 +5,7 @@ import requests
 def content_set(url, login, password, idlist, filetext):
     response = requests.put(f"{url}/rules/lists/{idlist}/content", data=filetext, auth=(login, password))
     if response.status_code != 200:
-        raise Exception(response.url, response.text)
+        raise Exception(response.url, response.text, details)
     return response.content
 
 

@@ -62,9 +62,12 @@ def rules(request):
 def subrules(request, id):
     try:
         if request.method == 'POST':
-            # создать правило
+            # создать подправило
             if 'btnInsert' in request.POST:
                 do_subrule_insert(url, request, id)
+            # создать подправило
+            if 'btnDelete' in request.POST:
+                do_subrule_delete(url, request, id)
         # Получить зависимости
         rule = rule_select(url, id)
         lists = list_select_all(url)

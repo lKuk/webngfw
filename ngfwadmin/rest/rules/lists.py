@@ -11,7 +11,7 @@ def list_insert(url, login, password, ftype, description):
     details = json.loads(sjson)
     response = requests.post(f"{url}/rules/lists", json=details, auth=(login, password))
     if response.status_code != 200:
-        raise Exception(response.url, response.text)
+        raise Exception(response.url, response.text, details)
     return response.content
 
 
@@ -25,7 +25,7 @@ def list_update(url, login, password, idlist, ftype, description):
     details = json.loads(sjson)
     response = requests.put(f"{url}/rules/lists/{idlist}/description", json=details, auth=(login, password))
     if response.status_code != 200:
-        raise Exception(response.url, response.text)
+        raise Exception(response.url, response.text, details)
     return response.content
 
 

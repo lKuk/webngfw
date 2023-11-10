@@ -13,7 +13,7 @@ def rule_insert(url, rtype, is_enable, name, description):
     details = json.loads(sjson)
     response = requests.post(f"{url}/rules", json=details)
     if response.status_code != 200:
-        raise Exception(response.url, response.text)
+        raise Exception(response.url, response.text, details)
     return response.content
 
 
@@ -30,7 +30,7 @@ def rule_update(url, idrule, rtype, is_enable, name, description, sub):
     details = json.loads(sjson)
     response = requests.put(f"{url}/rules/{idrule}", json=details)
     if response.status_code != 200:
-        raise Exception(response.url, response.text)
+        raise Exception(response.url, response.text, details)
     return response.content
 
 

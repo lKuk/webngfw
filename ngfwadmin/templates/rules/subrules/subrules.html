@@ -29,7 +29,7 @@
                 <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#subruleInsert" >
                     <i class="feather icon-flag"></i>Новое подправило
                 </button>
-                {% include "rules/subrules/subrules_form.html" with action='insert' %}
+                {% include "rules/subrules/subrules_form_new.html" with action='insert' %}
                 <!-- [Новое подправило] end -->
 
                 <!-- [Отображение списка подправил] end -->
@@ -43,6 +43,7 @@
                         <th>Атомарное правило</th>
                         <th>Тип</th>
                         <th>Формат</th>
+                        <th>Список</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,8 +51,8 @@
                             <tr>
                                 <td style="display: table-cell; width: 30px;">
                                     <div>
-                                        <a href="#!" type="button" data-toggle="modal" data-target="#subruleUpdate_{{ s.id }}">
-                                            <i class="icon feather icon-edit-2"></i>
+                                        <a href="#!" type="button" data-toggle="modal" data-target="#subruleDelete{{ s.id }}">
+                                            <i class="feather icon-trash-2"></i>
                                         </a>
                                     </div>
                                 </td>
@@ -65,10 +66,16 @@
                                 <td style="display: table-cell;">{{ s.ar_description }}</td>
                                 <td style="display: table-cell;">{{ s.ar_type }}</td>
                                 <td style="display: table-cell;">{{ s.ar_format }}</td>
+                                <td style="display: table-cell;">
+                                    {% if s.ar_format == 'file' %}
+                                        <a href="{% url 'content' s.list_id %}">{{ s.list_description }}</a>
+                                    {% endif %}
+                                </td>
                             </tr>
 
-                            <!-- [Модальное окно редактирования правила] -->
-                            {% include "rules/subrules/subrules_form.html" with sub=s action='update' %}
+                            <!-- [Удалить подправило] start -->
+                            {% include "rules/subrules/subrules_form_del.html" with rule=rule sub=s %}
+                            <!-- [Удалить подправило] end -->
 
                         {% endfor %}
                     </tbody>

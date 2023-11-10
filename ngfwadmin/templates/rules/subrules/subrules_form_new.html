@@ -1,21 +1,13 @@
 {% load static %}
 
     <!-- [Модальное окно правила] start -->
-    {% if action == 'insert' %}
-        <div class="modal fade" id="subruleInsert" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-    {% else %}
-        <div class="modal fade" id="subruleUpdate_{{ s.id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-    {% endif %}
+    <div class="modal fade" id="subruleInsert" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <form action="" method="post">
                 {% csrf_token %}
                     <div class="modal-header">
-                        {% if action == 'insert' %}
-                            <h5>Создать новое подправило</h5>
-                        {% else %}
-                            <h5>Редактировать подправило</h5>
-                        {% endif %}
+                        <h5>Создать новое подправило</h5>
                     </div>
                     <div class="modal-body">
 
@@ -25,13 +17,22 @@
                             <label>Атомарное правило:</label>
                             <select name="atomic" class="form-control" id="ar_id" onchange="ar_id_onchange()">
                                 {% for key, value in atomic.items %}
-                                    <option value="{{ value }}">{{ value.description }}</option>
+                                    <option value="{{ value }}"
+                                    {% if  s.ar_id == value.id %}
+                                        selected="selected"
+                                    {% endif %}
+                                    >{{ value.description }}</option>
                                 {% endfor %}
-                                <option selected="selected" value=""></option>
+                                {% if s.ar_id == None %}
+                                    <option selected="selected" value=""></option>
+                                {% endif %}
                             </select>
                         </div>
                         <!-- List -->
-                        <div class="form-group" id="dev_list" hidden="hidden">
+                        <div class="form-group" id="dev_list"
+                             {% if s.ar_format != 'file'  %}
+                             hidden="hidden"
+                             {% endif %}>
                             <label>Список:</label>
                             <select name="list" class="form-control">
                                 {% for list in lists %}
@@ -90,15 +91,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        {% if action == 'insert' %}
-                            <button type="submit" class="btn btn-primary" name="btnInsert" style="width: 120px;">Создать</button>
-                        {% else %}
-                            <button type="submit" name="btnDelete" class="btn btn-icon btn-outline-danger mr-auto" title="Удалить подправило" onclick="return confirm('Выполнить удаление правила?');">
-                                <i class="feather icon-trash-2"></i>
-                            </button>
-                            <button type="submit" name="btnUpdate" class="btn btn-primary" style="width: 120px;">Сохранить</button>
-                        {% endif %}
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 120px;">Отмена</button>
+                        <button type="submit" class="btn btn-primary" name="btnInsert" style="width: 120px;">Создать</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 120px;">Отмена</button>
                     </div>
                 </form>
             </div>
