@@ -1,17 +1,41 @@
-from django.http import *
+from .forms import *
+
 from ngfwadmin.action import *
 from ngfwadmin.rest.rules.rules import *
 from ngfwadmin.rest.rules.content import *
 from ngfwadmin.rest.rules.history import *
-from django.shortcuts import render
-
-login = 'admin'
-password = '111111'
-url = 'http://192.168.1.145:18888'
+from django.shortcuts import *
 
 
-def test(request):
-    return render(request, 'test.html')
+# подключение к устройству
+connect = {}
+
+
+# Страница подключения к устройству
+def device(request):
+    try:
+        if request.method == 'POST':
+            form = DeviceForm(request.POST)
+            if form.is_valid():
+                obj = form.cleaned_data
+                global connect
+                ip = obj['ip']
+                port = obj['port']
+                login = obj['login']
+                password = obj['password']
+                url = 'http://' + ip + ':' + port
+                connect = {'ip': ip,
+                           'port': port,
+                           'login': login,
+                           'password': password,
+                           'url': url}
+                return redirect('rules')
+        else:
+            form = DeviceForm()
+        context = {'form': form}
+        return render(request, 'device.html', context=context)
+    except Exception as ex:
+        return do_show_error(request, ex)
 
 
 # Страница ошибки
@@ -21,6 +45,8 @@ def error(request, exception):
 
 # Страница dashboard
 def dashboard(request):
+    if 'url' not in connect:
+        return redirect('device')
     try:
         return render(request, 'state/dashboard.html')
     except Exception as ex:
@@ -29,31 +55,33 @@ def dashboard(request):
 
 # Страница правил
 def rules(request):
+    if 'url' not in connect:
+        return redirect('device')
     try:
         if request.method == 'POST':
             # создать правило
             if 'btnInsert' in request.POST:
-                do_rule_insert(url, request)
+                do_rule_insert(connect['url'], request)
             # изменить правило
             if 'btnUpdate' in request.POST:
-                do_rule_update(url, request)
+                do_rule_update(connect['url'], request)
             # создать правило и перейти в подправила
             if 'btnInsertGo' in request.POST:
-                idrule = do_rule_insert(url, request)
+                idrule = do_rule_insert(connect['url'], request)
                 return subrules(request, idrule)
             # изменить правило и перейти в подправила
             if 'btnUpdateGo' in request.POST:
                 idrule = request.POST.get('id')
-                do_rule_update(url, request)
+                do_rule_update(connect['url'], request)
                 return subrules(request, idrule)
             # удалить правило
             if 'btnDelete' in request.POST:
-                do_rule_delete(url, request)
-        ruleall = rule_select_all(url)
+                do_rule_delete(connect['url'], request)
+        ruleall = rule_select_all(connect['url'])
         # сортировка списков
         sorted_ruleall = sorted(ruleall, key=lambda k: k['name'])
         for rule in ruleall:
-            do_sub_warp(url, rule)
+            do_sub_warp(connect, rule)
         context = {'rules': sorted_ruleall}
         return render(request, 'rules/rules/rules.html', context=context)
     except Exception as ex:
@@ -62,21 +90,23 @@ def rules(request):
 
 # Страница подправила
 def subrules(request, id):
+    if 'url' not in connect:
+        return redirect('device')
     try:
         if request.method == 'POST':
             # создать подправило
             if 'btnInsert' in request.POST:
-                do_subrule_insert(url, request, id)
+                do_subrule_insert(connect['url'], request, id)
             # создать подправило
             if 'btnDelete' in request.POST:
-                do_subrule_delete(url, request, id)
+                do_subrule_delete(connect['url'], request, id)
         # Получить зависимости
-        rule = rule_select(url, id)
-        lists = list_select_all(url)
-        atomic = enum_atomic_get(url)
-        service = enum_services_get(url)
-        protocol = enum_protocols_get(url)
-        do_sub_warp(url, rule)
+        rule = rule_select(connect['url'], id)
+        lists = list_select_all(connect['url'])
+        atomic = enum_atomic_get(connect['url'])
+        service = enum_services_get(connect['url'])
+        protocol = enum_protocols_get(connect['url'])
+        do_sub_warp(connect, rule)
         # сортировка списков
         sorted_lists = sorted(lists, key=lambda k: k['ftype'])
         # содержимое данных
@@ -93,19 +123,21 @@ def subrules(request, id):
 
 # Страница редактора списков
 def lists(request):
+    if 'url' not in connect:
+        return redirect('device')
     try:
         if request.method == 'POST':
             # создать правило
             if 'btnInsert' in request.POST:
-                do_list_insert(url, login, password, request)
+                do_list_insert(connect['url'], request)
             # изменить правило
             if 'btnUpdate' in request.POST:
-                do_list_update(url, login, password, request)
+                do_list_update(connect['url'], request)
             # удалить правило
             if 'btnDelete' in request.POST:
-                do_list_delete(url, login, password, request)
-        listall = list_select_all(url)
-        dict = enum_format_get(url)
+                do_list_delete(connect['url'], request)
+        listall = list_select_all(connect['url'])
+        dict = enum_format_get(connect['url'])
         format = []
         for f in dict['formats']:
             name = f['name']
@@ -120,14 +152,16 @@ def lists(request):
 
 # Страница редактирования содержимого
 def content(request, id):
+    if 'url' not in connect:
+        return redirect('device')
     try:
         if request.method == 'POST':
             # сохранить список
             if 'btnSet' in request.POST:
-                do_content_set(url, login, password, request)
+                do_content_set(connect, request)
                 return lists(request)
-        list = list_select(url, id)
-        filetext = content_get(url, id)
+        list = list_select(connect['url'], id)
+        filetext = content_get(connect['url'], id)
         context = {'id': id,
                    'list': list,
                    'filetext': filetext}
@@ -138,12 +172,14 @@ def content(request, id):
 
 # Страница истории изменений правил
 def history(request):
+    if 'url' not in connect:
+        return redirect('device')
     try:
         # создать правило
         if 'btnRecover' in request.POST:
-            do_history_recover(url, request)
+            do_history_recover(connect, request)
             return rules(request)
-        result = history_get(url)
+        result = history_get(connect['url'])
         history = []
         for i in range(len(result['date'])):
             row = { 'id': i, 'date': result['date'][i] }
@@ -156,6 +192,8 @@ def history(request):
 
 # Страница таблиц Debug
 def table(request, name):
+    if 'url' not in connect:
+        return redirect('device')
     try:
         rows = []
         columns = []
@@ -164,7 +202,7 @@ def table(request, name):
         # Атомарные правила
         if name == 'atomic':
             caption = 'Атомарные правила'
-            atomic = enum_atomic_get(url)
+            atomic = enum_atomic_get(connect['url'])
             columns = ['ID', 'Название', 'Тип данных', 'Тип файла']
             for i in atomic:
                 row = atomic[i]
@@ -177,7 +215,7 @@ def table(request, name):
         # Формат атомарных правил
         if name == 'format':
             caption = 'Форматы атомарных правил'
-            formats = enum_format_get(url)
+            formats = enum_format_get(connect['url'])
             columns = ['ID', 'Параметр', 'Название', 'Описание']
             for row in formats['formats']:
                 id = row['id']
@@ -189,7 +227,7 @@ def table(request, name):
         # Список сервисов
         if name == 'services':
             caption = 'Список сервисов'
-            services = enum_services_get(url)
+            services = enum_services_get(connect['url'])
             columns = ['Сервисы']
             for val in services:
                 rows.append([val])
@@ -197,7 +235,7 @@ def table(request, name):
         # Список протоколов
         if name == 'protocols':
             caption = 'Список протоколов'
-            protocols = enum_protocols_get(url)
+            protocols = enum_protocols_get(connect['url'])
             columns = ['Протоколы']
             for val in protocols:
                 rows.append([val])

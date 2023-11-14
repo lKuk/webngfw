@@ -16,9 +16,9 @@ def do_show_error(request, ex):
 
 
 # Наполнить подправило полями
-def do_sub_warp(url, rule):
-    atomics = enum_atomic_get(url)
-    formats = enum_format_get(url)
+def do_sub_warp(connect, rule):
+    atomics = enum_atomic_get(connect['url'])
+    formats = enum_format_get(connect['url'])
     try:
         sub2 = []
         sub = rule['sub']
@@ -52,7 +52,7 @@ def do_sub_warp(url, rule):
             if fid_or_val.isdigit():
                 if s2['ar_format'] == 'file':
                     idlist = int(fid_or_val)
-                    list = list_select(url, idlist)
+                    list = list_select(connect['url'], idlist)
                     s2['list_id'] = list['id']
                     s2['list_description'] = list['description']
             sub2.append(s2)
@@ -62,19 +62,19 @@ def do_sub_warp(url, rule):
     return
 
 
-def do_rule_insert(url, request):
+def do_rule_insert(connect, request):
     # Получить параметры
     name = request.POST.get('name')
     rtype = request.POST.get('rtype')
     is_enable = request.POST.get('is_enable')
     description = request.POST.get('description')
     # добавить правило
-    result = rule_insert(url, rtype, is_enable, name, description)
+    result = rule_insert(connect['url'], rtype, is_enable, name, description)
     details = json.loads(result)
     return details['id']
 
 
-def do_rule_update(url, request):
+def do_rule_update(connect, request):
     # Получить параметры
     id = request.POST.get('id')
     sub = request.POST.get('sub')
@@ -85,19 +85,19 @@ def do_rule_update(url, request):
     sub = sub.replace("\'", "\"")
     sub = json.loads(sub)
     # обновить правило
-    rule_update(url, id, rtype, is_enable, name, description, sub)
+    rule_update(connect['url'], id, rtype, is_enable, name, description, sub)
     return
 
 
-def do_rule_delete(url, request):
+def do_rule_delete(connect, request):
     # Получить id
     id = request.POST.get('id')
     # удалить правило
-    rule_delete(url, id)
+    rule_delete(connect['url'], id)
     return
 
 
-def do_subrule_insert(url, request, id):
+def do_subrule_insert(connect, request, id):
     # Получить параметры
     port = request.POST.get('port')
     invert = request.POST.get('invert')
@@ -139,60 +139,60 @@ def do_subrule_insert(url, request, id):
     if arg_type == 'file':
         fid_or_val = fid
 
-    result = sub_insert(url, id, ar_id, fid_or_val, invert)
+    result = sub_insert(connect['url'], id, ar_id, fid_or_val, invert)
     details = json.loads(result)
     return details['id']
 
 
-def do_subrule_delete(url, request, id):
+def do_subrule_delete(connect, request, id):
     # Получить параметры
     sub_id = request.POST.get('sub_id')
     rule_id = request.POST.get('rule_id')
-    sub_delete(url, rule_id, sub_id)
+    sub_delete(connect['url'], rule_id, sub_id)
     return
 
 
-def do_list_insert(url, login, passw0rd, request):
+def do_list_insert(connect, request):
     # Получить параметры
     ftype = request.POST.get('ftype')
     description = request.POST.get('description')
     # добавить список
-    result = list_insert(url, login, passw0rd, ftype, description)
+    result = list_insert(connect['url'], connect['login'], connect['passw0rd'], ftype, description)
     details = json.loads(result)
     return details['id']
 
 
-def do_list_update(url, login, password, request):
+def do_list_update(connect, request):
     # Получить параметры
     id = request.POST.get('id')
     ftype = request.POST.get('ftype')
     description = request.POST.get('description')
     # обновить список
-    list_update(url, login, password, id, ftype, description)
+    list_update(connect['url'], connect['login'], connect['passw0rd'], id, ftype, description)
     return
 
 
-def do_list_delete(url, login, password, request):
+def do_list_delete(connect, request):
     # Получить id
     id = request.POST.get('id')
     # удалить список
-    list_delete(url, login, password, id)
+    list_delete(connect['url'], connect['login'], connect['passw0rd'], id)
     return
 
 
-def do_content_set(url, login, password, request):
+def do_content_set(connect, request):
     # Получить id
     id = request.POST.get('id')
     # Получить текст списка
     filetext = request.POST.get('filetext')
     # установить список
-    content_set(url, login, password, id, filetext)
+    content_set(connect['url'], connect['login'], connect['passw0rd'], id, filetext)
     return
 
 
-def do_history_recover(url, request):
+def do_history_recover(connect, request):
     # Получить id
     date = request.POST.get('date')
     # удалить правило
-    history_set(url, date)
+    history_set(connect['url'], date)
     return
