@@ -1,45 +1,19 @@
-{#{% extends "base.html" %}#}
-{#{% load static %}#}
-{##}
-{#{% block header %}#}
-{#        <li>#}
-{#        <div class="card-header">#}
-{#            <h5>Что-то пошло не так!</h5>#}
-{#        </div>#}
-{#    </li>#}
-{#{% endblock header %}#}
-{##}
-{#{% block content %}#}
-{#   <!-- Exception -->#}
-{#    <div class="col-sm-12">#}
-{#        <div class="card">#}
-{#            <div class="table-responsive">#}
-{#                <H5>{{ name }}</H5>#}
-{#                {% for arg in ex.args  %}#}
-{#                    <br/><H6>{{ arg }}</H6>#}
-{#                {% endfor %}#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#{% endblock content %}#}
-
-
-
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 	<meta charset="utf-8">
 	<title>Error</title>
-	<link rel="stylesheet" type="text/css" href="{% static '404/css/style.css' %}"/>
+    <link rel="icon" href="{% static 'main/images/favicon.ico' %}" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="{% static 'error/css/style.css' %}"/>
 </head>
 <body>
 	<div id="container" class="container">
 		<ul id="scene" class="scene">
-			<li class="layer" data-depth="0.60"><img src="{% static '404/images/shadows-01.png' %}"></li>
-			<li class="layer" data-depth="0.20"><img src="{% static '404/images/monster-01.png' %}"></li>
-			<li class="layer" data-depth="0.40"><img src="{% static '404/images/text-01.png' %}"></li>
-			<li class="layer" data-depth="0.10"><img src="{% static '404/images/monster-eyes-01.png' %}"></li>
+			<li class="layer" data-depth="0.60"><img src="{% static 'error/images/shadows-01.png' %}" alt=""></li>
+			<li class="layer" data-depth="0.20"><img src="{% static 'error/images/monster-01.png' %}" alt=""></li>
+			<li class="layer" data-depth="0.40"><img src="{% static 'error/images/text-01.png' %}" alt=""></li>
+			<li class="layer" data-depth="0.10"><img src="{% static 'error/images/monster-eyes-01.png' %}" alt=""></li>
 		</ul>
 		<h1>{{ name }}</h1>
         {% for arg in ex.args  %}
@@ -47,7 +21,7 @@
         {% endfor %}
 	</div>
 	<!-- Scripts -->
-	<script src="{% static '404/js/parallax.js' %}"></script>
+	<script src="{% static 'error/js/parallax.js' %}"></script>
 	<script>
 	// Pretty simple huh?
 	var scene = document.getElementById('scene');

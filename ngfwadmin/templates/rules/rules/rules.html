@@ -1,7 +1,22 @@
 {% extends "base.html" %}
+
 {% load static %}
+{% load base_tag %}
 
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
 
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+{% endblock script %}
+
+{# Заголовок #}
 {% block header %}
     <li>
         <div class="card-header">
@@ -10,87 +25,97 @@
     </li>
 {% endblock header %}
 
+{# Содержимое #}
 {% block content %}
+    <!-- Кнопка Добавить -->
+    <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2 mb-4" style="width: 120px;">Добавить</a>
+    <!-- Таблица правил -->
+    <table id="col-reorder"
+           class="display table nowrap table-striped table-hover footable"
+           style="width:100%">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Вкл</th>
+            <th>Тип</th>
+            <th>Название</th>
+            <th>Кол-во</th>
+            <th>Подправила</th>
+            <th>Описание</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for r in rules %}
+            <tr>
+                {# Удаление #}
+                <td style="display: table-cell; width: 30px;">
+                    <div>
+                        <a href="{% url 'rules' %}?delete={{ r.id }}" onclick="return confirm('{{ r.name }}\nУдалить правило?');">
+                            <i class="feather icon-trash"></i>
+                        </a>
+                    </div>
+                </td>
+                {# Включено #}
+                <td style="display: table-cell; width: 30px;">
+                    {% if r.is_enable.lower == 'true' %}
+                        <span class="badge badge-pill badge-success" style="width: 30px">ON</span>
+                    {% else %}
+                        <span class="badge badge-pill badge-secondary" style="width: 30px">OFF</span>
+                    {% endif %}
+                </td>
+                {# black/white #}
+                <td style="display: table-cell;">
+                    {% if r.rtype == 'black' %}
+                        <span class="badge badge-dark" style="width: 40px">{{ r.rtype }}</span>
+                    {% else %}
+                        <span class="badge badge-light" style="width: 40px">{{ r.rtype }}</span>
+                    {% endif %}
+                </td>
+                {# Название #}
+                <td style="display: table-cell;">
+                    <a href="{% url 'rules_edit' r.id %}">{{ r.name|truncatechars:50 }}</a>
+                </td>
+                {# Количество подправил #}
+                <td style="display: table-cell;">{% count_sub r %}</td>
+                {# Подправила #}
+                <td style="display: table-cell;">
+                    {% for s in r.sub2 %}
+                        {# Инвертированное #}
+                        {% if s.is_invert == '0' %}
+                            <i title="Прямое" class="feather icon-arrow-up-right"></i>
+                        {% else %}
+                            <i title="Инвертированное" class="feather icon-arrow-down-left"></i>
+                        {% endif %}
 
-   <!-- Список правил -->
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="table-responsive">
+                        {# Формат атомарного правила и тип файла #}
+                        <span
+                        {% if s.ar_format.upper == 'NO' and s.ar_type.upper == 'NO' %}
+                            class="badge badge-light"
+                        {% elif s.ar_format.upper == 'IP' or s.ar_type.upper == 'IP' %}
+                            class="badge badge-warning"
+                        {% elif s.ar_format.upper == 'PORT' or s.ar_type.upper == 'PORT' %}
+                            class="badge badge-warning"
+                        {% elif s.ar_format.upper == 'MAC' or s.ar_type.upper == 'MAC' %}
+                            class="badge badge-warning"
+                        {% elif s.ar_format.upper == 'FILE' or s.ar_type.upper == 'FILE' %}
+                            class="badge badge-info"
+                        {% else %}
+                            class="badge badge-primary"
+                        {% endif %}
+                         style="width: 60px">
+                            {% if s.ar_format.upper != 'NO' %}{{ s.ar_format }}{% endif %}
+                            {% if s.ar_type.upper != 'NO' %}{{ s.ar_type }}{% endif %}
+                        </span>
 
-
-                <!-- [Описание NGFW] start-->
-                <p>NGFW поддерживает две группы правил фильтрации:<br/>
-                    - правила блокировки сетевого трафика (чёрный список black) - подлежащие блокированию при их определении в сетевом трафике.;<br/>
-                    - правила разрешенного сетевого трафика (белый список white) - подлежащие обязательному прохождению в случае их определения в сетевом трафике;<br/>
-                   Белый список имеет высший приоритет по сравнению с черным списком.<br/>
-                   Правила объединяются логически оператором "ИЛИ".
-                </p>
-                <!-- [Описание NGFW] end-->
-
-                <!-- [Новое правило] start -->
-                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#ruleInsert" >
-                    <i class="feather icon-flag"></i>Новое правило
-                </button>
-                {% include "rules/rules/rules_form.html" with action='insert' %}
-                <!-- [Новое правило] end -->
-
-                <!-- [Таблица правил] start -->
-                <table id="col-reorder"
-                       class="display table nowrap table-striped table-hover footable"
-                       style="width:100%">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>Тип</th>
-                        <th>Включено</th>
-                        <th>Название</th>
-                        <th>Подправила</th>
-                        <th>Описание</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for r in rules %}
-                        <!-- [Строка правила] start -->
-                        <tr>
-                            <td style="display: table-cell; width: 30px;">
-                                <div>
-                                    <a href="#!" type="button" data-toggle="modal" data-target="#ruleUpdate_{{ r.id }}">
-                                        <i class="icon feather icon-edit-2"></i>
-                                    </a>
-                                </div>
-                            </td>
-                            <td style="display: table-cell;">{{ r.rtype }}</td>
-                            <td style="display: table-cell;">{{ r.is_enable }}</td>
-                            <td style="display: table-cell;">
-                                <a href="{% url 'subrules' r.id %}">{{ r.name|truncatechars:50 }}</a>
-                            </td>
-                            <td style="display: table-cell;">
-                                {% for s in r.sub2 %}
-                                    {% if s.is_invert == '0' %}
-                                        <i title="Прямое" class="feather icon-arrow-up-right"></i>
-                                    {% else %}
-                                        <i title="Инвертированное" class="feather icon-arrow-down-left"></i>
-                                    {% endif %}
-                                    {{ s.ar_format }}
-                                    {{ s.ar_type }}
-                                    {{ s.ar_description|truncatechars:50 }}
-                                    <br/>
-                                {% endfor %}
-                            </td>
-                            <td style="display: table-cell;">{{ r.description|wordwrap:100|linebreaksbr }}</td>
-                        </tr>
-                        <!-- [Строка правила] end -->
-
-                        <!-- [Модальное окно редактирования правила] -->
-                        {% include "rules/rules/rules_form.html" with rule=r action='update' %}
-
+                        {# Описание подправила #}
+                        {{ s.ar_description|truncatechars:50 }}
+                        <br/>
                     {% endfor %}
-                    </tbody>
-                </table>
-                <!-- [Таблица правил] end -->
-
-            </div>
-        </div>
-    </div>
-
+                </td>
+                {# Описание #}
+                <td style="display: table-cell;">{{ r.description|wordwrap:100|linebreaksbr }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock content %}

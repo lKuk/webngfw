@@ -1,8 +1,9 @@
 from django import forms
+from ngfwadmin.rest.rules.enum import *
 
 
 # Устройства NGFW
-class DeviceForm(forms.Form):
+class ConnectForm(forms.Form):
     ip = forms.CharField(max_length=255,
                          label='IP адрес',
                          initial='192.168.1.145',

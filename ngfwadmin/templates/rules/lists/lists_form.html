@@ -1,55 +1,64 @@
+{% extends "rules/../base.html" %}
+{% load static %}
 
-    <!-- [Модальное окно] start -->
-    {% if action == 'insert' %}
-        <div class="modal fade" id="listsInsert" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-    {% else %}
-        <div class="modal fade" id="listsUpdate_{{ l.id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-    {% endif %}
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <form action="" method="post">
-                {% csrf_token %}
-                    <div class="modal-header">
-                        {% if action == 'insert' %}
-                            <h5>Создать новый список</h5>
-                        {% else %}
-                            <h5>Редактировать список</h5>
-                        {% endif %}
-                    </div>
-                    <div class="modal-body">
-                        <input name="id" value="{{ l.id }}" type="hidden">
-                        <div class="form-group">
-                            <label>Описание:</label>
-                            <input name="description" value="{{ l.description }}" type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Тип списка:</label>
-                            <select name="ftype"  class="form-control" value="{{ l.ftype }}">
-                                {% for f in format %}
-                                    <option value="{{ f }}" {% if f == l.ftype %} selected="selected" {% endif %}>{{ f }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        {% if action == 'insert' %}
-                            <button type="submit" name="btnInsertGo" class="btn btn-icon btn-primary" title="Создать и перейти к редактированию списка">
-                                <i class="feather icon-flag"></i>
-                            </button>
-                            <button type="submit" class="btn btn-primary" name="btnInsert" style="width: 120px;">Создать</button>
-                        {% else %}
-                            <button type="submit" name="btnDelete" class="btn btn-icon btn-outline-danger mr-auto" title="Удалить список" onclick="return confirm('Выполнить удаление списка?');">
-                                <i class="feather icon-trash-2"></i>
-                            </button>
-                            <button type="submit" name="btnUpdateGo" class="btn btn-icon btn-primary" title="Сохранить и перейти к редактированию списка">
-                                <i class="feather icon-save"></i>
-                            </button>
-                            <button type="submit" name="btnUpdate" class="btn btn-primary" style="width: 120px;">Сохранить</button>
-                        {% endif %}
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 120px;">Отмена</button>
-                    </div>
-                </form>
+{# Стили #}
+{% block style %}
+    <script src="{% static 'codemirrior/codemirror.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'codemirrior/codemirror.css' %}">
+{% endblock style %}
+
+{# Заголовок #}
+{% block header %}
+    <li>
+        <div class="card-header">
+            <h5>{{ caption }}</h5>
+        </div>
+    </li>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+    <form action="" method="post">
+    {% csrf_token %}
+        {# Элементы формы #}
+        <div class="row">
+            <div class="col-md-6 col-xl-4">
+                <input name="id" value="{{ list.id }}" type="hidden">
+                <div class="form-group">
+                    <label>Описание:</label>
+                    <input name="description" value="{{ list.description }}" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Тип списка:</label>
+                    <select name="ftype" class="form-control" value="{{ list.ftype }}">
+                        {% for f in format %}
+                            <option value="{{ f }}" {% if f == list.ftype %} selected="selected" {% endif %}>{{ f }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-xl-8 col-md-6">
+                <label>Содержимое списка:</label>
+                <div class="form-control">
+                    <textarea id="demotext" name="content" rows="20">{{ content }}</textarea>
+                </div>
+                <br/>
+            </div>
+            <div class="col-md-12">
+                {# Кнопки #}
+                {% if action == 'add' %}
+                    <button type="submit" name="btnInsert" class="btn btn-primary shadow-2 mb-4" style="width: 120px;">Создать</button>
+                {% else %}
+                    <button type="submit" name="btnUpdate" class="btn btn-primary shadow-2 mb-4" style="width: 120px;">Сохранить</button>
+                {% endif %}
             </div>
         </div>
-    </div>
-    <!-- [Модальное окно] end -->
+    </form>
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("demotext"), {
+          lineNumbers: true,
+          mode: "text/html",
+          matchBrackets: true
+        });
+    </script>
+{% endblock content %}

@@ -1,7 +1,20 @@
 {% extends "rules/../base.html" %}
 {% load static %}
 
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
 
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+{% endblock script %}
+
+{# Заголовок #}
 {% block header %}
         <li>
         <div class="card-header">
@@ -10,34 +23,26 @@
     </li>
 {% endblock header %}
 
-
+{# Содержимое #}
 {% block content %}
-
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="table-responsive">
-                <table id="col-reorder"
-                       class="display table nowrap table-striped table-hover footable footable-1 footable-paging footable-paging-center"
-                       style="width:100%">
-                    <thead>
-                        <tr>
-                        {% for col in columns %}
-                            <th>{{ col }}</th>
-                        {% endfor %}
-                       </tr>
-                    </thead>
-                    <tbody>
-                        {% for row in rows %}
-                            <tr>
-                                {% for val in row %}
-                                    <td style="display: table-cell;">{{ val }}</td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
+    <table id="col-reorder"
+           class="display table nowrap table-striped table-hover footable footable-1 footable-paging footable-paging-center"
+           style="width:100%">
+        <thead>
+            <tr>
+            {% for col in columns %}
+                <th>{{ col }}</th>
+            {% endfor %}
+           </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    {% for val in row %}
+                        <td style="display: table-cell;">{{ val }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock content %}

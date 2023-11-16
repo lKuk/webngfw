@@ -3,20 +3,29 @@ from django.urls import path
 
 urlpatterns = [
     # Форма подключения к устройству
-    path('device/', device, name='device'),
+    path('connect/', connect, name='connect'),
 
     # Dashboard
     path('', dashboard, name='dashboard'),
+    path('dashboard/', dashboard, name='dashboard'),
 
     # Редактор правила
     path('rules/', rules, name='rules'),
-    path('rules/lists/', lists, name='lists'),
-    path('rules/history/', history, name='history'),
-    path('rules/<int:id>/', subrules, name='subrules'),
-    path('rules/lists/<int:id>/content/', content, name='content'),
+    path('rules/new/', rules_add, name='rules_add'),
+    path('rules/<int:id>/', rules_edit, name='rules_edit'),
 
+    # Редактор списков
+    path('rules/lists/', lists, name='lists'),
+    path('rules/lists/new/', lists_add, name='lists_add'),
+    path('rules/lists/<int:id>/', lists_edit, name='lists_edit'),
+
+    # История изменений
+    path('rules/history/', history, name='history'),
 
     # Справочные таблицы
     path('rules/table/<slug:name>/', table, name='table'),
+
+    # Отображение ошибок
+    path('error/', error, name='error'),
 ]
 

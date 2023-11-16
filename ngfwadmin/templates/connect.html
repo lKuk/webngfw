@@ -1,20 +1,14 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <title>Подключение NGFW</title>
-
-    <!-- Favicon icon -->
-    <link rel="icon" href="{% static 'ngfwadmin/images/favicon.ico' %}" type="image/x-icon">
-    <!-- fontawesome icon -->
-    <link rel="stylesheet" href="{% static 'ngfwadmin/fonts/fontawesome/css/fontawesome-all.min.css' %}">
-    <!-- animation css -->
-    <link rel="stylesheet" href="{% static 'ngfwadmin/plugins/animation/css/animate.min.css' %}">
-    <!-- vendor css -->
-    <link rel="stylesheet" href="{% static 'ngfwadmin/css/style.css' %}">
-
+    <link rel="icon" href="{% static 'main/images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/animation/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/fonts/fontawesome/css/fontawesome-all.min.css' %}">
 </head>
 
 <body>
@@ -27,9 +21,9 @@
                 <span class="r"></span>
             </div>
             <div class="card">
-                <div class="card-body text-center">
+                <div class="card-body text-center form-control">
                     <h3 class="mb-4">Подключение</h3>
-                    <form action="{% url 'device' %}" method="post">
+                    <form action="{% url 'connect' %}" method="post">
                         {% csrf_token %}
                             <p>{{ form.non_field_errors }}</p>
                             {% for f in form %}
@@ -46,10 +40,9 @@
         </div>
     </div>
 
-    <!-- Required Js -->
-    <script src="{% static 'ngfwadmin/js/vendor-all.min.js' %}"></script>
-    <script src="{% static 'ngfwadmin/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'ngfwadmin/js/pcoded.min.js' %}"></script>
+    <script src="{% static 'main/js/vendor-all.min.js' %}"></script>
+    <script src="{% static 'main/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'main/js/pcoded.min.js' %}"></script>
 
 </body>
 </html>

@@ -4,6 +4,7 @@ enum_atomic = None
 enum_format = None
 enum_services = None
 enum_protocols = None
+enum_format_ftype = None
 
 
 # Получить атомарные правила
@@ -31,6 +32,23 @@ def enum_format_get(url):
         raise Exception(response.url, response.text)
     enum_format = response.json()
     return enum_format
+
+
+# Получить форматы атомарных правил
+def enum_format_ftype_get(url):
+    global enum_format_ftype
+    if url is None:
+        return enum_format_ftype
+    if enum_format_ftype is not None:
+        return enum_format_ftype
+    # получить доступные форматы
+    dict = enum_format_get(url)
+    enum_format_ftype = []
+    for f in dict['formats']:
+        name = f['name']
+        if name not in enum_format_ftype:
+            enum_format_ftype.append(name)
+    return enum_format_ftype
 
 
 # Получить список сервисов

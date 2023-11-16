@@ -1,66 +1,283 @@
+{% extends "rules/../base.html" %}
+{% load static %}
 
-    <!-- [Модальное окно правила] start -->
-    {% if action == 'insert' %}
-        <div class="modal fade" id="ruleInsert" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-    {% else %}
-        <div class="modal fade" id="ruleUpdate_{{ r.id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-    {% endif %}
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <form action="" method="post">
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li>
+        <div class="card-header">
+            <h5>{{ caption }}</h5>
+        </div>
+    </li>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+    <div class="row">
+
+        <div class="col-md-6 col-xl-4">
+            <form name="rule_edit" method="post">
+            {% csrf_token %}
+                <input name="id" value="{{ rule.id }}" type="hidden">
+                <input name="sub" value="{{ rule.sub }}" type="hidden">
+                <!-- Включено -->
+                <div class="form-group">
+                    <label>Включено:</label>
+                    <select name="is_enable" value="{{ rule.is_enable }}" class="form-control">
+                        <option value="true" {% if rule.is_enable == 'true' %}selected="selected"{% endif %}>ON</option>
+                        <option value="false" {% if rule.is_enable == 'false' %}selected="selected"{% endif %}>OFF</option>
+                    </select>
+                </div>
+                <!-- Тип правила -->
+                <div class="form-group">
+                    <label>Тип правила:</label>
+                    <select name="rtype" value="{{ rule.rtype }}" class="form-control">
+                        <option {% if rule.rtype == 'black' %}selected="selected"{% endif %}>black</option>
+                        <option {% if rule.rtype == 'white' %}selected="selected"{% endif %}>white</option>
+                    </select>
+                </div>
+                <!-- Название -->
+                <div class="form-group">
+                    <label>Название:</label>
+                    <input name="name" value="{{ rule.name }}" type="text" class="form-control">
+                </div>
+                <!-- Описание -->
+                <div class="form-group">
+                    <label>Описание:</label>
+                    <textarea name="description" class="form-control" rows="10">{{ rule.description }}</textarea>
+                </div>
+                {# Кнопки #}
+                {% if action == 'add' %}
+                    <button type="submit" name="btnInsert" class="btn btn-primary shadow-2 mb-4" style="width: 120px;">Создать</button>
+                {% else %}
+                    <button type="submit" name="btnUpdate" class="btn btn-primary shadow-2 mb-4" style="width: 120px;">Сохранить</button>
+                {% endif %}
+            </form>
+        </div>
+
+        {% if action != 'add' %}
+            <div class="col-md-6 col-xl-4">
+                <form name="sub_add" method="post">
                 {% csrf_token %}
-                    <div class="modal-header">
-                        {% if action == 'insert' %}
-                            <h5>Создать новое правило</h5>
-                        {% else %}
-                            <h5>Редактировать правило</h5>
-                        {% endif %}
+                    <!-- Atomic -->
+                    <div class="form-group">
+                        <label>Атомарное правило:</label>
+                        <select name="atomic" class="form-control" id="ar_id" onchange="ar_id_onchange()">
+                            {% for key, value in atomic.items %}
+                                <option value="{{ value }}">{{ value.arg_type }} {{ value.file_type }} {{ value.description }}</option>
+                            {% endfor %}
+                            {% if s.ar_id == None %}
+                                <option selected="selected" value=""></option>
+                            {% endif %}
+                        </select>
                     </div>
-                    <div class="modal-body">
-                        <input name="id" value="{{ r.id }}" type="hidden">
-                        <input name="sub" value="{{ r.sub }}" type="hidden">
-                        <div class="form-group">
-                            <label>Тип правила:</label>
-                            <select name="rtype" value="{{ r.rtype }}" class="form-control">
-                                <option>black</option>
-                                <option>white</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Включено:</label>
-                            <select name="is_enable" value="{{ r.is_enable }}" class="form-control">
-                                <option>true</option>
-                                <option>false</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Название:</label>
-                            <input name="name" value="{{ r.name }}" type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Описание:</label>
-                            <textarea name="description" class="form-control" rows="5">{{ r.description }}</textarea>
-                        </div>
+                    <!-- List -->
+                    <div class="form-group" id="dev_list"
+                         {% if s.ar_format != 'file'  %}
+                         hidden="hidden"
+                         {% endif %}>
+                        <label>Список:</label>
+                        <select name="list" class="form-control">
+                            {% for list in lists %}
+                                <option value="{{ list }}">{{ list.ftype }} - {{ list.description }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <div class="modal-footer">
-                        {% if action == 'insert' %}
-                            <button type="submit" name="btnInsertGo" class="btn btn-icon btn-primary" title="Создать и перейти к редактированию подправил">
-                                <i class="feather icon-flag"></i>
-                            </button>
-                            <button type="submit" class="btn btn-primary" name="btnInsert" style="width: 120px;">Создать</button>
-                        {% else %}
-                            <button type="submit" name="btnDelete" class="btn btn-icon btn-outline-danger mr-auto" title="Удалить правило" onclick="return confirm('Выполнить удаление правила?');">
-                                <i class="feather icon-trash-2"></i>
-                            </button>
-                            <button type="submit" name="btnUpdateGo" class="btn btn-icon btn-primary" title="Сохранить и перейти к редактированию подправил">
-                                <i class="feather icon-save"></i>
-                            </button>
-                            <button type="submit" name="btnUpdate" class="btn btn-primary" style="width: 120px;">Сохранить</button>
-                        {% endif %}
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 120px;">Отмена</button>
+                    <!-- IP -->
+                    <div class="form-group" id="dev_ip" hidden="hidden">
+                        <label>IP адрес:</label>
+                        <input name="ip_address" type="text" class="form-control">
                     </div>
+                    <!-- MAC -->
+                    <div class="form-group" id="dev_mac" hidden="hidden">
+                        <label>MAC адрес:</label>
+                        <input name="mac_address" type="text" class="form-control">
+                    </div>
+                    <!-- PORT -->
+                    <div class="form-group"  id="dev_port" hidden="hidden">
+                        <label>Порт:</label>
+                        <input name="port" type="text" value="80" class="form-control">
+                    </div>
+                    <!-- PROPONAME -->
+                    <div class="form-group" id="dev_proto" hidden="hidden">
+                        <label>Протокол:</label>
+                        <select name="protocol" class="form-control">
+                            {% for value in protocol %}
+                                <option>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- SERVICENAME -->
+                    <div class="form-group" id="dev_service" hidden="hidden">
+                        <label>Сервис:</label>
+                        <select name="service" class="form-control">
+                            {% for value in service %}
+                                <option>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- GATEGORYNAME -->
+                    <div class="form-group" id="dev_category" hidden="hidden">
+                        <label>Категория:</label>
+                        <select name="category" class="form-control">
+                            <option></option>
+                        </select>
+                    </div>
+                    <!-- invert -->
+                    <div class="form-group" id="dev_category">
+                        <label>Инвертация:</label>
+                        <select name="invert" class="form-control">
+                            <option value="0" selected="selected">Не инвертировано</option>
+                            <option value="1">Инвертировано</option>
+                        </select>
+                    </div>
+                    {# Кнопки #}
+                    <button type="submit" class="btn btn-primary shadow-2 mb-4" name="btnAdd" style="width: 120px;">Добавить</button>
                 </form>
             </div>
-        </div>
+            <div class="col-md-12">
+                 <!-- Таблица подправил -->
+                <table id="col-reorder"
+                       class="display table nowrap table-striped table-hover footable footable-1 footable-paging footable-paging-center"
+                       style="width:100%">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th><i class="feather icon-maximize-2"></i></th>
+                        <th>Формат</th>
+                        <th>Подправило</th>
+                        <th>Значение</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for s in rule.sub2 %}
+                        <tr>
+                            {# Удаление #}
+                            <td style="display: table-cell; width: 30px;">
+                                <div>
+                                    <a href="{% url 'rules_edit' rule.id %}?delete={{ s.id }}" onclick="return confirm('{{ s.ar_description|truncatechars:50 }}\nУдалить подправило?');">
+                                        <i class="feather icon-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                            {# Инвертированное #}
+                            <td style="display: table-cell; width: 30px;">
+                                {% if s.is_invert == '0' %}
+                                    <i title="Прямое" class="feather icon-arrow-up-right"></i>
+                                {% else %}
+                                    <i title="Инвертированное" class="feather icon-arrow-down-left"></i>
+                                {% endif %}
+                            </td>
+                            {# Формат атомарного правила и тип файла #}
+                            <td style="display: table-cell; width: 60px;">
+                                <span
+                                {% if s.ar_format.upper == 'NO' and s.ar_type.upper == 'NO' %}
+                                    class="badge badge-light"
+                                {% elif s.ar_format.upper == 'IP' or s.ar_type.upper == 'IP' %}
+                                    class="badge badge-warning"
+                                {% elif s.ar_format.upper == 'PORT' or s.ar_type.upper == 'PORT' %}
+                                    class="badge badge-warning"
+                                {% elif s.ar_format.upper == 'MAC' or s.ar_type.upper == 'MAC' %}
+                                    class="badge badge-warning"
+                                {% elif s.ar_format.upper == 'FILE' or s.ar_type.upper == 'FILE' %}
+                                    class="badge badge-info"
+                                {% else %}
+                                    class="badge badge-primary"
+                                {% endif %}
+                                 style="width: 60px">
+                                    {% if s.ar_format.upper != 'NO' %}{{ s.ar_format }}{% endif %}
+                                    {% if s.ar_type.upper != 'NO' %}{{ s.ar_type }}{% endif %}
+                                </span>
+                            </td>
+                            {# Описание подправила #}
+                            <td style="display: table-cell;">
+                                {{ s.ar_description|truncatechars:50 }}
+                            </td>
+                            {# Значение #}
+                            <td style="display: table-cell;">
+                                {% if s.ar_format == 'file' %}
+                                    <a href="{% url 'lists_edit' s.list_id %}">{{ s.list_description }}</a>
+                                {% else %}
+                                    {{ s.fid_or_val }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
     </div>
-    <!-- [Модальное окно правила] end -->
+
+    <script>
+        function ar_id_onchange() {
+            // определить контролы
+            ar_id = document.getElementById("ar_id");
+            dev_ip = document.getElementById("dev_ip");
+            dev_mac = document.getElementById("dev_mac");
+            dev_list = document.getElementById("dev_list");
+            dev_port = document.getElementById("dev_port");
+            dev_proto = document.getElementById("dev_proto");
+            dev_service = document.getElementById("dev_service");
+            dev_gategory = document.getElementById("dev_category");
+
+            // скрыть все контролы
+            dev_ip.hidden = true;
+            dev_mac.hidden = true;
+            dev_list.hidden = true;
+            dev_port.hidden = true;
+            dev_proto.hidden = true;
+            dev_service.hidden = true;
+            dev_gategory.hidden = true;
+
+            // получить json
+            let str = ar_id.value
+            str = str.replaceAll("'", "\"");
+            json = JSON.parse(str);
+            // получить тип файла
+            file_type = json['file_type'];
+            // получить тип аргумента
+            arg_type = json['arg_type'];
+
+            // настроить видимость
+            if(arg_type === 'IP')
+                dev_ip.hidden = false;
+            if(arg_type === 'MAC')
+                dev_mac.hidden = false;
+            if(arg_type === 'PORT')
+                dev_port.hidden = false;
+            if(arg_type === 'PROTNAME')
+                dev_proto.hidden = false;
+            if(arg_type === 'CATEGNAME')
+                dev_gategory.hidden = false;
+            if(arg_type === 'SERVICENAME')
+                dev_service.hidden = false;
+
+            // видимость списков
+            if(arg_type === 'file') {
+                dev_list.hidden = false
+            }
+        }
+    </script>
+
+{% endblock content %}
+
+
+
+
+
+
+
+

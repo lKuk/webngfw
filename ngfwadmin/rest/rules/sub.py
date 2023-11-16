@@ -1,5 +1,4 @@
-import json
-import requests
+from ngfwadmin.rest.rules.lists import *
 
 
 # Добавить подправило
