@@ -14,5 +14,5 @@ def is_active(request, urllist, text):
 @register.simple_tag()
 def count_sub(rule):
     l = len(rule['sub'])
-    value = str(l) + 'шт.'
+    value = 'Подправил: ' + str(l) + 'шт.'
     return value
