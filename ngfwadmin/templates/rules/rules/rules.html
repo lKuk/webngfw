@@ -163,16 +163,6 @@
 
         }
 
-        window.addEventListener('load', () => {
-            $('#col-reorder').dataTable({
-                aLengthMenu: [
-                    [1, 10, 25, 50, 100, 200, -1],
-                    [1, 10, 25, 50, 100, 200, "All"]
-                ],
-                iDisplayLength: 25,
-                "bDestroy": true
-            });
-        });
     </script>
 
 {% endblock content %}

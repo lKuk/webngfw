@@ -17,62 +17,80 @@
 {# Заголовок #}
 {% block header %}
     <li>
-        <div class="card-header">
-            <h5>Списки фильтрации сетевого трафика</h5>
-        </div>
+        <h4>Списки фильтрации сетевого трафика</h4>
     </li>
 {% endblock header %}
 
 {# Содержимое #}
 {% block content %}
-    <!-- Кнопка Добавить -->
-    <a href="{% url 'lists_add' %}" class="btn btn-primary shadow-2 mb-4" style="width: 120px;">Добавить</a>
-    <!-- Таблица списков -->
-    <table id="col-reorder"
-           class="display table nowrap table-striped table-hover footable">
-        <thead>
-        <tr>
-            <td></td>
-            <th>Тип</th>
-            <th>Описание</th>
-            <th>Дата</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for l in lists %}
-            <tr>
-                {# Удаление #}
-                <td style="display: table-cell; width: 30px;">
-                    <div>
-                        <a href="{% url 'lists' %}?delete={{ l.id }}" onclick="return confirm('{{ l.description|truncatechars:50 }}\nУдалить список?');">
-                            <i class="feather icon-trash"></i>
-                        </a>
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col">
+                                <!-- Кнопка Добавить -->
+                                <a href="{% url 'lists_add' %}" class="btn btn-primary shadow-2 m-t-5"
+                                   style="width: 120px;">Добавить</a>
+                            </div>
+                        </div>
                     </div>
-                </td>
-                {# Тип файла #}
-                <td style="display: table-cell;">
+                    <div class="card-body">
+                        <!-- Таблица списков -->
+                        <table id="col-reorder"
+                               class="display table nowrap table-striped table-hover footable">
+                            <thead>
+                            <tr>
+                                <td></td>
+                                <th>Тип</th>
+                                <th>Описание</th>
+                                <th>Дата</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for l in lists %}
+                                <tr>
+                                    {# Удаление #}
+                                    <td style="display: table-cell; width: 30px;">
+                                        <div>
+                                            <a href="{% url 'lists' %}?delete={{ l.id }}"
+                                               onclick="return confirm('{{ l.description|truncatechars:50 }}\nУдалить список?');">
+                                                <i class="feather icon-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    {# Тип файла #}
+                                    <td style="display: table-cell;">
                     <span
-                    {% if l.ftype.upper == 'NO' %}
-                        class="badge badge-light"
-                    {% elif l.ftype.upper == 'IP' or l.ftype.upper == 'PORT' or l.ftype.upper == 'MAC' %}
-                        class="badge badge-warning"
-                    {% elif l.ftype.upper == 'LIT' or l.ftype.upper == 'FILE' %}
-                        class="badge badge-info"
-                    {% elif l.ftype.upper == 'PROTNAME' or l.ftype.upper == 'CATEGNAME' or l.ftype.upper == 'SERVICENAME' %}
-                        class="badge badge-primary"
-                    {% else %}
-                        class="badge badge-secondary"
-                    {% endif %}
-                     style="width: 60px">
+                            {% if l.ftype.upper == 'NO' %}
+                                class="badge badge-light"
+                            {% elif l.ftype.upper == 'IP' or l.ftype.upper == 'PORT' or l.ftype.upper == 'MAC' %}
+                                class="badge badge-warning"
+                            {% elif l.ftype.upper == 'LIT' or l.ftype.upper == 'FILE' %}
+                                class="badge badge-info"
+                            {% elif l.ftype.upper == 'PROTNAME' or l.ftype.upper == 'CATEGNAME' or l.ftype.upper == 'SERVICENAME' %}
+                                class="badge badge-primary"
+                            {% else %}
+                                class="badge badge-secondary"
+                            {% endif %}
+                                style="width: 60px">
                         file {{ l.ftype.upper }}
                     </span>
-                </td>
-                <td style="display: table-cell;">
-                    <a href="{% url 'lists_edit' l.id %}">{{ l.description }}</a>
-                </td>
-                <td style="display: table-cell;">{{ l.date }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                                    </td>
+                                    <td style="display: table-cell;">
+                                        <a href="{% url 'lists_edit' l.id %}">{{ l.description }}</a>
+                                    </td>
+                                    <td style="display: table-cell;">{{ l.date }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock content %}
