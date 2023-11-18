@@ -29,7 +29,8 @@
 {% block content %}
     <!-- Кнопка Добавить -->
     <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2 mb-4" style="width: 120px;">Добавить</a>
-    <a class="btn btn-primary devHideSub" id="btnSub" style="width: 180px;" onclick="changeVisibleSubrules()">Раскрыть</a>
+    <a class="btn btn-primary devHideSub" id="btnSub" style="width: 180px;"
+       onclick="changeVisibleSubrules()">Раскрыть</a>
     <!-- Таблица правил -->
     <table id="col-reorder"
            class="display table nowrap table-striped table-hover footable"
@@ -145,7 +146,16 @@
 
         }
 
-
+        window.addEventListener('load', () => {
+            $('#col-reorder').dataTable({
+                aLengthMenu: [
+                    [1, 10, 25, 50, 100, 200, -1],
+                    [1, 10, 25, 50, 100, 200, "All"]
+                ],
+                iDisplayLength: -1,
+                "bDestroy": true
+            });
+        });
     </script>
 
 {% endblock content %}
