@@ -36,8 +36,12 @@
                                    style="width: 120px;">Добавить</a>
                             </div>
                             <div class="col text-right">
-                                <a class="btn btn-primary devHideSub shadow-2 m-t-5" id="btnSub" style="width: 120px;"
-                                   onclick="changeVisibleSubrules()">Раскрыть</a>
+                                <a class="btn btn-primary devHideSub shadow-2 m-t-5" id="btnSubShow"
+                                   style="width: 120px;"
+                                   onclick="ShowSubrules()">Раскрыть</a>
+                                <a class="btn btn-primary devHideSub shadow-2 m-t-5" id="btnSubHide"
+                                   style="width: 120px;"
+                                   onclick="HideSubrules()">Скрыть</a>
                             </div>
                         </div>
                     </div>
@@ -141,26 +145,24 @@
     </div>
     <script>
 
-        function changeVisibleSubrules() {
+        function ShowSubrules() {
+            let hideCollapse = document.getElementsByClassName('devHide');
+            var btnSub = document.getElementById('btnSubShow');
+
+            for (let i = 0; i < hideCollapse.length; i += 1) {
+                hideCollapse[i].classList.remove('hide');
+                hideCollapse[i].classList.add('show');
+            }
+        }
+
+        function HideSubrules() {
             let hideCollapse = document.getElementsByClassName('devHide');
             var btnSub = document.getElementById('btnSub');
 
-            if (btnSub.classList.contains('devHideSub') === true) {
-                for (let i = 0; i < hideCollapse.length; i += 1) {
-                    hideCollapse[i].classList.remove('hide');
-                    hideCollapse[i].classList.add('show');
-                }
-                btnSub.classList.remove('devHideSub');
-                btnSub.firstChild.data = "Скрыть";
-            } else {
-                for (let i = 0; i < hideCollapse.length; i += 1) {
-                    hideCollapse[i].classList.remove('show');
-                    hideCollapse[i].classList.add('hide');
-                }
-                btnSub.classList.add('devHideSub');
-                btnSub.firstChild.data = "Раскрыть";
+            for (let i = 0; i < hideCollapse.length; i += 1) {
+                hideCollapse[i].classList.remove('show');
+                hideCollapse[i].classList.add('hide');
             }
-
         }
 
     </script>
