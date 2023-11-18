@@ -261,17 +261,17 @@
 
     <script>
         function ar_id_onchange() {
-            let str = '';
             try {
+                let str = '';
                 // определить контролы
-                ar_id = document.getElementById("ar_id");
-                dev_ip = document.getElementById("dev_ip");
-                dev_mac = document.getElementById("dev_mac");
-                dev_list = document.getElementById("dev_list");
-                dev_port = document.getElementById("dev_port");
-                dev_proto = document.getElementById("dev_proto");
-                dev_service = document.getElementById("dev_service");
-                dev_gategory = document.getElementById("dev_category");
+                const ar_id = document.getElementById("ar_id");
+                const dev_ip = document.getElementById("dev_ip");
+                const dev_mac = document.getElementById("dev_mac");
+                const dev_list = document.getElementById("dev_list");
+                const dev_port = document.getElementById("dev_port");
+                const dev_proto = document.getElementById("dev_proto");
+                const dev_service = document.getElementById("dev_service");
+                const dev_gategory = document.getElementById("dev_category");
 
                 // скрыть все контролы
                 dev_ip.hidden = true;
@@ -286,11 +286,11 @@
                 str = ar_id.value
                 str = str.replaceAll("\"", "");
                 str = str.replaceAll("'", "\"");
-                json = JSON.parse(str);
+                let json = JSON.parse(str);
                 // получить тип файла
-                file_type = json['file_type'];
+                let file_type = json['file_type'];
                 // получить тип аргумента
-                arg_type = json['arg_type'];
+                let arg_type = json['arg_type'];
 
                 // настроить видимость
                 if (arg_type === 'IP')
