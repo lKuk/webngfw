@@ -60,7 +60,7 @@
                     </li>
 
                     {# Правила #}
-                    <li class="nav-item {% is_active request 'rules' 'active' %}">
+                    <li class="nav-item {% is_active request 'rules rules_add rules_edit' 'active' %}">
                         <a href="{% url 'rules' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-trending-up"></i>
@@ -70,7 +70,7 @@
                     {# Правила #}
 
                     {# Списки #}
-                    <li class="nav-item {% is_active request 'lists' 'active' %}">
+                    <li class="nav-item {% is_active request 'lists lists_add lists_edit' 'active' %}">
                         <a href="{% url 'lists' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-list"></i>
