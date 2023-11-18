@@ -20,11 +20,10 @@
     <div class="page-wrapper">
         <form action="" method="post">
             {% csrf_token %}
-            {# Элементы формы #}
-            <div class="row">
-                <div class="col-md-6 col-xl-4">
-                    <div class="card">
-                        <div class="card-body">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-xl-4">
                             <input name="id" value="{{ list.id }}" type="hidden">
                             <div class="form-group">
                                 <label>Описание:</label>
@@ -55,24 +54,18 @@
                                 {% endif %}
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-xl-8 col-md-6">
-                    <dev class="card">
-                        <dev class="card-header">
-                           Содержимое списка:
-                        </dev>
-                        <dev class="card-body">
+                        <div class="col-xl-8 col-md-6">
+                            <label>Содержимое списка</label>
                             <div class="form-control">
                                 <textarea id="demotext" name="content" rows="20">{{ content }}</textarea>
                             </div>
-                        </dev>
-                    </dev>
+                        </div>
 
-                    <br/>
+                    </div>
                 </div>
-
             </div>
+            {# Элементы формы #}
+
         </form>
     </div>
 
