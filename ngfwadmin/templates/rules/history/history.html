@@ -16,8 +16,10 @@
 
 {# Заголовок #}
 {% block header %}
-    <li>
-        <h4>История изменений правил</h4>
+     <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-clock"></i>История NGFW
+        </h4>
     </li>
 {% endblock header %}
 
@@ -28,6 +30,9 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
+                    <div class="card-header">
+                        <h5>История конфигурирования правил фильтрации сетевого трафика</h5>
+                    </div>
                     <div class="card-body">
                         <!-- [Таблица истории] start -->
                         <table id="col-reorder"

@@ -18,8 +18,10 @@
 
 {# Заголовок #}
 {% block header %}
-    <li>
-        <h4>Правила фильтрации сетевого трафика</h4>
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-trending-up"></i>Правила NGFW
+        </h4>
     </li>
 {% endblock header %}
 
@@ -30,22 +32,24 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
+                        <h5>Правила фильтрации сетевого трафика</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Кнопки добавить, свернуть, развернуть -->
                         <div class="row">
                             <div class="col">
                                 <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2 m-t-5"
                                    style="width: 120px;">Добавить</a>
                             </div>
                             <div class="col text-right">
-                                <button type="button" class="btn btn-icon btn-outline-primary" onclick="ShowSubrules()">
-                                    <i class="feather icon-chevrons-down"></i>
+                                <button type="button" class="btn btn-icon btn-outline-primary shadow-2 m-t-5" onclick="ShowSubrules()">
+                                    <i class="h5 feather icon-chevrons-down"></i>
                                 </button>
-                                <button type="button" class="btn btn-icon btn-outline-primary" onclick="HideSubrules()">
-                                    <i class="feather icon-chevrons-up"></i>
+                                <button type="button" class="btn btn-icon btn-outline-primary shadow-2 m-t-5" onclick="HideSubrules()">
+                                    <i class="h5 feather icon-chevrons-up"></i>
                                 </button>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
                         <!-- Таблица правил -->
                         <table id="col-reorder"
                                class="display table nowrap table-striped table-hover footable"
@@ -56,7 +60,7 @@
                                 <th>Вкл</th>
                                 <th>Тип</th>
                                 <th>Название</th>
-                                <th>Подправила</th>
+                                <th>Атомарные подправила</th>
                                 <th>Описание</th>
                             </tr>
                             </thead>
