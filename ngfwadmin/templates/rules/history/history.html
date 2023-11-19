@@ -16,38 +16,56 @@
 
 {# Заголовок #}
 {% block header %}
-    <li>
-        <div class="card-header">
-            <h5>История изменений правил</h5>
-        </div>
+     <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-clock"></i>История NGFW
+        </h4>
     </li>
 {% endblock header %}
 
 {# Содержимое #}
 {% block content %}
-    <!-- [Таблица истории] start -->
-    <table id="col-reorder"
-           class="display table nowrap table-striped table-hover footable"
-           style="width:100%">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Дата</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for h in history %}
-            <tr>
-                <td style="display: table-cell; width: 30px;">
-                    <div>
-                        <a href="{% url 'history' %}?date={{ h.date }}" onclick="return confirm('{{ h.date }}\nВыполнить восстановление правил?');">
-                            <i class="icon feather icon-corner-up-left"></i>
-                        </a>
+
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>История конфигурирования правил фильтрации сетевого трафика</h5>
                     </div>
-                </td>
-                <td style="display: table-cell;">{{ h.date }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                    <div class="card-body">
+                        <!-- [Таблица истории] start -->
+                        <table id="col-reorder"
+                               class="display table nowrap table-striped table-hover footable"
+                               style="width:100%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Дата</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for h in history %}
+                                <tr>
+                                    <td style="display: table-cell; width: 30px;">
+                                        <div>
+                                            <a href="{% url 'history' %}?date={{ h.date }}"
+                                               onclick="return confirm('{{ h.date }}\nВыполнить восстановление правил?');">
+                                                <i class="icon feather icon-corner-up-left"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td style="display: table-cell;">{{ h.date }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 {% endblock content %}

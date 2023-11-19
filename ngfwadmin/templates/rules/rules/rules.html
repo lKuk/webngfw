@@ -18,102 +18,157 @@
 
 {# Заголовок #}
 {% block header %}
-    <li>
-        <div class="card-header">
-            <h5>Правила фильтрации сетевого трафика</h5>
-        </div>
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-trending-up"></i>Правила NGFW
+        </h4>
     </li>
 {% endblock header %}
 
 {# Содержимое #}
 {% block content %}
-    <!-- Кнопка Добавить -->
-    <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2 mb-4" style="width: 120px;">Добавить</a>
-    <!-- Таблица правил -->
-    <table id="col-reorder"
-           class="display table nowrap table-striped table-hover footable"
-           style="width:100%">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Вкл</th>
-            <th>Тип</th>
-            <th>Название</th>
-            <th>Подправила</th>
-            <th>Описание</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for r in rules %}
-            <tr>
-                {# Удаление #}
-                <td style="display: table-cell; width: 30px;">
-                    <div>
-                        <a href="{% url 'rules' %}?delete={{ r.id }}" onclick="return confirm('{{ r.name }}\nУдалить правило?');">
-                            <i class="feather icon-trash"></i>
-                        </a>
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Правила фильтрации сетевого трафика</h5>
                     </div>
-                </td>
-                {# Включено #}
-                <td style="display: table-cell; width: 30px;">
-                    {% if r.is_enable.lower == 'true' %}
-                        <span class="badge badge-pill badge-success" style="width: 30px">ON</span>
-                    {% else %}
-                        <span class="badge badge-pill badge-secondary" style="width: 30px">OFF</span>
-                    {% endif %}
-                </td>
-                {# black/white #}
-                <td style="display: table-cell; width: 30px;">
-                    {% if r.rtype == 'black' %}
-                        <span class="badge badge-dark" style="width: 40px">{{ r.rtype }}</span>
-                    {% else %}
-                        <span class="badge badge-light" style="width: 40px">{{ r.rtype }}</span>
-                    {% endif %}
-                </td>
-                {# Название #}
-                <td style="display: table-cell; width: 20%;">
-                    <a href="{% url 'rules_edit' r.id %}">{{ r.name|truncatechars:50 }}</a>
-                </td>
-                {# Подправила #}
-                <td style="display: table-cell; width: 50%;">
-                    <a class="m-t-5" data-toggle="collapse" href="#collapse_{{ r.id }}" role="button" aria-expanded="true" >{% count_sub r %}</a>
-                    <div class="collapse show" id="collapse_{{ r.id }}">
-                        {% for s in r.sub2 %}
-                        {# Инвертированное #}
-                        {% if s.is_invert == '0' %}
-                            <i title="Прямое" class="feather icon-arrow-up-right"></i>
-                        {% else %}
-                            <i title="Инвертированное" class="feather icon-arrow-down-left"></i>
-                        {% endif %}
+                    <div class="card-body">
+                        <!-- Кнопки добавить, свернуть, развернуть -->
+                        <div class="row">
+                            <div class="col">
+                                <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2 m-t-5"
+                                   style="width: 120px;">Добавить</a>
+                            </div>
+                            <div class="col text-right">
+                                <button type="button" class="btn btn-icon btn-outline-primary shadow-2 m-t-5" onclick="ShowSubrules()">
+                                    <i class="h5 feather icon-chevrons-down"></i>
+                                </button>
+                                <button type="button" class="btn btn-icon btn-outline-primary shadow-2 m-t-5" onclick="HideSubrules()">
+                                    <i class="h5 feather icon-chevrons-up"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Таблица правил -->
+                        <table id="col-reorder"
+                               class="display table nowrap table-striped table-hover footable"
+                               style="width:100%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Вкл</th>
+                                <th>Тип</th>
+                                <th>Название</th>
+                                <th>Атомарные подправила</th>
+                                <th>Описание</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for r in rules %}
+                                <tr>
+                                    {# Удаление #}
+                                    <td style="display: table-cell; width: 30px;">
+                                        <div>
+                                            <a href="{% url 'rules' %}?delete={{ r.id }}"
+                                               onclick="return confirm('{{ r.name }}\nУдалить правило?');">
+                                                <i class="feather icon-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    {# Включено #}
+                                    <td style="display: table-cell; width: 30px;">
+                                        {% if r.is_enable.lower == 'true' %}
+                                            <span class="badge badge-pill badge-success" style="width: 30px">ON</span>
+                                        {% else %}
+                                            <span class="badge badge-pill badge-secondary"
+                                                  style="width: 30px">OFF</span>
+                                        {% endif %}
+                                    </td>
+                                    {# black/white #}
+                                    <td style="display: table-cell; width: 30px;">
+                                        {% if r.rtype == 'black' %}
+                                            <span class="badge badge-dark" style="width: 40px">{{ r.rtype }}</span>
+                                        {% else %}
+                                            <span class="badge badge-light" style="width: 40px">{{ r.rtype }}</span>
+                                        {% endif %}
+                                    </td>
+                                    {# Название #}
+                                    <td style="display: table-cell; width: 20%;">
+                                        <a href="{% url 'rules_edit' r.id %}">{{ r.name|truncatechars:50 }}</a>
+                                    </td>
+                                    {# Подправила #}
+                                    <td style="display: table-cell; width: 50%;">
+                                        <a class="m-t-5" data-toggle="collapse" href="#collapse_{{ r.id }}"
+                                           role="button"
+                                           aria-expanded="true">{% count_sub r %}</a>
+                                        <div class="collapse hide devHide" id="collapse_{{ r.id }}">
+                                            {% for s in r.sub2 %}
+                                                {# Инвертированное #}
+                                                {% if s.is_invert == '0' %}
+                                                    <i title="Прямое" class="feather icon-arrow-up-right"></i>
+                                                {% else %}
+                                                    <i title="Инвертированное" class="feather icon-arrow-down-left"></i>
+                                                {% endif %}
 
-                        {# Формат атомарного правила и тип файла #}
-                        <span
-                        {% if s.ar_format.upper == 'NO' and s.ar_type.upper == 'NO' %}
-                            class="badge badge-light"
-                        {% elif s.ar_format.upper == 'IP' or s.ar_type.upper == 'IP' or s.ar_format.upper == 'PORT' or s.ar_type.upper == 'PORT' or s.ar_format.upper == 'MAC' or s.ar_type.upper == 'MAC' %}
-                            class="badge badge-warning"
-                        {% elif s.ar_format.upper == 'FILE' or s.ar_type.upper == 'LIT' %}
-                            class="badge badge-info"
-                        {% elif s.ar_format.upper == 'PROTNAME' or s.ar_format.upper == 'CATEGNAME' or s.ar_format.upper == 'SERVICENAME' %}
-                            class="badge badge-primary"
-                        {% else %}
-                            class="badge badge-secondary"
-                        {% endif %}
-                         style="width: 60px">
+                                                {# Формат атомарного правила и тип файла #}
+                                                <span
+                                                        {% if s.ar_format.upper == 'NO' and s.ar_type.upper == 'NO' %}
+                                                            class="badge badge-light"
+                                                        {% elif s.ar_format.upper == 'IP' or s.ar_type.upper == 'IP' or s.ar_format.upper == 'PORT' or s.ar_type.upper == 'PORT' or s.ar_format.upper == 'MAC' or s.ar_type.upper == 'MAC' %}
+                                                            class="badge badge-warning"
+                                                        {% elif s.ar_format.upper == 'FILE' or s.ar_type.upper == 'LIT' %}
+                                                            class="badge badge-info"
+                                                        {% elif s.ar_format.upper == 'PROTNAME' or s.ar_format.upper == 'CATEGNAME' or s.ar_format.upper == 'SERVICENAME' %}
+                                                            class="badge badge-primary"
+                                                        {% else %}
+                                                            class="badge badge-secondary"
+                                                        {% endif %}
+                                                            style="width: 60px">
                             {% if s.ar_format.upper != 'NO' %}{{ s.ar_format }}{% endif %}
                             {% if s.ar_type.upper != 'NO' %}{{ s.ar_type }}{% endif %}
                         </span>
 
-                        {# Описание подправила #}
-                        {{ s.ar_description|truncatechars:50 }}
-                        <br/>
-                    {% endfor %}
+                                                {# Описание подправила #}
+                                                {{ s.ar_description|truncatechars:50 }}
+                                                <br/>
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                    {# Описание #}
+                                    <td style="display: table-cell; width: 40%;">{{ r.description|wordwrap:100|linebreaksbr }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                </td>
-                {# Описание #}
-                <td style="display: table-cell; width: 40%;">{{ r.description|wordwrap:100|linebreaksbr }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+
+        function ShowSubrules() {
+            let hideCollapse = document.getElementsByClassName('devHide');
+            var btnSub = document.getElementById('btnSubShow');
+
+            for (let i = 0; i < hideCollapse.length; i += 1) {
+                hideCollapse[i].classList.remove('hide');
+                hideCollapse[i].classList.add('show');
+            }
+        }
+
+        function HideSubrules() {
+            let hideCollapse = document.getElementsByClassName('devHide');
+            var btnSub = document.getElementById('btnSub');
+
+            for (let i = 0; i < hideCollapse.length; i += 1) {
+                hideCollapse[i].classList.remove('show');
+                hideCollapse[i].classList.add('hide');
+            }
+        }
+
+    </script>
+
 {% endblock content %}

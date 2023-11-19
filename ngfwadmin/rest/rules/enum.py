@@ -46,8 +46,11 @@ def enum_format_ftype_get(url):
     enum_format_ftype = []
     for f in dict['formats']:
         name = f['name']
-        if name not in enum_format_ftype:
-            enum_format_ftype.append(name)
+        param = f['param']
+        param = param.lower()
+        if param == 'file':
+            if name not in enum_format_ftype:
+                enum_format_ftype.append(name)
     return enum_format_ftype
 
 

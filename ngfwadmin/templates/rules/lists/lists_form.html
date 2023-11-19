@@ -9,56 +9,76 @@
 
 {# Заголовок #}
 {% block header %}
-    <li>
-        <div class="card-header">
-            <h5>{{ caption }}</h5>
-        </div>
+     <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-list"></i>{{ caption }}
+        </h4>
     </li>
 {% endblock header %}
 
 {# Содержимое #}
 {% block content %}
-    <form action="" method="post">
-    {% csrf_token %}
-        {# Элементы формы #}
-        <div class="row">
-            <div class="col-md-6 col-xl-4">
-                <input name="id" value="{{ list.id }}" type="hidden">
-                <div class="form-group">
-                    <label>Описание:</label>
-                    <input name="description" value="{{ list.description }}" type="text" class="form-control">
+
+    <div class="page-wrapper">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="card">
+                <div class="card-header">
+                    <h5>Параметры списка</h5>
                 </div>
-                <div class="form-group">
-                    <label>Тип списка:</label>
-                    <select name="ftype" class="form-control" value="{{ list.ftype }}">
-                        {% for f in format %}
-                            <option value="{{ f }}" {% if f == list.ftype %} selected="selected" {% endif %}>{{ f }}</option>
-                        {% endfor %}
-                    </select>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-xl-4">
+                            <input name="id" value="{{ list.id }}" type="hidden">
+                            <div class="form-group">
+                                <label>Описание:</label>
+                                <input name="description" value="{{ list.description }}" type="text"
+                                       class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Тип списка:</label>
+                                <select name="ftype" class="form-control" value="{{ list.ftype }}">
+                                    {% for f in format %}
+                                        <option value="{{ f }}" {% if f == list.ftype %}
+                                                selected="selected" {% endif %}>{{ f }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-md-6">
+                            <label>Содержимое списка</label>
+                            <div class="form-control">
+                                <textarea id="demotext" name="content" rows="20">{{ content }}</textarea>
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="col-md-12">
+                            {# Кнопки #}
+                            {% if action == 'add' %}
+                                <button type="submit" name="btnInsert" class="btn btn-primary shadow-2 m-t-5"
+                                        style="width: 120px;">
+                                    Создать
+                                </button>
+                            {% else %}
+                                <button type="submit" name="btnUpdate" class="btn btn-primary shadow-2 m-t-5"
+                                        style="width: 120px;">
+                                    Сохранить
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-xl-8 col-md-6">
-                <label>Содержимое списка:</label>
-                <div class="form-control">
-                    <textarea id="demotext" name="content" rows="20">{{ content }}</textarea>
-                </div>
-                <br/>
-            </div>
-            <div class="col-md-12">
-                {# Кнопки #}
-                {% if action == 'add' %}
-                    <button type="submit" name="btnInsert" class="btn btn-primary shadow-2 mb-4" style="width: 120px;">Создать</button>
-                {% else %}
-                    <button type="submit" name="btnUpdate" class="btn btn-primary shadow-2 mb-4" style="width: 120px;">Сохранить</button>
-                {% endif %}
-            </div>
-        </div>
-    </form>
+            {# Элементы формы #}
+
+        </form>
+    </div>
+
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("demotext"), {
-          lineNumbers: true,
-          mode: "text/html",
-          matchBrackets: true
+            lineNumbers: true,
+            mode: "text/html",
+            matchBrackets: true
         });
     </script>
 

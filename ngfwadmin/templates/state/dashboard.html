@@ -11,17 +11,30 @@
 
 {# Заголовок #}
 {% block header %}
-    <li>
-        <div class="card-header">
-            <h5>Состояние системы</h5>
-        </div>
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-home"></i> Состояние системы
+        </h4>
     </li>
 {% endblock header %}
 
 {# Содержимое #}
 {% block content %}
-    <!-- [Описание] -->
-    <p>Тут будет отображаться состояние системы и статистика.</p>
 
+     <div class="page-wrapper">
+         <div class="row">
+             <div class="col-md-12">
+                 <div class="card">
+                     <div class="card-header">
+                         <h5>Cостояние системы и статистика</h5>
+                     </div>
+                     <div class="card-body">
+                         <!-- [Описание] -->
+                         <p>Тут будет отображаться состояние системы и статистика.</p>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
 
 {% endblock content %}

@@ -16,33 +16,46 @@
 
 {# Заголовок #}
 {% block header %}
-        <li>
-        <div class="card-header">
-            <h5>{{ caption }}</h5>
-        </div>
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-tablet"></i>{{ caption }}
+        </h4>
     </li>
 {% endblock header %}
 
 {# Содержимое #}
 {% block content %}
-    <table id="col-reorder"
-           class="display table nowrap table-striped table-hover footable footable-1 footable-paging footable-paging-center"
-           style="width:100%">
-        <thead>
-            <tr>
-            {% for col in columns %}
-                <th>{{ col }}</th>
-            {% endfor %}
-           </tr>
-        </thead>
-        <tbody>
-            {% for row in rows %}
-                <tr>
-                    {% for val in row %}
-                        <td style="display: table-cell;">{{ val }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>{{ caption }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <table id="col-reorder"
+                               class="display table nowrap table-striped table-hover footable"
+                               style="width:100%">
+                            <thead>
+                            <tr>
+                                {% for col in columns %}
+                                    <th>{{ col }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in rows %}
+                                <tr>
+                                    {% for val in row %}
+                                        <td style="display: table-cell;">{{ val }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

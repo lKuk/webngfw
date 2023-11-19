@@ -16,194 +16,176 @@
 
 </head>
 
-<body>
+<body style="background: #C5D8FF">
 
-    <!-- [ Pre-loader ] start -->
-    <div class="loader-bg">
-        <div class="loader-track">
-            <div class="loader-fill"></div>
-        </div>
+<!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+    <div class="loader-track">
+        <div class="loader-fill"></div>
     </div>
-    <!-- [ Pre-loader ] End -->
+</div>
+<!-- [ Pre-loader ] End -->
 
-    <!-- [ navigation menu ] start -->
-    <nav class="pcoded-navbar">
-        <div class="navbar-wrapper">
-            <div class="navbar-brand header-logo">
-                <a href="#!" class="b-brand">
-                    <div class="b-bg">
-                        <i class="feather icon-trending-up"></i>
-                    </div>
-                    <span class="b-title">NGFW Admin</span>
-                </a>
-                <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
-            </div>
-            <div class="navbar-content scroll-div">
-                <ul class="nav pcoded-inner-navbar">
+<!-- [ navigation menu ] start -->
+<nav class="pcoded-navbar">
+    <div class="navbar-wrapper">
+        <div class="navbar-brand header-logo">
+            <a href="#!" class="b-brand">
+                <div class="b-bg">
+                    <i class="feather icon-trending-up"></i>
+                </div>
+                <span class="b-title">NGFW Admin</span>
+            </a>
+            <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
+        </div>
+        <div class="navbar-content scroll-div">
+            <ul class="nav pcoded-inner-navbar">
 
-                    <li class="nav-item pcoded-menu-caption">
-                        <label>dashboard</label>
-                    </li>
+                <li class="nav-item pcoded-menu-caption">
+                    <label>dashboard</label>
+                </li>
 
-                    {# Состояние #}
-                    <li class="nav-item {% is_active request 'dashboard' 'active' %}">
-                        <a href="{% url 'dashboard' %}" class="nav-link">
+                {# Состояние #}
+                <li class="nav-item {% is_active request 'dashboard' 'active' %}">
+                    <a href="{% url 'dashboard' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-home"></i>
                             </span><span class="pcoded-mtext">Состояние</span>
-                        </a>
-                    </li>
-                    {# Состояние #}
+                    </a>
+                </li>
+                {# Состояние #}
 
-                    <li class="nav-item pcoded-menu-caption">
-                        <label>Navigation</label>
-                    </li>
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Navigation</label>
+                </li>
 
-                    {# Правила #}
-                    <li class="nav-item {% is_active request 'rules rules_add rules_edit' 'active' %}">
-                        <a href="{% url 'rules' %}" class="nav-link">
+                {# Правила #}
+                <li class="nav-item {% is_active request 'rules rules_add rules_edit' 'active' %}">
+                    <a href="{% url 'rules' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-trending-up"></i>
                             </span><span class="pcoded-mtext">Правила</span>
-                        </a>
-                    </li>
-                    {# Правила #}
+                    </a>
+                </li>
+                {# Правила #}
 
-                    {# Списки #}
-                    <li class="nav-item {% is_active request 'lists lists_add lists_edit' 'active' %}">
-                        <a href="{% url 'lists' %}" class="nav-link">
+                {# Списки #}
+                <li class="nav-item {% is_active request 'lists lists_add lists_edit' 'active' %}">
+                    <a href="{% url 'lists' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-list"></i>
                             </span><span class="pcoded-mtext">Списки</span>
-                        </a>
-                    </li>
-                    {# Списки #}
+                    </a>
+                </li>
+                {# Списки #}
 
-                    {# История изменений #}
-                    <li class="nav-item {% is_active request 'history' 'active' %}">
-                        <a href="{% url 'history' %}" class="nav-link">
+                {# История изменений #}
+                <li class="nav-item {% is_active request 'history' 'active' %}">
+                    <a href="{% url 'history' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-clock"></i>
                             </span><span class="pcoded-mtext">История</span>
-                        </a>
-                    </li>
-                    {# История изменений #}
-
-                    <li class="nav-item pcoded-menu-caption">
-                        <label>service</label>
-                    </li>
-
-                    {# Debug #}
-                    <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}">
-                        <a href="#!" class="nav-link">
-                            <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>
-                        </a>
-                        <ul class="pcoded-submenu">
-                            <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>
-                            <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>
-                            <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>
-                            <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>
-                        </ul>
-                    </li>
-                    {# Debug #}
-
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- [ navigation menu ] end -->
-
-    <!-- [ Header ] start -->
-    <header class="navbar pcoded-header navbar-expand-lg navbar-light">
-        <div class="m-header">
-            <a class="mobile-menu" id="mobile-collapse1" href="#!"><span></span></a>
-            <a href="{% url 'dashboard' %}" class="b-brand">
-               <div class="b-bg">
-                   <i class="feather icon-trending-up"></i>
-               </div>
-               <span class="b-title">NGFW Admin</span>
-           </a>
-        </div>
-        <a class="mobile-menu" id="mobile-header" href="#!">
-            <i class="feather icon-more-horizontal"></i>
-        </a>
-        <div class="collapse navbar-collapse">
-            <!-- Слева -->
-            <ul class="navbar-nav mr-auto">
-                <!--блок заголовка--->
-                {% block header %}
-                {% endblock header %}
-            </ul>
-            <!-- Справа -->
-            <ul class="navbar-nav ml-auto">
-                <!-- переподключение -->
-                <li>
-                    <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.ip }}</a>
-                </li>
-                <!-- поиск на странице -->
-                <li class="nav-item">
-                    <div class="main-search">
-                        <div class="input-group">
-                            <input type="text" id="m-search" class="form-control" placeholder="Search . . .">
-                            <a href="#!" class="input-group-append search-close">
-                                <i class="feather icon-x input-group-text"></i>
-                            </a>
-                            <span class="input-group-append search-btn btn btn-primary">
-                                <i class="feather icon-search input-group-text"></i>
-                            </span>
-                        </div>
-                    </div>
-                </li>
-                 <!-- Полноэкранный режим -->
-                <li>
-                    <a href="#!" class="full-screen" onclick="javascript:toggleFullScreen()">
-                        <i class="feather icon-maximize"></i>
                     </a>
                 </li>
+                {# История изменений #}
+
             </ul>
         </div>
-    </header>
-    <!-- [ Header ] end -->
+    </div>
+</nav>
+<!-- [ navigation menu ] end -->
 
-    <!-- [ chat user list ] start -->
-    <section class="header-user-list">
-        <div class="h-list-body">
-            <div class="main-friend-cont scroll-div"></div>
-        </div>
-    </section>
-    <!-- [ chat user list ] end -->
-
-    <!-- [ chat message ] start -->
-    <section class="header-chat">
-        <div class="h-list-body">
-            <div class="main-chat-cont scroll-div"></div>
-        </div>
-    </section>
-    <!-- [ chat message ] end -->
-
-    <!-- [ Main Content ] start -->
-    <div class="pcoded-main-container">
-        <div class="pcoded-wrapper">
-            <div class="pcoded-content">
-                <div class="pcoded-inner-content">
-                    <div class="main-body">
-                        <!--блок содержимого--->
-                        {% block content %}
-                        {% endblock content %}
+<!-- [ Header ] start -->
+<header class="navbar pcoded-header navbar-expand-lg navbar-light">
+    <div class="m-header">
+        <a class="mobile-menu" id="mobile-collapse1" href="#!"><span></span></a>
+        <a href="{% url 'dashboard' %}" class="b-brand">
+            <div class="b-bg">
+                <i class="feather icon-trending-up"></i>
+            </div>
+            <span class="b-title">NGFW Admin</span>
+        </a>
+    </div>
+    <a class="mobile-menu" id="mobile-header" href="#!">
+        <i class="feather icon-more-horizontal"></i>
+    </a>
+    <div class="collapse navbar-collapse">
+        <!-- Слева -->
+        <ul class="navbar-nav mr-auto">
+            <!--блок заголовка--->
+            {% block header %}
+            {% endblock header %}
+        </ul>
+        <!-- Справа -->
+        <ul class="navbar-nav ml-auto">
+            <!-- переподключение -->
+            <li>
+                <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.ip }}</a>
+            </li>
+            <!-- поиск на странице -->
+            <li class="nav-item">
+                <div class="main-search">
+                    <div class="input-group">
+                        <input type="text" id="m-search" class="form-control" placeholder="Search . . .">
+                        <a href="#!" class="input-group-append search-close">
+                            <i class="feather icon-x input-group-text"></i>
+                        </a>
+                        <span class="input-group-append search-btn btn btn-primary">
+                                <i class="feather icon-search input-group-text"></i>
+                            </span>
                     </div>
+                </div>
+            </li>
+            <!-- Полноэкранный режим -->
+            <li>
+                <a href="#!" class="full-screen" onclick="javascript:toggleFullScreen()">
+                    <i class="feather icon-maximize"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</header>
+<!-- [ Header ] end -->
+
+<!-- [ chat user list ] start -->
+<section class="header-user-list">
+    <div class="h-list-body">
+        <div class="main-friend-cont scroll-div"></div>
+    </div>
+</section>
+<!-- [ chat user list ] end -->
+
+<!-- [ chat message ] start -->
+<section class="header-chat">
+    <div class="h-list-body">
+        <div class="main-chat-cont scroll-div"></div>
+    </div>
+</section>
+<!-- [ chat message ] end -->
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <!--блок содержимого--->
+                    {% block content %}
+                    {% endblock content %}
                 </div>
             </div>
         </div>
     </div>
-    <!-- [ Main Content ] end -->
+</div>
+<!-- [ Main Content ] end -->
 
-    <!-- [ блок скриптов ] start --->
-    <script src="{% static 'main/js/vendor-all.min.js' %}"></script>
-	<script src="{% static 'main/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'main/js/pcoded.min.js' %}"></script>
-    {% block script %}
-    {% endblock script %}
-    <!-- [ блок скриптов ] end --->
+<!-- [ блок скриптов ] start --->
+<script src="{% static 'main/js/vendor-all.min.js' %}"></script>
+<script src="{% static 'main/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'main/js/pcoded.min.js' %}"></script>
+{% block script %}
+{% endblock script %}
+<!-- [ блок скриптов ] end --->
 
 </body>
 </html>
