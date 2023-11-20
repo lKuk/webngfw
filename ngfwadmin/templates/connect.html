@@ -23,17 +23,16 @@
             <div class="card">
                 <div class="card-body text-center form-control">
                     <h3 class="mb-4">Подключение</h3>
-                    <form action="{% url 'connect' %}" method="post">
+                    <form action="{% url 'connect' %}" method="post" id="connectForm">
                         {% csrf_token %}
                             <p>{{ form.non_field_errors }}</p>
                             {% for f in form %}
                                 <div class="form-group text-left">
-                                    <label for="{{ f.id_for_label }}">{{ f.label }}: </label>
+                                    <label for="{{ f.id_for_label }}" id="">{{ f.label }}: </label>
                                     {{ f }}
                                     <p>{{ f.errors }}</p>
-                                </div>
                             {% endfor %}
-                        <button type="submit" class="btn btn-primary shadow-2 mb-4">Подключиться</button>
+                        <button type="submit" class="btn btn-primary shadow-2 m-t-4">Подключиться</button>
                     </form>
                 </div>
             </div>

@@ -33,7 +33,7 @@
                         <h5>Параметры правила</h5>
                     </div>
                     <div class="card-body">
-                        <form name="rule_edit" method="post">
+                        <form action="" method="post" id="ruleEditForm">
                             {% csrf_token %}
                             <input name="id" value="{{ rule.id }}" type="hidden">
                             <input name="sub" value="{{ rule.sub }}" type="hidden">
@@ -159,7 +159,7 @@
                                 </tbody>
                             </table>
 
-                            <form name="sub_add" method="post" id="addForm">
+                            <form action="" method="post" id="subEditForm">
                                 {% csrf_token %}
                                 <!-- Atomic -->
                                 <div class="form-group">
@@ -189,26 +189,20 @@
                                 <!-- IP -->
                                 <div class="form-group" id="dev_ip" hidden="hidden">
                                     <label>IP адрес:</label>
-                                    <input name="ip_address" type="text" class="form-control" id="ip_valid"
-                                           onkeyup="ValidateIPaddress()">
-                                    <div class="valid-feedback" id="validIpId">Ip адрес указан корректно</div>
-                                    <div class="invalid-feedback" id="invalidIpId">Ip адрес указан некорректно</div>
+                                    <input name="ip_address" type="text" class="form-control" id="ip_input">
+                                    <div class="invalid-feedback" id="ip_valid"></div>
                                 </div>
                                 <!-- MAC -->
                                 <div class="form-group" id="dev_mac" hidden="hidden">
                                     <label>MAC адрес:</label>
-                                    <input name="mac_address" type="text" class="form-control" id="mac_valid"
-                                           onkeyup="ValidateMac()">
-                                    <div class="valid-feedback" id="validMacId">MAC адрес указан корректно</div>
-                                    <div class="invalid-feedback" id="invalidMacId">MAC адрес указан некорректно</div>
+                                    <input name="mac_address" type="text" class="form-control" id="mac_input">
+                                    <div class="invalid-feedback" id="mac_valid"></div>
                                 </div>
                                 <!-- PORT -->
                                 <div class="form-group" id="dev_port" hidden="hidden">
                                     <label>Порт:</label>
-                                    <input name="port" type="text" value="80" class="form-control" id="port_valid"
-                                           onkeyup="ValidatePort()">
-                                    <div class="valid-feedback" id="validPortId">Порт указан корректно</div>
-                                    <div class="invalid-feedback" id="invalidPortId">Порт указан некорректно</div>
+                                    <input name="port" type="text" value="80" class="form-control" id="port_input">
+                                    <div class="invalid-feedback" id="port_valid"></div>
                                 </div>
                                 <!-- PROPONAME -->
                                 <div class="form-group" id="dev_proto" hidden="hidden">
@@ -260,209 +254,145 @@
         </div>
     </div>
 
+    {# Скрипт скрытия и раскрытия полей заполнения #}
     <script>
+        // функция изменения полей ввода значения
         function ar_id_onchange() {
-            try {
-                let str = '';
-                // определить контролы
-                const ar_id = document.getElementById("ar_id");
-                const dev_ip = document.getElementById("dev_ip");
-                const dev_mac = document.getElementById("dev_mac");
-                const dev_list = document.getElementById("dev_list");
-                const dev_port = document.getElementById("dev_port");
-                const dev_proto = document.getElementById("dev_proto");
-                const dev_service = document.getElementById("dev_service");
-                const dev_gategory = document.getElementById("dev_category");
+            // определить поля ввода значений
+            const ar_id = document.getElementById("ar_id");
+            const dev_ip = document.getElementById("dev_ip");
+            const dev_mac = document.getElementById("dev_mac");
+            const dev_list = document.getElementById("dev_list");
+            const dev_port = document.getElementById("dev_port");
+            const dev_proto = document.getElementById("dev_proto");
+            const dev_service = document.getElementById("dev_service");
+            const dev_category = document.getElementById("dev_category");
 
-                // скрыть все контролы
-                dev_ip.hidden = true;
-                dev_mac.hidden = true;
-                dev_list.hidden = true;
-                dev_port.hidden = true;
-                dev_proto.hidden = true;
-                dev_service.hidden = true;
-                dev_gategory.hidden = true;
-
-                // получить json
-                str = ar_id.value
-                str = str.replaceAll("\"", "");
-                str = str.replaceAll("'", "\"");
-                let json = JSON.parse(str);
-                // получить тип файла
-                let file_type = json['file_type'];
-                // получить тип аргумента
-                let arg_type = json['arg_type'];
-
-                // настроить видимость
-                if (arg_type === 'IP')
-                    dev_ip.hidden = false;
-                if (arg_type === 'MAC')
-                    dev_mac.hidden = false;
-                if (arg_type === 'PORT')
-                    dev_port.hidden = false;
-                if (arg_type === 'PROTNAME')
-                    dev_proto.hidden = false;
-                if (arg_type === 'CATEGNAME')
-                    dev_gategory.hidden = false;
-                if (arg_type === 'SERVICENAME')
-                    dev_service.hidden = false;
-
-                // видимость списков
-                if (arg_type === 'file') {
-                    dev_list.hidden = false
-                }
-
-                hideOptions()
-            } catch (error) {
-                alert(error + '\n\n' + str);
-            }
-        }
-
-        {# Валидация ip адрес #}
-        function ValidateIPaddress() {
-            var ipformat = /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/;
-            var ip = document.getElementById('ip_valid');
-            var invalidIp = document.getElementById('invalidIpId');
-            var validIp = document.getElementById('validIpId')
-
-            if (ip.value.match(ipformat)) {
-                ip.classList.remove('border');
-                ip.classList.remove('border-danger');
-                invalidIp.classList.remove('d-block');
-                ip.classList.add('border');
-                ip.classList.add('border-success');
-                validIp.classList.add('d-block');
-                return true;
-            } else {
-                ip.classList.remove('border');
-                ip.classList.remove('border-success');
-                validIp.classList.remove('d-block');
-                ip.classList.add('border');
-                ip.classList.add('border-danger');
-                invalidIp.classList.add('d-block');
-                {#$(this).get(0).setCustomValidity('Неверный IP')#}
-                return false;
-            }
-        }
-
-        {# Валидация порт #}
-
-        function ValidatePort() {
-            var portFormat = /^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$/;
-            var port = document.getElementById('port_valid');
-            var invalidPort = document.getElementById('invalidPortId');
-            var validPort = document.getElementById('validPortId');
-
-            if (port.value.match(portFormat)) {
-                port.classList.remove('border');
-                port.classList.remove('border-danger');
-                invalidPort.classList.remove('d-block');
-                port.classList.add('border');
-                port.classList.add('border-success');
-                validPort.classList.add('d-block');
-                return true;
-            } else {
-                port.classList.remove('border');
-                port.classList.remove('border-success');
-                validPort.classList.remove('d-block');
-                port.classList.add('border');
-                port.classList.add('border-danger');
-                invalidPort.classList.add('d-block');
-                return false;
-            }
-        }
-
-        {# Валидация МАС адрес #}
-
-        function ValidateMac() {
-            var macFormat = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
-            var mac = document.getElementById('mac_valid');
-            var invalidMac = document.getElementById('invalidMacId');
-            var validMac = document.getElementById('validMacId');
-
-            if (mac.value.match(macFormat)) {
-                mac.classList.remove('border');
-                mac.classList.remove('border-danger');
-                invalidMac.classList.remove('d-block');
-                mac.classList.add('border');
-                mac.classList.add('border-success');
-                validMac.classList.add('d-block');
-                return true;
-            } else {
-                mac.classList.remove('border');
-                mac.classList.remove('border-success');
-                validMac.classList.remove('d-block');
-                mac.classList.add('border');
-                mac.classList.add('border-danger');
-                invalidMac.classList.add('d-block');
-                return false;
-            }
-
-        }
-
-        const addForm = document.getElementById("addForm");
-
-        function addFormFunc(event) {
-            var ip = document.getElementById("dev_ip");
-            var port = document.getElementById("dev_port")
-            var mac = document.getElementById("dev_mac")
-            if (ip.hidden === false) {
-                if (ValidateIPaddress() === false) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-            }
-            if (port.hidden === false) {
-                if (ValidatePort() === false) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-            }
-            if (mac.hidden === false) {
-                if (ValidateMac() === false) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-            }
-        }
-
-        {# Перехват запроса для валидации #}
-        addForm.addEventListener("submit", addFormFunc);
-
-        function hideOptions() {
-            var atomic = document.getElementById("ar_id");
+            // скрыть все поля ввода
+            dev_ip.hidden = true;
+            dev_mac.hidden = true;
+            dev_list.hidden = true;
+            dev_port.hidden = true;
+            dev_proto.hidden = true;
+            dev_service.hidden = true;
+            dev_category.hidden = true;
 
             // получить json
-            let strAtomic = atomic.value
-            strAtomic = strAtomic.replaceAll("'", "\"");
-            json = JSON.parse(strAtomic);
+            let str = ar_id.value
+            str = str.replaceAll("\"", "");
+            str = str.replaceAll("'", "\"");
+            let json = JSON.parse(str);
             // получить тип файла
-            file_type_atomic = json['file_type'];
+            let file_type = json['file_type'];
+            // получить тип аргумента
+            let arg_type = json['arg_type'];
 
-            var listHidden = document.getElementsByClassName('listHidden')
+            // настроить видимость
+            if (arg_type === 'IP')
+                dev_ip.hidden = false;
+            if (arg_type === 'MAC')
+                dev_mac.hidden = false;
+            if (arg_type === 'PORT')
+                dev_port.hidden = false;
+            if (arg_type === 'PROTNAME')
+                dev_proto.hidden = false;
+            if (arg_type === 'CATEGNAME')
+                dev_category.hidden = false;
+            if (arg_type === 'SERVICENAME')
+                dev_service.hidden = false;
+            if (arg_type === 'file')
+                dev_list.hidden = false;
 
-            Array.prototype.forEach.call(listHidden, function (el) {
-                // получить json
-                let strList = el.value
-                strList = strList.replaceAll("'", "\"");
-                json = JSON.parse(strList);
-                // получить тип файла
-                file_type_list = json['ftype'];
-                if (file_type_atomic === file_type_list) {
-                    el.hidden = false;
-                } else {
-                    el.hidden = true;
-                }
-            });
-
-            Array.prototype.forEach.call(listHidden, function (el) {
-                if (el.hidden === false) {
-                    el.selected = true;
-                    throw BreakException;
-                }
-            });
+            // настройка списка
+            HideOptions();
         }
 
+        // функция ограничения выпадающего списка
+        function HideOptions() {
+            try {
+                // атомарное правило
+                var atomic = document.getElementById("ar_id");
+                // список, который нужно фильтровать
+                var listHidden = document.getElementsByClassName('listHidden')
+                // получить json
+                let strAtomic = atomic.value
+                strAtomic = strAtomic.replaceAll("'", "\"");
+                json = JSON.parse(strAtomic);
+                // получить тип файла
+                file_type_atomic = json['file_type'];
+
+                // пройти по всему списку сокрытия
+                var message = "";
+                Array.prototype.forEach.call(listHidden, function (el) {
+                    try {
+                        // получить json
+                        let strList = el.value
+                        strList = strList.replaceAll("'", "\"");
+                        json = JSON.parse(strList);
+                        // получить тип файла
+                        file_type_list = json['ftype'];
+                        // скрыть ненужные элементы
+                        el.hidden = file_type_atomic !== file_type_list;
+                        el.selected = !el.hidden;
+                    } catch (error) {
+                        message += el.value + '\n' + error + '\n';
+                    }
+                    if(message !== "")
+                        alert(message);
+                });
+            }
+            catch (error) {
+                alert(error);
+            }
+        }
+    </script>
+
+    {# Скрипт валидации полей ввода #}
+    <script>
+        // Валидация
+        function Validate(dev, input, valid, format, text) {
+            // определить контролы валидации
+            var elDev = document.getElementById(dev.toString());
+            var elInput = document.getElementById(input.toString());
+            var elValid = document.getElementById(valid.toString());
+            // валидация пройдена
+            if(elDev.hidden === true || elInput.value.match(format)) {
+                elInput.classList.remove('border');
+                elInput.classList.remove('border-danger');
+                elValid.classList.remove('d-block');
+                elInput.classList.add('border');
+                elInput.classList.add('border-success');
+                elValid.textContent = "";
+                return true;
+            }
+            // валидация не пройдена
+            elInput.classList.remove('border');
+            elInput.classList.remove('border-success');
+            elInput.classList.add('border');
+            elInput.classList.add('border-danger');
+            elValid.classList.add('d-block');
+            elValid.textContent = text;
+            return false;
+        }
+        // Валидация всех полей ввода
+        function ValidateAll(event) {
+            // используемые регулярные выражения
+            var macFormat = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+            var portFormat = /^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$/;
+            var ipFormat = /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/;
+            // выполнить валидацию
+            var resultIp = Validate("dev_ip", "ip_input", "ip_valid", ipFormat, "Некорректно указан IP-адрес")
+            var resultMac = Validate("dev_mac", "mac_input", "mac_valid", macFormat, "Некорректно указан MAC-адрес")
+            var resultPort = Validate("dev_port", "port_input", "port_valid", portFormat, "Некорректно указан порт")
+            // проверка валидации
+            if (resultIp === false || resultMac === false || resultPort === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        }
+        // Перехват запроса для валидации
+        const subEditForm = document.getElementById("subEditForm");
+        subEditForm.addEventListener("submit", ValidateAll);
     </script>
 
 {% endblock content %}
