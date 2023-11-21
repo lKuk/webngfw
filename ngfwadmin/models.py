@@ -16,3 +16,5 @@ class Device(models.Model):
         verbose_name = 'Устройство NGFW'
         verbose_name_plural = 'Устройства NGFW'
         ordering = ['name']
+
+    # id_tags{...}

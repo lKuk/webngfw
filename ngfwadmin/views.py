@@ -14,7 +14,7 @@ dev = {}
 def connect(request):
     try:
         if request.method == 'POST':
-            form = ConnectForm(request.POST)
+            form = ConnectForm(request.POST, error_class=DivErrorList)
             if form.is_valid():
                 obj = form.cleaned_data
                 global dev
