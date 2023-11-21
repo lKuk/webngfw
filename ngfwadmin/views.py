@@ -22,7 +22,7 @@ def connect(request):
                 port = obj['port']
                 login = obj['login']
                 password = obj['password']
-                url = 'http://' + ip + ':' + port
+                url = 'http://' + ip + ':' + str(port)
                 dev = {'ip': ip,
                        'port': port,
                        'login': login,
