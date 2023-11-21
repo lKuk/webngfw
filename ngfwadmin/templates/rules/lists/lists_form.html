@@ -50,8 +50,9 @@
                             <div class="form-control">
                                 <textarea id="demotext" name="content" rows="20">{{ content }}</textarea>
                             </div>
-                            <div class="valid-feedback" id="validId">Верное значение</div>
-                            <div class="invalid-feedback" id="invalidId">Неверное значение</div>
+                            <p></p>
+                            <div class="invalid-feedback" id="validId"></div>
+                            <p></p>
                         </div>
                         <div class="col-md-12">
                             {# Кнопки #}
@@ -89,16 +90,14 @@
         // Валидация
         function Validate(type, format) {
             var demotext = document.getElementById("demotext");
-            var invalidId = document.getElementById("invalidId");
             var validId = document.getElementById("validId");
             var list = demotext.value.split('\n');
 
             for (var i = 0; i < list.length; i++) {
                 if (list[i].match(format))
                     continue;
-                validId.classList.remove('d-block');
-                invalidId.textContent = 'Неверное значение ' + type + ' в строке: ' + (i + 1).toString();
-                invalidId.classList.add('d-block');
+                validId.textContent = 'Неверное значение ' + type + ' в строке: ' + (i + 1).toString();
+                validId.classList.add('d-block');
                 return false;
             }
             return true;
