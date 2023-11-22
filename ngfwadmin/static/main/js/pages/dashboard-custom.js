@@ -23,7 +23,7 @@ $(document).ready(function() {
             }
         });
     };
-    notify('Вас приветствует NGFW Admin', 'inverse');
+    notify('Вас приветствует NGFW Барбакан', 'inverse');
 
     // [ world-low chart ] start
     var latlong = {};
