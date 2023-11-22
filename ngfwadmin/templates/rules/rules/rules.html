@@ -41,13 +41,13 @@
                             <div class="row">
                                 <div class="col text-left">
                                     <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2 m-t-5" style="width: 120px;">Добавить</a>
-                                    <button type="submit" name="btnApply" class="btn btn-success shadow-2 m-t-5" style="width: 220px;">Применить изменения</button>
+                                    <button type="submit" name="btnApply" class="btn btn-secondary shadow-2 m-t-5" style="width: 220px;">Применить изменения</button>
                                 </div>
                                 <div class="col text-right">
-                                    <button type="button" class="btn btn-icon btn-outline-primary shadow-1 m-t-5" onclick="ShowSubrules()">
+                                    <button type="button" class="btn btn-icon btn-outline-primary shadow-2 m-t-5" onclick="ShowSubrules()">
                                         <i class="h5 feather icon-chevrons-down"></i>
                                     </button>
-                                    <button type="button" class="btn btn-icon btn-outline-primary shadow-1 m-t-5" onclick="HideSubrules()">
+                                    <button type="button" class="btn btn-icon btn-outline-primary shadow-2 m-t-5" onclick="HideSubrules()">
                                         <i class="h5 feather icon-chevrons-up"></i>
                                     </button>
                                 </div>
@@ -86,58 +86,81 @@
                                     {# Включено #}
                                     <td style="display: table-cell; width: 30px;">
                                         {% if r.is_enable.lower == 'true' %}
-                                            <span class="badge badge-pill badge-success" style="width: 30px">ON</span>
+                                            <span class="badge badge-pill badge-success" style="width: 40px">Вкл</span>
                                         {% else %}
                                             <span class="badge badge-pill badge-secondary"
-                                                  style="width: 30px">OFF</span>
+                                                  style="width: 40px">Выкл</span>
                                         {% endif %}
                                     </td>
                                     {# black/white #}
-                                    <td style="display: table-cell; width: 30px;">
-                                        {% if r.rtype == 'black' %}
-                                            <span class="badge badge-dark" style="width: 40px">{{ r.rtype }}</span>
+                                    <td style="display: table-cell; width: 80px;">
+                                        {% if r.rtype.upper == 'BLACK' %}
+                                            <span class="badge badge-dark" style="width: 80px">Запрещено</span>
+                                        {% elif r.rtype.upper == 'WHITE' %}
+                                            <span class="badge badge-light" style="width: 80px">Разрешено</span>
                                         {% else %}
-                                            <span class="badge badge-light" style="width: 40px">{{ r.rtype }}</span>
+                                            <span class="badge badge-light" style="width: 80px">{{ r.rtype }}</span>
                                         {% endif %}
                                     </td>
                                     {# Название #}
                                     <td style="display: table-cell; width: 20%;">
-                                        <a href="{% url 'rules_edit' r.id %}">{{ r.name|truncatechars:50 }}</a>
+                                        <a href="{% url 'rules_edit' r.id %}">{{ r.name|truncatechars:50 }}</a>для
                                     </td>
                                     {# Подправила #}
                                     <td style="display: table-cell; width: 50%;">
-                                        <a class="m-t-5" data-toggle="collapse" href="#collapse_{{ r.id }}"
+                                        <a class="text-dark m-t-5" data-toggle="collapse" href="#collapse_{{ r.id }}"
                                            role="button"
-                                           aria-expanded="true">{% count_sub r %}</a>
-                                        <div class="collapse hide devHide" id="collapse_{{ r.id }}">
+                                           aria-expanded="true"><i class="feather icon-chevron-down"></i>{% count_sub r %}</a>
+                                        <div class="collapse show devHide m-l-15" id="collapse_{{ r.id }}">
                                             {% for s in r.sub2 %}
                                                 {# Инвертированное #}
                                                 {% if s.is_invert == '0' %}
-                                                    <i title="Прямое" class="feather icon-arrow-up-right"></i>
+                                                    <i title="Не инвертированное" class="feather icon-arrow-up-right"></i>
                                                 {% else %}
                                                     <i title="Инвертированное" class="feather icon-arrow-down-left"></i>
                                                 {% endif %}
 
                                                 {# Формат атомарного правила и тип файла #}
-                                                <span
-                                                        {% if s.ar_format.upper == 'NO' and s.ar_type.upper == 'NO' %}
-                                                            class="badge badge-light"
-                                                        {% elif s.ar_format.upper == 'IP' or s.ar_type.upper == 'IP' or s.ar_format.upper == 'PORT' or s.ar_type.upper == 'PORT' or s.ar_format.upper == 'MAC' or s.ar_type.upper == 'MAC' %}
-                                                            class="badge badge-warning"
-                                                        {% elif s.ar_format.upper == 'FILE' or s.ar_type.upper == 'LIT' %}
-                                                            class="badge badge-info"
-                                                        {% elif s.ar_format.upper == 'PROTNAME' or s.ar_format.upper == 'CATEGNAME' or s.ar_format.upper == 'SERVICENAME' %}
-                                                            class="badge badge-primary"
-                                                        {% else %}
-                                                            class="badge badge-secondary"
-                                                        {% endif %}
-                                                            style="width: 60px">
-                            {% if s.ar_format.upper != 'NO' %}{{ s.ar_format }}{% endif %}
-                            {% if s.ar_type.upper != 'NO' %}{{ s.ar_type }}{% endif %}
-                        </span>
+                                                <span style="width: 80px"
+                                                    {% if s.ar_format.upper == 'NO' and s.ar_type.upper == 'NO' %}
+                                                        class="badge badge-light"
+                                                    {% elif s.ar_format.upper == 'IP' or s.ar_type.upper == 'IP' or s.ar_format.upper == 'PORT' or s.ar_type.upper == 'PORT' or s.ar_format.upper == 'MAC' or s.ar_type.upper == 'MAC' %}
+                                                        class="badge badge-warning"
+                                                    {% elif s.ar_format.upper == 'FILE' or s.ar_type.upper == 'LIT' %}
+                                                        class="badge badge-info"
+                                                    {% elif s.ar_format.upper == 'PROTNAME' or s.ar_format.upper == 'CATEGNAME' or s.ar_format.upper == 'SERVICENAME' %}
+                                                        class="badge badge-primary"
+                                                    {% else %}
+                                                        class="badge badge-secondary"
+                                                    {% endif %}>
+                                                    {# Формат правила #}
+                                                    {% if s.ar_format.upper == 'FILE' %}
+                                                        {{ 'Список' }}
+                                                    {% elif s.ar_format.upper == 'NO'%}
+                                                        {{ '' }}
+                                                    {% else %}
+                                                        {{ s.ar_format }}
+                                                    {% endif %}
+                                                    {# Тип правила #}
+                                                    {% if s.ar_type.upper == 'NO' %}
+                                                        {{ '' }}
+                                                    {% elif s.ar_type.upper == 'LIT' %}
+                                                        {{ 'строк' }}
+                                                    {% else %}
+                                                        {{ s.ar_type }}
+                                                    {% endif %}
+                                                </span>
 
-                                                {# Описание подправила #}
-                                                {{ s.ar_description|truncatechars:50 }}
+                                                {# Описание подправила и значение #}
+                                                {{ s.ar_description|truncatechars:30 }}{{ ' - ' }}
+                                                {% if s.ar_format.upper == 'FILE' and s.fid_or_val.isdigit %}
+                                                    <a href="{% url 'lists_edit' s.fid_or_val %}">{{ s.list_description|truncatechars:30 }}</a>
+                                                {% else %}
+                                                <a class="{% if r.rtype.upper == 'BLACK' %}{{ 'text-danger' }}
+                                                              {% elif r.rtype.upper == 'WHITE'%}{{ 'text-success' }}
+                                                              {% endif %}">{{ s.fid_or_val }}</a>
+                                                {% endif %}
+
                                                 <br/>
                                             {% endfor %}
                                         </div>
