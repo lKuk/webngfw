@@ -31,7 +31,7 @@ def connect(request):
                 return redirect('rules')
         else:
             form = ConnectForm()
-        context = {'form': form }
+        context = {'form': form}
         return render(request, 'connect.html', context=context)
     except Exception as ex:
         return exception(request, ex)
@@ -45,7 +45,7 @@ def error(request):
 # Страница исключений
 def exception(request, ex):
     context = {'ex': ex,
-               'name': 'Exception' }
+               'name': 'Exception'}
     return render(request, 'error.html', context=context)
 
 
@@ -60,8 +60,6 @@ def dashboard(request):
         return exception(request, ex)
 
 
-
-
 # Страница правил
 def rules(request):
     try:
@@ -71,6 +69,12 @@ def rules(request):
 
         # подключение
         url = dev['url']
+
+        # применить настройки правил
+        if request.method == 'POST':
+            if 'btnApply' in request.POST:
+                rule_apply(url)
+                return redirect('rules')
 
         # удалить правило
         delete = request.GET.get("delete")
@@ -244,8 +248,6 @@ def rules_edit(request, id):
         return exception(request, ex)
 
 
-
-
 # Страница редактора списков
 def lists(request):
     if 'url' not in dev:
@@ -371,8 +373,6 @@ def lists_edit(request, id):
         return exception(request, ex)
 
 
-
-
 # Страница истории изменений правил
 def history(request):
     try:
@@ -406,8 +406,6 @@ def history(request):
     # обработка ошибок
     except Exception as ex:
         return exception(request, ex)
-
-
 
 
 # Страница таблиц Debug

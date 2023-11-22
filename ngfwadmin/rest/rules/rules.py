@@ -62,11 +62,10 @@ def rule_select_all(url):
 
 # Применить изменения всех правил
 def rule_apply(url):
-    response = requests.set(f"{url}/rules")
+    response = requests.put(f"{url}/rules")
     if response.status_code != 200:
         raise Exception(response.url, response.text)
-    details = response.json()
-    return details
+    return
 
 
 # Наполнить подправило полями

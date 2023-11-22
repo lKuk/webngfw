@@ -36,20 +36,23 @@
                     </div>
                     <div class="card-body">
                         <!-- Кнопки добавить, свернуть, развернуть -->
-                        <div class="row">
-                            <div class="col">
-                                <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2 m-t-5"
-                                   style="width: 120px;">Добавить</a>
+                        <form action="" method="post" id="ruleApplyForm">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col text-left">
+                                    <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2 m-t-5" style="width: 120px;">Добавить</a>
+                                    <button type="submit" name="btnApply" class="btn btn-success shadow-2 m-t-5" style="width: 220px;">Применить изменения</button>
+                                </div>
+                                <div class="col text-right">
+                                    <button type="button" class="btn btn-icon btn-outline-primary shadow-1 m-t-5" onclick="ShowSubrules()">
+                                        <i class="h5 feather icon-chevrons-down"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-icon btn-outline-primary shadow-1 m-t-5" onclick="HideSubrules()">
+                                        <i class="h5 feather icon-chevrons-up"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="col text-right">
-                                <button type="button" class="btn btn-icon btn-outline-primary shadow-1 m-t-5" onclick="ShowSubrules()">
-                                    <i class="h5 feather icon-chevrons-down"></i>
-                                </button>
-                                <button type="button" class="btn btn-icon btn-outline-primary shadow-1 m-t-5" onclick="HideSubrules()">
-                                    <i class="h5 feather icon-chevrons-up"></i>
-                                </button>
-                            </div>
-                        </div>
+                        </form>
                     <div class="row">
                         <h1></h1>
                         <h1></h1>
