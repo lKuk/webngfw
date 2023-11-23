@@ -153,21 +153,19 @@
                                                     </span>
 
                                                     {# Описание подправила и значение #}
-                                                    {{ s.ar_description|truncatechars:30 }}
-                                                    <div style="margin-left: 102px">
+                                                    {{ s.ar_description|truncatechars:30 }}{{ ' - ' }}
                                                     {% if s.ar_format.upper == 'FILE' and s.fid_or_val.isdigit %}
                                                         <a href="{% url 'lists_edit' s.fid_or_val %}">{{ s.list_description|truncatechars:30 }}</a>
                                                     {% else %}
                                                         <a class="{% if r.rtype.upper == 'BLACK' %}{{ 'text-danger' }}
                                                                   {% elif r.rtype.upper == 'WHITE'%}{{ 'text-success' }}
                                                                   {% endif %}">{{ s.fid_or_val }}</a>
-                                                    {% endif %}
-                                                    </div>
+                                                    {% endif %}<br/>
                                                 {% endfor %}
                                             </div>
                                         </td>
                                         {# Описание #}
-                                        <td style="display: table-cell;">{{ r.description|wordwrap:40|linebreaks }}</td>
+                                        <td style="display: table-cell;">{{ r.description|wordwrap:70|linebreaks }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
