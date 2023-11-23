@@ -68,6 +68,15 @@ def rule_apply(url):
     return
 
 
+# Получить текущее описание правил
+def rule_description(url):
+    response = requests.get(f"{url}/rules/description")
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    details = response.json()
+    return details
+
+
 # Наполнить подправило полями
 def sub_warp(url, rule):
     try:
@@ -88,9 +97,13 @@ def sub_warp(url, rule):
             s2['ar_id'] = ar_id
             s2['is_invert'] = is_invert
             s2['fid_or_val'] = fid_or_val
-            s2['ar_type'] = atomics[ar_id]['file_type']
-            s2['ar_format'] = atomics[ar_id]['arg_type']
-            s2['ar_description'] = atomics[ar_id]['description']
+            s2['ar_type'] = 'NO'
+            s2['ar_format'] = 'None'
+            s2['ar_description'] = 'Unknown'
+            if ar_id in atomics:
+                s2['ar_type'] = atomics[ar_id]['file_type']
+                s2['ar_format'] = atomics[ar_id]['arg_type']
+                s2['ar_description'] = atomics[ar_id]['description']
             # Заполнить параметры формата атомарного правила
             s2['ar_format_description'] = ""
             for f in formats['formats']:
@@ -106,8 +119,11 @@ def sub_warp(url, rule):
                 if s2['ar_format'] == 'file':
                     idlist = int(fid_or_val)
                     list = list_select(url, idlist)
-                    s2['list_id'] = list['id']
-                    s2['list_description'] = list['description']
+                    s2['list_id'] = idlist
+                    if list is None:
+                        s2['list_description'] = 'list not found, id=' + str(idlist)
+                    else:
+                        s2['list_description'] = list['description']
             sub2.append(s2)
         rule['sub2'] = sub2
         return
