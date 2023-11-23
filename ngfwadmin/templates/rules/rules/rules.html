@@ -106,9 +106,10 @@
                                         <td style="display: table-cell;">
                                             {% if r.is_enable.upper == 'TRUE' %}
                                                 <span class="badge badge-pill badge-success" style="width: 40px">Вкл</span>
+                                            {% elif r.is_enable.upper == 'FALSE' %}
+                                                <span class="badge badge-pill badge-secondary" style="width: 40px">Выкл</span>
                                             {% else %}
-                                                <span class="badge badge-pill badge-secondary"
-                                                      style="width: 40px">Выкл</span>
+                                                {{ r.is_enable }}
                                             {% endif %}
                                         </td>
                                         {# Статус #}
@@ -132,9 +133,6 @@
                                             {% else %}
                                                 {{ r.rtype }}
                                             {% endif %}
-
-{#                                        <span class="hei-75 wid-75 bg-light d-inline-block mr-2 border border-secondary rounded-circle" data-toggle="tooltip" title="" data-original-title="rounded-circle"></span>#}
-
                                         </td>
                                         {# Название #}
                                         <td style="display: table-cell;">
@@ -150,8 +148,10 @@
                                                     {# Инвертированное #}
                                                     {% if s.is_invert == '0' %}
                                                         <i title="Не инвертированное" class="feather icon-arrow-up-right"></i>
-                                                    {% else %}
+                                                    {% elif s.is_invert == '1' %}
                                                         <i title="Инвертированное" class="feather icon-arrow-down-left"></i>
+                                                    {% else %}
+                                                        {{ s.is_invert }}
                                                     {% endif %}
 
                                                     {# Формат атомарного правила и тип файла #}
