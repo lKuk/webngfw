@@ -41,22 +41,39 @@
                             <div class="row">
                                 <div class="col text-left">
                                     <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2 m-t-5" style="width: 120px;">Добавить</a>
-                                    <button type="submit" name="btnApply" class="btn btn-secondary shadow-2 m-t-5" style="width: 220px;">Применить изменения</button>
+                                    <button type="submit" name="btnApply"
+                                            onclick="{% if description.status.upper != 'EDITED' %}return false{% endif %}"
+                                            class="btn {% if description.status.upper != 'EDITED' %}disabled btn-secondary{% else %}btn-warning{% endif %} shadow-2 m-t-5"
+                                            style="width: 200px;">Установить правила
+                                    </button>
                                 </div>
                                 <div class="col text-right">
-                                    <button type="button" class="btn btn-icon btn-outline-primary shadow-2 m-t-5" onclick="ShowSubrules()">
-                                        <i class="h5 feather icon-chevrons-down"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-icon btn-outline-primary shadow-2 m-t-5" onclick="HideSubrules()">
-                                        <i class="h5 feather icon-chevrons-up"></i>
-                                    </button>
+                                    <i class="feather icon-chevrons-down" onclick="ShowSubrules()" style="font-size: 1.2rem; color: #1e6abc;"></i>
+                                    <i class="feather icon-chevrons-up" onclick="HideSubrules()" style="font-size: 1.2rem; color: #1e6abc;"></i>
                                 </div>
                             </div>
+                            {% if description.status.upper == 'EDITED' %}
+                            <div class="row">
+                                <div class="col">
+                                    <div class="col alert alert-warning" role="alert">
+                                        <div class="row">
+                                            <div class="col-md-auto">
+                                                <div class="spinner-border text-warning" role="status"></div>
+                                            </div>
+                                            <div class="col">
+                                                Изменено: <a class="text-dark mb-1">{{ description.date_edit }}</a><br/>
+                                                Последняя установка правил выполнена: <a class="text-dark mb-1">{{ description.date_set }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
                         </form>
                     <div class="row">
                         <h1></h1>
-                        <h1></h1>
                     </div>
+                    <div class="row">
                         <!-- Таблица правил -->
                         <div class="table-responsive">
                             <table id="col-reorder"
@@ -64,12 +81,14 @@
                                    style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th></th>
+                                    <th><i class="feather icon-trash"></i></th>
+                                    <th><i class="feather icon-check-square" style="font-size: 1.05rem;"></i></th>
                                     <th>Вкл</th>
                                     <th>Тип</th>
                                     <th>Название</th>
                                     <th>Атомарные подправила</th>
                                     <th>Описание</th>
+                                    <th>JSON</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -84,9 +103,21 @@
                                                 </a>
                                             </div>
                                         </td>
+                                        {# Статус #}
+                                        <td style="display: table-cell;">
+                                            {% if r.status.upper == 'SET' %}
+                                                <i class="feather icon-check-square" style="font-size: 1.05rem; color: #2f9c0a;" title="Применено"></i>
+                                            {% elif r.status.upper == 'NOT SET' %}
+                                                <i class="feather icon-square" style="font-size: 1.05rem; color: #1e6abc;" title="Не применено"></i>
+                                            {% elif r.status.upper == 'EDITED' %}
+                                                <i class="feather icon-edit" style="font-size: 1.05rem; color: #ba8b00;" title="Изменено, не применено"></i>
+                                            {% else %}
+                                                {{ r.status }}
+                                            {% endif %}
+                                        </td>
                                         {# Включено #}
                                         <td style="display: table-cell;">
-                                            {% if r.is_enable.lower == 'true' %}
+                                            {% if r.is_enable.upper == 'TRUE' %}
                                                 <span class="badge badge-pill badge-success" style="width: 40px">Вкл</span>
                                             {% else %}
                                                 <span class="badge badge-pill badge-secondary"
@@ -166,6 +197,9 @@
                                         </td>
                                         {# Описание #}
                                         <td style="display: table-cell;">{{ r.description|wordwrap:70|linebreaks }}</td>
+
+                                        {# JSON #}
+                                        <td style="display: table-cell;">{{ r|linebreaks }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>

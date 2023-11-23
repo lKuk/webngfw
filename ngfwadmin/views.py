@@ -87,6 +87,9 @@ def rules(request):
         # получить все правила
         all = rule_select_all(url)
 
+        # Получить описание состояния
+        description = rule_description(url)
+
         # сортировка по имени
         sort_all = sorted(all, key=lambda k: k['name'])
 
@@ -96,7 +99,8 @@ def rules(request):
 
         # отобразить страницу правил
         context = {'dev': dev,
-                   'rules': sort_all}
+                   'rules': sort_all,
+                   'description': description}
         return render(request, 'rules/rules/rules.html', context=context)
 
     # обработка ошибок
