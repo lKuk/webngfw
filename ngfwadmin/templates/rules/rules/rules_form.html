@@ -37,6 +37,11 @@
                             {% csrf_token %}
                             <input name="id" value="{{ rule.id }}" type="hidden">
                             <input name="sub" value="{{ rule.sub }}" type="hidden">
+                            <!-- Название -->
+                            <div class="form-group">
+                                <label>Название:</label>
+                                <input name="name" value="{{ rule.name }}" type="text" class="form-control">
+                            </div>
                             <!-- Включено -->
                             <div class="form-group">
                                 <label>Включено:</label>
@@ -52,11 +57,6 @@
                                     <option value="black" {% if rule.rtype == 'black' %}selected="selected"{% endif %}>Запрещено</option>
                                     <option value="white" {% if rule.rtype == 'white' %}selected="selected"{% endif %}>Разрешено</option>
                                 </select>
-                            </div>
-                            <!-- Название -->
-                            <div class="form-group">
-                                <label>Название:</label>
-                                <input name="name" value="{{ rule.name }}" type="text" class="form-control">
                             </div>
                             <!-- Описание -->
                             <div class="form-group">

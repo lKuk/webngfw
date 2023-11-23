@@ -81,10 +81,10 @@
                                    style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th><i class="feather icon-trash"></i></th>
-                                    <th>Вкл</th>
-                                    <th><i class="feather icon-check-square" style="font-size: 1.05rem;"></i></th>
-                                    <th>Тип</th>
+                                    <th title="Удаление"><i class="feather icon-trash"></i></th>
+                                    <th title="Включено/Выключено">Вкл</th>
+                                    <th title="Состояние"><i class="feather icon-check-square" style="font-size: 1.05rem;"></i></th>
+                                    <th title="Запрещено/Разрешено">Тип</th>
                                     <th>Название</th>
                                     <th>Атомарные подправила</th>
                                     <th>Описание</th>
@@ -126,12 +126,15 @@
                                         {# black/white #}
                                         <td style="display: table-cell;">
                                             {% if r.rtype.upper == 'BLACK' %}
-                                                <span class="badge badge-dark" style="width: 80px">Запрещено</span>
+                                                <i class="feather icon-star-on" style="font-size: 1.05rem; color: #666;" title="Запрещено"></i>
                                             {% elif r.rtype.upper == 'WHITE' %}
-                                                <span class="badge badge-light" style="width: 80px">Разрешено</span>
+                                                <i class="feather icon-star-on" style="font-size: 1.05rem; color: #8fcedd;" title="Разрешено"></i>
                                             {% else %}
-                                                <span class="badge badge-light" style="width: 80px">{{ r.rtype }}</span>
+                                                {{ r.rtype }}
                                             {% endif %}
+
+{#                                        <span class="hei-75 wid-75 bg-light d-inline-block mr-2 border border-secondary rounded-circle" data-toggle="tooltip" title="" data-original-title="rounded-circle"></span>#}
+
                                         </td>
                                         {# Название #}
                                         <td style="display: table-cell;">
