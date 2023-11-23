@@ -88,7 +88,6 @@
                                     <th>Название</th>
                                     <th>Атомарные подправила</th>
                                     <th>Описание</th>
-                                    <th>JSON</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -197,9 +196,6 @@
                                         </td>
                                         {# Описание #}
                                         <td style="display: table-cell;">{{ r.description|wordwrap:70|linebreaks }}</td>
-
-                                        {# JSON #}
-                                        <td style="display: table-cell;">{{ r|linebreaks }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
