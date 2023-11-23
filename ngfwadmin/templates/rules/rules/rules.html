@@ -82,8 +82,8 @@
                                 <thead>
                                 <tr>
                                     <th><i class="feather icon-trash"></i></th>
-                                    <th><i class="feather icon-check-square" style="font-size: 1.05rem;"></i></th>
                                     <th>Вкл</th>
+                                    <th><i class="feather icon-check-square" style="font-size: 1.05rem;"></i></th>
                                     <th>Тип</th>
                                     <th>Название</th>
                                     <th>Атомарные подправила</th>
@@ -102,6 +102,15 @@
                                                 </a>
                                             </div>
                                         </td>
+                                        {# Включено #}
+                                        <td style="display: table-cell;">
+                                            {% if r.is_enable.upper == 'TRUE' %}
+                                                <span class="badge badge-pill badge-success" style="width: 40px">Вкл</span>
+                                            {% else %}
+                                                <span class="badge badge-pill badge-secondary"
+                                                      style="width: 40px">Выкл</span>
+                                            {% endif %}
+                                        </td>
                                         {# Статус #}
                                         <td style="display: table-cell;">
                                             {% if r.status.upper == 'SET' %}
@@ -112,15 +121,6 @@
                                                 <i class="feather icon-edit" style="font-size: 1.05rem; color: #ba8b00;" title="Изменено, не применено"></i>
                                             {% else %}
                                                 {{ r.status }}
-                                            {% endif %}
-                                        </td>
-                                        {# Включено #}
-                                        <td style="display: table-cell;">
-                                            {% if r.is_enable.upper == 'TRUE' %}
-                                                <span class="badge badge-pill badge-success" style="width: 40px">Вкл</span>
-                                            {% else %}
-                                                <span class="badge badge-pill badge-secondary"
-                                                      style="width: 40px">Выкл</span>
                                             {% endif %}
                                         </td>
                                         {# black/white #}
