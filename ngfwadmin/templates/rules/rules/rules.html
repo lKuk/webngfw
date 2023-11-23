@@ -112,7 +112,7 @@
                                             <a class="text-dark m-t-5" data-toggle="collapse" href="#collapse_{{ r.id }}"
                                                role="button"
                                                aria-expanded="true"><i class="feather icon-chevron-down"></i>{% count_sub r %}</a>
-                                            <div class="collapse show devHide m-l-15" id="collapse_{{ r.id }}">
+                                            <div class="collapse hide devHide m-l-15" id="collapse_{{ r.id }}">
                                                 {% for s in r.sub2 %}
                                                     {# Инвертированное #}
                                                     {% if s.is_invert == '0' %}
