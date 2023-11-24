@@ -12,6 +12,7 @@
 {% block script %}
     <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
     <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
 {% endblock script %}
 
 {# Заголовок #}
@@ -98,7 +99,7 @@
                                     {% for s in rule.sub2 %}
                                         <tr>
                                             {# Удаление #}
-                                            <td style="display: table-cell; width: 30px;">
+                                            <td style="display: table-cell;">
                                                 <div>
                                                     <a href="{% url 'rules_edit' rule.id %}?delete={{ s.id }}"
                                                        onclick="return confirm('{{ s.ar_description|truncatechars:50 }}\nУдалить подправило?');">
@@ -106,44 +107,44 @@
                                                     </a>
                                                 </div>
                                             </td>
-                                            <td style="display: table-cell; width: 30px;">
+                                            <td style="display: table-cell;">
                                                 {# Инвертированное #}
                                                 {% if s.is_invert == '0' %}
-                                                    <i title="Не инвертированное" class="feather icon-arrow-up-right"></i>
+                                                    <i title="Не инвертированное" class="feather icon-arrow-up-right" style="color: #000"></i>
                                                 {% else %}
-                                                    <i title="Инвертированное" class="feather icon-arrow-down-left"></i>
+                                                    <i title="Инвертированное" class="feather icon-arrow-down-left" style="color: #000"></i>
                                                 {% endif %}
 
                                                 {# Формат атомарного правила и тип файла #}
-                                                <span style="width: 80px"
-                                                    {% if s.ar_format.upper == 'NO' and s.ar_type.upper == 'NO' %}
-                                                        class="badge badge-light"
-                                                    {% elif s.ar_format.upper == 'IP' or s.ar_type.upper == 'IP' or s.ar_format.upper == 'PORT' or s.ar_type.upper == 'PORT' or s.ar_format.upper == 'MAC' or s.ar_type.upper == 'MAC' %}
-                                                        class="badge badge-warning"
-                                                    {% elif s.ar_format.upper == 'FILE' or s.ar_type.upper == 'LIT' %}
-                                                        class="badge badge-info"
-                                                    {% elif s.ar_format.upper == 'PROTNAME' or s.ar_format.upper == 'CATEGNAME' or s.ar_format.upper == 'SERVICENAME' %}
-                                                        class="badge badge-primary"
-                                                    {% else %}
-                                                        class="badge badge-secondary"
-                                                    {% endif %}>
+{#                                                <span style="width: 80px"#}
+{#                                                    {% if s.ar_format.upper == 'NO' and s.ar_type.upper == 'NO' %}#}
+{#                                                        class="badge badge-light"#}
+{#                                                    {% elif s.ar_format.upper == 'IP' or s.ar_type.upper == 'IP' or s.ar_format.upper == 'PORT' or s.ar_type.upper == 'PORT' or s.ar_format.upper == 'MAC' or s.ar_type.upper == 'MAC' %}#}
+{#                                                        class="badge badge-warning"#}
+{#                                                    {% elif s.ar_format.upper == 'FILE' or s.ar_type.upper == 'LIT' %}#}
+{#                                                        class="badge badge-info"#}
+{#                                                    {% elif s.ar_format.upper == 'PROTNAME' or s.ar_format.upper == 'CATEGNAME' or s.ar_format.upper == 'SERVICENAME' %}#}
+{#                                                        class="badge badge-primary"#}
+{#                                                    {% else %}#}
+{#                                                        class="badge badge-secondary"#}
+{#                                                    {% endif %}>#}
                                                     {# Формат правила #}
-                                                    {% if s.ar_format.upper == 'FILE' %}
-                                                        {{ 'Список' }}
-                                                    {% elif s.ar_format.upper == 'NO'%}
-                                                        {{ '' }}
-                                                    {% else %}
-                                                        {{ s.ar_format }}
-                                                    {% endif %}
+{#                                                    {% if s.ar_format.upper == 'FILE' %}#}
+{#                                                        {{ 'Список' }}#}
+{#                                                    {% elif s.ar_format.upper == 'NO'%}#}
+{#                                                        {{ '' }}#}
+{#                                                    {% else %}#}
+{#                                                        {{ s.ar_format }}#}
+{#                                                    {% endif %}#}
                                                     {# Тип правила #}
-                                                    {% if s.ar_type.upper == 'NO' %}
-                                                        {{ '' }}
-                                                    {% elif s.ar_type.upper == 'LIT' %}
-                                                        {{ 'строк' }}
-                                                    {% else %}
-                                                        {{ s.ar_type }}
-                                                    {% endif %}
-                                                </span>
+{#                                                    {% if s.ar_type.upper == 'NO' %}#}
+{#                                                        {{ '' }}#}
+{#                                                    {% elif s.ar_type.upper == 'LIT' %}#}
+{#                                                        {{ 'строк' }}#}
+{#                                                    {% else %}#}
+{#                                                        {{ s.ar_type }}#}
+{#                                                    {% endif %}#}
+{#                                                </span>#}
 
                                                 {# Описание подправила #}
                                                 {{ s.ar_description|truncatechars:50 }}

@@ -12,6 +12,7 @@
 {% block script %}
     <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
     <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
 {% endblock script %}
 
 {# Заголовок #}
@@ -48,7 +49,7 @@
                             <tbody>
                             {% for h in history %}
                                 <tr>
-                                    <td style="display: table-cell; width: 30px;">
+                                    <td style="display: table-cell;">
                                         <div>
                                             <a href="{% url 'history' %}?date={{ h.date }}"
                                                onclick="return confirm('{{ h.date }}\nВыполнить восстановление правил?');">
