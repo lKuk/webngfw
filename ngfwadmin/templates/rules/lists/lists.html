@@ -38,7 +38,7 @@
                         <!-- Кнопка Добавить -->
                         <div class="row">
                             <div class="col">
-                                <a href="{% url 'lists_add' %}" class="btn btn-primary shadow-2 m-t-5"
+                                <a href="{% url 'lists_add' %}" class="btn btn-primary shadow-2"
                                    style="width: 120px;">Добавить</a>
                             </div>
                         </div>
@@ -53,7 +53,9 @@
                                 <thead>
                                 <tr>
                                     <th title="Удаление"><i class="feather icon-trash"></i></th>
+                                    <th>Метка</th>
                                     <th>Тип</th>
+                                    <th>Название</th>
                                     <th>Описание</th>
                                     <th>Дата</th>
                                 </tr>
@@ -70,13 +72,25 @@
                                                 </a>
                                             </div>
                                         </td>
+                                        {# Метка #}
+                                        <td style="display: table-cell;">
+                                            {% if l.type == 'list' %}
+                                                <p class="mb-1">{{ 'Список' }}</p>
+                                            {% elif l.type == 'lib' %}
+                                                <p class="mb-1">{{ 'Библиотека' }}</p>
+                                            {% else %}
+                                                <p class="mb-1">{{ l.type }}</p>
+                                            {% endif %}
+                                        </td>
                                         {# Тип файла #}
+                                        <td style="display: table-cell;">{{ l.ftype }}</td>
+                                        {# Название #}
                                         <td style="display: table-cell;">
-                                            <span class="h6 badge badge-info" style="width: 40px">{{ l.ftype }}</span>
+                                            <a href="{% url 'lists_edit' l.id %}">{{ l.name }}</a>
                                         </td>
-                                        <td style="display: table-cell;">
-                                            <a href="{% url 'lists_edit' l.id %}">{{ l.description }}</a>
-                                        </td>
+                                        {# Описание #}
+                                        <td style="display: table-cell;">{{ l.description|wordwrap:70|linebreaksbr }}</td>
+                                        {# Дата #}
                                         <td style="display: table-cell;">{{ l.date }}</td>
                                     </tr>
                                 {% endfor %}

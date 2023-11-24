@@ -85,21 +85,24 @@ def rules(request):
             return redirect('rules')
 
         # получить все правила
-        all = rule_select_all(url)
+        rules = rule_select_all(url)
 
         # Получить описание состояния
         description = rule_description(url)
 
         # сортировка по имени
-        sort_all = sorted(all, key=lambda k: k['name'])
+        if rules is not None:
+            sort_rules = sorted(rules, key=lambda k: k['name'])
+            rules = sort_rules
 
         # развернуть все подправила
-        for rule in sort_all:
-            sub_warp(url, rule)
+        if rules is not None:
+            for rule in rules:
+                sub_warp(url, rule)
 
         # отобразить страницу правил
         context = {'dev': dev,
-                   'rules': sort_all,
+                   'rules': rules,
                    'description': description}
         return render(request, 'rules/rules/rules.html', context=context)
 
@@ -301,11 +304,13 @@ def lists_add(request):
             # добавить список
             if 'btnInsert' in request.POST:
                 # Получить параметры
+                name = request.POST.get('name')
+                mark = request.POST.get('type')
                 ftype = request.POST.get('ftype')
                 content = request.POST.get('content')
                 description = request.POST.get('description')
                 # добавить список
-                result = list_insert(url, login, password, ftype, description)
+                result = list_insert(url, login, password, name, ftype, mark, description)
                 # получить id
                 details = json.loads(result)
                 id = details['id']
@@ -344,13 +349,15 @@ def lists_edit(request, id):
         # создать список
         if request.method == 'POST':
             # Получить параметры
+            name = request.POST.get('name')
+            mark = request.POST.get('type')
             ftype = request.POST.get('ftype')
             content = request.POST.get('content')
             description = request.POST.get('description')
             # обновить список
             if 'btnUpdate' in request.POST:
                 # обновить список
-                list_update(url, login, password, id, ftype, description)
+                list_update(url, login, password, id, name, ftype, mark, description)
                 # установить список
                 content_set(url, login, password, id, content)
                 # перейти к таблице списков

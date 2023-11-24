@@ -3,8 +3,10 @@ import requests
 
 
 # Добавить список
-def list_insert(url, login, password, ftype, description):
+def list_insert(url, login, password, name, ftype, mark, description):
     dic = {
+        'name': name,
+        'type': mark,
         'ftype': ftype,
         'description': description}
     sjson = json.dumps(dic)
@@ -16,9 +18,11 @@ def list_insert(url, login, password, ftype, description):
 
 
 # Изменить список
-def list_update(url, login, password, idlist, ftype, description):
+def list_update(url, login, password, idlist, name, ftype, mark, description):
     dic = {
         'id': idlist,
+        'name': name,
+        'type': mark,
         'ftype': ftype,
         'description': description}
     sjson = json.dumps(dic)

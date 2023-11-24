@@ -87,7 +87,7 @@
                                     <th title="Включено/Выключено">Вкл</th>
                                     <th title="Запрещено/Разрешено">Тип</th>
                                     <th>Название</th>
-                                    <th>Атомарные подправила</th>
+                                    <th>Подправила</th>
                                     <th>Описание</th>
                                 </tr>
                                 </thead>
@@ -180,7 +180,7 @@
                                             </div>
                                         </td>
                                         {# Описание #}
-                                        <td style="display: table-cell;">{{ r.description|wordwrap:70|linebreaks }}</td>
+                                        <td style="display: table-cell;">{{ r.description|wordwrap:70|linebreaksbr }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
