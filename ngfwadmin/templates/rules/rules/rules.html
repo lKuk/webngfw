@@ -167,38 +167,6 @@
                                                     {% else %}
                                                         {{ s.is_invert }}
                                                     {% endif %}
-
-                                                    {# Формат атомарного правила и тип файла #}
-{#                                                    <span style="width: 80px"#}
-{#                                                        {% if s.ar_format.upper == 'NO' and s.ar_type.upper == 'NO' %}#}
-{#                                                            class="badge badge-light"#}
-{#                                                        {% elif s.ar_format.upper == 'IP' or s.ar_type.upper == 'IP' or s.ar_format.upper == 'PORT' or s.ar_type.upper == 'PORT' or s.ar_format.upper == 'MAC' or s.ar_type.upper == 'MAC' %}#}
-{#                                                            class="badge badge-warning"#}
-{#                                                        {% elif s.ar_format.upper == 'FILE' or s.ar_type.upper == 'LIT' %}#}
-{#                                                            class="badge badge-info"#}
-{#                                                        {% elif s.ar_format.upper == 'PROTNAME' or s.ar_format.upper == 'CATEGNAME' or s.ar_format.upper == 'SERVICENAME' %}#}
-{#                                                            class="badge badge-primary"#}
-{#                                                        {% else %}#}
-{#                                                            class="badge badge-secondary"#}
-{#                                                        {% endif %}>#}
-                                                        {# Формат правила #}
-{#                                                        {% if s.ar_format.upper == 'FILE' %}#}
-{#                                                            {{ 'Список' }}#}
-{#                                                        {% elif s.ar_format.upper == 'NO'%}#}
-{#                                                            {{ '' }}#}
-{#                                                        {% else %}#}
-{#                                                            {{ s.ar_format }}#}
-{#                                                        {% endif %}#}
-                                                        {# Тип правила #}
-{#                                                        {% if s.ar_type.upper == 'NO' %}#}
-{#                                                            {{ '' }}#}
-{#                                                        {% elif s.ar_type.upper == 'LIT' %}#}
-{#                                                            {{ 'строк' }}#}
-{#                                                        {% else %}#}
-{#                                                            {{ s.ar_type }}#}
-{#                                                        {% endif %}#}
-{#                                                    </span>#}
-
                                                     {# Описание подправила и значение #}
                                                     {{ s.ar_description|truncatechars:30 }}{{ ' - ' }}
                                                     {% if s.ar_format.upper == 'FILE' and s.fid_or_val.isdigit %}
