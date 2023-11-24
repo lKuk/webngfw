@@ -76,6 +76,54 @@
                 </div>
             </div>
         </div>
+        {% if action != 'add' %}
+        <div class="col-xl-8 col-md-6">
+            <div class="card">
+
+                <div class="card-header">
+                    <h5>Добавление подправила</h5>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" id="subEditForm">
+                        {% csrf_token %}
+                        <!-- Кнопки -->
+                        <button type="submit" class="btn btn-primary shadow-2" name="btnAdd" style="width: 120px;">Добавить</button>
+                        <!-- Atomic -->
+                        <div class="form-group">
+                            <label>Атомарное подправило:</label>
+                            <select name="atomic" class="form-control" id="ar_id" onchange="ar_id_onchange()">
+                                {% for key, value in atomic.items %}
+                                    <option value="{{ value }}">{{ value.description }}</option>
+                                {% endfor %}
+                                {% if s.ar_id == None %}
+                                    <option selected="selected" value=""></option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <!-- List -->
+                        <div class="form-group">
+                            <label>Список:</label>
+                            <select name="list" class="form-control" id="list_id">
+                                {% for list in lists %}
+                                    <option value="{{ list }}" class="listHidden">{{ list.description }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- invert -->
+                        <div class="form-group" id="dev_category">
+                            <label>Инвертация:</label>
+                            <select name="invert" class="form-control">
+                                <option value="0" selected="selected">Не инвертировано</option>
+                                <option value="1">Инвертировано</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+        </div>
+    {% endif %}
     </div>
 
 {#            </div>#}
@@ -241,99 +289,6 @@
 {#            {% endif %}#}
 {#        </div>#}
 {#    </div>#}
-
-    {# Скрипт скрытия и раскрытия полей заполнения #}
-    <script>
-        // функция изменения полей ввода значения
-        function ar_id_onchange() {
-            // определить поля ввода значений
-            const ar_id = document.getElementById("ar_id");
-            const dev_ip = document.getElementById("dev_ip");
-            const dev_mac = document.getElementById("dev_mac");
-            const dev_list = document.getElementById("dev_list");
-            const dev_port = document.getElementById("dev_port");
-            const dev_proto = document.getElementById("dev_proto");
-            const dev_service = document.getElementById("dev_service");
-            const dev_category = document.getElementById("dev_category");
-
-            // скрыть все поля ввода
-            dev_ip.hidden = true;
-            dev_mac.hidden = true;
-            dev_list.hidden = true;
-            dev_port.hidden = true;
-            dev_proto.hidden = true;
-            dev_service.hidden = true;
-            dev_category.hidden = true;
-
-            // получить json
-            let str = ar_id.value
-            str = str.replaceAll("\"", "");
-            str = str.replaceAll("'", "\"");
-            let json = JSON.parse(str);
-            // получить тип файла
-            let file_type = json['file_type'];
-            // получить тип аргумента
-            let arg_type = json['arg_type'];
-
-            // настроить видимость
-            if (arg_type === 'IP')
-                dev_ip.hidden = false;
-            if (arg_type === 'MAC')
-                dev_mac.hidden = false;
-            if (arg_type === 'PORT')
-                dev_port.hidden = false;
-            if (arg_type === 'PROTNAME')
-                dev_proto.hidden = false;
-            if (arg_type === 'CATEGNAME')
-                dev_category.hidden = false;
-            if (arg_type === 'SERVICENAME')
-                dev_service.hidden = false;
-            if (arg_type === 'file')
-                dev_list.hidden = false;
-
-            // настройка списка
-            HideOptions();
-        }
-
-        // функция ограничения выпадающего списка
-        function HideOptions() {
-            try {
-                // атомарное правило
-                var atomic = document.getElementById("ar_id");
-                // список, который нужно фильтровать
-                var listHidden = document.getElementsByClassName('listHidden')
-                // получить json
-                let strAtomic = atomic.value
-                strAtomic = strAtomic.replaceAll("'", "\"");
-                json = JSON.parse(strAtomic);
-                // получить тип файла
-                file_type_atomic = json['file_type'];
-
-                // пройти по всему списку сокрытия
-                var message = "";
-                Array.prototype.forEach.call(listHidden, function (el) {
-                    try {
-                        // получить json
-                        let strList = el.value
-                        strList = strList.replaceAll("'", "\"");
-                        json = JSON.parse(strList);
-                        // получить тип файла
-                        file_type_list = json['ftype'];
-                        // скрыть ненужные элементы
-                        el.hidden = file_type_atomic !== file_type_list;
-                        el.selected = !el.hidden;
-                    } catch (error) {
-                        message += el.value + '\n' + error + '\n';
-                    }
-                    if(message !== "")
-                        alert(message);
-                });
-            }
-            catch (error) {
-                alert(error);
-            }
-        }
-    </script>
 
     {# Скрипт валидации полей ввода #}
     <script>
