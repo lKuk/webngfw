@@ -89,6 +89,24 @@
                 </li>
                 {# История изменений #}
 
+                <li class="nav-item pcoded-menu-caption">
+                    <label>service</label>
+                </li>
+
+                {# Debug #}
+                <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}">
+                    <a href="#!" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>
+                        <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>
+                        <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>
+                        <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>
+                    </ul>
+                </li>
+                {# Debug #}
+
             </ul>
         </div>
     </div>
