@@ -118,9 +118,9 @@
                                         {# Включено #}
                                         <td style="display: table-cell;">
                                             {% if r.is_enable.upper == 'TRUE' %}
-                                                <span class="badge badge-pill badge-success" style="width: 40px">Вкл</span>
+                                                <span class="badge badge-success" style="width: 35px">Вкл</span>
                                             {% elif r.is_enable.upper == 'FALSE' %}
-                                                <span class="badge badge-pill badge-secondary" style="width: 40px">Выкл</span>
+                                                <span class="badge badge-secondary" style="width: 35px">Выкл</span>
                                             {% else %}
                                                 {{ r.is_enable }}
                                             {% endif %}
