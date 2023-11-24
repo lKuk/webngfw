@@ -72,21 +72,22 @@
                                         </td>
                                         {# Тип файла #}
                                         <td style="display: table-cell;">
-                                        <span
-                                                {% if l.ftype.upper == 'NO' %}
-                                                    class="badge badge-light"
-                                                {% elif l.ftype.upper == 'IP' or l.ftype.upper == 'PORT' or l.ftype.upper == 'MAC' %}
-                                                    class="badge badge-warning"
-                                                {% elif l.ftype.upper == 'LIT' or l.ftype.upper == 'FILE' %}
-                                                    class="badge badge-info"
-                                                {% elif l.ftype.upper == 'PROTNAME' or l.ftype.upper == 'CATEGNAME' or l.ftype.upper == 'SERVICENAME' %}
-                                                    class="badge badge-primary"
-                                                {% else %}
-                                                    class="badge badge-secondary"
-                                                {% endif %}
-                                                    style="width: 60px">
-                                            file {{ l.ftype.upper }}
-                                        </span>
+                                            <span class="h6 badge badge-info" style="width: 40px">{{ l.ftype }}</span>
+{#                                        <span#}
+{#                                                {% if l.ftype.upper == 'NO' %}#}
+{#                                                    class="badge badge-light"#}
+{#                                                {% elif l.ftype.upper == 'IP' or l.ftype.upper == 'PORT' or l.ftype.upper == 'MAC' %}#}
+{#                                                    class="badge badge-warning"#}
+{#                                                {% elif l.ftype.upper == 'LIT' or l.ftype.upper == 'FILE' %}#}
+{#                                                    class="badge badge-info"#}
+{#                                                {% elif l.ftype.upper == 'PROTNAME' or l.ftype.upper == 'CATEGNAME' or l.ftype.upper == 'SERVICENAME' %}#}
+{#                                                    class="badge badge-primary"#}
+{#                                                {% else %}#}
+{#                                                    class="badge badge-secondary"#}
+{#                                                {% endif %}#}
+{#                                                    style="width: 60px">#}
+{#                                            file {{ l.ftype.upper }}#}
+{#                                        </span>#}
                                         </td>
                                         <td style="display: table-cell;">
                                             <a href="{% url 'lists_edit' l.id %}">{{ l.description }}</a>
