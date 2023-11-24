@@ -27,26 +27,24 @@
 {# Содержимое #}
 {% block content %}
 
-    <div class="page-wrapper">
-        <div class="card">
-            <div class="card-header">
-                <h5>Параметры правила</h5>
-            </div>
-            <div class="card-body">
-                <form action="" method="post" id="ruleEditForm">
-                    {% csrf_token %}
-                    <input name="id" value="{{ rule.id }}" type="hidden">
-                    <input name="sub" value="{{ rule.sub }}" type="hidden">
-                    {# Кнопки #}
-                    <div class="row">
-                        <div class="col-md-12">
+    <div class="row">
+        <div class="col-md-6 col-xl-4">
+            <div class="page-wrapper">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Параметры правила</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="post" id="ruleEditForm">
+                            {% csrf_token %}
+                            <input name="id" value="{{ rule.id }}" type="hidden">
+                            <input name="sub" value="{{ rule.sub }}" type="hidden">
+                            {# Кнопки #}
                             {% if action == 'add' %}
                                 <button type="submit" name="btnInsert" class="btn btn-primary shadow-2" style="width: 120px;">Создать</button>
                             {% else %}
                                 <button type="submit" name="btnUpdate" class="btn btn-primary shadow-2" style="width: 120px;">Сохранить</button>
                             {% endif %}
-                        </div>
-                        <div class="col-md-6 col-xl-4 m-t-5">
                              <!-- Название -->
                             <div class="form-group">
                                 <label>Название:</label>
@@ -73,9 +71,9 @@
                                 <label>Описание:</label>
                                 <textarea name="description" class="form-control" rows="7">{{ rule.description }}</textarea>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
