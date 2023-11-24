@@ -97,14 +97,6 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <!-- invert -->
-                    <div class="form-group" id="dev_category">
-                        <label>Инвертация:</label>
-                        <select name="invert" class="form-control">
-                            <option value="0" selected="selected">Не инвертировано</option>
-                            <option value="1">Инвертировано</option>
-                        </select>
-                    </div>
                     <!-- List -->
                     <div class="form-group">
                         <label>Список:</label>
@@ -113,6 +105,14 @@
                             {% for list in lists %}
                                 <option value="{{ list }}" hidden="hidden" class="list_hidden">{{ list.name }}</option>
                             {% endfor %}
+                        </select>
+                    </div>
+                    <!-- invert -->
+                    <div class="form-group" id="dev_category">
+                        <label>Инвертация:</label>
+                        <select name="invert" class="form-control">
+                            <option value="0" selected="selected">Не инвертировано</option>
+                            <option value="1">Инвертировано</option>
                         </select>
                     </div>
                     </form>
