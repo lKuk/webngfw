@@ -428,7 +428,7 @@ def table(request, name):
         if name == 'atomic':
             caption = 'Атомарные правила'
             atomic = enum_atomic_get(dev['url'])
-            columns = ['ID', 'Название', 'Категория', 'Тип данных', 'Тип файла']
+            columns = ['id', 'file_type', 'description', 'rule_category', 'arg_type']
             for i in atomic:
                 row = atomic[i]
                 id = row['id']
@@ -436,19 +436,19 @@ def table(request, name):
                 file_type = row['file_type']
                 description = row['description']
                 rule_category = row['rule_category']
-                rows.append([id, description, rule_category, arg_type, file_type])
+                rows.append([id, file_type, description, rule_category, arg_type])
 
         # Формат атомарных правил
         if name == 'format':
             caption = 'Форматы атомарных правил'
             formats = enum_format_get(dev['url'])
-            columns = ['ID', 'Параметр', 'Название', 'Описание']
+            columns = ['id', 'name', 'description', 'param']
             for row in formats['formats']:
                 id = row['id']
                 name = row['name']
                 param = row['param']
                 description = row['description']
-                rows.append([id, param, name, description])
+                rows.append([id, name, description, param])
 
         # Список сервисов
         if name == 'services':
