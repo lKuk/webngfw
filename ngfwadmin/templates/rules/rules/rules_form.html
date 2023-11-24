@@ -39,7 +39,7 @@
                             {% csrf_token %}
                             <input name="id" value="{{ rule.id }}" type="hidden">
                             <input name="sub" value="{{ rule.sub }}" type="hidden">
-                            {# Кнопки #}
+                             <!-- Кнопки -->
                             {% if action == 'add' %}
                                 <button type="submit" name="btnInsert" class="btn btn-primary shadow-2" style="width: 120px;">Создать</button>
                             {% else %}
@@ -103,37 +103,38 @@
                             <option value="1">Инвертировано</option>
                         </select>
                     </div>
-
-
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="btn btn-outline-primary shadow-2 show" data-toggle="tab" href="#add" role="tab" aria-selected="false">Новый список</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-primary shadow-2 show active" data-toggle="tab" href="#new" role="tab" aria-selected="true">Текущий список</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content m-0 p-0">
-                        <div class="tab-pane m-0 p-0" id="add" aria-labelledby="profile-tab">
-                            <p class="mb-0">Новый список</p>
-                        </div>
-                        <div class="tab-pane m-0 p-0 active show" id="new" aria-labelledby="home-tab">
-                            <p class="mb-0">Текущий список</p>
-
-                            <!-- List -->
-                            <div class="form-group">
-                                <label>Список:</label>
-                                <select id="list_id" name="list" class="form-control">
-                                    <option value="" hidden="hidden" selected="selected"></option>
-                                    {% for list in lists %}
-                                        <option value="{{ list }}" hidden="hidden" class="list_hidden">{{ list.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-                        </div>
+                    <!-- List -->
+                    <div class="form-group">
+                        <label>Список:</label>
+                        <select id="list_id" name="list" class="form-control">
+                            <option value="" hidden="hidden" selected="selected"></option>
+                            {% for list in lists %}
+                                <option value="{{ list }}" hidden="hidden" class="list_hidden">{{ list.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    {# Скрипт фильтрации списка #}
+
+
+{#                    <ul class="nav">#}
+{#                        <li class="nav-item">#}
+{#                            <a class="btn btn-outline-primary shadow-2 show" data-toggle="tab" href="#add" role="tab" aria-selected="false">Новый список</a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="btn btn-outline-primary shadow-2 show active" data-toggle="tab" href="#new" role="tab" aria-selected="true">Текущий список</a>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                    <div class="tab-content m-0 p-0">#}
+{#                        <div class="tab-pane m-0 p-0" id="add" aria-labelledby="profile-tab">#}
+{#                            <p class="mb-0">Новый список</p>#}
+{#                        </div>#}
+{#                        <div class="tab-pane m-0 p-0 active show" id="new" aria-labelledby="home-tab">#}
+{#                            <p class="mb-0">Текущий список</p>#}
+{##}
+{##}
+{#                        </div>#}
+{#                    </div>#}
+
+                    <!-- Скрипт фильтрации списка -->
                     <script>
                         // функция ограничения выпадающего списка
                         function ListsFilter() {
