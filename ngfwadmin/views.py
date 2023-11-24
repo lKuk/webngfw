@@ -428,14 +428,15 @@ def table(request, name):
         if name == 'atomic':
             caption = 'Атомарные правила'
             atomic = enum_atomic_get(dev['url'])
-            columns = ['ID', 'Название', 'Тип данных', 'Тип файла']
+            columns = ['ID', 'Название', 'Категория', 'Тип данных', 'Тип файла']
             for i in atomic:
                 row = atomic[i]
                 id = row['id']
                 arg_type = row['arg_type']
                 file_type = row['file_type']
                 description = row['description']
-                rows.append([id, description, arg_type, file_type])
+                rule_category = row['rule_category']
+                rows.append([id, description, rule_category, arg_type, file_type])
 
         # Формат атомарных правил
         if name == 'format':
