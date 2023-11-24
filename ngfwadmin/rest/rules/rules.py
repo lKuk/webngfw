@@ -121,8 +121,10 @@ def sub_warp(url, rule):
                     list = list_select(url, idlist)
                     s2['list_id'] = idlist
                     if list is None:
+                        s2['list_name'] = 'list not found, id=' + str(idlist)
                         s2['list_description'] = 'list not found, id=' + str(idlist)
                     else:
+                        s2['list_name'] = list['name']
                         s2['list_description'] = list['description']
             sub2.append(s2)
         rule['sub2'] = sub2

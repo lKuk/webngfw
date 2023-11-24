@@ -83,6 +83,8 @@
                     <h5>Добавление подправила</h5>
                 </div>
                 <div class="card-body">
+                    <form action="" method="post" id="subEditForm">
+                    {% csrf_token %}
                     <!-- Кнопки -->
                     <button type="submit" class="btn btn-primary shadow-2" name="btnAdd" style="width: 120px;">Добавить</button>
                     <!-- Atomic -->
@@ -113,26 +115,7 @@
                             {% endfor %}
                         </select>
                     </div>
-
-
-{#                    <ul class="nav">#}
-{#                        <li class="nav-item">#}
-{#                            <a class="btn btn-outline-primary shadow-2 show" data-toggle="tab" href="#add" role="tab" aria-selected="false">Новый список</a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="btn btn-outline-primary shadow-2 show active" data-toggle="tab" href="#new" role="tab" aria-selected="true">Текущий список</a>#}
-{#                        </li>#}
-{#                    </ul>#}
-{#                    <div class="tab-content m-0 p-0">#}
-{#                        <div class="tab-pane m-0 p-0" id="add" aria-labelledby="profile-tab">#}
-{#                            <p class="mb-0">Новый список</p>#}
-{#                        </div>#}
-{#                        <div class="tab-pane m-0 p-0 active show" id="new" aria-labelledby="home-tab">#}
-{#                            <p class="mb-0">Текущий список</p>#}
-{##}
-{##}
-{#                        </div>#}
-{#                    </div>#}
+                    </form>
 
                     <!-- Скрипт фильтрации списка -->
                     <script>
@@ -227,18 +210,12 @@
                                         {% else %}
                                             <i title="Инвертированное" class="feather icon-arrow-down-left" style="color: #000"></i>
                                         {% endif %}
-                                         Описание подправила
+                                        <!--  Название подправила -->
                                         {{ s.ar_description|truncatechars:50 }}
                                     </td>
-                                    <!-- Значение -->
+                                    <!-- Список -->
                                     <td style="display: table-cell;">
-                                        {% if s.ar_format.upper == 'FILE' and s.fid_or_val.isdigit %}
-                                            <a href="{% url 'lists_edit' s.fid_or_val %}">{{ s.list_description|truncatechars:30 }}</a>
-                                        {% else %}
-                                            <a class="{% if rule.rtype.upper == 'BLACK' %}{{ 'text-danger' }}
-                                                      {% elif rule.rtype.upper == 'WHITE'%}{{ 'text-success' }}
-                                                      {% endif %}">{{ s.fid_or_val }}</a>
-                                        {% endif %}
+                                        <a href="{% url 'lists_edit' s.fid_or_val %}">{{ s.list_name }}</a>
                                     </td>
                                 </tr>
                             {% endfor %}

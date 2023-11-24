@@ -169,13 +169,7 @@
                                                     {% endif %}
                                                     {# Описание подправила и значение #}
                                                     {{ s.ar_description|truncatechars:30 }}{{ ' - ' }}
-                                                    {% if s.ar_format.upper == 'FILE' and s.fid_or_val.isdigit %}
-                                                        <a href="{% url 'lists_edit' s.fid_or_val %}">{{ s.list_description|truncatechars:30 }}</a>
-                                                    {% else %}
-                                                        <a class="{% if r.rtype.upper == 'BLACK' %}{{ 'text-danger' }}
-                                                                  {% elif r.rtype.upper == 'WHITE'%}{{ 'text-success' }}
-                                                                  {% endif %}">{{ s.fid_or_val }}</a>
-                                                    {% endif %}<br/>
+                                                    <a href="{% url 'lists_edit' s.fid_or_val %}">{{ s.list_name }}</a><br/>
                                                 {% endfor %}
                                             </div>
                                         </td>
