@@ -14,7 +14,7 @@ dev = {}
 def connect(request):
     try:
         if request.method == 'POST':
-            form = ConnectForm(request.POST, error_class=DivErrorList)
+            form = ConnectForm(request.POST)
             if form.is_valid():
                 obj = form.cleaned_data
                 global dev
@@ -90,11 +90,6 @@ def rules(request):
         # Получить описание состояния
         description = rule_description(url)
 
-        # сортировка по имени
-        if rules is not None:
-            sort_rules = sorted(rules, key=lambda k: k['name'])
-            rules = sort_rules
-
         # развернуть все подправила
         if rules is not None:
             for rule in rules:
@@ -135,7 +130,7 @@ def rules_add(request):
                 # получить id
                 details = json.loads(result)
                 id = details['id']
-                return redirect('rules_edit', id)
+                return redirect('rules')
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,
@@ -158,14 +153,6 @@ def rules_edit(request, id):
         # подключение
         url = dev['url']
 
-        # удалить подправило
-        delete = request.GET.get("delete")
-        if delete is not None:
-            # удалить список
-            sub_delete(url, id, delete)
-            # перейти к таблице правил
-            return redirect('rules_edit', id)
-
         # создать список
         if request.method == 'POST':
             # получить параметры правила
@@ -177,64 +164,71 @@ def rules_edit(request, id):
             if sub is not None:
                 sub = sub.replace("\'", "\"")
                 sub = json.loads(sub)
-            # получить параметры подправила
-            port = request.POST.get('port')
-            invert = request.POST.get('invert')
-            ip = request.POST.get('ip_address')
-            mac = request.POST.get('mac_address')
-            service = request.POST.get('service')
-            protocol = request.POST.get('protocol')
-            category = request.POST.get('category')
             # обновить правило
             if 'btnUpdate' in request.POST:
                 # добавить правило
                 rule_update(url, id, rtype, is_enable, name, description, sub)
                 # перейти к таблице правил
                 return redirect('rules')
+
+        # получить данные
+        rule = rule_select(url, id)
+
+        # отобразить страницу редактирования списка
+        context = {'id': id,
+                   'dev': dev,
+                   'rule': rule,
+                   'action': 'edit',
+                   'caption': 'Редактировать правило'}
+        return render(request, 'rules/rules/rules_form.html', context=context)
+
+    # обработка ошибок
+    except Exception as ex:
+        return exception(request, ex)
+
+
+# Страница редактирования подправил
+def rules_sub_edit(request, id):
+    try:
+        # проверка подключения
+        if 'url' not in dev:
+            return redirect('connect')
+
+        # подключение
+        url = dev['url']
+
+        # удалить подправило
+        delete = request.GET.get("delete")
+        if delete is not None:
+            # удалить список
+            sub_delete(url, id, delete)
+            # перейти к таблице правил
+            return redirect('rules_sub_edit', id)
+
+        # добавить подправило
+        if request.method == 'POST':
             # добавить подправило
-            if 'btnAdd' in request.POST:
-                # эти параметры требуют в кавычках
-                ip = "\"" + str(ip).replace("\"", "") + "\""
-                mac = "\"" + str(mac).replace("\"", "") + "\""
-                port = "\"" + str(port).replace("\"", "") + "\""
+            if 'btnSubAdd' in request.POST:
                 # Параметры атомарного правила
-                atomic = request.POST.get('atomic')
-                atomic = atomic.replace("\'", "\"")
-                atomic = json.loads(atomic)
-                ar_id = atomic['id']
-                arg_type = atomic['arg_type']
-                file_type = atomic['file_type']
+                ar_id = request.POST.get('ar_id')
+                ar_id = ar_id.replace("\'", "\"")
+                ar_id = json.loads(ar_id)
+                ar_id = ar_id['id']
                 # Параметры списка
-                list = request.POST.get('list')
-                list = list.replace("\'", "\"")
-                list = json.loads(list)
-                fid = list['id']
-                # определить значение
-                fid_or_val = ''
-                if arg_type == 'IP':
-                    fid_or_val = ip;
-                if arg_type == 'MAC':
-                    fid_or_val = mac;
-                if arg_type == 'PORT':
-                    fid_or_val = port
-                if arg_type == 'PROTNAME':
-                    fid_or_val = protocol
-                if arg_type == 'CATEGNAME':
-                    fid_or_val = category
-                if arg_type == 'SERVICENAME':
-                    fid_or_val = service
-                if arg_type == 'file':
-                    fid_or_val = fid
+                list_id = request.POST.get('list_id')
+                list_id = list_id.replace("\'", "\"")
+                list_id = json.loads(list_id)
+                fid_or_val = list_id['id']
+                # Параметры инверсии
+                is_invert = request.POST.get('is_invert')
                 # добавить подправило
-                sub_insert(url, id, ar_id, fid_or_val, invert)
-                return redirect('rules_edit', id)
+                sub_insert(url, id, ar_id, fid_or_val, is_invert)
+                return redirect('rules_sub_edit', id)
 
         # получить данные
         rule = rule_select(url, id)
         lists = list_select_all(url)
         atomic = enum_atomic_get(url)
-        service = enum_services_get(url)
-        protocol = enum_protocols_get(url)
         # развернуть все подправила
         sub_warp(url, rule)
 
@@ -243,12 +237,8 @@ def rules_edit(request, id):
                    'dev': dev,
                    'rule': rule,
                    'lists': lists,
-                   'atomic': atomic,
-                   'service': service,
-                   'protocol': protocol,
-                   'action': 'edit',
-                   'caption': 'Редактировать правило'}
-        return render(request, 'rules/rules/rules_form.html', context=context)
+                   'atomic': atomic}
+        return render(request, 'rules/rules/rules_sub_form.html', context=context)
 
     # обработка ошибок
     except Exception as ex:

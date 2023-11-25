@@ -1,18 +1,19 @@
  $(document).ready(function () {
     $('#col-reorder').dataTable({
         "bDestroy": true,
+        "colReorder": true,
         "oLanguage": {
-            "sSearch": "Поиск:",
-            "sLengthMenu": "Показать _MENU_ запсей",
-            "sZeroRecords": "Ничего не найдено",
-            "sInfo": "Записи с _START_ до _END_ из _TOTAL_ записей",
-            "sInfoEmpty": "Записи с 0 до 0 из 0 записей",
-            "sInfoFiltered": "(отфильтровано из _MAX_ записей)",
-            "sPaginate": {
-                "first": "Первая",
-                "previous": "Предыдущая",
-                "next": "Следующая",
-                "last": "Последняя"
+                    "sSearch": "Поиск:",
+                    "sLengthMenu": "Показать _MENU_ запсей",
+                    "sZeroRecords": "Ничего не найдено",
+                    "sInfo": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                    "sInfoEmpty": "Записи с 0 до 0 из 0 записей",
+                    "sInfoFiltered": "(отфильтровано из _MAX_ записей)",
+                    "oPaginate": {
+                        "sFirst": "Первая",
+                        "sPrevious": "Предыдущая",
+                        "sNext": "Следующая",
+                        "sLast": "Последняя",
             },
         }
     });

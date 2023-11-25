@@ -13,6 +13,7 @@ urlpatterns = [
     path('rules/', rules, name='rules'),
     path('rules/new/', rules_add, name='rules_add'),
     path('rules/<int:id>/', rules_edit, name='rules_edit'),
+    path('rules/<int:id>/sub', rules_sub_edit, name='rules_sub_edit'),
 
     # Редактор списков
     path('rules/lists/', lists, name='lists'),

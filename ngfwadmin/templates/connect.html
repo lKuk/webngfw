@@ -21,8 +21,10 @@
                 <span class="r"></span>
             </div>
             <div class="card">
-                <div class="card-body text-center form-control">
-                    <h3 class="mb-4">Подключение</h3>
+                <div class="card-header">
+                    <h5>Подключение</h5>
+                </div>
+                <div class="card-body text-center">
                     <form action="{% url 'connect' %}" method="post" id="connectForm">
                         {% csrf_token %}
                             <p>{{ form.non_field_errors }}</p>
@@ -30,7 +32,8 @@
                                 <div class="form-group text-left">
                                     <label for="{{ f.id_for_label }}" id="">{{ f.label }}: </label>
                                     {{ f }}
-                                    <p>{{ f.errors }}</p>
+                                    <div class="text-danger">{{ f.errors }}</div>
+                                </div>
                             {% endfor %}
                         <button type="submit" class="btn btn-primary shadow-2 m-t-4">Подключиться</button>
                     </form>

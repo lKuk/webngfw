@@ -1,0 +1,184 @@
+{% extends "rules/../base.html" %}
+{% load static %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+     <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-trending-up"></i>Редактировать подправила
+        </h4>
+    </li>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+    <div class="page-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <h5>Параметры подправил</h5>
+            </div>
+                <form action="" method="post" id="subEditForm">
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Кнопки -->
+                        <div class="col-md-12 m-b-10">
+                            <button type="submit" class="btn btn-primary shadow-2" name="btnSubAdd" style="width: 120px;">Добавить</button>
+                        </div>
+                        <!-- Параметры правила -->
+                        <div class="col-md-6 col-xl-4">
+                            <!-- Atomic -->
+                            <div class="form-group">
+                                <label for="ar_id">Атомарное подправило:</label>
+                                <select id="ar_id" name="ar_id" class="form-control" onchange="ListsFilter()">
+                                    <option value="" hidden="hidden" selected="selected"></option>
+                                    {% for key, value in atomic.items %}
+                                        <option value="{{ value }}">{{ value.description }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <!-- List -->
+                            <div class="form-group">
+                                <label for="list_id">Список:</label>
+                                <select id="list_id" name="list_id" class="form-control">
+                                    <option value="" hidden="hidden" selected="selected"></option>
+                                    {% for list in lists %}
+                                        <option value="{{ list }}" hidden="hidden" class="list_hidden">{{ list.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <!-- invert -->
+                            <div class="form-group" id="dev_category">
+                                <label for="is_invert">Инвертация:</label>
+                                <select id="is_invert" name="is_invert" class="form-control">
+                                    <option value="0" selected="selected">Не инвертировано</option>
+                                    <option value="1">Инвертировано</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Таблица подправил -->
+                        <div class="col-xl-8 col-md-6">
+                            <div class="table-responsive">
+                                <table id="col-reorder"
+                                       class="display table nowrap table-striped table-hover footable footable-1 footable-paging footable-paging-center"
+                                       style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th title="Удаление"><i class="feather icon-trash"></i></th>
+                                        <th>Подправило</th>
+                                        <th>Список</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for s in rule.sub2 %}
+                                        <tr>
+                                            <!-- Удаление -->
+                                            <td style="display: table-cell;">
+                                                <div>
+                                                    <a href="{% url 'rules_sub_edit' rule.id %}?delete={{ s.id }}"
+                                                       onclick="return confirm('{{ s.ar_description|truncatechars:50 }}\nУдалить подправило?');">
+                                                        <i class="feather icon-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td style="display: table-cell;">
+                                                <!-- Инвертированное -->
+                                                {% if s.is_invert == '0' %}
+                                                    <i title="Не инвертированное" class="feather icon-arrow-up-right" style="color: #000"></i>
+                                                {% else %}
+                                                    <i title="Инвертированное" class="feather icon-arrow-down-left" style="color: #000"></i>
+                                                {% endif %}
+                                                <!--  Название подправила -->
+                                                {{ s.ar_description|truncatechars:50 }}
+                                            </td>
+                                            <!-- Список -->
+                                            <td style="display: table-cell;">
+                                                <a href="{% url 'lists_edit' s.fid_or_val %}">{{ s.list_name }}</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Скрипт фильтрации списка -->
+    <script>
+        // функция ограничения выпадающего списка
+        function ListsFilter() {
+            try {
+                // атомарное правило
+                var atomic = document.getElementById("ar_id");
+                // список, который нужно фильтровать
+                var listHidden = document.getElementsByClassName('list_hidden')
+                // тип файла
+                file_type_atomic = '';
+                // получить json
+                let strAtomic = atomic.value
+                if(strAtomic !== '') {
+                    strAtomic = strAtomic.replaceAll("'", "\"");
+                    json = JSON.parse(strAtomic);
+                    // получить тип файла
+                    file_type_atomic = json['file_type'];
+                }
+
+                // пройти по всему списку сокрытия
+                var message = "";
+                Array.prototype.forEach.call(listHidden, function (el) {
+                    try {
+                        // тип файла
+                        file_type_list = '';
+                        // получить json
+                        let strList = el.value
+                        if(strList !== '') {
+                            strList = strList.replaceAll("'", "\"");
+                            json = JSON.parse(strList);
+                            // получить тип файла
+                            file_type_list = json['ftype'];
+                        }
+                        // скрыть ненужные элементы
+                        el.hidden = true;
+                        el.selected = false;
+                        if(file_type_list === '' || file_type_atomic === file_type_list) {
+                            el.hidden = false;
+                            el.selected = true;
+                        }
+                    } catch (error) {
+                        message += el.value + '\n' + error + '\n';
+                    }
+                    if(message !== "")
+                        alert(message);
+                });
+            }
+            catch (error) {
+                alert(error);
+            }
+        }
+    </script>
+
+{% endblock content %}
+
+
+
+
+
