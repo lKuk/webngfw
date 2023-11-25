@@ -30,16 +30,20 @@
     <div class="page-wrapper">
         <div class="card">
             <div class="card-header">
-                <h5>Параметры подправил</h5>
+                <h5>Параметры подправил: <a href="{% url 'rules_edit' rule.id %}">{{ rule.name }}</a></h5>
             </div>
                 <form action="" method="post" id="subEditForm">
                 {% csrf_token %}
                 <div class="card-body">
-                    <div class="row">
+                     <div class="row">
                         <!-- Кнопки -->
-                        <div class="col-md-12 m-b-10">
-                            <button type="submit" class="btn btn-primary shadow-2" name="btnSubAdd" style="width: 120px;">Добавить</button>
+                        <div class="col text-left">
+                            <button type="submit" class="btn btn-primary shadow-2 wid-140" name="btnSubAdd">Добавить</button>
                         </div>
+                        <div class="col text-right">
+                        </div>
+                    </div>
+                    <div class="row">
                         <!-- Параметры правила -->
                         <div class="col-md-6 col-xl-4">
                             <!-- Atomic -->

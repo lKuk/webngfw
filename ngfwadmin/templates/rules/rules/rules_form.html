@@ -31,13 +31,18 @@
                 <div class="card-body">
                     <div class="row">
                         <!-- Кнопки -->
-                        <div class="col-md-12 m-b-10">
+                        <div class="col text-left">
                             {% if action == 'add' %}
-                                <button type="submit" name="btnInsert" class="btn btn-primary shadow-2" style="width: 120px;">Создать</button>
+                                <button type="submit" name="btnInsert" class="btn btn-primary shadow-2 wid-140">Создать</button>
                             {% else %}
-                                <button type="submit" name="btnUpdate" class="btn btn-primary shadow-2" style="width: 120px;">Сохранить</button>
+                                <button type="submit" name="btnUpdate" class="btn btn-primary shadow-2 wid-140">Сохранить</button>
+                                <a href="{% url 'rules_sub_edit' rule.id %}" class="btn btn-outline-primary shadow-2 wid-140">Подправила</a>
                             {% endif %}
                         </div>
+                        <div class="col text-right">
+                        </div>
+                    </div>
+                    <div class="row">
                         <!-- Параметры правила -->
                         <div class="col-md-6 col-xl-4">
                             <input name="id" value="{{ rule.id }}" type="hidden">

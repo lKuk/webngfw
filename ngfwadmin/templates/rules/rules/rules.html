@@ -41,12 +41,10 @@
                             <div class="col text-left">
                                 <form action="" method="post" id="ruleApplyForm">
                                 {% csrf_token %}
-                                        <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2" style="width: 120px;">Добавить</a>
+                                        <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2 wid-140">Добавить</a>
                                         <button type="submit" name="btnApply"
                                                 onclick="{% if description.status.upper != 'EDITED' %}return false{% endif %}"
-                                                class="btn {% if description.status.upper != 'EDITED' %}disabled btn-secondary{% else %}btn-warning{% endif %} shadow-2"
-                                                style="width: 200px;">Установить правила
-                                        </button>
+                                                class="btn {% if description.status.upper != 'EDITED' %}disabled btn-secondary{% else %}btn-warning{% endif %} shadow-2 wid-140">Установить</button>
                                 </form>
                             </div>
                             <div class="col text-right">

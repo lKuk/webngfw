@@ -126,11 +126,16 @@ def rules_add(request):
             # добавить список
             if 'btnInsert' in request.POST:
                 # добавить правило
+                rule_insert(url, rtype, is_enable, name, description)
+                return redirect('rules')
+            # добавить список и перейти в подправила
+            if 'btnInsertGoSub' in request.POST:
+                # добавить правило
                 result = rule_insert(url, rtype, is_enable, name, description)
                 # получить id
                 details = json.loads(result)
                 id = details['id']
-                return redirect('rules')
+                return redirect('rules_sub_edit', id)
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,
@@ -170,6 +175,12 @@ def rules_edit(request, id):
                 rule_update(url, id, rtype, is_enable, name, description, sub)
                 # перейти к таблице правил
                 return redirect('rules')
+            # обновить правило и перейти в подправила
+            if 'btnUpdateGoSub' in request.POST:
+                # добавить правило
+                rule_update(url, id, rtype, is_enable, name, description, sub)
+                # перейти к таблице правил
+                return redirect('rules_sub_edit', id)
 
         # получить данные
         rule = rule_select(url, id)
