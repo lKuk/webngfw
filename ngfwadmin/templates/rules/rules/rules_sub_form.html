@@ -66,7 +66,7 @@
                             <!-- List -->
                             <div class="form-group">
                                 <label for="list_id">Список:</label>
-                                <div class="input-group mb-3">
+                                <div id="list_div" class="input-group mb-3" style="pointer-events: none;">
                                     <select id="list_id" name="list_id" class="form-control">
                                         <option value="" hidden="hidden" selected="selected"></option>
                                         {% for list in lists %}
@@ -146,7 +146,7 @@
                 // атомарное правило
                 var ar_id = document.getElementById("ar_id");
                 // список подправил
-                var list_id = document.getElementById("list_id");
+                var list_div = document.getElementById("list_div");
                 // список, который нужно фильтровать
                 var listHidden = document.getElementsByClassName('list_hidden')
                 // тип файла
@@ -159,6 +159,10 @@
                     // получить тип файла
                     file_type_atomic = json['file_type'];
                 }
+
+                list_div.style = '';
+                if(strAtomic === '')
+                    list_div.style = 'pointer-events: none;';
 
                 // пройти по всему списку сокрытия
                 var message = "";
