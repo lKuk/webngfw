@@ -30,9 +30,16 @@
     <div class="page-wrapper">
         <div class="card">
             <div class="card-header">
-                <h5>Параметры подправил: <a href="{% url 'rules_edit' rule.id %}">{{ rule.name }}</a></h5>
+                <div class="page-header-title">
+                    <h5>Параметры подправил</h5>
+                </div>
+                <ul class="breadcrumb m-t-10">
+                    <li class="breadcrumb-item"><a href="{% url 'rules' %}"><i class="feather icon-trending-up p-r-5"></i>Правила</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'rules_edit' rule.id %}">{% if rule.name == None %}Новое{% else %}{{ rule.name }}{% endif %}</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'rules_sub_edit' rule.id %}">Подправила</a></li>
+                </ul>
             </div>
-                <form action="" method="post" id="subEditForm">
+            <form action="" method="post" id="subEditForm">
                 {% csrf_token %}
                 <div class="card-body">
                      <div class="row">
@@ -59,12 +66,17 @@
                             <!-- List -->
                             <div class="form-group">
                                 <label for="list_id">Список:</label>
-                                <select id="list_id" name="list_id" class="form-control">
-                                    <option value="" hidden="hidden" selected="selected"></option>
-                                    {% for list in lists %}
-                                        <option value="{{ list }}" hidden="hidden" class="list_hidden">{{ list.name }}</option>
-                                    {% endfor %}
-                                </select>
+                                <div class="input-group mb-3">
+                                    <select id="list_id" name="list_id" class="form-control">
+                                        <option value="" hidden="hidden" selected="selected"></option>
+                                        {% for list in lists %}
+                                            <option value="{{ list }}" hidden="hidden" class="list_hidden">{{ list.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="input-group-append">
+                                        <a class="input-group-text" href="{% url 'rules_sub_lists_add' rule.id %}">Новый</a>
+                                    </div>
+                                </div>
                             </div>
                             <!-- invert -->
                             <div class="form-group" id="dev_category">
@@ -132,13 +144,15 @@
         function ListsFilter() {
             try {
                 // атомарное правило
-                var atomic = document.getElementById("ar_id");
+                var ar_id = document.getElementById("ar_id");
+                // список подправил
+                var list_id = document.getElementById("list_id");
                 // список, который нужно фильтровать
                 var listHidden = document.getElementsByClassName('list_hidden')
                 // тип файла
                 file_type_atomic = '';
                 // получить json
-                let strAtomic = atomic.value
+                let strAtomic = ar_id.value
                 if(strAtomic !== '') {
                     strAtomic = strAtomic.replaceAll("'", "\"");
                     json = JSON.parse(strAtomic);

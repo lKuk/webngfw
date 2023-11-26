@@ -24,7 +24,13 @@
     <div class="page-wrapper">
         <div class="card">
             <div class="card-header">
-                <h5>Параметры правила</h5>
+                <div class="page-header-title">
+                    <h5>Параметры правила</h5>
+                </div>
+                <ul class="breadcrumb m-t-10">
+                    <li class="breadcrumb-item"><a href="{% url 'rules' %}"><i class="feather icon-trending-up p-r-5"></i>Правила</a></li>
+                    <li class="breadcrumb-item"><a href="#!">{% if rule.name == None %}Новое{% else %}{{ rule.name }}{% endif %}</a></li>
+                </ul>
             </div>
             <form action="" method="post" id="ruleEditForm" >
                 {% csrf_token %}

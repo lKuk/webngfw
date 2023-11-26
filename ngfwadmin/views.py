@@ -126,11 +126,6 @@ def rules_add(request):
             # добавить список
             if 'btnInsert' in request.POST:
                 # добавить правило
-                rule_insert(url, rtype, is_enable, name, description)
-                return redirect('rules')
-            # добавить список и перейти в подправила
-            if 'btnInsertGoSub' in request.POST:
-                # добавить правило
                 result = rule_insert(url, rtype, is_enable, name, description)
                 # получить id
                 details = json.loads(result)
@@ -378,6 +373,60 @@ def lists_edit(request, id):
                    'content': content,
                    'action': 'edit',
                    'caption': 'Редактировать список'}
+        return render(request, 'rules/lists/lists_form.html', context=context)
+
+    # обработка ошибок
+    except Exception as ex:
+        return exception(request, ex)
+
+
+def rules_sub_lists_add(request, id):
+    try:
+        # проверка подключения
+        if 'url' not in dev:
+            return redirect('connect')
+
+        # подключение
+        url = dev['url']
+        login = dev['login']
+        password = dev['password']
+
+        # создать список
+        if request.method == 'POST':
+            # добавить список
+            if 'btnInsert' in request.POST:
+                # Получить параметры
+                rule = request.POST.get('rule')
+                name = request.POST.get('name')
+                mark = request.POST.get('type')
+                ftype = request.POST.get('ftype')
+                content = request.POST.get('content')
+                description = request.POST.get('description')
+                # добавить список
+                result = list_insert(url, login, password, name, ftype, mark, description)
+                # получить id
+                details = json.loads(result)
+                id = details['id']
+                # установить список
+                content_set(url, login, password, id, content)
+                # перейти в подправила редактирования правила
+                if rule is not None:
+                    rule = eval(rule)
+                    ruleId = rule['id']
+                    return redirect('rules_sub_edit', ruleId)
+                # перейти к таблице списков
+                return redirect('lists')
+
+        # получить доступные форматы
+        format = enum_format_ftype_get(url)
+        rule = rule_select(url, id)
+
+        # отобразить страницу редактирования списка
+        context = {'dev': dev,
+                   'rule': rule,
+                   'format': format,
+                   'action': 'add',
+                   'caption': 'Добавить новый список'}
         return render(request, 'rules/lists/lists_form.html', context=context)
 
     # обработка ошибок
