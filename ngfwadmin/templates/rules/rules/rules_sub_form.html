@@ -56,7 +56,7 @@
                             <!-- Atomic -->
                             <div class="form-group">
                                 <label for="ar_id">Атомарное подправило:</label>
-                                <select id="ar_id" name="ar_id" class="form-control" onchange="ListsFilter()">
+                                <select id="ar_id" name="ar_id" class="form-control" onchange="ListsFilter()" required>
                                     <option value="" hidden="hidden" selected="selected"></option>
                                     {% for key, value in atomic.items %}
                                         <option value="{{ value }}">{{ value.description }}</option>
@@ -66,22 +66,22 @@
                             <!-- List -->
                             <div class="form-group">
                                 <label for="list_id">Список:</label>
-                                <div id="list_div" class="input-group mb-3" style="pointer-events: none;">
-                                    <select id="list_id" name="list_id" class="form-control">
+                                <div id="list_div" class="input-group mb-3" style="pointer-events: none; opacity: 0.4;">
+                                    <select id="list_id" name="list_id" class="form-control" required>
                                         <option value="" hidden="hidden" selected="selected"></option>
                                         {% for list in lists %}
                                             <option value="{{ list }}" hidden="hidden" class="list_hidden">{{ list.name }}</option>
                                         {% endfor %}
                                     </select>
                                     <div class="input-group-append">
-                                        <a class="input-group-text" href="{% url 'rules_sub_lists_add' rule.id %}">Новый</a>
+                                        <button type="submit" class="btn btn-outline-primary" name="btnListNew">Новый</button>
                                     </div>
                                 </div>
                             </div>
                             <!-- invert -->
                             <div class="form-group" id="dev_category">
-                                <label for="is_invert">Инвертация:</label>
-                                <select id="is_invert" name="is_invert" class="form-control">
+                                <label for="is_invert">Инверсия:</label>
+                                <select id="is_invert" name="is_invert" class="form-control" required>
                                     <option value="0" selected="selected">Не инвертировано</option>
                                     <option value="1">Инвертировано</option>
                                 </select>
@@ -162,7 +162,7 @@
 
                 list_div.style = '';
                 if(strAtomic === '')
-                    list_div.style = 'pointer-events: none;';
+                    list_div.style = 'pointer-events: none; opacity: 0.4;';
 
                 // пройти по всему списку сокрытия
                 var message = "";

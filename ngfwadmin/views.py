@@ -8,7 +8,8 @@ from django.shortcuts import *
 
 # устройство
 dev = {}
-
+# подправило
+dictsub = {}
 
 # Страница подключения к устройству
 def connect(request):
@@ -202,6 +203,7 @@ def rules_sub_edit(request, id):
 
         # подключение
         url = dev['url']
+        global dictsub
 
         # удалить подправило
         delete = request.GET.get("delete")
@@ -211,25 +213,44 @@ def rules_sub_edit(request, id):
             # перейти к таблице правил
             return redirect('rules_sub_edit', id)
 
-        # добавить подправило
+        # Запомнить значения
         if request.method == 'POST':
-            # добавить подправило
-            if 'btnSubAdd' in request.POST:
-                # Параметры атомарного правила
-                ar_id = request.POST.get('ar_id')
-                ar_id = ar_id.replace("\'", "\"")
-                ar_id = json.loads(ar_id)
-                ar_id = ar_id['id']
-                # Параметры списка
-                list_id = request.POST.get('list_id')
-                list_id = list_id.replace("\'", "\"")
-                list_id = json.loads(list_id)
-                fid_or_val = list_id['id']
-                # Параметры инверсии
-                is_invert = request.POST.get('is_invert')
-                # добавить подправило
-                sub_insert(url, id, ar_id, fid_or_val, is_invert)
-                return redirect('rules_sub_edit', id)
+            dictsub['ar_id'] = request.POST.get('ar_id')
+            dictsub['list_id'] = request.POST.get('list_id')
+            dictsub['is_invert'] = request.POST.get('is_invert')
+
+        # # добавить подправило
+        # if request.method == 'POST':
+        #     # Параметры атомарного правила
+        #     ar_id = request.POST.get('ar_id')
+        #     if 'ar_id' in dictsub and ar_id is None:
+        #         ar_id = dictsub['ar_id']
+        #     dictsub['ar_id'] = ar_id
+        #     if ar_id != '':
+        #         ar_id = ar_id.replace("\'", "\"")
+        #         ar_id = json.loads(ar_id)
+        #         ar_id = ar_id['id']
+        #     # Параметры списка
+        #     list_id = request.POST.get('list_id')
+        #     if 'list_id' in dictsub and list_id is None:
+        #         list_id = dictsub['list_id']
+        #     dictsub['list_id'] = list_id
+        #     if list_id != '':
+        #         list_id = list_id.replace("\'", "\"")
+        #         list_id = json.loads(list_id)
+        #         list_id = list_id['id']
+        #     # Параметры инверсии
+        #     is_invert = request.POST.get('is_invert')
+        #     if 'is_invert' in dictsub and is_invert != dictsub['is_invert']:
+        #         is_invert = dictsub['is_invert']
+        #     dictsub['is_invert'] = is_invert
+        #     # добавить подправило
+        #     if 'btnSubAdd' in request.POST:
+        #         # добавить подправило
+        #         sub_insert(url, id, ar_id, list_id, is_invert)
+        #         return redirect('rules_sub_edit', id)
+        #     if 'btnListNew'in request.POST:
+        #         return rules_sub_lists_add(request, id)
 
         # получить данные
         rule = rule_select(url, id)
@@ -243,7 +264,8 @@ def rules_sub_edit(request, id):
                    'dev': dev,
                    'rule': rule,
                    'lists': lists,
-                   'atomic': atomic}
+                   'atomic': atomic,
+                   'dictsub': dictsub}
         return render(request, 'rules/rules/rules_sub_form.html', context=context)
 
     # обработка ошибок

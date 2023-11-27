@@ -56,12 +56,12 @@
                             <!-- Название -->
                             <div class="form-group">
                                 <label for="name">Название:</label>
-                                <input id="name" name="name" value="{{ rule.name }}" type="text" class="form-control">
+                                <input id="name" name="name" value="{{ rule.name }}" type="text" class="form-control" required>
                             </div>
                             <!-- Включено -->
                             <div class="form-group">
                                 <label for="is_enable">Включено:</label>
-                                <select id="is_enable" name="is_enable" value="{{ rule.is_enable }}" class="form-control">
+                                <select id="is_enable" name="is_enable" value="{{ rule.is_enable }}" class="form-control" required>
                                     <option value="true" {% if rule.is_enable == 'true' %}selected="selected"{% endif %}>Вкл</option>
                                     <option value="false" {% if rule.is_enable == 'false' %}selected="selected"{% endif %}>Выкл</option>
                                 </select>
@@ -69,7 +69,7 @@
                             <!-- Тип правила -->
                             <div class="form-group">
                                 <label for="rtype">Тип правила:</label>
-                                <select id="rtype" name="rtype" value="{{ rule.rtype }}" class="form-control">
+                                <select id="rtype" name="rtype" value="{{ rule.rtype }}" class="form-control" required>
                                     <option value="black" {% if rule.rtype == 'black' %}selected="selected"{% endif %}>Запрещено</option>
                                     <option value="white" {% if rule.rtype == 'white' %}selected="selected"{% endif %}>Разрешено</option>
                                 </select>
@@ -79,7 +79,7 @@
                         <div class="col-xl-8 col-md-6">
                             <div class="form-group">
                                 <label for="description">Описание:</label>
-                                <textarea id="description" name="description" class="form-control" rows="9">{{ rule.description }}</textarea>
+                                <textarea id="description" name="description" class="form-control" rows="9" required>{{ rule.description }}</textarea>
                             </div>
                         </div>
                     </div>

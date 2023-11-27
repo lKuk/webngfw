@@ -55,12 +55,12 @@
                             <!-- Название -->
                             <div class="form-group">
                                 <label for="name">Название:</label>
-                                <input id="name" name="name" value="{{ list.name }}" type="text" class="form-control">
+                                <input id="name" name="name" value="{{ list.name }}" type="text" class="form-control" required>
                             </div>
                             <!-- Метка -->
                             <div class="form-group">
                                 <label for="type">Метка:</label>
-                                <select id="type" name="type" class="form-control" value="{{ list.type }}">
+                                <select id="type" name="type" class="form-control" value="{{ list.type }}" required>
                                     <option value="list" {% if f == list.type %}selected="selected"{% endif %}>Список</option>
                                     <option value="lib" {% if f == list.type %}selected="selected"{% endif %}>Библиотека</option>
                                 </select>
@@ -68,7 +68,7 @@
                             <!-- Тип -->
                             <div class="form-group">
                                 <label for="ftype">Тип списка:</label>
-                                <select id="ftype" name="ftype" class="form-control" value="{{ list.ftype }}" id="listId">
+                                <select id="ftype" name="ftype" class="form-control" value="{{ list.ftype }}" id="listId" required>
                                     {% for f in format %}
                                         <option value="{{ f }}" {% if f == list.ftype %}selected="selected"{% endif %}>{{ f }}</option>
                                     {% endfor %}
@@ -77,14 +77,14 @@
                             <!-- Описание -->
                             <div class="form-group">
                                 <label for="description">Описание:</label>
-                                <textarea id="description" name="description" class="form-control" rows="11">{{ list.description }}</textarea>
+                                <textarea id="description" name="description" class="form-control" rows="11" required>{{ list.description }}</textarea>
                             </div>
                         </div>
                         <!-- Содержимое списка -->
                         <div class="col-xl-8 col-md-6">
                             <label for="content">Содержимое списка</label>
                             <div class="form-control">
-                                <textarea id="content" name="content" rows="20">{{ content }}</textarea>
+                                <textarea id="content" name="content" rows="20" required>{{ content }}</textarea>
                             </div>
                             <div class="invalid-feedback" id="validDivId">
                                 <ul><li id="validLiId"></li></ul>
