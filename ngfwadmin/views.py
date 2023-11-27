@@ -8,13 +8,14 @@ from django.shortcuts import *
 
 # устройство
 dev = {}
-
+# подправило
+dictsub = {}
 
 # Страница подключения к устройству
 def connect(request):
     try:
         if request.method == 'POST':
-            form = ConnectForm(request.POST, error_class=DivErrorList)
+            form = ConnectForm(request.POST)
             if form.is_valid():
                 obj = form.cleaned_data
                 global dev
@@ -90,11 +91,6 @@ def rules(request):
         # Получить описание состояния
         description = rule_description(url)
 
-        # сортировка по имени
-        if rules is not None:
-            sort_rules = sorted(rules, key=lambda k: k['name'])
-            rules = sort_rules
-
         # развернуть все подправила
         if rules is not None:
             for rule in rules:
@@ -135,7 +131,7 @@ def rules_add(request):
                 # получить id
                 details = json.loads(result)
                 id = details['id']
-                return redirect('rules_edit', id)
+                return redirect('rules_sub_edit', id)
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,
@@ -158,14 +154,6 @@ def rules_edit(request, id):
         # подключение
         url = dev['url']
 
-        # удалить подправило
-        delete = request.GET.get("delete")
-        if delete is not None:
-            # удалить список
-            sub_delete(url, id, delete)
-            # перейти к таблице правил
-            return redirect('rules_edit', id)
-
         # создать список
         if request.method == 'POST':
             # получить параметры правила
@@ -177,64 +165,110 @@ def rules_edit(request, id):
             if sub is not None:
                 sub = sub.replace("\'", "\"")
                 sub = json.loads(sub)
-            # получить параметры подправила
-            port = request.POST.get('port')
-            invert = request.POST.get('invert')
-            ip = request.POST.get('ip_address')
-            mac = request.POST.get('mac_address')
-            service = request.POST.get('service')
-            protocol = request.POST.get('protocol')
-            category = request.POST.get('category')
             # обновить правило
             if 'btnUpdate' in request.POST:
                 # добавить правило
                 rule_update(url, id, rtype, is_enable, name, description, sub)
                 # перейти к таблице правил
                 return redirect('rules')
+            # обновить правило и перейти в подправила
+            if 'btnUpdateGoSub' in request.POST:
+                # добавить правило
+                rule_update(url, id, rtype, is_enable, name, description, sub)
+                # перейти к таблице правил
+                return redirect('rules_sub_edit', id)
+
+        # получить данные
+        rule = rule_select(url, id)
+
+        # отобразить страницу редактирования списка
+        context = {'id': id,
+                   'dev': dev,
+                   'rule': rule,
+                   'action': 'edit',
+                   'caption': 'Редактировать правило'}
+        return render(request, 'rules/rules/rules_form.html', context=context)
+
+    # обработка ошибок
+    except Exception as ex:
+        return exception(request, ex)
+
+
+# Страница редактирования подправил
+def rules_sub_edit(request, id):
+    try:
+        # проверка подключения
+        if 'url' not in dev:
+            return redirect('connect')
+
+        # подключение
+        url = dev['url']
+        login = dev['login']
+        password = dev['password']
+
+        # удалить подправило
+        delete = request.GET.get("delete")
+        if delete is not None:
+            # удалить список
+            sub_delete(url, id, delete)
+            # перейти к таблице правил
+            return redirect('rules_sub_edit', id)
+
+        # Запомнить значения
+        listId = None
+        global dictsub
+        if request.method == 'POST':
+            # Определить значения
+            ftype = 'LIT'
+            ar_id = request.POST.get('ar_id')
+            list_id = request.POST.get('list_id')
+            is_invert = request.POST.get('is_invert')
+            # Параметры атомарного правила
+            if ar_id is not None and ar_id != '':
+                ar_id = ar_id.replace("\'", "\"")
+                ar_id = json.loads(ar_id)
+                ar_id = ar_id['id']
+            # Параметры списка
+            if list_id is not None and list_id != '':
+                list_id = list_id.replace("\'", "\"")
+                list_id = json.loads(list_id)
+                ftype = list_id['ftype']
+                list_id = list_id['id']
+            # Сохранить значения
+            if ar_id is not None:
+                dictsub['ar_id'] = ar_id
+            if list_id is not None:
+                dictsub['list_id'] = list_id
+            if is_invert is not None:
+                dictsub['is_invert'] = is_invert
             # добавить подправило
-            if 'btnAdd' in request.POST:
-                # эти параметры требуют в кавычках
-                ip = "\"" + str(ip).replace("\"", "") + "\""
-                mac = "\"" + str(mac).replace("\"", "") + "\""
-                port = "\"" + str(port).replace("\"", "") + "\""
-                # Параметры атомарного правила
-                atomic = request.POST.get('atomic')
-                atomic = atomic.replace("\'", "\"")
-                atomic = json.loads(atomic)
-                ar_id = atomic['id']
-                arg_type = atomic['arg_type']
-                file_type = atomic['file_type']
-                # Параметры списка
-                list = request.POST.get('list')
-                list = list.replace("\'", "\"")
-                list = json.loads(list)
-                fid = list['id']
-                # определить значение
-                fid_or_val = ''
-                if arg_type == 'IP':
-                    fid_or_val = ip;
-                if arg_type == 'MAC':
-                    fid_or_val = mac;
-                if arg_type == 'PORT':
-                    fid_or_val = port
-                if arg_type == 'PROTNAME':
-                    fid_or_val = protocol
-                if arg_type == 'CATEGNAME':
-                    fid_or_val = category
-                if arg_type == 'SERVICENAME':
-                    fid_or_val = service
-                if arg_type == 'file':
-                    fid_or_val = fid
+            if 'btnSubAdd' in request.POST:
                 # добавить подправило
-                sub_insert(url, id, ar_id, fid_or_val, invert)
-                return redirect('rules_edit', id)
+                sub_insert(url, id, ar_id, list_id, is_invert)
+                return redirect('rules_sub_edit', id)
+            # Страница нового списка
+            if 'btnListNew'in request.POST:
+                return lists_add_sub(request, id, ftype)
+            # Добавление нового списка
+            if 'btnListInsert' in request.POST:
+                # Получить параметры
+                name = request.POST.get('name')
+                mark = request.POST.get('type')
+                ftype = request.POST.get('ftype')
+                content = request.POST.get('content')
+                description = request.POST.get('description')
+                # добавить список
+                result = list_insert(url, login, password, name, ftype, mark, description)
+                # получить id
+                details = json.loads(result)
+                listId = details['id']
+                # установить список
+                content_set(url, login, password, listId, content)
 
         # получить данные
         rule = rule_select(url, id)
         lists = list_select_all(url)
         atomic = enum_atomic_get(url)
-        service = enum_services_get(url)
-        protocol = enum_protocols_get(url)
         # развернуть все подправила
         sub_warp(url, rule)
 
@@ -244,11 +278,9 @@ def rules_edit(request, id):
                    'rule': rule,
                    'lists': lists,
                    'atomic': atomic,
-                   'service': service,
-                   'protocol': protocol,
-                   'action': 'edit',
-                   'caption': 'Редактировать правило'}
-        return render(request, 'rules/rules/rules_form.html', context=context)
+                   'listId': listId,
+                   'dictsub': dictsub}
+        return render(request, 'rules/rules/rules_sub_form.html', context=context)
 
     # обработка ошибок
     except Exception as ex:
@@ -302,7 +334,7 @@ def lists_add(request):
         # создать список
         if request.method == 'POST':
             # добавить список
-            if 'btnInsert' in request.POST:
+            if 'btnListInsert' in request.POST:
                 # Получить параметры
                 name = request.POST.get('name')
                 mark = request.POST.get('type')
@@ -355,7 +387,7 @@ def lists_edit(request, id):
             content = request.POST.get('content')
             description = request.POST.get('description')
             # обновить список
-            if 'btnUpdate' in request.POST:
+            if 'btnListUpdate' in request.POST:
                 # обновить список
                 list_update(url, login, password, id, name, ftype, mark, description)
                 # установить список
@@ -377,6 +409,33 @@ def lists_edit(request, id):
                    'content': content,
                    'action': 'edit',
                    'caption': 'Редактировать список'}
+        return render(request, 'rules/lists/lists_form.html', context=context)
+
+    # обработка ошибок
+    except Exception as ex:
+        return exception(request, ex)
+
+
+def lists_add_sub(request, id, ftype):
+    try:
+        # проверка подключения
+        if 'url' not in dev:
+            return redirect('connect')
+
+        # подключение
+        url = dev['url']
+
+        # получить доступные форматы
+        rule = rule_select(url, id)
+        format = enum_format_ftype_get(url)
+
+        # отобразить страницу редактирования списка
+        context = {'dev': dev,
+                   'rule': rule,
+                   'ftype': ftype,
+                   'format': format,
+                   'action': 'add',
+                   'caption': 'Добавить новый список'}
         return render(request, 'rules/lists/lists_form.html', context=context)
 
     # обработка ошибок

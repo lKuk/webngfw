@@ -32,22 +32,24 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Списки фильтрации сетевого трафика</h5>
+                        <div class="page-header-title">
+                            <h5>Списки фильтрации сетевого трафика</h5>
+                        </div>
+                        <ul class="breadcrumb m-t-10">
+                            <li class="breadcrumb-item"><a href="{% url 'lists' %}"><i class="feather icon-list p-r-5"></i>Списки</a></li>
+                        </ul>
                     </div>
                     <div class="card-body">
                         <!-- Кнопка Добавить -->
                         <div class="row">
                             <div class="col">
-                                <a href="{% url 'lists_add' %}" class="btn btn-primary shadow-2"
-                                   style="width: 120px;">Добавить</a>
+                                <a href="{% url 'lists_add' %}" class="btn btn-primary shadow-2 wid-140">Добавить</a>
                             </div>
                         </div>
-                        <div class="row">
-                            <h1></h1>
-                        </div>
-                        <div class="row">
-                            <!-- Таблица списков -->
-                            <div class="table-responsive">
+                        <div class="row m-t-10">
+                            <div class="col">
+                                <!-- Таблица списков -->
+                                <div class="table-responsive">
                                 <table id="col-reorder"
                                    class="display table nowrap table-striped table-hover footable">
                                 <thead>
@@ -57,13 +59,12 @@
                                     <th>Тип</th>
                                     <th>Название</th>
                                     <th>Описание</th>
-                                    <th>Дата</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for l in lists %}
                                     <tr>
-                                        {# Удаление #}
+                                        <!-- Удаление -->
                                         <td style="display: table-cell;">
                                             <div>
                                                 <a href="{% url 'lists' %}?delete={{ l.id }}"
@@ -72,7 +73,7 @@
                                                 </a>
                                             </div>
                                         </td>
-                                        {# Метка #}
+                                        <!-- Метка -->
                                         <td style="display: table-cell;">
                                             {% if l.type == 'list' %}
                                                 <p class="mb-1">{{ 'Список' }}</p>
@@ -82,20 +83,19 @@
                                                 <p class="mb-1">{{ l.type }}</p>
                                             {% endif %}
                                         </td>
-                                        {# Тип файла #}
+                                        <!-- Тип файла -->
                                         <td style="display: table-cell;">{{ l.ftype }}</td>
-                                        {# Название #}
+                                        <!-- Название -->
                                         <td style="display: table-cell;">
                                             <a href="{% url 'lists_edit' l.id %}">{{ l.name }}</a>
                                         </td>
-                                        {# Описание #}
+                                        <!-- Описание -->
                                         <td style="display: table-cell;">{{ l.description|wordwrap:70|linebreaksbr }}</td>
-                                        {# Дата #}
-                                        <td style="display: table-cell;">{{ l.date }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
+                            </div>
                             </div>
                         </div>
                     </div>

@@ -3,16 +3,10 @@
 
 {# Стили #}
 {% block style %}
-    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
-    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
 {% endblock style %}
 
 {# Скрипты #}
 {% block script %}
-    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
-    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
-    <script src="{% static 'language/ru-table.js' %}"></script>
 {% endblock script %}
 
 {# Заголовок #}
@@ -27,205 +21,71 @@
 {# Содержимое #}
 {% block content %}
 
-    <div class="row">
-        <div class="col-md-6 col-xl-4">
-            <div class="page-wrapper">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Параметры правила</h5>
+    <div class="page-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>Параметры правила</h5>
+                </div>
+                <ul class="breadcrumb m-t-10">
+                    <li class="breadcrumb-item"><a href="{% url 'rules' %}"><i class="feather icon-trending-up p-r-5"></i>Правила</a></li>
+                    <li class="breadcrumb-item"><a href="#!">{% if rule.name == None %}Новое{% else %}{{ rule.name }}{% endif %}</a></li>
+                </ul>
+            </div>
+            <form action="" method="post" id="ruleEditForm" >
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Кнопки -->
+                        <div class="col text-left">
+                            {% if action == 'add' %}
+                                <button type="submit" name="btnInsert" class="btn btn-primary shadow-2 wid-140">Создать</button>
+                            {% else %}
+                                <button type="submit" name="btnUpdate" class="btn btn-primary shadow-2 wid-140">Сохранить</button>
+                                <a href="{% url 'rules_sub_edit' rule.id %}" class="btn btn-outline-primary shadow-2 wid-140">Подправила</a>
+                            {% endif %}
+                        </div>
+                        <div class="col text-right">
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <form action="" method="post" id="ruleEditForm">
-                            {% csrf_token %}
+                    <div class="row">
+                        <!-- Параметры правила -->
+                        <div class="col-md-6 col-xl-4">
                             <input name="id" value="{{ rule.id }}" type="hidden">
                             <input name="sub" value="{{ rule.sub }}" type="hidden">
-                             <!-- Кнопки -->
-                            {% if action == 'add' %}
-                                <button type="submit" name="btnInsert" class="btn btn-primary shadow-2" style="width: 120px;">Создать</button>
-                            {% else %}
-                                <button type="submit" name="btnUpdate" class="btn btn-primary shadow-2" style="width: 120px;">Сохранить</button>
-                            {% endif %}
-                             <!-- Название -->
+                            <!-- Название -->
                             <div class="form-group">
-                                <label>Название:</label>
-                                <input name="name" value="{{ rule.name }}" type="text" class="form-control">
+                                <label for="name">Название:</label>
+                                <input id="name" name="name" value="{{ rule.name }}" type="text" class="form-control" required>
                             </div>
                             <!-- Включено -->
                             <div class="form-group">
-                                <label>Включено:</label>
-                                <select name="is_enable" value="{{ rule.is_enable }}" class="form-control">
+                                <label for="is_enable">Включено:</label>
+                                <select id="is_enable" name="is_enable" value="{{ rule.is_enable }}" class="form-control" required>
                                     <option value="true" {% if rule.is_enable == 'true' %}selected="selected"{% endif %}>Вкл</option>
                                     <option value="false" {% if rule.is_enable == 'false' %}selected="selected"{% endif %}>Выкл</option>
                                 </select>
                             </div>
                             <!-- Тип правила -->
                             <div class="form-group">
-                                <label>Тип правила:</label>
-                                <select name="rtype" value="{{ rule.rtype }}" class="form-control">
+                                <label for="rtype">Тип правила:</label>
+                                <select id="rtype" name="rtype" value="{{ rule.rtype }}" class="form-control" required>
                                     <option value="black" {% if rule.rtype == 'black' %}selected="selected"{% endif %}>Запрещено</option>
                                     <option value="white" {% if rule.rtype == 'white' %}selected="selected"{% endif %}>Разрешено</option>
                                 </select>
                             </div>
-                            <!-- Описание -->
+                        </div>
+                        <!-- Содержимое правила -->
+                        <div class="col-xl-8 col-md-6">
                             <div class="form-group">
-                                <label>Описание:</label>
-                                <textarea name="description" class="form-control" rows="7">{{ rule.description }}</textarea>
+                                <label for="description">Описание:</label>
+                                <textarea id="description" name="description" class="form-control" rows="9">{{ rule.description }}</textarea>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
-        {% if action != 'add' %}
-        <div class="col-xl-8 col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Добавление подправила</h5>
-                </div>
-                <div class="card-body">
-                    <form action="" method="post" id="subEditForm">
-                    {% csrf_token %}
-                    <!-- Кнопки -->
-                    <button type="submit" class="btn btn-primary shadow-2" name="btnAdd" style="width: 120px;">Добавить</button>
-                    <!-- Atomic -->
-                    <div class="form-group">
-                        <label>Атомарное подправило:</label>
-                        <select id="ar_id" name="atomic" class="form-control" onchange="ListsFilter()">
-                            <option value="" hidden="hidden" selected="selected"></option>
-                            {% for key, value in atomic.items %}
-                                <option value="{{ value }}">{{ value.description }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <!-- List -->
-                    <div class="form-group">
-                        <label>Список:</label>
-                        <select id="list_id" name="list" class="form-control">
-                            <option value="" hidden="hidden" selected="selected"></option>
-                            {% for list in lists %}
-                                <option value="{{ list }}" hidden="hidden" class="list_hidden">{{ list.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <!-- invert -->
-                    <div class="form-group" id="dev_category">
-                        <label>Инвертация:</label>
-                        <select name="invert" class="form-control">
-                            <option value="0" selected="selected">Не инвертировано</option>
-                            <option value="1">Инвертировано</option>
-                        </select>
-                    </div>
-                    </form>
-
-                    <!-- Скрипт фильтрации списка -->
-                    <script>
-                        // функция ограничения выпадающего списка
-                        function ListsFilter() {
-                            try {
-                                // атомарное правило
-                                var atomic = document.getElementById("ar_id");
-                                // список, который нужно фильтровать
-                                var listHidden = document.getElementsByClassName('list_hidden')
-                                // тип файла
-                                file_type_atomic = '';
-                                // получить json
-                                let strAtomic = atomic.value
-                                if(strAtomic !== '') {
-                                    strAtomic = strAtomic.replaceAll("'", "\"");
-                                    json = JSON.parse(strAtomic);
-                                    // получить тип файла
-                                    file_type_atomic = json['file_type'];
-                                }
-
-                                // пройти по всему списку сокрытия
-                                var message = "";
-                                Array.prototype.forEach.call(listHidden, function (el) {
-                                    try {
-                                        // тип файла
-                                        file_type_list = '';
-                                        // получить json
-                                        let strList = el.value
-                                        if(strList !== '') {
-                                            strList = strList.replaceAll("'", "\"");
-                                            json = JSON.parse(strList);
-                                            // получить тип файла
-                                            file_type_list = json['ftype'];
-                                        }
-                                        // скрыть ненужные элементы
-                                        el.hidden = true;
-                                        el.selected = false;
-                                        if(file_type_list === '' || file_type_atomic === file_type_list) {
-                                            el.hidden = false;
-                                            el.selected = true;
-                                        }
-                                    } catch (error) {
-                                        message += el.value + '\n' + error + '\n';
-                                    }
-                                    if(message !== "")
-                                        alert(message);
-                                });
-                            }
-                            catch (error) {
-                                alert(error);
-                            }
-                        }
-                    </script>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Подправила</h5>
-                </div>
-                <div class="card-body">
-                    <!-- Таблица подправил -->
-                    <div class="table-responsive">
-                        <table id="col-reorder"
-                               class="display table nowrap table-striped table-hover footable footable-1 footable-paging footable-paging-center"
-                               style="width:100%">
-                            <thead>
-                            <tr>
-                                <th title="Удаление"><i class="feather icon-trash"></i></th>
-                                <th>Подправило</th>
-                                <th>Значение</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for s in rule.sub2 %}
-                                <tr>
-                                    <!-- Удаление -->
-                                    <td style="display: table-cell;">
-                                        <div>
-                                            <a href="{% url 'rules_edit' rule.id %}?delete={{ s.id }}"
-                                               onclick="return confirm('{{ s.ar_description|truncatechars:50 }}\nУдалить подправило?');">
-                                                <i class="feather icon-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td style="display: table-cell;">
-                                        <!-- Инвертированное -->
-                                        {% if s.is_invert == '0' %}
-                                            <i title="Не инвертированное" class="feather icon-arrow-up-right" style="color: #000"></i>
-                                        {% else %}
-                                            <i title="Инвертированное" class="feather icon-arrow-down-left" style="color: #000"></i>
-                                        {% endif %}
-                                        <!--  Название подправила -->
-                                        {{ s.ar_description|truncatechars:50 }}
-                                    </td>
-                                    <!-- Список -->
-                                    <td style="display: table-cell;">
-                                        <a href="{% url 'lists_edit' s.fid_or_val %}">{{ s.list_name }}</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
     </div>
 
 {% endblock content %}
