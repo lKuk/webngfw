@@ -203,6 +203,8 @@ def rules_sub_edit(request, id):
 
         # подключение
         url = dev['url']
+        login = dev['login']
+        password = dev['password']
 
         # удалить подправило
         delete = request.GET.get("delete")
@@ -213,44 +215,55 @@ def rules_sub_edit(request, id):
             return redirect('rules_sub_edit', id)
 
         # Запомнить значения
+        listId = None
         global dictsub
         if request.method == 'POST':
-            dictsub['ar_id'] = request.POST.get('ar_id')
-            dictsub['list_id'] = request.POST.get('list_id')
-            dictsub['is_invert'] = request.POST.get('is_invert')
-
-        # добавить подправило
-        if request.method == 'POST':
-            # Параметры атомарного правила
+            # Определить значения
+            ftype = 'LIT'
             ar_id = request.POST.get('ar_id')
-            if 'ar_id' in dictsub and ar_id is None:
-                ar_id = dictsub['ar_id']
-            dictsub['ar_id'] = ar_id
-            if ar_id != '':
+            list_id = request.POST.get('list_id')
+            is_invert = request.POST.get('is_invert')
+            # Параметры атомарного правила
+            if ar_id is not None and ar_id != '':
                 ar_id = ar_id.replace("\'", "\"")
                 ar_id = json.loads(ar_id)
                 ar_id = ar_id['id']
             # Параметры списка
-            list_id = request.POST.get('list_id')
-            if 'list_id' in dictsub and list_id is None:
-                list_id = dictsub['list_id']
-            dictsub['list_id'] = list_id
-            if list_id != '':
+            if list_id is not None and list_id != '':
                 list_id = list_id.replace("\'", "\"")
                 list_id = json.loads(list_id)
+                ftype = list_id['ftype']
                 list_id = list_id['id']
-            # Параметры инверсии
-            is_invert = request.POST.get('is_invert')
-            if 'is_invert' in dictsub and is_invert != dictsub['is_invert']:
-                is_invert = dictsub['is_invert']
-            dictsub['is_invert'] = is_invert
+            # Сохранить значения
+            if ar_id is not None:
+                dictsub['ar_id'] = ar_id
+            if list_id is not None:
+                dictsub['list_id'] = list_id
+            if is_invert is not None:
+                dictsub['is_invert'] = is_invert
             # добавить подправило
             if 'btnSubAdd' in request.POST:
                 # добавить подправило
                 sub_insert(url, id, ar_id, list_id, is_invert)
                 return redirect('rules_sub_edit', id)
+            # Страница нового списка
             if 'btnListNew'in request.POST:
-                return rules_sub_lists_add(request, id)
+                return lists_add_sub(request, id, ftype)
+            # Добавление нового списка
+            if 'btnListInsert' in request.POST:
+                # Получить параметры
+                name = request.POST.get('name')
+                mark = request.POST.get('type')
+                ftype = request.POST.get('ftype')
+                content = request.POST.get('content')
+                description = request.POST.get('description')
+                # добавить список
+                result = list_insert(url, login, password, name, ftype, mark, description)
+                # получить id
+                details = json.loads(result)
+                listId = details['id']
+                # установить список
+                content_set(url, login, password, listId, content)
 
         # получить данные
         rule = rule_select(url, id)
@@ -265,6 +278,7 @@ def rules_sub_edit(request, id):
                    'rule': rule,
                    'lists': lists,
                    'atomic': atomic,
+                   'listId': listId,
                    'dictsub': dictsub}
         return render(request, 'rules/rules/rules_sub_form.html', context=context)
 
@@ -320,7 +334,7 @@ def lists_add(request):
         # создать список
         if request.method == 'POST':
             # добавить список
-            if 'btnInsert' in request.POST:
+            if 'btnListInsert' in request.POST:
                 # Получить параметры
                 name = request.POST.get('name')
                 mark = request.POST.get('type')
@@ -373,7 +387,7 @@ def lists_edit(request, id):
             content = request.POST.get('content')
             description = request.POST.get('description')
             # обновить список
-            if 'btnUpdate' in request.POST:
+            if 'btnListUpdate' in request.POST:
                 # обновить список
                 list_update(url, login, password, id, name, ftype, mark, description)
                 # установить список
@@ -402,7 +416,7 @@ def lists_edit(request, id):
         return exception(request, ex)
 
 
-def rules_sub_lists_add(request, id):
+def lists_add_sub(request, id, ftype):
     try:
         # проверка подключения
         if 'url' not in dev:
@@ -410,42 +424,15 @@ def rules_sub_lists_add(request, id):
 
         # подключение
         url = dev['url']
-        login = dev['login']
-        password = dev['password']
-
-        # создать список
-        if request.method == 'POST':
-            # добавить список
-            if 'btnInsert' in request.POST:
-                # Получить параметры
-                rule = request.POST.get('rule')
-                name = request.POST.get('name')
-                mark = request.POST.get('type')
-                ftype = request.POST.get('ftype')
-                content = request.POST.get('content')
-                description = request.POST.get('description')
-                # добавить список
-                result = list_insert(url, login, password, name, ftype, mark, description)
-                # получить id
-                details = json.loads(result)
-                id = details['id']
-                # установить список
-                content_set(url, login, password, id, content)
-                # перейти в подправила редактирования правила
-                if rule is not None:
-                    rule = eval(rule)
-                    ruleId = rule['id']
-                    return redirect('rules_sub_edit', ruleId)
-                # перейти к таблице списков
-                return redirect('lists')
 
         # получить доступные форматы
-        format = enum_format_ftype_get(url)
         rule = rule_select(url, id)
+        format = enum_format_ftype_get(url)
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,
                    'rule': rule,
+                   'ftype': ftype,
                    'format': format,
                    'action': 'add',
                    'caption': 'Добавить новый список'}
