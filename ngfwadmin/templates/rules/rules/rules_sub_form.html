@@ -17,7 +17,7 @@
 
 {# Заголовок #}
 {% block header %}
-     <li class="m-l-5 m-t-5">
+    <li class="m-l-5 m-t-5">
         <h4>
             <i class="m-r-15 feather icon-trending-up"></i>Редактировать подправила
         </h4>
@@ -34,18 +34,22 @@
                     <h5>Параметры подправил</h5>
                 </div>
                 <ul class="breadcrumb m-t-10">
-                    <li class="breadcrumb-item"><a href="{% url 'rules' %}"><i class="feather icon-trending-up p-r-5"></i>Правила</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'rules_edit' rule.id %}">{% if rule.name == None %}Новое{% else %}{{ rule.name }}{% endif %}</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'rules' %}"><i
+                            class="feather icon-trending-up p-r-5"></i>Правила</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'rules_edit' rule.id %}">{% if rule.name == None %}
+                        Новое{% else %}{{ rule.name }}{% endif %}</a></li>
                     <li class="breadcrumb-item"><a href="{% url 'rules_sub_edit' rule.id %}">Подправила</a></li>
                 </ul>
             </div>
             <form action="" method="post" id="subEditForm">
                 {% csrf_token %}
                 <div class="card-body">
-                     <div class="row">
+                    <div class="row">
                         <!-- Кнопки -->
                         <div class="col text-left">
-                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px" name="btnSubAdd">Добавить</button>
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
+                                    name="btnSubAdd">Добавить
+                            </button>
                         </div>
                         <div class="col text-right">
                         </div>
@@ -60,7 +64,8 @@
                                     <option value="" hidden="hidden" selected="selected"></option>
                                     {% for key, value in atomic.items %}
                                         {% if dictsub.ar_id == value.id %}
-                                            <option value="{{ value }}" selected="selected">{{ value.description }}</option>
+                                            <option value="{{ value }}"
+                                                    selected="selected">{{ value.description }}</option>
                                         {% else %}
                                             <option value="{{ value }}">{{ value.description }}</option>
                                         {% endif %}
@@ -70,7 +75,8 @@
                             <!-- List -->
                             <div class="form-group">
                                 <label for="list_id">Список:</label>
-                                <div id="list_div" class="input-group mb-3" {% if dictsub.ar_id is None %}style="pointer-events: none; opacity: 0.4;"{% endif %}>
+                                <div id="list_div" class="input-group mb-3"
+                                     {% if dictsub.ar_id is None %}style="pointer-events: none; opacity: 0.4;"{% endif %}>
                                     <select id="list_id" name="list_id" class="form-control" required>
                                         <option value="" hidden="hidden" selected="selected"></option>
                                         {% for list in lists %}
@@ -78,7 +84,9 @@
                                         {% endfor %}
                                     </select>
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-outline-primary" name="btnListNew">Новый</button>
+                                        <button type="submit" class="btn btn-outline-primary" name="btnListNew"
+                                                id="alertTest" formnovalidate>Новый
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -86,8 +94,13 @@
                             <div class="form-group" id="dev_category">
                                 <label for="is_invert">Инверсия:</label>
                                 <select id="is_invert" name="is_invert" class="form-control" required>
-                                    <option value="1" {% if dictsub.is_invert == 1 %}selected="selected"{% endif %}>Инвертировано</option>
-                                    <option value="0" {% if dictsub.is_invert is None or dictsub.is_invert == 0 %}selected="selected"{% endif %}>Не инвертировано</option>
+                                    <option value="1" {% if dictsub.is_invert == 1 %}selected="selected"{% endif %}>
+                                        Инвертировано
+                                    </option>
+                                    <option value="0"
+                                            {% if dictsub.is_invert is None or dictsub.is_invert == 0 %}selected="selected"{% endif %}>
+                                        Не инвертировано
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -119,9 +132,11 @@
                                             <td style="display: table-cell;">
                                                 <!-- Инвертированное -->
                                                 {% if s.is_invert == '0' %}
-                                                    <i title="Не инвертированное" class="feather icon-arrow-up-right" style="color: #000"></i>
+                                                    <i title="Не инвертированное" class="feather icon-arrow-up-right"
+                                                       style="color: #000"></i>
                                                 {% else %}
-                                                    <i title="Инвертированное" class="feather icon-arrow-down-left" style="color: #000"></i>
+                                                    <i title="Инвертированное" class="feather icon-arrow-down-left"
+                                                       style="color: #000"></i>
                                                 {% endif %}
                                                 <!--  Название подправила -->
                                                 {{ s.ar_description|truncatechars:50 }}
@@ -145,7 +160,7 @@
     <!-- Скрипт фильтрации списка -->
     <script>
         // Выполнить после загрузки страницы
-        window.onload = function() {
+        window.onload = function () {
             // функция ограничения выпадающего списка
             ListsFilter();
         };
@@ -172,7 +187,7 @@
                 file_type_atomic = '';
                 // получить json
                 let strAtomic = ar_id.value
-                if(strAtomic !== '') {
+                if (strAtomic !== '') {
                     strAtomic = strAtomic.replaceAll("'", "\"");
                     json = JSON.parse(strAtomic);
                     // получить тип файла
@@ -181,7 +196,7 @@
 
                 // Скрыть, если не заполнен атомик
                 list_div.style = '';
-                if(strAtomic === '')
+                if (strAtomic === '')
                     list_div.style = 'pointer-events: none; opacity: 0.4;';
 
                 // пройти по всему списку сокрытия
@@ -193,7 +208,7 @@
                         file_type_list = '';
                         // получить json
                         let strList = el.value
-                        if(strList !== '') {
+                        if (strList !== '') {
                             strList = strList.replaceAll("'", "\"");
                             json = JSON.parse(strList);
                             // получить тип файла
@@ -205,22 +220,21 @@
                         el.selected = false;
 
                         // Показать правило
-                        if(file_type_list === '' || file_type_atomic === file_type_list) {
+                        if (file_type_list === '' || file_type_atomic === file_type_list) {
                             el.hidden = false;
                         }
                         // Выделить правило
-                        if(id_list === listId && file_type_atomic === file_type_list){
+                        if (id_list === listId && file_type_atomic === file_type_list) {
                             el.selected = true;
                         }
 
                     } catch (error) {
                         message += el.value + '\n' + error + '\n';
                     }
-                    if(message !== "")
+                    if (message !== "")
                         alert(message);
                 });
-            }
-            catch (error) {
+            } catch (error) {
                 alert(error);
             }
         }
