@@ -50,8 +50,8 @@
                                     <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2"
                                        style="width: 160px">Добавить</a>
                                     <button type="submit" name="btnApply"
-                                            onclick="{% if description.status.upper != 'EDITED' %}return false{% endif %}"
-                                            class="btn {% if description.status.upper != 'EDITED' %}disabled btn-secondary{% else %}btn-warning{% endif %} shadow-2"
+                                            onclick="{% if description.status.upper == 'SET' %}return false{% endif %}"
+                                            class="btn {% if description.status.upper == 'SET' %}disabled btn-secondary{% else %}btn-warning{% endif %} shadow-2"
                                             style="width: 160px">Установить
                                     </button>
                                 </form>
@@ -65,7 +65,7 @@
                         </div>
                         <hr>
                         <!-- Уведомление  -->
-                        {% if description.status.upper == 'EDITED' %}
+                        {% if description.status.upper != 'SET' %}
                             <div class="row m-t-10">
                                 <div class="col">
                                     <div class="col alert alert-warning my-0" role="alert">

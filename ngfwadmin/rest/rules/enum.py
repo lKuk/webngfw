@@ -34,26 +34,6 @@ def enum_format_get(url):
     return enum_format
 
 
-# Получить форматы атомарных правил
-def enum_format_ftype_get(url):
-    global enum_format_ftype
-    if url is None:
-        return enum_format_ftype
-    if enum_format_ftype is not None:
-        return enum_format_ftype
-    # получить доступные форматы
-    dict = enum_format_get(url)
-    enum_format_ftype = []
-    for f in dict['formats']:
-        name = f['name']
-        param = f['param']
-        param = param.lower()
-        if param == 'file':
-            if name not in enum_format_ftype:
-                enum_format_ftype.append(name)
-    return enum_format_ftype
-
-
 # Получить список сервисов
 def enum_services_get(url):
     global enum_services
