@@ -5,7 +5,26 @@
 {% block style %}
     <script src="{% static 'codemirrior/codemirror.js' %}"></script>
     <link rel="stylesheet" href="{% static 'codemirrior/codemirror.css' %}">
+
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" href="{% static 'main/fonts/fontawesome/css/fontawesome-all.min.css' %}">
+    <!-- animation css -->
+    <link rel="stylesheet" href="{% static 'main/plugins/animation/css/animate.min.css' %}">
+    <!-- select2 css -->
+    <link rel="stylesheet" href="{% static 'main/plugins/select2/css/select2.min.css' %}">
+    <!-- multi-select css -->
+    <link rel="stylesheet" href="{% static 'main/plugins/multi-select/css/multi-select.css' %}">
 {% endblock style %}
+
+{% block script %}
+    <!-- select2 Js -->
+    <script src="{% static 'main/plugins/select2/js/select2.full.min.js' %}"></script>
+    <!-- multi-select Js -->
+    <script src="{% static 'main/plugins/multi-select/js/jquery.quicksearch.js' %}"></script>
+    <script src="{% static 'main/plugins/multi-select/js/jquery.multi-select.js' %}"></script>
+    <!-- form-select-custom Js -->
+    <script src="{% static 'main/js/pages/form-select-custom.js' %}"></script>
+{% endblock script %}
 
 {# Заголовок #}
 {% block header %}
@@ -103,7 +122,7 @@
                         </div>
                         <!-- Содержимое списка -->
                         <div class="col-xl-8 col-md-6">
-                            <label for="content">Содержимое списка</label>
+                            <label for="content">Содержимое</label>
                             <div class="form-control">
                                 <textarea id="content" name="content" rows="20">{{ content }}</textarea>
                             </div>
@@ -112,6 +131,26 @@
                                     <li id="validLiId"></li>
                                 </ul>
                             </div>
+                        </div>
+                        <!-- Содержимое выбора -->
+                        <div class="col-xl-8 col-md-6">
+                            <div class="row">
+                                <div class="col text-left">
+                                    <label for="custom-headers">Доступно для выбора:</label>
+                                </div>
+                                <div class="col text-left">
+                                    <label for="custom-headers" style="padding-left: 8%;">Выбрано:</label>
+                                </div>
+                            </div>
+                            {# <select multiple="multiple" id="my-select" name="select-list">#}
+                            <select id="custom-headers" class="searchable" multiple="multiple" >
+                                {% for p in protocols %}
+                                    <option value='{{ p }}'>{{ p }}</option>
+                                {% endfor %}
+                                {% for s in services %}
+                                    <option value='{{ s }}' selected="">{{ s }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                     <div class="row">
