@@ -86,11 +86,11 @@
                                 <label for="ftype">Тип списка:</label>
                                 <select id="ftype" name="ftype" class="form-control" value="{{ list.ftype }}"
                                         id="listId" required>
-                                    {% for f in format %}
-                                        <option value="{{ f }}"
+                                    {% for f in format.formats %}
+                                        <option value="{{ f.name }}"
                                                 {% if f == list.ftype or f == ftype %}
                                                 selected="selected"
-                                                {% endif %}>{{ f }}</option>
+                                                {% endif %}>{{ f.print }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -112,6 +112,13 @@
                                     <li id="validLiId"></li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            {% for f in format.formats %}
+                                <p class="text-dark">{{ f.print }} - {{ f.description }}</p>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

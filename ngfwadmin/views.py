@@ -1,10 +1,11 @@
 from .forms import *
 
+from django.shortcuts import *
+from ngfwadmin.rest.rules.sub import *
 from ngfwadmin.rest.rules.rules import *
 from ngfwadmin.rest.rules.content import *
 from ngfwadmin.rest.rules.history import *
-from ngfwadmin.rest.rules.sub import *
-from django.shortcuts import *
+from ngfwadmin.rest.system.version import *
 
 # устройство
 dev = {}
@@ -24,9 +25,11 @@ def connect(request):
                 login = obj['login']
                 password = obj['password']
                 url = 'http://' + ip + ':' + str(port)
+                version = version_get(url)
                 dev = {'ip': ip,
                        'port': port,
                        'login': login,
+                       'version': version,
                        'password': password,
                        'url': url}
                 return redirect('rules')
@@ -248,7 +251,15 @@ def rules_sub_edit(request, id):
                 return redirect('rules_sub_edit', id)
             # Страница нового списка
             if 'btnListNew'in request.POST:
-                return lists_add_sub(request, id, ftype)
+                rule = rule_select(url, id)
+                format = enum_format_get(url)
+                context = {'dev': dev,
+                           'rule': rule,
+                           'ftype': ftype,
+                           'format': format,
+                           'action': 'add',
+                           'caption': 'Добавить новый список'}
+                return render(request, 'rules/lists/lists_form.html', context=context)
             # Добавление нового списка
             if 'btnListInsert' in request.POST:
                 # Получить параметры
@@ -269,7 +280,7 @@ def rules_sub_edit(request, id):
         rule = rule_select(url, id)
         lists = list_select_all(url)
         atomic = enum_atomic_get(url)
-        # развернуть все подправила
+        # развернуть подправило
         sub_warp(url, rule)
 
         # отобразить страницу редактирования списка
@@ -308,6 +319,11 @@ def lists(request):
 
         # создать таблицу списков
         lists = list_select_all(url)
+
+        # развернуть все списки
+        if lists is not None:
+            for list in lists:
+                list_warp(url, list)
 
         # отобразить страницу с таблицей списков
         context = {'dev': dev,
@@ -352,7 +368,7 @@ def lists_add(request):
                 return redirect('lists')
 
         # получить доступные форматы
-        format = enum_format_ftype_get(url)
+        format = enum_format_get(url)
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,
@@ -400,7 +416,7 @@ def lists_edit(request, id):
         # получить содержимое списка
         content = content_get(url, id)
         # получить доступные форматы
-        format = enum_format_ftype_get(url)
+        format = enum_format_get(url)
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,
@@ -409,33 +425,6 @@ def lists_edit(request, id):
                    'content': content,
                    'action': 'edit',
                    'caption': 'Редактировать список'}
-        return render(request, 'rules/lists/lists_form.html', context=context)
-
-    # обработка ошибок
-    except Exception as ex:
-        return exception(request, ex)
-
-
-def lists_add_sub(request, id, ftype):
-    try:
-        # проверка подключения
-        if 'url' not in dev:
-            return redirect('connect')
-
-        # подключение
-        url = dev['url']
-
-        # получить доступные форматы
-        rule = rule_select(url, id)
-        format = enum_format_ftype_get(url)
-
-        # отобразить страницу редактирования списка
-        context = {'dev': dev,
-                   'rule': rule,
-                   'ftype': ftype,
-                   'format': format,
-                   'action': 'add',
-                   'caption': 'Добавить новый список'}
         return render(request, 'rules/lists/lists_form.html', context=context)
 
     # обработка ошибок

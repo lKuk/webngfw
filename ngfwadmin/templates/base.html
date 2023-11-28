@@ -41,71 +41,69 @@
         <div class="navbar-content scroll-div">
             <ul class="nav pcoded-inner-navbar">
 
+                <!-- Группа - Состояние -->
                 <li class="nav-item pcoded-menu-caption">
-                    <label>dashboard</label>
+                    <label>Состояние</label>
                 </li>
 
-                {# Состояние #}
+                <!-- Состояние -->
                 <li class="nav-item {% is_active request 'dashboard' 'active' %}">
                     <a href="{% url 'dashboard' %}" class="nav-link">
-                            <span class="pcoded-micon">
-                                <i class="feather icon-home"></i>
-                            </span><span class="pcoded-mtext">Состояние</span>
+                        <span class="pcoded-micon">
+                            <i class="feather icon-home"></i>
+                        </span><span class="pcoded-mtext">Состояние</span>
                     </a>
                 </li>
-                {# Состояние #}
 
+                <!-- Группа - Навигация -->
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Navigation</label>
+                    <label>Навигация</label>
                 </li>
 
-                {# Правила #}
+                <!-- Правила -->
                 <li class="nav-item {% is_active request 'rules rules_add rules_edit' 'active' %}">
                     <a href="{% url 'rules' %}" class="nav-link">
-                            <span class="pcoded-micon">
-                                <i class="feather icon-trending-up"></i>
-                            </span><span class="pcoded-mtext">Правила</span>
+                        <span class="pcoded-micon">
+                            <i class="feather icon-trending-up"></i>
+                        </span><span class="pcoded-mtext">Правила</span>
                     </a>
                 </li>
-                {# Правила #}
 
-                {# Списки #}
+                <!-- Списки -->
                 <li class="nav-item {% is_active request 'lists lists_add lists_edit' 'active' %}">
                     <a href="{% url 'lists' %}" class="nav-link">
-                            <span class="pcoded-micon">
-                                <i class="feather icon-list"></i>
-                            </span><span class="pcoded-mtext">Списки</span>
+                        <span class="pcoded-micon">
+                            <i class="feather icon-list"></i>
+                        </span><span class="pcoded-mtext">Списки</span>
                     </a>
                 </li>
-                {# Списки #}
 
-                {# История изменений #}
+                <!-- История изменений  -->
                 <li class="nav-item {% is_active request 'history' 'active' %}">
                     <a href="{% url 'history' %}" class="nav-link">
-                            <span class="pcoded-micon">
-                                <i class="feather icon-clock"></i>
-                            </span><span class="pcoded-mtext">История</span>
+                        <span class="pcoded-micon">
+                            <i class="feather icon-clock"></i>
+                        </span><span class="pcoded-mtext">История</span>
                     </a>
                 </li>
-                {# История изменений #}
 
-{#                <li class="nav-item pcoded-menu-caption">#}
-{#                    <label>service</label>#}
-{#                </li>#}
+                <!-- Группа - Сервис -->
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Сервис</label>
+                </li>
 
-                {# Debug #}
-{#                <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}">#}
-{#                    <a href="#!" class="nav-link">#}
-{#                        <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>#}
-{#                    </a>#}
-{#                    <ul class="pcoded-submenu">#}
-{#                        <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>#}
-{#                        <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>#}
-{#                        <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>#}
-{#                        <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-                {# Debug #}
+                <!-- Debug -->
+                <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}">
+                    <a href="#!" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>
+                        <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>
+                        <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>
+                        <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>
+                    </ul>
+                </li>
 
             </ul>
         </div>
@@ -136,23 +134,13 @@
         </ul>
         <!-- Справа -->
         <ul class="navbar-nav ml-auto">
+            <!-- Версия по -->
+            <li>
+                <p>Версия ПО: {{ dev.version }}</p>
+            </li>
             <!-- переподключение -->
             <li>
                 <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.ip }}</a>
-            </li>
-            <!-- поиск на странице -->
-            <li class="nav-item">
-                <div class="main-search">
-                    <div class="input-group">
-                        <input type="text" id="m-search" class="form-control" placeholder="Search . . .">
-                        <a href="#!" class="input-group-append search-close">
-                            <i class="feather icon-x input-group-text"></i>
-                        </a>
-                        <span class="input-group-append search-btn btn btn-primary">
-                                <i class="feather icon-search input-group-text"></i>
-                            </span>
-                    </div>
-                </div>
             </li>
             <!-- Полноэкранный режим -->
             <li>

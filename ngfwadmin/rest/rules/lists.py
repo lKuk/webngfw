@@ -1,6 +1,8 @@
 import json
 import requests
 
+from ngfwadmin.rest.rules.enum import enum_format_get
+
 
 # Добавить список
 def list_insert(url, login, password, name, ftype, mark, description):
@@ -57,3 +59,19 @@ def list_select_all(url):
         raise Exception(response.url, response.text)
     details = response.json()
     return details
+
+
+
+# Наполнить список
+def list_warp(url, list):
+    try:
+        formats = enum_format_get(url)
+        # Заполнить параметры формата файла
+        for f in formats['formats']:
+            if f['name'].upper() == list['ftype'].upper():
+                list['fprint'] = f['print']
+                break
+        return
+    # обработка ошибок
+    except Exception as ex:
+        return
