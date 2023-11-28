@@ -107,7 +107,7 @@
                                         id="listId" required onchange="hideDesc()">
                                     {% for f in format.formats %}
                                         <option value="{{ f.name }}"
-                                                {% if f == list.ftype or f == ftype %}
+                                                {% if f.name == list.ftype or f.name == ftype %}
                                                 selected="selected"
                                                 {% endif %}>{{ f.print }}</option>
                                     {% endfor %}
