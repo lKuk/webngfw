@@ -417,12 +417,18 @@ def lists_edit(request, id):
         content = content_get(url, id)
         # получить доступные форматы
         format = enum_format_get(url)
+        # список сервисов
+        services = enum_services_get(url)
+        # список протоколов
+        protocols = enum_protocols_get(url)
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,
                    'list': list,
                    'format': format,
                    'content': content,
+                   'services': services,
+                   'protocols': protocols,
                    'action': 'edit',
                    'caption': 'Редактировать список'}
         return render(request, 'rules/lists/lists_form.html', context=context)
