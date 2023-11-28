@@ -37,7 +37,8 @@
                             <h5>Правила фильтрации сетевого трафика</h5>
                         </div>
                         <ul class="breadcrumb m-t-10">
-                            <li class="breadcrumb-item"><a href="{% url 'rules' %}"><i class="feather icon-trending-up p-r-5"></i>Правила</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'rules' %}"><i
+                                    class="feather icon-trending-up p-r-5"></i>Правила</a></li>
                         </ul>
                     </div>
                     <div class="card-body">
@@ -45,35 +46,42 @@
                         <div class="row">
                             <div class="col text-left">
                                 <form action="" method="post" id="ruleApplyForm">
-                                {% csrf_token %}
-                                        <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
-                                        <button type="submit" name="btnApply"
-                                                onclick="{% if description.status.upper != 'EDITED' %}return false{% endif %}"
-                                                class="btn {% if description.status.upper != 'EDITED' %}disabled btn-secondary{% else %}btn-warning{% endif %} shadow-2" style="width: 160px">Установить</button>
+                                    {% csrf_token %}
+                                    <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2"
+                                       style="width: 160px">Добавить</a>
+                                    <button type="submit" name="btnApply"
+                                            onclick="{% if description.status.upper != 'EDITED' %}return false{% endif %}"
+                                            class="btn {% if description.status.upper != 'EDITED' %}disabled btn-secondary{% else %}btn-warning{% endif %} shadow-2"
+                                            style="width: 160px">Установить
+                                    </button>
                                 </form>
                             </div>
                             <div class="col text-right">
-                                <i class="feather icon-chevrons-down" onclick="ShowSubrules()" style="font-size: 1.2rem; color: #1e6abc;"></i>
-                                <i class="feather icon-chevrons-up" onclick="HideSubrules()" style="font-size: 1.2rem; color: #1e6abc;"></i>
+                                <i class="feather icon-chevrons-down" onclick="ShowSubrules()"
+                                   style="font-size: 1.2rem; color: #1e6abc;"></i>
+                                <i class="feather icon-chevrons-up" onclick="HideSubrules()"
+                                   style="font-size: 1.2rem; color: #1e6abc;"></i>
                             </div>
                         </div>
+                        <hr>
                         <!-- Уведомление  -->
                         {% if description.status.upper == 'EDITED' %}
-                        <div class="row m-t-10">
-                            <div class="col">
-                                <div class="col alert alert-warning my-0" role="alert">
-                                    <div class="row">
-                                        <div class="col-md-auto">
-                                            <div class="spinner-border text-warning" role="status"></div>
-                                        </div>
-                                        <div class="col">
-                                            Изменено: <a class="text-dark">{{ description.date_edit }}</a><br/>
-                                            Последняя установка правил выполнена: <a class="text-dark">{{ description.date_set }}</a>
+                            <div class="row m-t-10">
+                                <div class="col">
+                                    <div class="col alert alert-warning my-0" role="alert">
+                                        <div class="row">
+                                            <div class="col-md-auto">
+                                                <div class="spinner-border text-warning" role="status"></div>
+                                            </div>
+                                            <div class="col">
+                                                Изменено: <a class="text-dark">{{ description.date_edit }}</a><br/>
+                                                Последняя установка правил выполнена: <a
+                                                    class="text-dark">{{ description.date_set }}</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         {% endif %}
                         <!-- Таблица  -->
                         <div class="row m-t-10">
@@ -85,7 +93,8 @@
                                         <thead>
                                         <tr>
                                             <th title="Удаление"><i class="feather icon-trash"></i></th>
-                                            <th title="Статус"><i class="feather icon-check-square" style="font-size: 1.05rem;"></i></th>
+                                            <th title="Статус"><i class="feather icon-check-square"
+                                                                  style="font-size: 1.05rem;"></i></th>
                                             <th title="Включено/Выключено">Вкл</th>
                                             <th title="Запрещено/Разрешено">Тип</th>
                                             <th>Название</th>
@@ -108,11 +117,17 @@
                                                 {# Статус #}
                                                 <td style="display: table-cell;">
                                                     {% if r.status.upper == 'SET' %}
-                                                        <i class="feather icon-check-square" style="font-size: 1.05rem; color: #2f9c0a;" title="Применено"></i>
+                                                        <i class="feather icon-check-square"
+                                                           style="font-size: 1.05rem; color: #2f9c0a;"
+                                                           title="Применено"></i>
                                                     {% elif r.status.upper == 'NOT SET' %}
-                                                        <i class="feather icon-square" style="font-size: 1.05rem; color: #1e6abc;" title="Не применено"></i>
+                                                        <i class="feather icon-square"
+                                                           style="font-size: 1.05rem; color: #1e6abc;"
+                                                           title="Не применено"></i>
                                                     {% elif r.status.upper == 'EDITED' %}
-                                                        <i class="feather icon-edit" style="font-size: 1.05rem; color: #ba8b00;" title="Изменено, не применено"></i>
+                                                        <i class="feather icon-edit"
+                                                           style="font-size: 1.05rem; color: #ba8b00;"
+                                                           title="Изменено, не применено"></i>
                                                     {% else %}
                                                         {{ r.status }}
                                                     {% endif %}
@@ -156,7 +171,8 @@
                                                 </td>
                                                 {# Подправила #}
                                                 <td style="display: table-cell;">
-                                                    <a class="text-dark m-t-5 m-r-5" data-toggle="collapse" href="#collapse_{{ r.id }}"
+                                                    <a class="text-dark m-t-5 m-r-5" data-toggle="collapse"
+                                                       href="#collapse_{{ r.id }}"
                                                        role="button"
                                                        aria-expanded="true"><i class="feather icon-chevron-down"></i>
                                                     </a>
@@ -165,15 +181,20 @@
                                                         {% for s in r.sub2 %}
                                                             {# Инвертированное #}
                                                             {% if s.is_invert == '0' %}
-                                                                <i title="Не инвертированное" class="feather icon-arrow-up-right" style="color: #000"></i>
+                                                                <i title="Не инвертированное"
+                                                                   class="feather icon-arrow-up-right"
+                                                                   style="color: #000"></i>
                                                             {% elif s.is_invert == '1' %}
-                                                                <i title="Инвертированное" class="feather icon-arrow-down-left" style="color: #000"></i>
+                                                                <i title="Инвертированное"
+                                                                   class="feather icon-arrow-down-left"
+                                                                   style="color: #000"></i>
                                                             {% else %}
                                                                 {{ s.is_invert }}
                                                             {% endif %}
                                                             {# Описание подправила и значение #}
                                                             {{ s.ar_description|truncatechars:30 }}{{ ' - ' }}
-                                                            <a href="{% url 'lists_edit' s.fid_or_val %}">{{ s.list_name }}</a><br/>
+                                                            <a href="{% url 'lists_edit' s.fid_or_val %}">{{ s.list_name }}</a>
+                                                            <br/>
                                                         {% endfor %}
                                                     </div>
                                                 </td>

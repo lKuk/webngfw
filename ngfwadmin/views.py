@@ -227,12 +227,12 @@ def rules_sub_edit(request, id):
             if ar_id is not None and ar_id != '':
                 ar_id = ar_id.replace("\'", "\"")
                 ar_id = json.loads(ar_id)
+                ftype = ar_id['file_type']
                 ar_id = ar_id['id']
             # Параметры списка
             if list_id is not None and list_id != '':
                 list_id = list_id.replace("\'", "\"")
                 list_id = json.loads(list_id)
-                ftype = list_id['ftype']
                 list_id = list_id['id']
             # Сохранить значения
             if ar_id is not None:
