@@ -369,10 +369,16 @@ def lists_add(request):
 
         # получить доступные форматы
         format = enum_format_get(url)
+        # список сервисов
+        services = enum_services_get(url)
+        # список протоколов
+        protocols = enum_protocols_get(url)
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,
                    'format': format,
+                   'services': services,
+                   'protocols': protocols,
                    'action': 'add',
                    'caption': 'Добавить новый список'}
         return render(request, 'rules/lists/lists_form.html', context=context)
