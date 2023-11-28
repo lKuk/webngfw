@@ -503,13 +503,14 @@ def table(request, name):
         if name == 'format':
             caption = 'Форматы атомарных правил'
             formats = enum_format_get(dev['url'])
-            columns = ['id', 'name', 'description', 'param']
+            columns = ['id', 'name', 'print', 'description', 'param']
             for row in formats['formats']:
                 id = row['id']
                 name = row['name']
+                print = row['print']
                 param = row['param']
                 description = row['description']
-                rows.append([id, name, description, param])
+                rows.append([id, name, print, description, param])
 
         # Список сервисов
         if name == 'services':
