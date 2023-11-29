@@ -242,6 +242,7 @@ def rules_sub_edit(request, id):
             # Сохранить значения
             if ar_id is not None:
                 dictsub['ar_id'] = ar_id
+                dictsub['ftype'] = ftype
             if list_id is not None:
                 dictsub['list_id'] = list_id
             if is_invert is not None:

@@ -79,7 +79,13 @@
                                     <select id="list_id" name="list_id" class="form-control" required>
                                         <option value="" hidden="hidden" selected="selected"></option>
                                         {% for list in lists %}
-                                            <option value="{{ list }}" class="list_hidden">{{ list.name }}</option>
+                                            <option value="{{ list }}" class="list_hidden"
+                                            {% if dictsub.ftype != list.ftype %}
+                                            	hidden="hidden"
+                                            {% endif %}
+                                            {% if listId == list.id %}
+                                            	selected="selected"
+                                            {% endif %}>{{ list.name }}</option>
                                         {% endfor %}
                                     </select>
                                     <div class="input-group-append">
