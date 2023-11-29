@@ -104,10 +104,10 @@
                             <div class="form-group">
                                 <label for="ftype">Тип списка:</label>
                                 <select id="ftype" name="ftype" class="form-control" value="{{ list.ftype }}"
-                                        id="listId" required>
+                                        id="listId" required onchange="hideDesc()">
                                     {% for f in format.formats %}
                                         <option value="{{ f.name }}"
-                                                {% if f == list.ftype or f == ftype %}
+                                                {% if f.name == list.ftype or f.name == ftype %}
                                                 selected="selected"
                                                 {% endif %}>{{ f.print }}</option>
                                     {% endfor %}
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                         <!-- Содержимое списка -->
-                        <div class="col-xl-8 col-md-6">
+                        <div class="col-xl-8 col-md-6" id="listIMP" hidden="true">
                             <label for="content">Содержимое</label>
                             <div class="form-control">
                                 <textarea id="content" name="content" rows="20">{{ content }}</textarea>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                         <!-- Содержимое выбора -->
-                        <div class="col-xl-8 col-md-6">
+                        <div class="col-xl-8 col-md-6" id="listSP" hidden="true">
                             <div class="row">
                                 <div class="col text-left">
                                     <label for="custom-headers">Доступно для выбора:</label>
@@ -143,12 +143,12 @@
                                 </div>
                             </div>
                             {# <select multiple="multiple" id="my-select" name="select-list">#}
-                            <select id="custom-headers" class="searchable" multiple="multiple" >
+                            <select id="custom-headers" class="searchable" multiple="multiple">
                                 {% for p in protocols %}
-                                    <option value='{{ p }}'>{{ p }}</option>
+                                    <option value='{{ p }}' class="protocolsHide" hidden="true">{{ p }}</option>
                                 {% endfor %}
                                 {% for s in services %}
-                                    <option value='{{ s }}' selected="">{{ s }}</option>
+                                    <option value='{{ s }}' class="servicesHide" hidden="true">{{ s }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -156,7 +156,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             {% for f in format.formats %}
-                                <p class="text-dark">{{ f.print }} - {{ f.description }}</p>
+                                <p class="text-dark descHide" id="{{ f.name }}" hidden="true">{{ f.print }}
+                                    - {{ f.description }}</p>
                             {% endfor %}
                         </div>
                     </div>
@@ -166,12 +167,14 @@
     </div>
 
     <script>
-        // Скрипт нумерации строк
-        var editor = CodeMirror.fromTextArea(document.getElementById("content"), {
-            lineNumbers: true,
-            mode: "text/html",
-            matchBrackets: true
-        });
+        function editor() {
+            // Скрипт нумерации строк
+            var editor = CodeMirror.fromTextArea(document.getElementById("content"), {
+                lineNumbers: true,
+                mode: "text/html",
+                matchBrackets: true
+            });
+        }
     </script>
     <script>
         // Скрипт валидации
@@ -217,6 +220,68 @@
         // Перехват запроса для валидации
         var listEditForm = document.getElementById("listEditForm");
         listEditForm.addEventListener("submit", ValidateAll);
+    </script>
+
+    <script>
+        //Подписываемся на загрузку страницы
+        window.addEventListener('load', () => {
+            hideDesc();
+            editor();
+        });
+
+        //Гениальная,сука, функция
+        function hideDesc() {
+            // Скрытие описания
+            // Гениальные сранение без явной привязки к конкретному значению, я же умный. ДА?
+            var listForDesc = document.getElementById("ftype");
+            var typeInList = listForDesc.value;
+
+            var desc = document.getElementsByClassName("descHide");
+            for (var i = 0; i < desc.length; i++) {
+
+                if (typeInList === desc.item(i).id) {
+                    desc.item(i).hidden = false;
+                } else {
+                    desc.item(i).hidden = true;
+                }
+            }
+
+            //Скрытие содержимого
+            //Только зачем я такой умный, если все равно без явного сравнения нельзя?????
+            var listSP = document.getElementById("listSP");
+            var protocolsHide = document.getElementsByClassName("protocolsHide");
+            var servicesHide = document.getElementsByClassName("servicesHide");
+            if (typeInList === "PROTNAME" || typeInList === "SERVICENAME") {
+                if (typeInList === "PROTNAME") {
+                    for (var i = 0; i < protocolsHide.length; i++) {
+                        protocolsHide.item(i).hidden = false;
+                    }
+                    for (var i = 0; i < servicesHide.length; i++) {
+                        servicesHide.item(i).hidden = true;
+                    }
+                }
+                if (typeInList === "SERVICENAME") {
+                    for (var i = 0; i < protocolsHide.length; i++) {
+                        protocolsHide.item(i).hidden = true;
+                    }
+                    for (var i = 0; i < servicesHide.length; i++) {
+                        servicesHide.item(i).hidden = false;
+                    }
+                }
+
+                listSP.hidden = false;
+            } else {
+                listSP.hidden = true;
+            }
+
+            var listIMP = document.getElementById("listIMP");
+            if (typeInList === "IP" || typeInList === "LIT" || typeInList === "MAC" || typeInList === "PORT") {
+                listIMP.hidden = false;
+            } else {
+                listIMP.hidden = true;
+            }
+        }
+
     </script>
 
 {% endblock content %}

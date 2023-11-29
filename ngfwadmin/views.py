@@ -2,12 +2,10 @@ from .forms import *
 
 from django.shortcuts import *
 from ngfwadmin.rest.rules.sub import *
-from ngfwadmin.rest.ports.ports import *
 from ngfwadmin.rest.rules.rules import *
 from ngfwadmin.rest.rules.content import *
 from ngfwadmin.rest.rules.history import *
 from ngfwadmin.rest.system.version import *
-from ngfwadmin.rest.system.monitoring import *
 
 # устройство
 dev = {}
@@ -371,10 +369,16 @@ def lists_add(request):
 
         # получить доступные форматы
         format = enum_format_get(url)
+        # список сервисов
+        services = enum_services_get(url)
+        # список протоколов
+        protocols = enum_protocols_get(url)
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,
                    'format': format,
+                   'services': services,
+                   'protocols': protocols,
                    'action': 'add',
                    'caption': 'Добавить новый список'}
         return render(request, 'rules/lists/lists_form.html', context=context)
@@ -489,7 +493,7 @@ def table(request, name):
 
         # Атомарные правила
         if name == 'atomic':
-            caption = 'atomic'
+            caption = 'Атомарные правила'
             atomic = enum_atomic_get(dev['url'])
             columns = ['id', 'file_type', 'description', 'rule_category', 'arg_type']
             for i in atomic:
@@ -503,7 +507,7 @@ def table(request, name):
 
         # Формат атомарных правил
         if name == 'format':
-            caption = 'formats'
+            caption = 'Форматы атомарных правил'
             formats = enum_format_get(dev['url'])
             columns = ['id', 'name', 'print', 'description', 'param']
             for row in formats['formats']:
@@ -516,81 +520,19 @@ def table(request, name):
 
         # Список сервисов
         if name == 'services':
-            caption = 'services'
+            caption = 'Список сервисов'
             services = enum_services_get(dev['url'])
-            columns = ['services']
+            columns = ['Сервисы']
             for val in services:
                 rows.append([val])
 
         # Список протоколов
         if name == 'protocols':
-            caption = 'protocols'
+            caption = 'Список протоколов'
             protocols = enum_protocols_get(dev['url'])
-            columns = ['protocols']
+            columns = ['Протоколы']
             for val in protocols:
                 rows.append([val])
-
-        if name == 'monitoring_ram':
-            caption = 'monitoring_ram'
-            monitoring_ram = monitoring_ram_get(dev['url'])
-            columns = ['percent', 'total', 'used']
-            percent = monitoring_ram['percent']
-            total = monitoring_ram['total']
-            used = monitoring_ram['used']
-            rows.append([percent, total, used])
-
-        if name == 'monitoring_disk':
-            caption = 'monitoring_disk'
-            monitoring_disk = monitoring_disk_get(dev['url'])
-            columns = ['percent', 'total', 'used']
-            percent = monitoring_disk['percent']
-            total = monitoring_disk['total']
-            used = monitoring_disk['used']
-            rows.append([percent, total, used])
-
-        if name == 'monitoring_lcores':
-            caption = 'monitoring_lcores'
-            monitoring_lcores = monitoring_lcores_get(dev['url'])
-            columns = ['val']
-            for val in monitoring_lcores:
-                rows.append([val])
-
-        if name == 'ports':
-            caption = 'ports'
-            ports = ports_get(dev['url'])
-            columns = ['link_status', 'rx_nombuf', 'link_speed', 'ibytes', 'obytes', 'number', 'oerrors', 'imissed', 'ibits_per_sec', 'ipackets', 'imissed_per_sec', 'opackets_per_sec', 'link_duplex', 'ipackets_per_sec', 'driver_name', 'opackets', 'ierrors', 'obits_per_sec']
-            for val in ports:
-                link_status = val['link_status']
-                rx_nombuf = val['rx_nombuf']
-                link_speed = val['link_speed']
-                ibytes = val['ibytes']
-                obytes = val['obytes']
-                number = val['number']
-                oerrors = val['oerrors']
-                imissed = val['imissed']
-                ibits_per_sec = val['ibits_per_sec']
-                ipackets = val['ipackets']
-                imissed_per_sec = val['imissed_per_sec']
-                opackets_per_sec = val['opackets_per_sec']
-                link_duplex = val['link_duplex']
-                ipackets_per_sec = val['ipackets_per_sec']
-                driver_name = val['driver_name']
-                opackets = val['opackets']
-                ierrors = val['ierrors']
-                obits_per_sec = val['obits_per_sec']
-                rows.append([link_status, rx_nombuf, link_speed, ibytes, obytes, number, oerrors, imissed, ibits_per_sec, ipackets, imissed_per_sec, opackets_per_sec, link_duplex, ipackets_per_sec, driver_name, opackets, ierrors, obits_per_sec])
-
-        if name == 'ports_avail':
-            caption = 'ports_avail'
-            ports = ports_avail_get(dev['url'])
-            columns = ['driver_name','duplex','numa','speed','status']
-            for val in ports:
-                driver_name = val['driver_name']
-                duplex = val['duplex']
-                numa = val['numa']
-                speed = val['speed']
-                status = val['status']
-                rows.append([driver_name,duplex,numa,speed,status])
 
         # отобразить страницу с таблицей
         context = {'dev': dev,
