@@ -91,11 +91,11 @@
                             <div class="form-group">
                                 <label for="type">Метка:</label>
                                 <select id="type" name="type" class="form-control" value="{{ list.type }}" required>
-                                    <option value="lib" {% if f == list.type %}selected="selected"{% endif %}>
+                                    <option value="lib" {% if list.type == f %}selected="selected"{% endif %}>
                                         Библиотека
                                     </option>
                                     <option value="list"
-                                            {% if f == list.type or list.type is None %}selected="selected"{% endif %}>
+                                            {% if list.type == f or list.type is None %}selected="selected"{% endif %}>
                                         Список
                                     </option>
                                 </select>
