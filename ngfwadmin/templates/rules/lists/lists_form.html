@@ -36,19 +36,19 @@
                 mode: "text/html",
                 matchBrackets: true
             });
+
+            // Скрипт нумерации строк
+            CodeMirror.fromTextArea(document.getElementById("contentDev"), {
+                lineNumbers: true,
+                mode: "text/html",
+                matchBrackets: true
+            });
         }
 
-        function updateCodeMirror(data) {
-            alert("hi")
-            var cm = $('#content')[0].CodeMirror;
-            var doc = cm.getDoc();
-            var cursor = doc.getCursor(); // gets the line number in the cursor position
-            var line = doc.getLine(cursor.line); // get the line contents
-            var pos = { // create a new object to avoid mutation of the original selection
-                line: cursor.line,
-                ch: line.length - 1 // set the character position to the end of the line
-            }
-            doc.replaceRange('\n' + data + '\n', pos); // adds a new line
+        function insertTextAtCursor(data) {
+            CodeMirror.fromTextArea(document.getElementById('contentDev'), {
+                lineNumbers: true
+            }).setValue(data);
         }
 
     </script>
@@ -107,7 +107,7 @@
         //Подписываемся на загрузку страницы
         window.addEventListener('load', () => {
             hideDesc();
-            //editor();
+            editor();
         });
 
         function hideDesc() {
@@ -165,18 +165,22 @@
 
             var selectable = document.getElementsByClassName('ms-elem-selectable');
             var selection = document.getElementsByClassName('ms-elem-selection');
-            var contentDev = document.getElementById('content');
+            var contentDev = document.getElementById('contentDev');
 
-            contentDev.textContent = '';
+            var finalString = '';
+            insertTextAtCursor(finalString)
 
             for (var i = 0; i < selection.length; i++) {
 
                 if (window.getComputedStyle(selection.item(i)).display === "none") {
 
                 } else {
-                    contentDev.append(selection.item(i).textContent);
-                    contentDev.append('\n');
+                    finalString += selection.item(i).textContent + '\n'
                 }
+            }
+            if (finalString !== '') {
+
+                insertTextAtCursor(finalString);
             }
         }
     </script>
@@ -330,6 +334,14 @@
                                     - {{ f.description }}</p>
                             {% endfor %}
                         </div>
+                    </div>
+                    <div class="form-control">
+                        <textarea id="contentDev" name="content" rows="20">{{ content }}</textarea>
+                    </div>
+                    <div class="invalid-feedback" id="validDivId">
+                        <ul>
+                            <li id="validLiId"></li>
+                        </ul>
                     </div>
                 </div>
             </form>
