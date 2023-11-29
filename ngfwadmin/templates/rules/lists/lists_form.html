@@ -182,14 +182,19 @@
             var content = document.getElementById("content");
             var validLiId = document.getElementById("validLiId");
             var validDivId = document.getElementById("validDivId");
-            var list = content.value.split('\n');
+
+            text = content.value;
+            text += '\n';
+            var list = text.split('\n');
 
             for (var i = 0; i < list.length; i++) {
+                if (list[i] === '')
+                    continue;
                 if (list[i].match(format))
                     continue;
                 validDivId.classList.add('text-danger');
                 validDivId.classList.remove("invalid-feedback")
-                validLiId.textContent = 'Неверное значение ' + type + ' в строке: ' + (i + 1).toString();
+                validLiId.textContent = 'Неверное значение \"' + list[i] + '\" в строке: ' + (i + 1).toString();
                 return false;
             }
             return true;
