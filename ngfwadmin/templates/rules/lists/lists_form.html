@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{% static 'main/plugins/select2/css/select2.min.css' %}">
     <!-- multi-select css -->
     <link rel="stylesheet" href="{% static 'main/plugins/multi-select/css/multi-select.css' %}">
+
 {% endblock style %}
 
 {% block script %}
@@ -26,6 +27,7 @@
     <script src="{% static 'main/plugins/multi-select/js/jquery.multi-select.js' %}"></script>
     <!-- form-select-custom Js -->
     <script src="{% static 'main/js/pages/form-select-custom.js' %}"></script>
+
 {% endblock script %}
 
 {# Заголовок #}
@@ -79,7 +81,7 @@
                         <div class="col text-right">
                             <div class="btn-group-toggle" data-toggle="buttons">
                                 <label class="btn btn-outline-primary" style="width: 160px">
-                                <input type="checkbox">содержимое</label>
+                                    <input type="checkbox" onchange="addtext()">содержимое</label>
                             </div>
                         </div>
                     </div>
@@ -150,18 +152,18 @@
                                     <label for="custom-headers" style="padding-left: 8%;">Выбрано:</label>
                                 </div>
                             </div>
-                            <select id="custom-headers" name="select" class="searchable" multiple="multiple">
+                            <select id="callbacks" name="select" class="searchable" multiple="multiple">
                                 {% for p in protocols %}
                                     <option value='{{ p }}' class="protocolsHide"
                                             {% if p in content %}
-                                                selected="selected"
+                                            selected
                                             {% endif %}
                                             hidden="hidden">{{ p }}</option>
                                 {% endfor %}
                                 {% for s in services %}
-                                    <option value='{{ s }}' class="servicesHide"
+                                    <option value='{{ s }}' class="servicesHide servicesAdd"
                                             {% if s in content %}
-                                            	selected="selected"
+                                            selected
                                             {% endif %}
                                             hidden="hidden">{{ s }}</option>
                                 {% endfor %}
@@ -176,15 +178,24 @@
                             {% endfor %}
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-control">
+                                <textarea id="contentDev" name="contentDev" rows="20"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 
+
+
     <script>
         function editor() {
             // Скрипт нумерации строк
-            var editor = CodeMirror.fromTextArea(document.getElementById("content"), {
+            CodeMirror.fromTextArea(document.getElementById("content"), {
                 lineNumbers: true,
                 mode: "text/html",
                 matchBrackets: true
@@ -269,7 +280,7 @@
             //Только зачем я такой умный, если все равно без явного сравнения нельзя?????
             var listSP = document.getElementById("listSP");
             var protocolsHide = document.getElementsByClassName("protocolsHide");
-            var servicesHide = document.getElementsByClassName("servicesHide");
+            var servicesHide = document.getElementsByClassName("servicesAdd");
             if (typeInList === "PROTNAME" || typeInList === "SERVICENAME") {
                 if (typeInList === "PROTNAME") {
                     for (var i = 0; i < protocolsHide.length; i++) {
@@ -301,5 +312,28 @@
             }
         }
     </script>
+
+    <script>
+        function addtext() {
+
+            var selectable = document.getElementsByClassName('ms-elem-selectable');
+            var selection = document.getElementsByClassName('ms-elem-selection');
+            var contentDev = document.getElementById('contentDev');
+
+            contentDev.textContent = '';
+
+
+            for (var i = 0; i < selection.length; i++) {
+
+                if (window.getComputedStyle(selection.item(i)).display === "none") {
+
+                } else {
+                    contentDev.append(selection.item(i).textContent);
+                    contentDev.append('\n');
+                }
+            }
+        }
+    </script>
+
 
 {% endblock content %}
