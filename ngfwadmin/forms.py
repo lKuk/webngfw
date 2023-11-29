@@ -8,7 +8,7 @@ from django.core.validators import validate_ipv46_address
 class ConnectForm(forms.Form):
     ip = forms.CharField(max_length=255,
                          label='IP адрес',
-                         initial='192.168.3.35',
+                         initial='192.168.3.250',
                          validators=[validate_ipv46_address],
                          widget=forms.TextInput(attrs={'class': 'form-control'}))
     port = forms.IntegerField(label='Порт',

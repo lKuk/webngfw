@@ -1,5 +1,7 @@
-{% extends "rules/../base.html" %}
+{% extends "base.html" %}
+
 {% load static %}
+{% load base_tag %}
 
 {# Стили #}
 {% block style %}
@@ -63,7 +65,7 @@
                 <div class="card-body">
                     <div class="row">
                         <!-- Кнопки -->
-                        <div class="col-md-12 m-b-10">
+                        <div class="col text-left">
                             {% if action == 'add' %}
                                 <button type="submit" name="btnListInsert" class="btn btn-primary shadow-2"
                                         style="width: 160px">Создать
@@ -73,6 +75,12 @@
                                         style="width: 160px">Сохранить
                                 </button>
                             {% endif %}
+                        </div>
+                        <div class="col text-right">
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-outline-primary" style="width: 160px">
+                                <input type="checkbox">содержимое</label>
+                            </div>
                         </div>
                     </div>
                     <hr>
@@ -91,11 +99,11 @@
                             <div class="form-group">
                                 <label for="type">Метка:</label>
                                 <select id="type" name="type" class="form-control" value="{{ list.type }}" required>
-                                    <option value="lib" {% if f == list.type %}selected="selected"{% endif %}>
+                                    <option value="lib" {% if list.type == f %}selected="selected"{% endif %}>
                                         Библиотека
                                     </option>
                                     <option value="list"
-                                            {% if f == list.type or list.type is None %}selected="selected"{% endif %}>
+                                            {% if list.type == f or list.type is None %}selected="selected"{% endif %}>
                                         Список
                                     </option>
                                 </select>
@@ -121,7 +129,7 @@
                             </div>
                         </div>
                         <!-- Содержимое списка -->
-                        <div class="col-xl-8 col-md-6" id="listIMP" hidden="true">
+                        <div class="col-xl-8 col-md-6" id="listIMP">
                             <label for="content">Содержимое</label>
                             <div class="form-control">
                                 <textarea id="content" name="content" rows="20">{{ content }}</textarea>
@@ -133,7 +141,7 @@
                             </div>
                         </div>
                         <!-- Содержимое выбора -->
-                        <div class="col-xl-8 col-md-6" id="listSP" hidden="true">
+                        <div class="col-xl-8 col-md-6" id="listSP" hidden="hidden">
                             <div class="row">
                                 <div class="col text-left">
                                     <label for="custom-headers">Доступно для выбора:</label>
@@ -142,13 +150,20 @@
                                     <label for="custom-headers" style="padding-left: 8%;">Выбрано:</label>
                                 </div>
                             </div>
-                            {# <select multiple="multiple" id="my-select" name="select-list">#}
-                            <select id="custom-headers" class="searchable" multiple="multiple">
+                            <select id="custom-headers" name="select" class="searchable" multiple="multiple">
                                 {% for p in protocols %}
-                                    <option value='{{ p }}' class="protocolsHide" hidden="true">{{ p }}</option>
+                                    <option value='{{ p }}' class="protocolsHide"
+                                            {% if p in content %}
+                                                selected="selected"
+                                            {% endif %}
+                                            hidden="hidden">{{ p }}</option>
                                 {% endfor %}
                                 {% for s in services %}
-                                    <option value='{{ s }}' class="servicesHide" hidden="true">{{ s }}</option>
+                                    <option value='{{ s }}' class="servicesHide"
+                                            {% if s in content %}
+                                            	selected="selected"
+                                            {% endif %}
+                                            hidden="hidden">{{ s }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -156,7 +171,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             {% for f in format.formats %}
-                                <p class="text-dark descHide" id="{{ f.name }}" hidden="true">{{ f.print }}
+                                <p class="text-dark descHide" id="{{ f.name }}" hidden="hidden">{{ f.print }}
                                     - {{ f.description }}</p>
                             {% endfor %}
                         </div>
@@ -182,14 +197,19 @@
             var content = document.getElementById("content");
             var validLiId = document.getElementById("validLiId");
             var validDivId = document.getElementById("validDivId");
-            var list = content.value.split('\n');
+
+            text = content.value;
+            text += '\n';
+            var list = text.split('\n');
 
             for (var i = 0; i < list.length; i++) {
+                if (list[i] === '')
+                    continue;
                 if (list[i].match(format))
                     continue;
                 validDivId.classList.add('text-danger');
                 validDivId.classList.remove("invalid-feedback")
-                validLiId.textContent = 'Неверное значение ' + type + ' в строке: ' + (i + 1).toString();
+                validLiId.textContent = 'Неверное значение \"' + list[i] + '\" в строке: ' + (i + 1).toString();
                 return false;
             }
             return true;
@@ -221,7 +241,6 @@
         var listEditForm = document.getElementById("listEditForm");
         listEditForm.addEventListener("submit", ValidateAll);
     </script>
-
     <script>
         //Подписываемся на загрузку страницы
         window.addEventListener('load', () => {
@@ -231,7 +250,6 @@
 
         //Гениальная,сука, функция
         function hideDesc() {
-
             // Скрытие описания
             // Гениальные сранение без явной привязки к конкретному значению, я же умный. ДА?
             var listForDesc = document.getElementById("ftype");
@@ -282,7 +300,6 @@
                 listIMP.hidden = true;
             }
         }
-
     </script>
 
 {% endblock content %}

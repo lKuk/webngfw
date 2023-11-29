@@ -135,31 +135,20 @@
                                                 {# Включено #}
                                                 <td style="display: table-cell;">
                                                     {% if r.is_enable.upper == 'TRUE' %}
-                                                        <div title="Включено">
-                                                            <svg width="16" height="16" fill="#ffe38f">
-                                                                <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"></path>
-                                                                <svg width="16" height="16" fill="#777">
-                                                                    <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z"></path>
-                                                                </svg>
-                                                            </svg>
-                                                        </div>
+                                                        <p class="m-0 text-success">Вкл.</p>
                                                     {% elif r.is_enable.upper == 'FALSE' %}
-                                                        <div title="Выключено">
-                                                            <svg width="16" height="16" fill="#777">
-                                                                <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z"></path>
-                                                            </svg>
-                                                        </div>
+                                                        <p class="m-0">Выкл.</p>
                                                     {% else %}
-                                                        {{ r.is_enable }}
+                                                        <p class="m-0">{{ r.is_enable }}</p>
                                                     {% endif %}
                                                 </td>
                                                 {# black/white #}
                                                 <td style="display: table-cell;">
                                                     {% if r.rtype.upper == 'BLACK' %}
-                                                        <p class="mb-1" style="color: #2f0800">Запрещено</p>
+                                                        <p class="m-0" style="color: #2f0800">Запрещено</p>
                                                         {# <i class="feather icon-star-on" style="font-size: 1.05rem; color: #666;" title="Запрещено"></i>#}
                                                     {% elif r.rtype.upper == 'WHITE' %}
-                                                        <p class="mb-1" style="color: #1c561d">Разрешено</p>
+                                                        <p class="m-0" style="color: #1c561d">Разрешено</p>
                                                         {# <i class="feather icon-star-on" style="font-size: 1.05rem; color: #8fcedd;" title="Разрешено"></i>#}
                                                     {% else %}
                                                         {{ r.rtype }}
