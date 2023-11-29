@@ -1,5 +1,7 @@
 {% extends "rules/../base.html" %}
+
 {% load static %}
+{% load base_tag %}
 
 {# Стили #}
 {% block style %}
@@ -146,12 +148,16 @@
                                 {% for p in protocols %}
                                     <option value='{{ p }}' class="protocolsHide"
                                             {% if p in content %}
-                                            	selected="selected"
+                                                selected="selected"
                                             {% endif %}
                                             hidden="hidden">{{ p }}</option>
                                 {% endfor %}
                                 {% for s in services %}
-                                    <option value='{{ s }}' class="servicesHide" hidden="hidden">{{ s }}</option>
+                                    <option value='{{ s }}' class="servicesHide"
+                                            {% if s in content %}
+                                            	selected="selected"
+                                            {% endif %}
+                                            hidden="hidden">{{ s }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -159,7 +165,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             {% for f in format.formats %}
-                                <p class="text-dark descHide" id="{{ f.name }}" hidden="true">{{ f.print }}
+                                <p class="text-dark descHide" id="{{ f.name }}" hidden="hidden">{{ f.print }}
                                     - {{ f.description }}</p>
                             {% endfor %}
                         </div>
