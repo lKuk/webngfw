@@ -121,7 +121,7 @@
                             </div>
                         </div>
                         <!-- Содержимое списка -->
-                        <div class="col-xl-8 col-md-6" id="listIMP" hidden="true">
+                        <div class="col-xl-8 col-md-6" id="listIMP">
                             <label for="content">Содержимое</label>
                             <div class="form-control">
                                 <textarea id="content" name="content" rows="20">{{ content }}</textarea>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                         <!-- Содержимое выбора -->
-                        <div class="col-xl-8 col-md-6" id="listSP" hidden="true">
+                        <div class="col-xl-8 col-md-6" id="listSP" hidden="hidden">
                             <div class="row">
                                 <div class="col text-left">
                                     <label for="custom-headers">Доступно для выбора:</label>
@@ -142,13 +142,16 @@
                                     <label for="custom-headers" style="padding-left: 8%;">Выбрано:</label>
                                 </div>
                             </div>
-                            {# <select multiple="multiple" id="my-select" name="select-list">#}
                             <select id="custom-headers" class="searchable" multiple="multiple">
                                 {% for p in protocols %}
-                                    <option value='{{ p }}' class="protocolsHide" hidden="true">{{ p }}</option>
+                                    <option value='{{ p }}' class="protocolsHide"
+                                            {% if p in content %}
+                                            	selected="selected"
+                                            {% endif %}
+                                            hidden="hidden">{{ p }}</option>
                                 {% endfor %}
                                 {% for s in services %}
-                                    <option value='{{ s }}' class="servicesHide" hidden="true">{{ s }}</option>
+                                    <option value='{{ s }}' class="servicesHide" hidden="hidden">{{ s }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -226,7 +229,6 @@
         var listEditForm = document.getElementById("listEditForm");
         listEditForm.addEventListener("submit", ValidateAll);
     </script>
-
     <script>
         //Подписываемся на загрузку страницы
         window.addEventListener('load', () => {
@@ -286,7 +288,6 @@
                 listIMP.hidden = true;
             }
         }
-
     </script>
 
 {% endblock content %}
