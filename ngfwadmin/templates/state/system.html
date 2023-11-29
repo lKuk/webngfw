@@ -13,7 +13,7 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-home"></i> Состояние системы
+            <i class="m-r-15 feather icon-home"></i>Система
         </h4>
     </li>
 {% endblock header %}
@@ -27,15 +27,19 @@
                  <div class="card">
                      <div class="card-header">
                          <div class="page-header-title">
-                            <h5>Cостояние системы и статистика</h5>
+                            <h5>Параметры системы</h5>
                         </div>
                         <ul class="breadcrumb m-t-10">
-                            <li class="breadcrumb-item"><a href="{% url 'history' %}"><i class="feather icon-home p-r-5"></i>Cостояние</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'history' %}"><i class="feather icon-home p-r-5"></i>Система</a></li>
                         </ul>
                      </div>
                      <div class="card-body">
-                         <!-- [Описание] -->
-                         <p>Тут будет отображаться состояние системы и статистика.</p>
+                         <!-- Версия по -->
+                         <p class="text-dark">Версия ПО: {{ version.version }}</p>
+                         <p class="text-dark">Серийный номер: {{ serial.serial_number }}</p>
+                         <p class="text-dark">Свободно потоков: {{ lcores.free_cores }}</p>
+                         <p class="text-dark">Потоков всего: {{ lcores.cores }}</p>
+                         <p class="text-dark">Количество нума узлов: {{ lcores.nodes }}</p>
                      </div>
                  </div>
              </div>

@@ -46,12 +46,12 @@
                     <label>Состояние</label>
                 </li>
 
-                <!-- Состояние -->
-                <li class="nav-item {% is_active request 'dashboard' 'active' %}">
-                    <a href="{% url 'dashboard' %}" class="nav-link">
+                <!-- Система -->
+                <li class="nav-item {% is_active request 'system' 'active' %}">
+                    <a href="{% url 'system' %}" class="nav-link">
                         <span class="pcoded-micon">
                             <i class="feather icon-home"></i>
-                        </span><span class="pcoded-mtext">Состояние</span>
+                        </span><span class="pcoded-mtext">Система</span>
                     </a>
                 </li>
 
@@ -122,7 +122,7 @@
 <header class="navbar pcoded-header navbar-expand-lg navbar-light">
     <div class="m-header">
         <a class="mobile-menu" id="mobile-collapse1" href="#!"><span></span></a>
-        <a href="{% url 'dashboard' %}" class="b-brand">
+        <a href="{% url 'system' %}" class="b-brand">
             <div class="b-bg">
                 <i class="feather icon-trending-up"></i>
             </div>
@@ -141,10 +141,6 @@
         </ul>
         <!-- Справа -->
         <ul class="navbar-nav ml-auto">
-            <!-- Версия по -->
-            <li>
-                <p>Версия ПО: {{ dev.version }}</p>
-            </li>
             <!-- переподключение -->
             <li>
                 <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.ip }}</a>

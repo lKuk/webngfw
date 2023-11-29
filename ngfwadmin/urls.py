@@ -6,8 +6,8 @@ urlpatterns = [
     path('connect/', connect, name='connect'),
 
     # Dashboard
-    path('', dashboard, name='dashboard'),
-    path('dashboard/', dashboard, name='dashboard'),
+    path('', system, name='system'),
+    path('system/', system, name='system'),
 
     # Редактор правила
     path('rules/', rules, name='rules'),

@@ -6,8 +6,8 @@ from ngfwadmin.rest.ports.ports import *
 from ngfwadmin.rest.rules.rules import *
 from ngfwadmin.rest.rules.content import *
 from ngfwadmin.rest.rules.history import *
-from ngfwadmin.rest.system.version import *
-from ngfwadmin.rest.system.monitoring import *
+from ngfwadmin.rest.system.system import *
+from ngfwadmin.rest.monitoring.monitoring import *
 
 # устройство
 dev = {}
@@ -27,14 +27,12 @@ def connect(request):
                 login = obj['login']
                 password = obj['password']
                 url = 'http://' + ip + ':' + str(port)
-                version = version_get(url)
                 dev = {'ip': ip,
                        'port': port,
                        'login': login,
-                       'version': version,
                        'password': password,
                        'url': url}
-                return redirect('rules')
+                return redirect('system')
         else:
             form = ConnectForm()
         context = {'form': form}
@@ -56,12 +54,22 @@ def exception(request, ex):
 
 
 # Страница dashboard
-def dashboard(request):
+def system(request):
     if 'url' not in dev:
         return redirect('connect')
     try:
-        context = {'dev': dev}
-        return render(request, 'state/dashboard.html', context=context)
+        # подключение
+        url = dev['url']
+
+        serial = serial_get(url)
+        lcores = lcores_get(url)
+        version = version_get(url)
+
+        context = {'dev': dev,
+                   'serial':serial,
+                   'lcores': lcores,
+                   'version': version}
+        return render(request, 'state/system.html', context=context)
     except Exception as ex:
         return exception(request, ex)
 
