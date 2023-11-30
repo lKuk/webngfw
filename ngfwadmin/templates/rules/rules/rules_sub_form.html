@@ -1,4 +1,4 @@
-{% extends "rules/../base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {# Стили #}
@@ -13,6 +13,77 @@
     <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
     <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
     <script src="{% static 'language/ru-table.js' %}"></script>
+
+    <!-- Скрипт фильтрации списка -->
+    <script>
+        //Подписываемся на загрузку страницы
+        window.addEventListener('load', () => {
+            // функция ограничения выпадающего списка
+            ListsFilter();
+        });
+
+        // функция ограничения выпадающего списка
+        function ListsFilter() {
+            try {
+                // атомарное правило
+                var ar_id = document.getElementById("ar_id");
+                // список подправил
+                var list_div = document.getElementById("list_div");
+                // список, который нужно фильтровать
+                var listHidden = document.getElementsByClassName('list_hidden')
+
+                // тип файла
+                file_type_atomic = '';
+                // получить json
+                let strAtomic = ar_id.value
+                if (strAtomic !== '') {
+                    strAtomic = strAtomic.replaceAll("'", "\"");
+                    json = JSON.parse(strAtomic);
+                    // получить тип файла
+                    file_type_atomic = json['file_type'];
+                }
+
+                // Скрыть, если не заполнен
+                list_div.style = '';
+                if (strAtomic === '')
+                    list_div.style = 'pointer-events: none; opacity: 0.4;';
+
+                // пройти по всему списку сокрытия
+                var message = "";
+                Array.prototype.forEach.call(listHidden, function (el) {
+                    try {
+                        // тип файла
+                        id_list = '';
+                        file_type_list = '';
+                        // получить json
+                        let strList = el.value
+                        if (strList !== '') {
+                            strList = strList.replaceAll("'", "\"");
+                            json = JSON.parse(strList);
+                            // получить тип файла
+                            id_list = json['id'];
+                            file_type_list = json['ftype'];
+                        }
+                        // скрыть ненужные элементы
+                        el.hidden = true;
+                        el.selected = false;
+
+                        // Показать правило
+                        if (file_type_list === '' || file_type_atomic === file_type_list) {
+                            el.hidden = false;
+                        }
+                    } catch (error) {
+                        message += el.value + '\n' + error + '\n';
+                    }
+                    if (message !== "")
+                        alert(message);
+                });
+            } catch (error) {
+                alert(error);
+            }
+        }
+    </script>
+
 {% endblock script %}
 
 {# Заголовок #}
@@ -161,89 +232,6 @@
             </form>
         </div>
     </div>
-
-    <!-- Скрипт фильтрации списка -->
-    <script>
-        //Подписываемся на загрузку страницы
-        window.addEventListener('load', () => {
-            // функция ограничения выпадающего списка
-            ListsFilter();
-        });
-
-        // функция ограничения выпадающего списка
-        function ListsFilter() {
-            try {
-                // выбранный список
-                var listId = null;
-                {% if listId is not None %}
-                    listId = {{ listId }};
-                {% elif dictsub.list_id is not None %}
-                    listId = {{ dictsub.list_id }};
-                {% endif %}
-
-                // атомарное правило
-                var ar_id = document.getElementById("ar_id");
-                // список подправил
-                var list_div = document.getElementById("list_div");
-                // список, который нужно фильтровать
-                var listHidden = document.getElementsByClassName('list_hidden')
-
-                // тип файла
-                file_type_atomic = '';
-                // получить json
-                let strAtomic = ar_id.value
-                if (strAtomic !== '') {
-                    strAtomic = strAtomic.replaceAll("'", "\"");
-                    json = JSON.parse(strAtomic);
-                    // получить тип файла
-                    file_type_atomic = json['file_type'];
-                }
-
-                // Скрыть, если не заполнен атомик
-                list_div.style = '';
-                if (strAtomic === '')
-                    list_div.style = 'pointer-events: none; opacity: 0.4;';
-
-                // пройти по всему списку сокрытия
-                var message = "";
-                Array.prototype.forEach.call(listHidden, function (el) {
-                    try {
-                        // тип файла
-                        id_list = '';
-                        file_type_list = '';
-                        // получить json
-                        let strList = el.value
-                        if (strList !== '') {
-                            strList = strList.replaceAll("'", "\"");
-                            json = JSON.parse(strList);
-                            // получить тип файла
-                            id_list = json['id'];
-                            file_type_list = json['ftype'];
-                        }
-                        // скрыть ненужные элементы
-                        el.hidden = true;
-                        el.selected = false;
-
-                        // Показать правило
-                        if (file_type_list === '' || file_type_atomic === file_type_list) {
-                            el.hidden = false;
-                        }
-                        // Выделить правило
-                        if (id_list === listId && file_type_atomic === file_type_list) {
-                            el.selected = true;
-                        }
-
-                    } catch (error) {
-                        message += el.value + '\n' + error + '\n';
-                    }
-                    if (message !== "")
-                        alert(message);
-                });
-            } catch (error) {
-                alert(error);
-            }
-        }
-    </script>
 
 {% endblock content %}
 
