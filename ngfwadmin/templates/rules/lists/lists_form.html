@@ -342,8 +342,10 @@
                     <div class="row">
                         <div class="col-md-12">
                             {% for f in format.formats %}
-                                <p class="text-dark descHide" id="{{ f.name }}" hidden="hidden">{{ f.print }}
-                                    - {{ f.description }}</p>
+                                <div class="descHide" id="{{ f.name }}" hidden="hidden">
+                                    <p class="text-dark">{{ f.description }}</p>
+                                    <p class="text-danger">{{ f.sign }}</p>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
