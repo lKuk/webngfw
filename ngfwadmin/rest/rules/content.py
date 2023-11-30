@@ -17,4 +17,3 @@ def content_get(url, idlist):
         return ''
     details = response.text.rstrip('\n')
     return details
-

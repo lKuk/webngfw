@@ -75,4 +75,3 @@ def rule_description(url):
         raise Exception(response.url, response.text)
     details = response.json()
     return details
-
