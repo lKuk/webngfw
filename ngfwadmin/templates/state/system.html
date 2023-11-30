@@ -45,10 +45,12 @@
                         <p class="text-dark">Версия ПО: {{ version.version }}</p>
                         <p class="text-dark">Серийный номер: {{ serial.serial_number }}</p>
                         <p class="text-dark">Статус системы: {{ status.main_status }} - {{ status.sub_status }}</p>
+                        <p class="text-dark">Время старта: {{ uptime.start_time }}
+                                        <br/>Время работы: {{ uptime.days }}д. {{ uptime.hours }}ч. {{ uptime.mins }}мин. {{ uptime.secs }}сек.</p>
+
                         <p class="text-dark">Свободно потоков: {{ lcores.free_cores }}
                             <br/>Потоков всего: {{ lcores.cores }}
                             <br/>Количество NUMA узлов: {{ lcores.nodes }}</p>
-
 
                         <!-- Таблица списков -->
                         <div class="table-responsive">
