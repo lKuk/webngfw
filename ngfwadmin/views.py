@@ -1,6 +1,4 @@
-from .forms import *
-
-from django.shortcuts import *
+from ngfwadmin.forms import *
 from ngfwadmin.rest.rules.sub import *
 from ngfwadmin.rest.ports.ports import *
 from ngfwadmin.rest.rules.rules import *
@@ -8,6 +6,7 @@ from ngfwadmin.rest.rules.content import *
 from ngfwadmin.rest.rules.history import *
 from ngfwadmin.rest.system.system import *
 from ngfwadmin.rest.monitoring.monitoring import *
+from django.shortcuts import redirect, render
 
 # устройство
 dev = {}
@@ -61,14 +60,20 @@ def system(request):
         # подключение
         url = dev['url']
 
+        uptime = uptime_get(url)
         serial = serial_get(url)
         lcores = lcores_get(url)
+        status = status_get(url)
         version = version_get(url)
+        settings = settings_get(url)
 
         context = {'dev': dev,
                    'serial':serial,
                    'lcores': lcores,
-                   'version': version}
+                   'uptime': uptime,
+                   'status': status,
+                   'version': version,
+                   'settings': settings}
         return render(request, 'state/system.html', context=context)
     except Exception as ex:
         return exception(request, ex)

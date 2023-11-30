@@ -27,3 +27,30 @@ def lcores_get(url):
         raise Exception(response.url, response.text)
     details = response.json()
     return details
+
+
+# Получить статус
+def status_get(url):
+    response = requests.get(f"{url}/system/status")
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    details = response.json()
+    return details
+
+
+# Получить статус
+def uptime_get(url):
+    response = requests.get(f"{url}/system/uptime")
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    details = response.json()
+    return details
+
+
+# Получить версию
+def settings_get(url):
+    response = requests.get(f"{url}/system/settings")
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    details = response.json()
+    return details
