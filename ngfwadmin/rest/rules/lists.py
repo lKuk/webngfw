@@ -61,7 +61,6 @@ def list_select_all(url):
     return details
 
 
-
 # Наполнить список
 def list_warp(url, list):
     try:
@@ -75,3 +74,4 @@ def list_warp(url, list):
     # обработка ошибок
     except Exception as ex:
         return
+

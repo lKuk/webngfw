@@ -3,10 +3,11 @@ from ngfwadmin.rest.rules.sub import *
 from ngfwadmin.rest.ports.ports import *
 from ngfwadmin.rest.rules.rules import *
 from ngfwadmin.rest.rules.content import *
-from ngfwadmin.rest.rules.history import *
 from ngfwadmin.rest.system.system import *
+from ngfwadmin.rest.rules.history import *
 from ngfwadmin.rest.monitoring.monitoring import *
 from django.shortcuts import redirect, render
+
 
 # устройство
 dev = {}
@@ -60,11 +61,11 @@ def system(request):
         # подключение
         url = dev['url']
 
-        ports = ports_get(url)
         uptime = uptime_get(url)
         serial = serial_get(url)
         lcores = lcores_get(url)
         status = status_get(url)
+        ports = sys_ports_get(url)
         version = version_get(url)
         settings = settings_get(url)
 
@@ -517,10 +518,10 @@ def table(request, name):
             for i in atomic:
                 row = atomic[i]
                 id = row['id']
-                arg_type = row['arg_type']
-                file_type = row['file_type']
-                description = row['description']
-                rule_category = row['rule_category']
+                arg_type = row.get('arg_type')
+                file_type = row.get('file_type')
+                description = row.get('description')
+                rule_category = row.get('rule_category')
                 rows.append([id, file_type, description, rule_category, arg_type])
 
         # Формат атомарных правил
@@ -529,11 +530,11 @@ def table(request, name):
             formats = enum_format_get(dev['url'])
             columns = ['id', 'name', 'print', 'description', 'param']
             for row in formats['formats']:
-                id = row['id']
-                name = row['name']
-                print = row['print']
-                param = row['param']
-                description = row['description']
+                id = row.get('id')
+                name = row.get('name')
+                print = row.get('print')
+                param = row.get('param')
+                description = row.get('description')
                 rows.append([id, name, print, description, param])
 
         # Список сервисов
@@ -556,18 +557,18 @@ def table(request, name):
             caption = 'monitoring_ram'
             monitoring_ram = monitoring_ram_get(dev['url'])
             columns = ['percent', 'total', 'used']
-            percent = monitoring_ram['percent']
-            total = monitoring_ram['total']
-            used = monitoring_ram['used']
+            percent = monitoring_ram.get('percent')
+            total = monitoring_ram.get('total')
+            used = monitoring_ram.get('used')
             rows.append([percent, total, used])
 
         if name == 'monitoring_disk':
             caption = 'monitoring_disk'
             monitoring_disk = monitoring_disk_get(dev['url'])
             columns = ['percent', 'total', 'used']
-            percent = monitoring_disk['percent']
-            total = monitoring_disk['total']
-            used = monitoring_disk['used']
+            percent = monitoring_disk.get('percent')
+            total = monitoring_disk.get('total')
+            used = monitoring_disk.get('used')
             rows.append([percent, total, used])
 
         if name == 'monitoring_lcores':
@@ -582,24 +583,24 @@ def table(request, name):
             ports = ports_get(dev['url'])
             columns = ['link_status', 'rx_nombuf', 'link_speed', 'ibytes', 'obytes', 'number', 'oerrors', 'imissed', 'ibits_per_sec', 'ipackets', 'imissed_per_sec', 'opackets_per_sec', 'link_duplex', 'ipackets_per_sec', 'driver_name', 'opackets', 'ierrors', 'obits_per_sec']
             for val in ports:
-                link_status = val['link_status']
-                rx_nombuf = val['rx_nombuf']
-                link_speed = val['link_speed']
-                ibytes = val['ibytes']
-                obytes = val['obytes']
-                number = val['number']
-                oerrors = val['oerrors']
-                imissed = val['imissed']
-                ibits_per_sec = val['ibits_per_sec']
-                ipackets = val['ipackets']
-                imissed_per_sec = val['imissed_per_sec']
-                opackets_per_sec = val['opackets_per_sec']
-                link_duplex = val['link_duplex']
-                ipackets_per_sec = val['ipackets_per_sec']
-                driver_name = val['driver_name']
-                opackets = val['opackets']
-                ierrors = val['ierrors']
-                obits_per_sec = val['obits_per_sec']
+                link_status = val.get('link_status')
+                rx_nombuf = val.get('rx_nombuf')
+                link_speed = val.get('link_speed')
+                ibytes = val.get('ibytes')
+                obytes = val.get('obytes')
+                number = val.get('number')
+                oerrors = val.get('oerrors')
+                imissed = val.get('imissed')
+                ibits_per_sec = val.get('ibits_per_sec')
+                ipackets = val.get('ipackets')
+                imissed_per_sec = val.get('imissed_per_sec')
+                opackets_per_sec = val.get('opackets_per_sec')
+                link_duplex = val.get('link_duplex')
+                ipackets_per_sec = val.get('ipackets_per_sec')
+                driver_name = val.get('driver_name')
+                opackets = val.get('opackets')
+                ierrors = val.get('ierrors')
+                obits_per_sec = val.get('obits_per_sec')
                 rows.append([link_status, rx_nombuf, link_speed, ibytes, obytes, number, oerrors, imissed, ibits_per_sec, ipackets, imissed_per_sec, opackets_per_sec, link_duplex, ipackets_per_sec, driver_name, opackets, ierrors, obits_per_sec])
 
         if name == 'ports_avail':
@@ -607,11 +608,11 @@ def table(request, name):
             ports = ports_avail_get(dev['url'])
             columns = ['driver_name','duplex','numa','speed','status']
             for val in ports:
-                driver_name = val['driver_name']
-                duplex = val['duplex']
-                numa = val['numa']
-                speed = val['speed']
-                status = val['status']
+                driver_name = val.get('driver_name')
+                duplex = val.get('duplex')
+                numa = val.get('numa')
+                speed = val.get('speed')
+                status = val.get('status')
                 rows.append([driver_name,duplex,numa,speed,status])
 
         # отобразить страницу с таблицей

@@ -48,7 +48,7 @@ def uptime_get(url):
 
 
 # Получить статус
-def ports_get(url):
+def sys_ports_get(url):
     response = requests.get(f"{url}/system/ports")
     if response.status_code != 200:
         raise Exception(response.url, response.text)
