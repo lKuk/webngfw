@@ -11,8 +11,16 @@ from django.shortcuts import redirect, render
 
 # устройство
 dev = {}
+# dev = {'mode': 'local',
+#        'ip':'192.168.3.250',
+#        'port':'18888',
+#        'login':'admin',
+#        'password':'111111',
+#        'url':'http://192.168.3.250:18888'}
+
 # подправило
 dictsub = {}
+
 
 # Страница подключения к устройству
 def connect(request):
@@ -71,7 +79,7 @@ def system(request):
 
         context = {'dev': dev,
                    'ports': ports,
-                   'serial':serial,
+                   'serial': serial,
                    'lcores': lcores,
                    'uptime': uptime,
                    'status': status,
@@ -269,7 +277,7 @@ def rules_sub_edit(request, id):
                 sub_insert(url, id, ar_id, list_id, is_invert)
                 return redirect('rules_sub_edit', id)
             # Страница нового списка
-            if 'btnListNew'in request.POST:
+            if 'btnListNew' in request.POST:
                 rule = rule_select(url, id)
                 format = enum_format_get(url)
                 context = {'dev': dev,
@@ -581,7 +589,9 @@ def table(request, name):
         if name == 'ports':
             caption = 'ports'
             ports = ports_get(dev['url'])
-            columns = ['link_status', 'rx_nombuf', 'link_speed', 'ibytes', 'obytes', 'number', 'oerrors', 'imissed', 'ibits_per_sec', 'ipackets', 'imissed_per_sec', 'opackets_per_sec', 'link_duplex', 'ipackets_per_sec', 'driver_name', 'opackets', 'ierrors', 'obits_per_sec']
+            columns = ['link_status', 'rx_nombuf', 'link_speed', 'ibytes', 'obytes', 'number', 'oerrors', 'imissed',
+                       'ibits_per_sec', 'ipackets', 'imissed_per_sec', 'opackets_per_sec', 'link_duplex',
+                       'ipackets_per_sec', 'driver_name', 'opackets', 'ierrors', 'obits_per_sec']
             for val in ports:
                 link_status = val.get('link_status')
                 rx_nombuf = val.get('rx_nombuf')
@@ -601,19 +611,22 @@ def table(request, name):
                 opackets = val.get('opackets')
                 ierrors = val.get('ierrors')
                 obits_per_sec = val.get('obits_per_sec')
-                rows.append([link_status, rx_nombuf, link_speed, ibytes, obytes, number, oerrors, imissed, ibits_per_sec, ipackets, imissed_per_sec, opackets_per_sec, link_duplex, ipackets_per_sec, driver_name, opackets, ierrors, obits_per_sec])
+                rows.append(
+                    [link_status, rx_nombuf, link_speed, ibytes, obytes, number, oerrors, imissed, ibits_per_sec,
+                     ipackets, imissed_per_sec, opackets_per_sec, link_duplex, ipackets_per_sec, driver_name, opackets,
+                     ierrors, obits_per_sec])
 
         if name == 'ports_avail':
             caption = 'ports_avail'
             ports = ports_avail_get(dev['url'])
-            columns = ['driver_name','duplex','numa','speed','status']
+            columns = ['driver_name', 'duplex', 'numa', 'speed', 'status']
             for val in ports:
                 driver_name = val.get('driver_name')
                 duplex = val.get('duplex')
                 numa = val.get('numa')
                 speed = val.get('speed')
                 status = val.get('status')
-                rows.append([driver_name,duplex,numa,speed,status])
+                rows.append([driver_name, duplex, numa, speed, status])
 
         # отобразить страницу с таблицей
         context = {'dev': dev,

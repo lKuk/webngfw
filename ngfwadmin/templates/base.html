@@ -142,9 +142,12 @@
         <!-- Справа -->
         <ul class="navbar-nav ml-auto">
             <!-- переподключение -->
-            <li>
-                <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.ip }}</a>
-            </li>
+              <!-- переподключение -->
+            {% if dev.mode != 'local' %}
+                <li>
+                    <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.ip }}</a>
+                </li>
+            {% endif %}
             <!-- Полноэкранный режим -->
             <li>
                 <a href="#!" class="full-screen" onclick="javascript:toggleFullScreen()">
