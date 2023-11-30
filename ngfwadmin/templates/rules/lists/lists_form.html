@@ -39,7 +39,7 @@
             });
         }
 
-        // Подписываемся при загрузке страницы
+        // Выполнить при загрузке страницы
         window.addEventListener('load', () => {
             EditorTextArea();
         });
@@ -104,7 +104,7 @@
             }
         }
 
-        // Подписываемся при загрузке страницы
+        // Выполнить при загрузке страницы
         window.addEventListener('load', () => {
             ChangeFtype();
         });
@@ -149,25 +149,26 @@
     <!-- Валидации содержимого из выборки -->
     <script>
         // Скрипт валидации
-        function Validate(type, format) {
-            // Получить все контролы
+        function Validate(format) {
+            // Получить контролы валидации
             const content = document.getElementById("content");
             const validLiId = document.getElementById("validLiId");
             const validDivId = document.getElementById("validDivId");
 
-            // определить текст содержимого
-            let text = content.value + '\n';
-            const list = text.split('\n');
+            // Получить содержимое
+            let text = content.value;
+            let list = text.split('\n');
 
             // Выполнить проверку содержимого
             for (let i = 0; i < list.length; i++) {
-                if (list[i] === '')
+                let val = list[i].trim();
+                if (val === '')
                     continue;
-                if (list[i].match(format))
+                if (val.match(format))
                     continue;
                 validDivId.classList.add('text-danger');
                 validDivId.classList.remove("invalid-feedback")
-                validLiId.textContent = 'Неверное значение \"' + list[i] + '\" в строке: ' + (i + 1).toString();
+                validLiId.textContent = 'Неверное значение \"' + val + '\" в строке: ' + (i + 1).toString();
                 return false;
             }
             return true;
@@ -189,7 +190,7 @@
                 format = /^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$/;
 
             // выполнить валидацию
-            let result = Validate(ftype, format);
+            let result = Validate(format);
             // отменить отправку формы на сервер
             if (result === false) {
                 event.preventDefault()
@@ -197,9 +198,12 @@
             }
         }
 
-        // Перехват запроса для валидации
-        var listEditForm = document.getElementById("listEditForm");
-        listEditForm.addEventListener("submit", ValidateAll);
+        // Выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            // Подписаться на событие валидации формы
+            const listEditForm = document.getElementById("listEditForm");
+            listEditForm.addEventListener("submit", ValidateAll);
+        });
     </script>
 {% endblock script %}
 
