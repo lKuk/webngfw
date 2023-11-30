@@ -115,11 +115,11 @@
                             <div class="form-group">
                                 <label for="ar_id">Подправило:</label>
                                 <select id="ar_id" name="ar_id" class="form-control" onchange="ListsFilter()" required>
-                                    <option value="" hidden="hidden" selected="selected"></option>
+                                    <option value="" hidden. selected></option>
                                     {% for key, value in atomic.items %}
                                         {% if dictsub.ar_id == value.id %}
                                             <option value="{{ value }}"
-                                                    selected="selected">{{ value.description }}</option>
+                                                    selected>{{ value.description }}</option>
                                         {% else %}
                                             <option value="{{ value }}">{{ value.description }}</option>
                                         {% endif %}
@@ -132,14 +132,14 @@
                                 <div id="list_div" class="input-group mb-3"
                                      {% if dictsub.ar_id is None %}style="pointer-events: none; opacity: 0.4;"{% endif %}>
                                     <select id="list_id" name="list_id" class="form-control" required>
-                                        <option value="" hidden="hidden" selected="selected"></option>
+                                        <option value="" hidden. selected></option>
                                         {% for list in lists %}
                                             <option value="{{ list }}" class="list_hidden"
                                             {% if dictsub.ftype != list.ftype %}
-                                            	hidden="hidden"
+                                            	hidden.
                                             {% endif %}
                                             {% if listId == list.id %}
-                                            	selected="selected"
+                                            	selected
                                             {% endif %}>{{ list.name }}</option>
                                         {% endfor %}
                                     </select>
@@ -154,11 +154,11 @@
                             <div class="form-group" id="dev_category">
                                 <label for="is_invert">Инверсия:</label>
                                 <select id="is_invert" name="is_invert" class="form-control" required>
-                                    <option value="1" {% if dictsub.is_invert == 1 %}selected="selected"{% endif %}>
+                                    <option value="1" {% if dictsub.is_invert == 1 %}selected{% endif %}>
                                         Инвертировано
                                     </option>
                                     <option value="0"
-                                            {% if dictsub.is_invert is None or dictsub.is_invert == 0 %}selected="selected"{% endif %}>
+                                            {% if dictsub.is_invert is None or dictsub.is_invert == 0 %}selected{% endif %}>
                                         Не инвертировано
                                     </option>
                                 </select>

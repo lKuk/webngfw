@@ -75,10 +75,10 @@
                                 <select id="is_enable" name="is_enable" value="{{ rule.is_enable }}"
                                         class="form-control" required>
                                     <option value="true"
-                                            {% if rule.is_enable == 'true' %}selected="selected"{% endif %}>Вкл
+                                            {% if rule.is_enable == 'true' %}selected{% endif %}>Вкл
                                     </option>
                                     <option value="false"
-                                            {% if rule.is_enable == 'false' %}selected="selected"{% endif %}>Выкл
+                                            {% if rule.is_enable == 'false' %}selected{% endif %}>Выкл
                                     </option>
                                 </select>
                             </div>
@@ -86,10 +86,10 @@
                             <div class="form-group">
                                 <label for="rtype">Тип правила:</label>
                                 <select id="rtype" name="rtype" value="{{ rule.rtype }}" class="form-control" required>
-                                    <option value="black" {% if rule.rtype == 'black' %}selected="selected"{% endif %}>
+                                    <option value="black" {% if rule.rtype == 'black' %}selected{% endif %}>
                                         Запрещено
                                     </option>
-                                    <option value="white" {% if rule.rtype == 'white' %}selected="selected"{% endif %}>
+                                    <option value="white" {% if rule.rtype == 'white' %}selected{% endif %}>
                                         Разрешено
                                     </option>
                                 </select>

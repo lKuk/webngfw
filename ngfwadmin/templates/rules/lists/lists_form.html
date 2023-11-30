@@ -189,8 +189,13 @@
             if (ftype === "PORT")
                 format = /^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$/;
 
+            // Определить регулярку из rest-запроса
+            var regularId = ftype + "_reg";
+            var regularEl = document.getElementById(regularId);
+            var regular = new RegExp(regularEl.textContent);
+
             // выполнить валидацию
-            let result = Validate(format);
+            let result = Validate(regular);
             // отменить отправку формы на сервер
             if (result === false) {
                 event.preventDefault()
@@ -270,11 +275,11 @@
                             <div class="form-group">
                                 <label for="type">Метка:</label>
                                 <select id="type" name="type" class="form-control" value="{{ list.type }}" required>
-                                    <option value="lib" {% if list.type == f %}selected="selected"{% endif %}>
+                                    <option value="lib" {% if list.type == f %}selected{% endif %}>
                                         Библиотека
                                     </option>
                                     <option value="list"
-                                            {% if list.type == f or list.type is None %}selected="selected"{% endif %}>
+                                            {% if list.type == f or list.type is None %}selected{% endif %}>
                                         Список
                                     </option>
                                 </select>
@@ -287,7 +292,7 @@
                                     {% for f in format.formats %}
                                         <option value="{{ f.name }}"
                                                 {% if f.name == list.ftype or f.name == ftype %}
-                                                selected="selected"
+                                                selected
                                                 {% endif %}>{{ f.print }}</option>
                                     {% endfor %}
                                 </select>
@@ -312,13 +317,13 @@
                             </div>
                         </div>
                         <!-- Содержимое выбора -->
-                        <div class="col-xl-8 col-md-6" id="list-select" hidden="hidden">
+                        <div class="col-xl-8 col-md-6" id="list-select" hidden>
                             <div class="row">
                                 <div class="col text-left">
-                                    <label for="custom-headers">Доступно для выбора:</label>
+                                    <label for="callbacks">Доступно для выбора:</label>
                                 </div>
                                 <div class="col text-left">
-                                    <label for="custom-headers" style="padding-left: 8%;">Выбрано:</label>
+                                    <label for="callbacks" style="padding-left: 8%;">Выбрано:</label>
                                 </div>
                             </div>
                             <select id="callbacks" name="select" class="searchable" multiple="multiple">
@@ -327,14 +332,14 @@
                                             {% if p in content %}
                                             selected
                                             {% endif %}
-                                            hidden="hidden">{{ p }}</option>
+                                            hidden>{{ p }}</option>
                                 {% endfor %}
                                 {% for s in services %}
                                     <option value='{{ s }}' class="option-services"
                                             {% if s in content %}
                                             selected
                                             {% endif %}
-                                            hidden="hidden">{{ s }}</option>
+                                            hidden>{{ s }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -342,9 +347,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             {% for f in format.formats %}
-                                <div class="descHide" id="{{ f.name }}" hidden="hidden">
+                                <div class="descHide" id="{{ f.name }}" hidden>
                                     <p class="text-dark">{{ f.description }}</p>
-                                    <p class="text-danger">{{ f.sign }}</p>
+                                    <p class="text-danger" id="{{ f.name }}_reg" hidden>{{ f.sign }}</p>
                                 </div>
                             {% endfor %}
                         </div>
