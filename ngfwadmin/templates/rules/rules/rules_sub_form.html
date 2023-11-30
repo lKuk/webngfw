@@ -115,7 +115,7 @@
                             <div class="form-group">
                                 <label for="ar_id">Подправило:</label>
                                 <select id="ar_id" name="ar_id" class="form-control" onchange="ListsFilter()" required>
-                                    <option value="" hidden. selected></option>
+                                    <option value="" hidden selected></option>
                                     {% for key, value in atomic.items %}
                                         {% if dictsub.ar_id == value.id %}
                                             <option value="{{ value }}"
@@ -132,11 +132,11 @@
                                 <div id="list_div" class="input-group mb-3"
                                      {% if dictsub.ar_id is None %}style="pointer-events: none; opacity: 0.4;"{% endif %}>
                                     <select id="list_id" name="list_id" class="form-control" required>
-                                        <option value="" hidden. selected></option>
+                                        <option value="" hidden selected></option>
                                         {% for list in lists %}
                                             <option value="{{ list }}" class="list_hidden"
                                             {% if dictsub.ftype != list.ftype %}
-                                            	hidden.
+                                            	hidden
                                             {% endif %}
                                             {% if listId == list.id %}
                                             	selected
