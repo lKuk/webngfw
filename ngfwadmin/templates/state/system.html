@@ -44,9 +44,10 @@
                         <!-- Версия по -->
                         <p class="text-dark">Версия ПО: {{ version.version }}</p>
                         <p class="text-dark">Серийный номер: {{ serial.serial_number }}</p>
+                        <p class="text-dark">Статус системы: {{ status.main_status }} - {{ status.sub_status }}</p>
                         <p class="text-dark">Свободно потоков: {{ lcores.free_cores }}
                             <br/>Потоков всего: {{ lcores.cores }}
-                            <br/>Количество нума узлов: {{ lcores.nodes }}</p>
+                            <br/>Количество NUMA узлов: {{ lcores.nodes }}</p>
 
 
                         <!-- Таблица списков -->

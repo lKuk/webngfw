@@ -62,12 +62,14 @@ def system(request):
 
         serial = serial_get(url)
         lcores = lcores_get(url)
+        status = status_get(url)
         version = version_get(url)
         settings = settings_get(url)
 
         context = {'dev': dev,
                    'serial':serial,
                    'lcores': lcores,
+                   'status': status,
                    'version': version,
                    'settings': settings}
         return render(request, 'state/system.html', context=context)
