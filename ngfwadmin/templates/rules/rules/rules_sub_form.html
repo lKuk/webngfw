@@ -54,11 +54,7 @@
                         file_type_list = jsonList['ftype'];
                     }
                     // скрыть/показать правило
-                    el.hidden = true;
-                    el.selected = false;
-                    if (file_type_atomic === file_type_list) {
-                        el.hidden = false;
-                    }
+                    el.hidden = (file_type_atomic !== file_type_list);
                 });
             } catch (error) {
                 alert(error);
