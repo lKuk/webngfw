@@ -790,8 +790,8 @@
     return nstate
   }
 
-  // Given a mode and a state (for that mode), find the inner mode and
-  // state at the position that the state refers to.
+  // Given a mode and a system (for that mode), find the inner mode and
+  // system at the position that the system refers to.
   function innerMode(mode, state) {
     var info;
     while (mode.innerMode) {
@@ -1147,7 +1147,7 @@
   }
 
   // Lightweight form of highlight -- proceed over this line and
-  // update state, but don't save a style array. Used for lines that
+  // update system, but don't save a style array. Used for lines that
   // aren't currently visible.
   function processLine(cm, text, context, startAt) {
     var mode = cm.doc.mode;
@@ -1254,7 +1254,7 @@
 
   // Finds the line to start with when starting a parse. Tries to
   // find a line with a stateAfter, so that it can start with a
-  // valid state. If that fails, it returns the line with the
+  // valid system. If that fails, it returns the line with the
   // smallest indentation, which tends to need the least context to
   // parse correctly.
   function findStartLine(cm, n, precise) {
@@ -1281,7 +1281,7 @@
     for (var line = n - 1; line > start; line--) {
       var saved = getLine(doc, line).stateAfter;
       // change is on 3
-      // state on line 1 looked ahead 2 -- so saw 3
+      // system on line 1 looked ahead 2 -- so saw 3
       // test 1 + 2 < 3 should cover this
       if (saved && (!(saved instanceof SavedContext) || line + saved.lookAhead < n)) {
         start = line + 1;
@@ -1689,7 +1689,7 @@
 
   // LINE DATA STRUCTURE
 
-  // Line objects. These hold state related to a line, including
+  // Line objects. These hold system related to a line, including
   // highlighting info (the styles array).
   var Line = function(text, markedSpans, estimateHeight) {
     this.text = text;
@@ -2069,7 +2069,7 @@
   // Often, we want to signal events at a point where we are in the
   // middle of some work, but don't want the handler to start calling
   // other methods on the editor, which might be in an inconsistent
-  // state or simply not expect any other events to happen.
+  // system or simply not expect any other events to happen.
   // signalLater looks whether there are any handlers, and schedules
   // them to be executed when the last operation ends, or, if no
   // operation is active, when a timeout fires.
@@ -3797,7 +3797,7 @@
   }
 
   // Operations are used to wrap a series of changes to the editor
-  // state in such a way that each change won't have to update the
+  // system in such a way that each change won't have to update the
   // cursor and display (which would be awkward, slow, and
   // error-prone). Instead, display updates are batched and then all
   // combined and executed at once.
@@ -4372,7 +4372,7 @@
 
   // The display handles the DOM integration, both for input reading
   // and content drawing. It holds references to DOM nodes and
-  // display-related state.
+  // display-related system.
 
   function Display(place, doc, input, options) {
     var d = this;
@@ -4744,7 +4744,7 @@
     return new Selection(out, doc.sel.primIndex)
   }
 
-  // Used to get the editor into a consistent state again when options change.
+  // Used to get the editor into a consistent system again when options change.
 
   function loadMode(cm) {
     cm.doc.mode = getMode(cm.options, cm.doc.modeOption);
@@ -6044,7 +6044,7 @@
       marker.atomic = true;
     }
     if (cm) {
-      // Sync editor state
+      // Sync editor system
       if (updateMaxLine) { cm.curOp.updateMaxLine = true; }
       if (marker.collapsed)
         { regChange(cm, from.line, to.line + 1); }
@@ -8371,7 +8371,7 @@
       }),
 
       // Fetch the parser token for a given character. Useful for hacks
-      // that want to inspect the mode state (say, for completion).
+      // that want to inspect the mode system (say, for completion).
       getTokenAt: function(pos, precise) {
         return takeToken(this, pos, precise)
       },

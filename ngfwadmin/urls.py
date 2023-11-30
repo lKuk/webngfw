@@ -1,5 +1,10 @@
-from .views import *
 from django.urls import path
+
+from ngfwadmin.views.rules.rules import *
+from ngfwadmin.views.rules.lists import *
+from ngfwadmin.views.debug.table import *
+from ngfwadmin.views.rules.history import *
+from ngfwadmin.views.system.system import *
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -29,4 +34,3 @@ urlpatterns = [
     # Отображение ошибок
     path('error/', error, name='error'),
 ]
-
