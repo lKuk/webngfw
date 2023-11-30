@@ -16,72 +16,60 @@
 
     <!-- Скрипт фильтрации списка -->
     <script>
-        //Подписываемся на загрузку страницы
-        window.addEventListener('load', () => {
-            // функция ограничения выпадающего списка
-            ListsFilter();
-        });
-
         // функция ограничения выпадающего списка
         function ListsFilter() {
             try {
                 // атомарное правило
-                var ar_id = document.getElementById("ar_id");
+                const ar_id = document.getElementById("ar_id");
                 // список подправил
-                var list_div = document.getElementById("list_div");
+                const list_div = document.getElementById("list_div");
                 // список, который нужно фильтровать
-                var listHidden = document.getElementsByClassName('list_hidden')
+                const listHidden = document.getElementsByClassName('list_hidden');
 
-                // тип файла
-                file_type_atomic = '';
-                // получить json
+                // определить тип файла подправила
+                let file_type_atomic = '';
                 let strAtomic = ar_id.value
                 if (strAtomic !== '') {
                     strAtomic = strAtomic.replaceAll("'", "\"");
-                    json = JSON.parse(strAtomic);
-                    // получить тип файла
-                    file_type_atomic = json['file_type'];
+                    let jsonAtomic = JSON.parse(strAtomic);
+                    file_type_atomic = jsonAtomic['file_type'];
                 }
 
-                // Скрыть, если не заполнен
-                list_div.style = '';
-                if (strAtomic === '')
-                    list_div.style = 'pointer-events: none; opacity: 0.4;';
+                // Скрыть списки, если не заполнен Тип
+                list_div.style.opacity = 1;
+                list_div.style.pointerEvents = '';
+                if (strAtomic === ''){
+                    list_div.style.opacity = 0.4;
+                    list_div.style.pointerEvents = 'none';
+                }
 
                 // пройти по всему списку сокрытия
-                var message = "";
                 Array.prototype.forEach.call(listHidden, function (el) {
-                    try {
-                        // тип файла
-                        id_list = '';
-                        file_type_list = '';
-                        // получить json
-                        let strList = el.value
-                        if (strList !== '') {
-                            strList = strList.replaceAll("'", "\"");
-                            json = JSON.parse(strList);
-                            // получить тип файла
-                            id_list = json['id'];
-                            file_type_list = json['ftype'];
-                        }
-                        // скрыть ненужные элементы
-                        el.hidden = true;
-                        el.selected = false;
-
-                        // Показать правило
-                        if (file_type_list === '' || file_type_atomic === file_type_list) {
-                            el.hidden = false;
-                        }
-                    } catch (error) {
-                        message += el.value + '\n' + error + '\n';
+                    // определить тип файла списка
+                    let file_type_list = '';
+                    let strList = el.value
+                    if (strList !== '') {
+                        strList = strList.replaceAll("'", "\"");
+                        let jsonList = JSON.parse(strList);
+                        file_type_list = jsonList['ftype'];
                     }
-                    if (message !== "")
-                        alert(message);
+                    // скрыть/показать правило
+                    el.hidden = true;
+                    el.selected = false;
+                    if (file_type_atomic === file_type_list) {
+                        el.hidden = false;
+                    }
                 });
             } catch (error) {
                 alert(error);
             }
         }
+
+        // Выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            // функция ограничения выпадающего списка
+            ListsFilter();
+        });
     </script>
 
 {% endblock script %}
@@ -129,7 +117,7 @@
                         <div class="col-md-6 col-xl-4">
                             <!-- Atomic -->
                             <div class="form-group">
-                                <label for="ar_id">Атомарное подправило:</label>
+                                <label for="ar_id">Подправило:</label>
                                 <select id="ar_id" name="ar_id" class="form-control" onchange="ListsFilter()" required>
                                     <option value="" hidden="hidden" selected="selected"></option>
                                     {% for key, value in atomic.items %}
