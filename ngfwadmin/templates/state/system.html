@@ -51,8 +51,70 @@
                         <p class="text-dark">Свободно потоков: {{ lcores.free_cores }}
                             <br/>Потоков всего: {{ lcores.cores }}
                             <br/>Количество NUMA узлов: {{ lcores.nodes }}</p>
+                    </div>
+                </div>
+            </div>
 
-                        <!-- Таблица списков -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>ports</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="col-reorder" class="display table nowrap table-striped table-hover footable">
+                                <thead>
+                                <tr>
+                                    <th>rss_type</th>
+                                    <th>tx_ring_size</th>
+                                    <th>rx_ring_size</th>
+                                    <th>port_number</th>
+                                    <th>wan</th>
+                                    <th>packet_max_len</th>
+                                    <th>name</th>
+                                    <th>enable</th>
+                                    <th>icmp_disable</th>
+                                    <th>dhcp</th>
+                                    <th>mac</th>
+                                    <th>description</th>
+                                    {#<th>description</th>#}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for param in ports %}
+                                    <tr>
+                                        <td style="display: table-cell;">{{ param.rss_type }}</td>
+                                        <td style="display: table-cell;">{{ param.tx_ring_size }}</td>
+                                        <td style="display: table-cell;">{{ param.rx_ring_size }}</td>
+                                        <td style="display: table-cell;">{{ param.port_number }}</td>
+                                        <td style="display: table-cell;">{{ param.wan }}</td>
+                                        <td style="display: table-cell;">{{ param.packet_max_len }}</td>
+                                        <td style="display: table-cell;">{{ param.name }}</td>
+                                        <td style="display: table-cell;">{{ param.enable }}</td>
+                                        <td style="display: table-cell;">{{ param.icmp_disable }}</td>
+                                        <td style="display: table-cell;">{{ param.dhcp }}</td>
+                                        <td style="display: table-cell;">{{ param.mac }}</td>
+                                        <td style="display: table-cell;">{{ param.description }}</td>
+                                        {#<td style="display: table-cell;">{{ param.description|wordwrap:50|linebreaksbr }}</td>#}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>parameters</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table id="col-reorder" class="display table nowrap table-striped table-hover footable">
                                 <thead>

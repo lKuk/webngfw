@@ -60,6 +60,7 @@ def system(request):
         # подключение
         url = dev['url']
 
+        ports = ports_get(url)
         uptime = uptime_get(url)
         serial = serial_get(url)
         lcores = lcores_get(url)
@@ -68,6 +69,7 @@ def system(request):
         settings = settings_get(url)
 
         context = {'dev': dev,
+                   'ports': ports,
                    'serial':serial,
                    'lcores': lcores,
                    'uptime': uptime,
