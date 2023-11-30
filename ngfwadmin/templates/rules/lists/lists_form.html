@@ -28,43 +28,139 @@
     <!-- form-select-custom Js -->
     <script src="{% static 'main/js/pages/form-select-custom.js' %}"></script>
 
+    <!-- Отображение нумерации строк -->
     <script>
-        function editor() {
-            // Скрипт нумерации строк
+        // Отображение нумерации строк
+        function EditorTextArea() {
             CodeMirror.fromTextArea(document.getElementById("content"), {
                 lineNumbers: true,
                 mode: "text/html",
                 matchBrackets: true
             });
-
-            // Скрипт нумерации строк
-            CodeMirror.fromTextArea(document.getElementById("contentDev"), {
-                lineNumbers: true,
-                mode: "text/html",
-                matchBrackets: true
-            });
         }
 
-        function insertTextAtCursor(data) {
-            CodeMirror.fromTextArea(document.getElementById('contentDev'), {
-                lineNumbers: true
-            }).setValue(data);
-        }
-
+        // Подписываемся при загрузке страницы
+        window.addEventListener('load', () => {
+            EditorTextArea();
+        });
     </script>
+    <!-- Действия при Изменении типа файла -->
+    <script>
+        // Изменение типа файла
+        function ChangeFtype(){
+            // Отображение описания
+            ShowDesc();
+            // Отображение редактора
+            ShowEditor();
+        }
 
+        // Отображение описания
+        function ShowDesc() {
+            // Определить тип файла
+            const ftypeSelect = document.getElementById("ftype");
+            const ftype = ftypeSelect.value;
+
+            // Получить все элементы с описанием
+            const desc = document.getElementsByClassName("descHide");
+            for (let i = 0; i < desc.length; i++) {
+                desc.item(i).hidden = (ftype !== desc.item(i).id);
+            }
+        }
+
+        // Отображение редактора
+        function ShowEditor() {
+            // Определить тип файла
+            const ftypeSelect = document.getElementById("ftype");
+            const ftype = ftypeSelect.value;
+
+            // Контролы редакторы содержимого
+            const listSelect = document.getElementById("list-select");
+            const listTextarea = document.getElementById("list-textarea");
+
+            // Отобразить нужный контрол
+            listSelect.hidden = true;
+            listTextarea.hidden = false;
+            if (ftype === "PROTNAME"
+                || ftype === "SERVICENAME") {
+                listSelect.hidden = false;
+                listTextarea.hidden = true;
+            }
+
+            // Проверка что нужно исправить список
+            if (listSelect.hidden === true){
+                return;
+            }
+
+            // Списки элементов выбора
+            const services = document.getElementsByClassName("option-services");
+            const protocols = document.getElementsByClassName("option-protocols");
+            // Список протоколов
+            for (let i = 0; i < protocols.length; i++) {
+                protocols.item(i).hidden = (ftype !== "PROTNAME");
+            }
+            // Список сервисов
+            for (let i = 0; i < services.length; i++) {
+                services.item(i).hidden = (ftype !== "SERVICENAME");
+            }
+        }
+
+        // Подписываемся при загрузке страницы
+        window.addEventListener('load', () => {
+            ChangeFtype();
+        });
+    </script>
+    <!-- Заполнение содержимого из выборки -->
+    <script>
+        // Заполнить содержимое списка
+        function FillContent() {
+            // Определить контрол с выбором
+            const listSelect = document.getElementById("list-select");
+
+            // Проверка что нужно исправить список
+            if (listSelect.hidden === true){
+                return;
+            }
+
+            // строка содержимого
+            let content = '';
+            // очистить текст в TextArea
+            InsertTextAtCursor('');
+
+            // получить выделенные элементы
+            const selection = document.getElementsByClassName('ms-elem-selection');
+            // пройти по выделенному тексту и сформировать строку
+            for (let i = 0; i < selection.length; i++) {
+                if (window.getComputedStyle(selection.item(i)).display !== "none") {
+                    content += selection.item(i).textContent + '\n'
+                }
+            }
+
+            // добавить текст в TextArea
+            InsertTextAtCursor(content);
+        }
+
+        // добавление текста в TextArea
+        function InsertTextAtCursor(text) {
+            CodeMirror.fromTextArea(document.getElementById('content'), {
+                lineNumbers: true
+            }).setValue(text);
+        }
+    </script>
+    <!-- Валидации содержимого из выборки -->
     <script>
         // Скрипт валидации
         function Validate(type, format) {
-            var content = document.getElementById("content");
-            var validLiId = document.getElementById("validLiId");
-            var validDivId = document.getElementById("validDivId");
+            // Получить все контролы
+            const content = document.getElementById("content");
+            const validLiId = document.getElementById("validLiId");
+            const validDivId = document.getElementById("validDivId");
 
-            text = content.value;
-            text += '\n';
-            var list = text.split('\n');
+            // определить текст содержимого
+            let text = content.value + '\n';
+            const list = text.split('\n');
 
-            for (var i = 0; i < list.length; i++) {
+            // Выполнить проверку содержимого
+            for (let i = 0; i < list.length; i++) {
                 if (list[i] === '')
                     continue;
                 if (list[i].match(format))
@@ -79,21 +175,23 @@
 
         // Валидация в зависимости от формата
         function ValidateAll(event) {
-            // выпадающий список форматов
-            var ftype = document.getElementById("ftype")
+            // Определить тип файла
+            const ftypeSelect = document.getElementById("ftype");
+            const ftype = ftypeSelect.value;
 
             // определить формат валидации
-            var format = "";
-            var type = ftype.value;
-            if (type === "IP")
+            let format = "";
+            if (ftype === "IP")
                 format = /(^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))([/]([0-9]|[1-2][0-9]|3[0-2]))?;\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?([/]([0-9]|[1-9][0-9]|10[0-9]|11[0-9]|12[0-8]))?;\s*$)/;
-            if (type === "MAC")
+            if (ftype === "MAC")
                 format = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
-            if (type === "PORT")
+            if (ftype === "PORT")
                 format = /^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$/;
 
             // выполнить валидацию
-            if (Validate(type, format) === false) {
+            let result = Validate(ftype, format);
+            // отменить отправку формы на сервер
+            if (result === false) {
                 event.preventDefault()
                 event.stopPropagation()
             }
@@ -103,90 +201,6 @@
         var listEditForm = document.getElementById("listEditForm");
         listEditForm.addEventListener("submit", ValidateAll);
     </script>
-
-    <script>
-        //Подписываемся на загрузку страницы
-        window.addEventListener('load', () => {
-            hideDesc();
-            editor();
-        });
-
-        function hideDesc() {
-            // Скрытие описания
-            // Гениальные сранение без явной привязки к конкретному значению, я же умный. ДА?
-            // Да - ты УМНЫЙ! Ты можешь ВСЕ! Твори добро!
-            var listForDesc = document.getElementById("ftype");
-            var typeInList = listForDesc.value;
-
-            var desc = document.getElementsByClassName("descHide");
-            for (var i = 0; i < desc.length; i++) {
-
-                if (typeInList === desc.item(i).id) {
-                    desc.item(i).hidden = false;
-                } else {
-                    desc.item(i).hidden = true;
-                }
-            }
-
-            var listSP = document.getElementById("listSP");
-            var protocolsHide = document.getElementsByClassName("protocolsHide");
-            var servicesHide = document.getElementsByClassName("servicesAdd");
-            if (typeInList === "PROTNAME" || typeInList === "SERVICENAME") {
-                if (typeInList === "PROTNAME") {
-                    for (var i = 0; i < protocolsHide.length; i++) {
-                        protocolsHide.item(i).hidden = false;
-                    }
-                    for (var i = 0; i < servicesHide.length; i++) {
-                        servicesHide.item(i).hidden = true;
-                    }
-                }
-                if (typeInList === "SERVICENAME") {
-                    for (var i = 0; i < protocolsHide.length; i++) {
-                        protocolsHide.item(i).hidden = true;
-                    }
-                    for (var i = 0; i < servicesHide.length; i++) {
-                        servicesHide.item(i).hidden = false;
-                    }
-                }
-                listSP.hidden = false;
-            } else {
-                listSP.hidden = true;
-            }
-
-            var listIMP = document.getElementById("listIMP");
-            if (typeInList === "IP" || typeInList === "LIT" || typeInList === "MAC" || typeInList === "PORT") {
-                listIMP.hidden = false;
-            } else {
-                listIMP.hidden = true;
-            }
-        }
-    </script>
-
-    <script>
-        function addtext() {
-
-            var selectable = document.getElementsByClassName('ms-elem-selectable');
-            var selection = document.getElementsByClassName('ms-elem-selection');
-            var contentDev = document.getElementById('contentDev');
-
-            var finalString = '';
-            insertTextAtCursor(finalString)
-
-            for (var i = 0; i < selection.length; i++) {
-
-                if (window.getComputedStyle(selection.item(i)).display === "none") {
-
-                } else {
-                    finalString += selection.item(i).textContent + '\n'
-                }
-            }
-            if (finalString !== '') {
-
-                insertTextAtCursor(finalString);
-            }
-        }
-    </script>
-
 {% endblock script %}
 
 {# Заголовок #}
@@ -226,23 +240,15 @@
                 <div class="card-body">
                     <div class="row">
                         <!-- Кнопки -->
-                        <div class="col text-left">
-                            {% if action == 'add' %}
-                                <button type="submit" name="btnListInsert" class="btn btn-primary shadow-2"
-                                        style="width: 160px" onclick="addtext()">Создать
-                                </button>
-                            {% else %}
-                                <button type="submit" name="btnListUpdate" class="btn btn-primary shadow-2"
-                                        style="width: 160px" onclick="addtext()">Сохранить
-                                </button>
-                            {% endif %}
-                        </div>
-                        <div class="col text-right">
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                                <label class="btn btn-outline-primary" style="width: 160px">
-                                    <input type="checkbox" onchange="addtext()">содержимое</label>
-                            </div>
-                        </div>
+                        {% if action == 'add' %}
+                            <button type="submit" name="btnListInsert" class="btn btn-primary shadow-2"
+                                    style="width: 160px" onclick="FillContent()">Создать
+                            </button>
+                        {% else %}
+                            <button type="submit" name="btnListUpdate" class="btn btn-primary shadow-2"
+                                    style="width: 160px" onclick="FillContent()">Сохранить
+                            </button>
+                        {% endif %}
                     </div>
                     <hr>
                     <div class="row">
@@ -273,7 +279,7 @@
                             <div class="form-group">
                                 <label for="ftype">Тип списка:</label>
                                 <select id="ftype" name="ftype" class="form-control" value="{{ list.ftype }}"
-                                        id="listId" required onchange="hideDesc()">
+                                        id="listId" required onchange="ChangeFtype()">
                                     {% for f in format.formats %}
                                         <option value="{{ f.name }}"
                                                 {% if f.name == list.ftype or f.name == ftype %}
@@ -290,7 +296,7 @@
                             </div>
                         </div>
                         <!-- Содержимое списка -->
-                        <div class="col-xl-8 col-md-6" id="listIMP">
+                        <div class="col-xl-8 col-md-6" id="list-textarea">
                             <label for="content">Содержимое</label>
                             <div class="form-control">
                                 <textarea id="content" name="content" rows="20">{{ content }}</textarea>
@@ -302,7 +308,7 @@
                             </div>
                         </div>
                         <!-- Содержимое выбора -->
-                        <div class="col-xl-8 col-md-6" id="listSP" hidden="hidden">
+                        <div class="col-xl-8 col-md-6" id="list-select" hidden="hidden">
                             <div class="row">
                                 <div class="col text-left">
                                     <label for="custom-headers">Доступно для выбора:</label>
@@ -313,14 +319,14 @@
                             </div>
                             <select id="callbacks" name="select" class="searchable" multiple="multiple">
                                 {% for p in protocols %}
-                                    <option value='{{ p }}' class="protocolsHide"
+                                    <option value='{{ p }}' class="option-protocols"
                                             {% if p in content %}
                                             selected
                                             {% endif %}
                                             hidden="hidden">{{ p }}</option>
                                 {% endfor %}
                                 {% for s in services %}
-                                    <option value='{{ s }}' class="servicesHide servicesAdd"
+                                    <option value='{{ s }}' class="option-services"
                                             {% if s in content %}
                                             selected
                                             {% endif %}
@@ -337,14 +343,7 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="form-control">
-                        <textarea id="contentDev" name="content" rows="20">{{ content }}</textarea>
-                    </div>
-                    <div class="invalid-feedback" id="validDivId">
-                        <ul>
-                            <li id="validLiId"></li>
-                        </ul>
-                    </div>
+
                 </div>
             </form>
         </div>

@@ -1,4 +1,4 @@
-{% extends "rules/../base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {# Стили #}
@@ -43,7 +43,7 @@
                     file_type_atomic = json['file_type'];
                 }
 
-                // Скрыть, если не заполнен атомик
+                // Скрыть, если не заполнен
                 list_div.style = '';
                 if (strAtomic === '')
                     list_div.style = 'pointer-events: none; opacity: 0.4;';
