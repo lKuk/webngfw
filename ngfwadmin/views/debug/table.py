@@ -1,7 +1,7 @@
-from ngfwadmin.views.connect.connect import dev
+
 from ngfwadmin.rest.rules.enum import *
 from ngfwadmin.rest.ports.ports import *
-from ngfwadmin.views.debug.debug import *
+from ngfwadmin.views.connect.connect import *
 from ngfwadmin.rest.monitoring.monitoring import *
 
 from django.shortcuts import redirect, render
@@ -10,7 +10,10 @@ from django.shortcuts import redirect, render
 # Страница таблиц Debug
 def table(request, name):
     try:
-        # проверка подключения
+        # Подключение
+        dev = get_connect()
+
+        # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')
 
@@ -22,7 +25,7 @@ def table(request, name):
         # Атомарные правила
         if name == 'atomic':
             caption = 'atomic'
-            atomic = enum_atomic_get(dev['url'])
+            atomic = enum_atomic_get(dev.get('url'))
             columns = ['id', 'file_type', 'description', 'rule_category', 'arg_type']
             for i in atomic:
                 row = atomic[i]
@@ -36,7 +39,7 @@ def table(request, name):
         # Формат атомарных правил
         elif name == 'format':
             caption = 'formats'
-            formats = enum_format_get(dev['url'])
+            formats = enum_format_get(dev.get('url'))
             columns = ['id', 'name', 'print', 'description', 'param']
             for row in formats['formats']:
                 id = row.get('id')
@@ -49,7 +52,7 @@ def table(request, name):
         # Список сервисов
         elif name == 'services':
             caption = 'services'
-            services = enum_services_get(dev['url'])
+            services = enum_services_get(dev.get('url'))
             columns = ['services']
             for val in services:
                 rows.append([val])
@@ -57,14 +60,14 @@ def table(request, name):
         # Список протоколов
         elif name == 'protocols':
             caption = 'protocols'
-            protocols = enum_protocols_get(dev['url'])
+            protocols = enum_protocols_get(dev.get('url'))
             columns = ['protocols']
             for val in protocols:
                 rows.append([val])
 
         elif name == 'monitoring_ram':
             caption = 'monitoring_ram'
-            monitoring_ram = monitoring_ram_get(dev['url'])
+            monitoring_ram = monitoring_ram_get(dev.get('url'))
             columns = ['percent', 'total', 'used']
             percent = monitoring_ram.get('percent')
             total = monitoring_ram.get('total')
@@ -73,7 +76,7 @@ def table(request, name):
 
         elif name == 'monitoring_disk':
             caption = 'monitoring_disk'
-            monitoring_disk = monitoring_disk_get(dev['url'])
+            monitoring_disk = monitoring_disk_get(dev.get('url'))
             columns = ['percent', 'total', 'used']
             percent = monitoring_disk.get('percent')
             total = monitoring_disk.get('total')
@@ -82,14 +85,14 @@ def table(request, name):
 
         elif name == 'monitoring_lcores':
             caption = 'monitoring_lcores'
-            monitoring_lcores = monitoring_lcores_get(dev['url'])
+            monitoring_lcores = monitoring_lcores_get(dev.get('url'))
             columns = ['val']
             for val in monitoring_lcores:
                 rows.append([val])
 
         elif name == 'ports':
             caption = 'ports'
-            ports = ports_get(dev['url'])
+            ports = ports_get(dev.get('url'))
             columns = ['link_status', 'rx_nombuf', 'link_speed', 'ibytes', 'obytes', 'number', 'oerrors', 'imissed',
                        'ibits_per_sec', 'ipackets', 'imissed_per_sec', 'opackets_per_sec', 'link_duplex',
                        'ipackets_per_sec', 'driver_name', 'opackets', 'ierrors', 'obits_per_sec']
@@ -119,7 +122,7 @@ def table(request, name):
 
         elif name == 'ports_avail':
             caption = 'ports_avail'
-            ports = ports_avail_get(dev['url'])
+            ports = ports_avail_get(dev.get('url'))
             columns = ['driver_name', 'duplex', 'numa', 'speed', 'status']
             for val in ports:
                 driver_name = val.get('driver_name')
@@ -135,7 +138,7 @@ def table(request, name):
                    'rows': rows,
                    'caption': caption,
                    'columns': columns, }
-        return render(request, 'Debug/table.html', context=context)
+        return render(request, 'debug/table.html', context=context)
 
     # обработка ошибок
     except Exception as ex:

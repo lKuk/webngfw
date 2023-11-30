@@ -1,13 +1,21 @@
-from ngfwadmin.views.connect.connect import dev
+from ngfwadmin.rest.ngfwsys.ngfwsys import *
+from ngfwadmin.views.connect.connect import *
+
 from django.shortcuts import redirect, render
+
 
 # Страница системы
 def system(request):
-    if 'url' not in dev:
-        return redirect('connect')
     try:
+        # Подключение
+        dev = get_connect()
+
+        # Проверка подключения
+        if 'url' not in dev:
+            return redirect('connect')
+
         # подключение
-        url = dev['url']
+        url = dev.get('url')
 
         uptime = uptime_get(url)
         serial = serial_get(url)
@@ -28,4 +36,3 @@ def system(request):
         return render(request, 'system/system.html', context=context)
     except Exception as ex:
         return exception(request, ex)
-

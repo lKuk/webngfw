@@ -1,6 +1,6 @@
-from ngfwadmin.views.connect.connect import dev
-from ngfwadmin.views.debug.debug import *
+
 from ngfwadmin.rest.rules.history import *
+from ngfwadmin.views.connect.connect import *
 
 from django.shortcuts import redirect, render
 
@@ -8,18 +8,21 @@ from django.shortcuts import redirect, render
 # Страница истории изменений правил
 def history(request):
     try:
-        # проверка подключения
+        # Подключение
+        dev = get_connect()
+
+        # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')
 
         # восстановить
         date = request.GET.get("date")
         if date is not None:
-            history_set(dev['url'], date)
+            history_set(dev.get('url'), date)
             return redirect('rules')
 
         # получить таблицу истории
-        result = history_get(dev['url'])
+        result = history_get(dev.get('url'))
 
         # преобразовать в словарь
         history = []

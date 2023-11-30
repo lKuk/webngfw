@@ -1,16 +1,20 @@
-from ngfwadmin.views.connect.connect import *
 from ngfwadmin.rest.rules.enum import *
 from ngfwadmin.rest.rules.lists import *
+from ngfwadmin.views.connect.connect import *
 
 
 # Страница редактора списков
 def lists(request):
-    if 'url' not in dev:
-        return redirect('connect')
     try:
+        # Подключение
+        dev = get_connect()
+
+        # Проверка подключения
+        if 'url' not in dev:
+            return redirect('connect')
 
         # подключение
-        url = dev['url']
+        url = dev.get('url')
         login = dev['login']
         password = dev['password']
 
@@ -43,12 +47,15 @@ def lists(request):
 # Страница добавления списка
 def lists_add(request):
     try:
-        # проверка подключения
+        # Подключение
+        dev = get_connect()
+
+        # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')
 
         # подключение
-        url = dev['url']
+        url = dev.get('url')
         login = dev['login']
         password = dev['password']
 
@@ -96,12 +103,15 @@ def lists_add(request):
 # Страница редактора списков
 def lists_edit(request, id):
     try:
-        # проверка подключения
+        # Подключение
+        dev = get_connect()
+
+        # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')
 
         # подключение
-        url = dev['url']
+        url = dev.get('url')
         login = dev['login']
         password = dev['password']
 

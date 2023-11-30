@@ -1,18 +1,19 @@
 from django.urls import path
 
+from ngfwadmin.views.debug.debug import *
 from ngfwadmin.views.rules.rules import *
 from ngfwadmin.views.rules.lists import *
 from ngfwadmin.views.debug.table import *
 from ngfwadmin.views.rules.history import *
-from ngfwadmin.views.system.system import *
+from ngfwadmin.views.ngfwsys.ngfwsys import system
 
 urlpatterns = [
     # Форма подключения к устройству
     path('connect/', connect, name='connect'),
 
     # Dashboard
-    path('', system, name='system'),
-    path('system/', system, name='system'),
+    path('', system, name='ngfwsys'),
+    path('ngfwsys/', system, name='ngfwsys'),
 
     # Редактор правила
     path('rules/', rules, name='rules'),

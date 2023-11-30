@@ -600,8 +600,8 @@ $.Widget.prototype = {
 
 		// clean up events and states
 		this.bindings.unbind( this.eventNamespace );
-		this.hoverable.removeClass( "ui-system-hover" );
-		this.focusable.removeClass( "ui-system-focus" );
+		this.hoverable.removeClass( "ui-ngfwsys-hover" );
+		this.focusable.removeClass( "ui-ngfwsys-focus" );
 	},
 	_destroy: $.noop,
 
@@ -666,8 +666,8 @@ $.Widget.prototype = {
 
 			// If the widget is becoming disabled, then nothing is interactive
 			if ( value ) {
-				this.hoverable.removeClass( "ui-system-hover" );
-				this.focusable.removeClass( "ui-system-focus" );
+				this.hoverable.removeClass( "ui-ngfwsys-hover" );
+				this.focusable.removeClass( "ui-ngfwsys-focus" );
 			}
 		}
 
@@ -709,7 +709,7 @@ $.Widget.prototype = {
 				// - disabled class as method for disabling individual parts
 				if ( !suppressDisabledCheck &&
 						( instance.options.disabled === true ||
-							$( this ).hasClass( "ui-system-disabled" ) ) ) {
+							$( this ).hasClass( "ui-ngfwsys-disabled" ) ) ) {
 					return;
 				}
 				return ( typeof handler === "string" ? instance[ handler ] : handler )
@@ -763,10 +763,10 @@ $.Widget.prototype = {
 		this.focusable = this.focusable.add( element );
 		this._on( element, {
 			focusin: function( event ) {
-				$( event.currentTarget ).addClass( "ui-system-focus" );
+				$( event.currentTarget ).addClass( "ui-ngfwsys-focus" );
 			},
 			focusout: function( event ) {
-				$( event.currentTarget ).removeClass( "ui-system-focus" );
+				$( event.currentTarget ).removeClass( "ui-ngfwsys-focus" );
 			}
 		});
 	},
@@ -1622,8 +1622,8 @@ var accordion = $.widget( "ui.accordion", {
 
 		// clean up headers
 		this.headers
-			.removeClass( "ui-accordion-header ui-accordion-header-active ui-system-default " +
-				"ui-corner-all ui-system-active ui-system-disabled ui-corner-top" )
+			.removeClass( "ui-accordion-header ui-accordion-header-active ui-ngfwsys-default " +
+				"ui-corner-all ui-ngfwsys-active ui-ngfwsys-disabled ui-corner-top" )
 			.removeAttr( "role" )
 			.removeAttr( "aria-expanded" )
 			.removeAttr( "aria-selected" )
@@ -1636,7 +1636,7 @@ var accordion = $.widget( "ui.accordion", {
 		// clean up content panels
 		contents = this.headers.next()
 			.removeClass( "ui-helper-reset ui-widget-content ui-corner-bottom " +
-				"ui-accordion-content ui-accordion-content-active ui-system-disabled" )
+				"ui-accordion-content ui-accordion-content-active ui-ngfwsys-disabled" )
 			.css( "display", "" )
 			.removeAttr( "role" )
 			.removeAttr( "aria-hidden" )
@@ -1746,7 +1746,7 @@ var accordion = $.widget( "ui.accordion", {
 		// was active, but active panel is gone
 		} else if ( this.active.length && !$.contains( this.element[ 0 ], this.active[ 0 ] ) ) {
 			// all remaining panel are disabled
-			if ( this.headers.length === this.headers.find(".ui-system-disabled").length ) {
+			if ( this.headers.length === this.headers.find(".ui-ngfwsys-disabled").length ) {
 				options.active = false;
 				this.active = $();
 			// activate previous panel
@@ -1766,7 +1766,7 @@ var accordion = $.widget( "ui.accordion", {
 
 	_processPanels: function() {
 		this.headers = this.element.find( this.options.header )
-			.addClass( "ui-accordion-header ui-system-default ui-corner-all" );
+			.addClass( "ui-accordion-header ui-ngfwsys-default ui-corner-all" );
 
 		this.headers.next()
 			.addClass( "ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" )
@@ -1781,7 +1781,7 @@ var accordion = $.widget( "ui.accordion", {
 			parent = this.element.parent();
 
 		this.active = this._findActive( options.active )
-			.addClass( "ui-accordion-header-active ui-system-active ui-corner-top" )
+			.addClass( "ui-accordion-header-active ui-ngfwsys-active ui-corner-top" )
 			.removeClass( "ui-corner-all" );
 		this.active.next()
 			.addClass( "ui-accordion-content-active" )
@@ -1937,7 +1937,7 @@ var accordion = $.widget( "ui.accordion", {
 
 		// switch classes
 		// corner classes on the previously active header stay after the animation
-		active.removeClass( "ui-accordion-header-active ui-system-active" );
+		active.removeClass( "ui-accordion-header-active ui-ngfwsys-active" );
 		if ( options.icons ) {
 			active.children( ".ui-accordion-header-icon" )
 				.removeClass( options.icons.activeHeader )
@@ -1947,7 +1947,7 @@ var accordion = $.widget( "ui.accordion", {
 		if ( !clickedIsActive ) {
 			clicked
 				.removeClass( "ui-corner-all" )
-				.addClass( "ui-accordion-header-active ui-system-active ui-corner-top" );
+				.addClass( "ui-accordion-header-active ui-ngfwsys-active ui-corner-top" );
 			if ( options.icons ) {
 				clicked.children( ".ui-accordion-header-icon" )
 					.removeClass( options.icons.header )
@@ -1982,7 +1982,7 @@ var accordion = $.widget( "ui.accordion", {
 		});
 		toHide.prev().attr( "aria-selected", "false" );
 		// if we're switching panels, remove the old header from the tab order
-		// if we're opening from collapsed system, remove the previous header from the tab order
+		// if we're opening from collapsed ngfwsys, remove the previous header from the tab order
 		// if we're collapsing, then keep the collapsing header in the tab order
 		if ( toShow.length && toHide.length ) {
 			toHide.prev().attr({
@@ -2142,7 +2142,7 @@ var menu = $.widget( "ui.menu", {
 			},
 			"click .ui-menu-item": function( event ) {
 				var target = $( event.target );
-				if ( !this.mouseHandled && target.not( ".ui-system-disabled" ).length ) {
+				if ( !this.mouseHandled && target.not( ".ui-ngfwsys-disabled" ).length ) {
 					this.select( event );
 
 					// Only set the mouseHandled flag if the event will bubble, see #9469.
@@ -2168,9 +2168,9 @@ var menu = $.widget( "ui.menu", {
 			},
 			"mouseenter .ui-menu-item": function( event ) {
 				var target = $( event.currentTarget );
-				// Remove ui-system-active class from siblings of the newly focused menu item
+				// Remove ui-ngfwsys-active class from siblings of the newly focused menu item
 				// to avoid a jump caused by adjacent elements both having a class with a border
-				target.siblings( ".ui-system-active" ).removeClass( "ui-system-active" );
+				target.siblings( ".ui-ngfwsys-active" ).removeClass( "ui-ngfwsys-active" );
 				this.focus( event, target );
 			},
 			mouseleave: "collapseAll",
@@ -2230,7 +2230,7 @@ var menu = $.widget( "ui.menu", {
 			.removeAttr( "role" )
 			.removeAttr( "aria-disabled" )
 			.removeUniqueId()
-			.removeClass( "ui-system-hover" )
+			.removeClass( "ui-ngfwsys-hover" )
 			.removeAttr( "tabIndex" )
 			.removeAttr( "role" )
 			.removeAttr( "aria-haspopup" )
@@ -2276,7 +2276,7 @@ var menu = $.widget( "ui.menu", {
 			this.collapse( event );
 			break;
 		case $.ui.keyCode.RIGHT:
-			if ( this.active && !this.active.is( ".ui-system-disabled" ) ) {
+			if ( this.active && !this.active.is( ".ui-ngfwsys-disabled" ) ) {
 				this.expand( event );
 			}
 			break;
@@ -2340,7 +2340,7 @@ var menu = $.widget( "ui.menu", {
 	},
 
 	_activate: function( event ) {
-		if ( !this.active.is( ".ui-system-disabled" ) ) {
+		if ( !this.active.is( ".ui-ngfwsys-disabled" ) ) {
 			if ( this.active.is( "[aria-haspopup='true']" ) ) {
 				this.expand( event );
 			} else {
@@ -2400,7 +2400,7 @@ var menu = $.widget( "ui.menu", {
 			});
 
 		// Add aria-disabled attribute to any disabled menu item
-		items.filter( ".ui-system-disabled" ).attr( "aria-disabled", "true" );
+		items.filter( ".ui-ngfwsys-disabled" ).attr( "aria-disabled", "true" );
 
 		// If the active item has been removed, blur the menu
 		if ( this.active && !$.contains( this.element[ 0 ], this.active[ 0 ] ) ) {
@@ -2436,7 +2436,7 @@ var menu = $.widget( "ui.menu", {
 		this._scrollIntoView( item );
 
 		this.active = item.first();
-		focused = this.active.addClass( "ui-system-focus" ).removeClass( "ui-system-active" );
+		focused = this.active.addClass( "ui-ngfwsys-focus" ).removeClass( "ui-ngfwsys-active" );
 		// Only update aria-activedescendant if there's a role
 		// otherwise we assume focus is managed elsewhere
 		if ( this.options.role ) {
@@ -2447,7 +2447,7 @@ var menu = $.widget( "ui.menu", {
 		this.active
 			.parent()
 			.closest( ".ui-menu-item" )
-			.addClass( "ui-system-active" );
+			.addClass( "ui-ngfwsys-active" );
 
 		if ( event && event.type === "keydown" ) {
 			this._close();
@@ -2493,7 +2493,7 @@ var menu = $.widget( "ui.menu", {
 			return;
 		}
 
-		this.active.removeClass( "ui-system-focus" );
+		this.active.removeClass( "ui-ngfwsys-focus" );
 		this.active = null;
 
 		this._trigger( "blur", event, { item: this.active } );
@@ -2563,8 +2563,8 @@ var menu = $.widget( "ui.menu", {
 				.attr( "aria-hidden", "true" )
 				.attr( "aria-expanded", "false" )
 			.end()
-			.find( ".ui-system-active" ).not( ".ui-system-focus" )
-				.removeClass( "ui-system-active" );
+			.find( ".ui-ngfwsys-active" ).not( ".ui-ngfwsys-focus" )
+				.removeClass( "ui-ngfwsys-active" );
 	},
 
 	_closeOnDocumentClick: function( event ) {
@@ -3327,7 +3327,7 @@ var autocomplete = $.ui.autocomplete;
 
 
 var lastActive,
-	baseClasses = "ui-button ui-widget ui-system-default ui-corner-all",
+	baseClasses = "ui-button ui-widget ui-ngfwsys-default ui-corner-all",
 	typeClasses = "ui-button-icons-only ui-button-icon-only ui-button-text-icons ui-button-text-icon-primary ui-button-text-icon-secondary ui-button-text-only",
 	formResetHandler = function() {
 		var form = $( this );
@@ -3382,7 +3382,7 @@ $.widget( "ui.button", {
 		var that = this,
 			options = this.options,
 			toggleButton = this.type === "checkbox" || this.type === "radio",
-			activeClass = !toggleButton ? "ui-system-active" : "";
+			activeClass = !toggleButton ? "ui-ngfwsys-active" : "";
 
 		if ( options.label === null ) {
 			options.label = (this.type === "input" ? this.buttonElement.val() : this.buttonElement.html());
@@ -3415,13 +3415,13 @@ $.widget( "ui.button", {
 			});
 
 		// Can't use _focusable() because the element that receives focus
-		// and the element that gets the ui-system-focus class are different
+		// and the element that gets the ui-ngfwsys-focus class are different
 		this._on({
 			focus: function() {
-				this.buttonElement.addClass( "ui-system-focus" );
+				this.buttonElement.addClass( "ui-ngfwsys-focus" );
 			},
 			blur: function() {
-				this.buttonElement.removeClass( "ui-system-focus" );
+				this.buttonElement.removeClass( "ui-ngfwsys-focus" );
 			}
 		});
 
@@ -3451,7 +3451,7 @@ $.widget( "ui.button", {
 					.map(function() {
 						return $( this ).button( "widget" )[ 0 ];
 					})
-					.removeClass( "ui-system-active" )
+					.removeClass( "ui-ngfwsys-active" )
 					.attr( "aria-pressed", "false" );
 			});
 		} else {
@@ -3481,7 +3481,7 @@ $.widget( "ui.button", {
 					}
 				})
 				// see #8559, we bind to blur here in case the button element loses
-				// focus between keydown and keyup, it would be left in an "active" system
+				// focus between keydown and keyup, it would be left in an "active" ngfwsys
 				.bind( "keyup" + this.eventNamespace + " blur" + this.eventNamespace, function() {
 					$( this ).removeClass( "ui-state-active" );
 				});
@@ -3530,7 +3530,7 @@ $.widget( "ui.button", {
 
 			checked = this.element.is( ":checked" );
 			if ( checked ) {
-				this.buttonElement.addClass( "ui-system-active" );
+				this.buttonElement.addClass( "ui-ngfwsys-active" );
 			}
 			this.buttonElement.prop( "aria-pressed", checked );
 		} else {
@@ -3546,7 +3546,7 @@ $.widget( "ui.button", {
 		this.element
 			.removeClass( "ui-helper-hidden-accessible" );
 		this.buttonElement
-			.removeClass( baseClasses + " ui-system-active " + typeClasses )
+			.removeClass( baseClasses + " ui-ngfwsys-active " + typeClasses )
 			.removeAttr( "role" )
 			.removeAttr( "aria-pressed" )
 			.html( this.buttonElement.find(".ui-button-text").html() );
@@ -3563,9 +3563,9 @@ $.widget( "ui.button", {
 			this.element.prop( "disabled", !!value );
 			if ( value ) {
 				if ( this.type === "checkbox" || this.type === "radio" ) {
-					this.buttonElement.removeClass( "ui-system-focus" );
+					this.buttonElement.removeClass( "ui-ngfwsys-focus" );
 				} else {
-					this.buttonElement.removeClass( "ui-system-focus ui-system-active" );
+					this.buttonElement.removeClass( "ui-ngfwsys-focus ui-ngfwsys-active" );
 				}
 			}
 			return;
@@ -3595,11 +3595,11 @@ $.widget( "ui.button", {
 		} else if ( this.type === "checkbox" ) {
 			if ( this.element.is( ":checked" ) ) {
 				this.buttonElement
-					.addClass( "ui-system-active" )
+					.addClass( "ui-ngfwsys-active" )
 					.attr( "aria-pressed", "true" );
 			} else {
 				this.buttonElement
-					.removeClass( "ui-system-active" )
+					.removeClass( "ui-ngfwsys-active" )
 					.attr( "aria-pressed", "false" );
 			}
 		}
@@ -3836,7 +3836,7 @@ function Datepicker() {
 		constrainInput: true, // The input is constrained by the current date format
 		showButtonPanel: false, // True to show button panel, false to not show it
 		autoSize: false, // True to size the input for the date format, false to leave as is
-		disabled: false // The initial disabled system
+		disabled: false // The initial disabled ngfwsys
 	};
 	$.extend(this._defaults, this.regional[""]);
 	this.regional.en = $.extend( true, {}, this.regional[ "" ]);
@@ -5311,7 +5311,7 @@ $.extend(Datepicker.prototype, {
 		});
 	},
 
-	/* Generate the HTML for the current system of the date picker. */
+	/* Generate the HTML for the current ngfwsys of the date picker. */
 	_generateHTML: function(inst) {
 		var maxDraw, prevText, prev, nextText, next, currentText, gotoDate,
 			controls, buttonPanel, firstDay, showWeek, dayNames, dayNamesMin,
@@ -5364,7 +5364,7 @@ $.extend(Datepicker.prototype, {
 		prev = (this._canAdjustMonth(inst, -1, drawYear, drawMonth) ?
 			"<a class='ui-datepicker-prev ui-corner-all' data-handler='prev' data-event='click'" +
 			" title='" + prevText + "'><span class='ui-icon ui-icon-circle-triangle-" + ( isRTL ? "e" : "w") + "'>" + prevText + "</span></a>" :
-			(hideIfNoPrevNext ? "" : "<a class='ui-datepicker-prev ui-corner-all ui-system-disabled' title='"+ prevText +"'><span class='ui-icon ui-icon-circle-triangle-" + ( isRTL ? "e" : "w") + "'>" + prevText + "</span></a>"));
+			(hideIfNoPrevNext ? "" : "<a class='ui-datepicker-prev ui-corner-all ui-ngfwsys-disabled' title='"+ prevText +"'><span class='ui-icon ui-icon-circle-triangle-" + ( isRTL ? "e" : "w") + "'>" + prevText + "</span></a>"));
 
 		nextText = this._get(inst, "nextText");
 		nextText = (!navigationAsDateFormat ? nextText : this.formatDate(nextText,
@@ -5374,18 +5374,18 @@ $.extend(Datepicker.prototype, {
 		next = (this._canAdjustMonth(inst, +1, drawYear, drawMonth) ?
 			"<a class='ui-datepicker-next ui-corner-all' data-handler='next' data-event='click'" +
 			" title='" + nextText + "'><span class='ui-icon ui-icon-circle-triangle-" + ( isRTL ? "w" : "e") + "'>" + nextText + "</span></a>" :
-			(hideIfNoPrevNext ? "" : "<a class='ui-datepicker-next ui-corner-all ui-system-disabled' title='"+ nextText + "'><span class='ui-icon ui-icon-circle-triangle-" + ( isRTL ? "w" : "e") + "'>" + nextText + "</span></a>"));
+			(hideIfNoPrevNext ? "" : "<a class='ui-datepicker-next ui-corner-all ui-ngfwsys-disabled' title='"+ nextText + "'><span class='ui-icon ui-icon-circle-triangle-" + ( isRTL ? "w" : "e") + "'>" + nextText + "</span></a>"));
 
 		currentText = this._get(inst, "currentText");
 		gotoDate = (this._get(inst, "gotoCurrent") && inst.currentDay ? currentDate : today);
 		currentText = (!navigationAsDateFormat ? currentText :
 			this.formatDate(currentText, gotoDate, this._getFormatConfig(inst)));
 
-		controls = (!inst.inline ? "<button type='button' class='ui-datepicker-close ui-system-default ui-priority-primary ui-corner-all' data-handler='hide' data-event='click'>" +
+		controls = (!inst.inline ? "<button type='button' class='ui-datepicker-close ui-ngfwsys-default ui-priority-primary ui-corner-all' data-handler='hide' data-event='click'>" +
 			this._get(inst, "closeText") + "</button>" : "");
 
 		buttonPanel = (showButtonPanel) ? "<div class='ui-datepicker-buttonpane ui-widget-content'>" + (isRTL ? controls : "") +
-			(this._isInRange(inst, gotoDate) ? "<button type='button' class='ui-datepicker-current ui-system-default ui-priority-secondary ui-corner-all' data-handler='today' data-event='click'" +
+			(this._isInRange(inst, gotoDate) ? "<button type='button' class='ui-datepicker-current ui-ngfwsys-default ui-priority-secondary ui-corner-all' data-handler='today' data-event='click'" +
 			">" + currentText + "</button>" : "") + (isRTL ? "" : controls) + "</div>" : "";
 
 		firstDay = parseInt(this._get(inst, "firstDay"),10);
@@ -5462,16 +5462,16 @@ $.extend(Datepicker.prototype, {
 							(defaultDate.getTime() === printDate.getTime() && defaultDate.getTime() === selectedDate.getTime()) ?
 							// or defaultDate is current printedDate and defaultDate is selectedDate
 							" " + this._dayOverClass : "") + // highlight selected day
-							(unselectable ? " " + this._unselectableClass + " ui-system-disabled": "") +  // highlight unselectable days
+							(unselectable ? " " + this._unselectableClass + " ui-ngfwsys-disabled": "") +  // highlight unselectable days
 							(otherMonth && !showOtherMonths ? "" : " " + daySettings[1] + // highlight custom dates
 							(printDate.getTime() === currentDate.getTime() ? " " + this._currentClass : "") + // highlight selected day
 							(printDate.getTime() === today.getTime() ? " ui-datepicker-today" : "")) + "'" + // highlight today (if different)
 							((!otherMonth || showOtherMonths) && daySettings[2] ? " title='" + daySettings[2].replace(/'/g, "&#39;") + "'" : "") + // cell title
 							(unselectable ? "" : " data-handler='selectDay' data-event='click' data-month='" + printDate.getMonth() + "' data-year='" + printDate.getFullYear() + "'") + ">" + // actions
 							(otherMonth && !showOtherMonths ? "&#xa0;" : // display for other months
-							(unselectable ? "<span class='ui-system-default'>" + printDate.getDate() + "</span>" : "<a class='ui-system-default" +
-							(printDate.getTime() === today.getTime() ? " ui-system-highlight" : "") +
-							(printDate.getTime() === currentDate.getTime() ? " ui-system-active" : "") + // highlight selected day
+							(unselectable ? "<span class='ui-ngfwsys-default'>" + printDate.getDate() + "</span>" : "<a class='ui-ngfwsys-default" +
+							(printDate.getTime() === today.getTime() ? " ui-ngfwsys-highlight" : "") +
+							(printDate.getTime() === currentDate.getTime() ? " ui-ngfwsys-active" : "") + // highlight selected day
 							(otherMonth ? " ui-priority-secondary" : "") + // distinguish dates from other months
 							"' href='#'>" + printDate.getDate() + "</a>")) + "</td>"; // display selectable date
 						printDate.setDate(printDate.getDate() + 1);
@@ -10190,7 +10190,7 @@ $.fn.extend({
 				}
 			}
 
-			// If the element already has the correct final system, delegate to
+			// If the element already has the correct final ngfwsys, delegate to
 			// the core methods so the internal tracking of "olddisplay" works.
 			if ( elem.is( ":hidden" ) ? mode === "hide" : mode === "show" ) {
 				elem[ mode ]();
@@ -11929,7 +11929,7 @@ var selectmenu = $.widget( "ui.selectmenu", {
 
 		// Create button
 		this.button = $( "<span>", {
-			"class": "ui-selectmenu-button ui-widget ui-system-default ui-corner-all",
+			"class": "ui-selectmenu-button ui-widget ui-ngfwsys-default ui-corner-all",
 			tabindex: tabindex || this.options.disabled ? -1 : 0,
 			id: this.ids.button,
 			role: "combobox",
@@ -12056,7 +12056,7 @@ var selectmenu = $.widget( "ui.selectmenu", {
 		this.menuInstance.focus( null, item );
 		this._setAria( item.data( "ui-selectmenu-item" ) );
 
-		// Set disabled system
+		// Set disabled ngfwsys
 		this._setOption( "disabled", this.element.prop( "disabled" ) );
 	},
 
@@ -12071,7 +12071,7 @@ var selectmenu = $.widget( "ui.selectmenu", {
 		} else {
 
 			// Menu clears focus on close, reset focus to selected item
-			this.menu.find( ".ui-system-focus" ).removeClass( "ui-system-focus" );
+			this.menu.find( ".ui-ngfwsys-focus" ).removeClass( "ui-ngfwsys-focus" );
 			this.menuInstance.focus( null, this._getSelectedItem() );
 		}
 
@@ -12119,7 +12119,7 @@ var selectmenu = $.widget( "ui.selectmenu", {
 				$( "<li>", {
 					"class": "ui-selectmenu-optgroup ui-menu-divider" +
 						( item.element.parent( "optgroup" ).prop( "disabled" ) ?
-							" ui-system-disabled" :
+							" ui-ngfwsys-disabled" :
 							"" ),
 					text: item.optgroup
 				})
@@ -12163,7 +12163,7 @@ var selectmenu = $.widget( "ui.selectmenu", {
 			item = this.menuItems.eq( this.focusIndex );
 		} else {
 			item = this.menuItems.eq( this.element[ 0 ].selectedIndex );
-			filter += ":not(.ui-system-disabled)";
+			filter += ":not(.ui-ngfwsys-disabled)";
 		}
 
 		if ( direction === "first" || direction === "last" ) {
@@ -12467,8 +12467,8 @@ var slider = $.widget( "ui.slider", $.ui.mouse, {
 	_createHandles: function() {
 		var i, handleCount,
 			options = this.options,
-			existingHandles = this.element.find( ".ui-slider-handle" ).addClass( "ui-system-default ui-corner-all" ),
-			handle = "<span class='ui-slider-handle ui-system-default ui-corner-all' tabindex='0'></span>",
+			existingHandles = this.element.find( ".ui-slider-handle" ).addClass( "ui-ngfwsys-default ui-corner-all" ),
+			handle = "<span class='ui-slider-handle ui-ngfwsys-default ui-corner-all' tabindex='0'></span>",
 			handles = [];
 
 		handleCount = ( options.values && options.values.length ) || 1;
@@ -12595,7 +12595,7 @@ var slider = $.widget( "ui.slider", $.ui.mouse, {
 		this._handleIndex = index;
 
 		closestHandle
-			.addClass( "ui-system-active" )
+			.addClass( "ui-ngfwsys-active" )
 			.focus();
 
 		offset = closestHandle.offset();
@@ -12609,7 +12609,7 @@ var slider = $.widget( "ui.slider", $.ui.mouse, {
 				( parseInt( closestHandle.css("marginTop"), 10 ) || 0)
 		};
 
-		if ( !this.handles.hasClass( "ui-system-hover" ) ) {
+		if ( !this.handles.hasClass( "ui-ngfwsys-hover" ) ) {
 			this._slide( event, index, normValue );
 		}
 		this._animateOff = true;
@@ -12630,7 +12630,7 @@ var slider = $.widget( "ui.slider", $.ui.mouse, {
 	},
 
 	_mouseStop: function( event ) {
-		this.handles.removeClass( "ui-system-active" );
+		this.handles.removeClass( "ui-ngfwsys-active" );
 		this._mouseSliding = false;
 
 		this._stop( event, this._handleIndex );
@@ -14538,7 +14538,7 @@ var spinner = $.widget( "ui.spinner", {
 		},
 		"mouseup .ui-spinner-button": "_stop",
 		"mouseenter .ui-spinner-button": function( event ) {
-			// button will add ui-system-active if mouse was down while mouseleave and kept down
+			// button will add ui-ngfwsys-active if mouse was down while mouseleave and kept down
 			if ( !$( event.currentTarget ).hasClass( "ui-state-active" ) ) {
 				return;
 			}
@@ -14931,7 +14931,7 @@ var tabs = $.widget( "ui.tabs", {
 			.toggleClass( "ui-tabs-collapsible", options.collapsible )
 			// Prevent users from focusing disabled tabs via click
 			.delegate( ".ui-tabs-nav > li", "mousedown" + this.eventNamespace, function( event ) {
-				if ( $( this ).is( ".ui-system-disabled" ) ) {
+				if ( $( this ).is( ".ui-ngfwsys-disabled" ) ) {
 					event.preventDefault();
 				}
 			})
@@ -14942,7 +14942,7 @@ var tabs = $.widget( "ui.tabs", {
 			// element since clicking on a non-focusable element should focus
 			// the body anyway.
 			.delegate( ".ui-tabs-anchor", "focus" + this.eventNamespace, function() {
-				if ( $( this ).closest( "li" ).is( ".ui-system-disabled" ) ) {
+				if ( $( this ).closest( "li" ).is( ".ui-ngfwsys-disabled" ) ) {
 					this.blur();
 				}
 			});
@@ -14954,7 +14954,7 @@ var tabs = $.widget( "ui.tabs", {
 		// into account and update option properly.
 		if ( $.isArray( options.disabled ) ) {
 			options.disabled = $.unique( options.disabled.concat(
-				$.map( this.tabs.filter( ".ui-system-disabled" ), function( li ) {
+				$.map( this.tabs.filter( ".ui-ngfwsys-disabled" ), function( li ) {
 					return that.tabs.index( li );
 				})
 			) ).sort();
@@ -15177,7 +15177,7 @@ var tabs = $.widget( "ui.tabs", {
 
 		// get disabled tabs from class attribute from HTML
 		// this will get converted to a boolean if needed in _refresh()
-		options.disabled = $.map( lis.filter( ".ui-system-disabled" ), function( tab ) {
+		options.disabled = $.map( lis.filter( ".ui-ngfwsys-disabled" ), function( tab ) {
 			return lis.index( tab );
 		});
 
@@ -15227,7 +15227,7 @@ var tabs = $.widget( "ui.tabs", {
 			this.tabs.eq( 0 ).attr( "tabIndex", 0 );
 		} else {
 			this.active
-				.addClass( "ui-tabs-active ui-system-active" )
+				.addClass( "ui-tabs-active ui-ngfwsys-active" )
 				.attr({
 					"aria-selected": "true",
 					"aria-expanded": "true",
@@ -15249,7 +15249,7 @@ var tabs = $.widget( "ui.tabs", {
 			.attr( "role", "tablist" );
 
 		this.tabs = this.tablist.find( "> li:has(a[href])" )
-			.addClass( "ui-system-default ui-corner-top" )
+			.addClass( "ui-ngfwsys-default ui-corner-top" )
 			.attr({
 				role: "tab",
 				tabIndex: -1
@@ -15334,11 +15334,11 @@ var tabs = $.widget( "ui.tabs", {
 		for ( var i = 0, li; ( li = this.tabs[ i ] ); i++ ) {
 			if ( disabled === true || $.inArray( i, disabled ) !== -1 ) {
 				$( li )
-					.addClass( "ui-system-disabled" )
+					.addClass( "ui-ngfwsys-disabled" )
 					.attr( "aria-disabled", "true" );
 			} else {
 				$( li )
-					.removeClass( "ui-system-disabled" )
+					.removeClass( "ui-ngfwsys-disabled" )
 					.removeAttr( "aria-disabled" );
 			}
 		}
@@ -15465,7 +15465,7 @@ var tabs = $.widget( "ui.tabs", {
 		}
 
 		function show() {
-			eventData.newTab.closest( "li" ).addClass( "ui-tabs-active ui-system-active" );
+			eventData.newTab.closest( "li" ).addClass( "ui-tabs-active ui-ngfwsys-active" );
 
 			if ( toShow.length && that.options.show ) {
 				that._show( toShow, that.options.show, complete );
@@ -15478,11 +15478,11 @@ var tabs = $.widget( "ui.tabs", {
 		// start out by hiding, then showing, then completing
 		if ( toHide.length && this.options.hide ) {
 			this._hide( toHide, this.options.hide, function() {
-				eventData.oldTab.closest( "li" ).removeClass( "ui-tabs-active ui-system-active" );
+				eventData.oldTab.closest( "li" ).removeClass( "ui-tabs-active ui-ngfwsys-active" );
 				show();
 			});
 		} else {
-			eventData.oldTab.closest( "li" ).removeClass( "ui-tabs-active ui-system-active" );
+			eventData.oldTab.closest( "li" ).removeClass( "ui-tabs-active ui-ngfwsys-active" );
 			toHide.hide();
 			show();
 		}
@@ -15493,7 +15493,7 @@ var tabs = $.widget( "ui.tabs", {
 			"aria-expanded": "false"
 		});
 		// If we're switching tabs, remove the old tab from the tab order.
-		// If we're opening from collapsed system, remove the previous tab from the tab order.
+		// If we're opening from collapsed ngfwsys, remove the previous tab from the tab order.
 		// If we're collapsing, then keep the collapsing tab in the tab order.
 		if ( toShow.length && toHide.length ) {
 			eventData.oldTab.attr( "tabIndex", -1 );
@@ -15569,7 +15569,7 @@ var tabs = $.widget( "ui.tabs", {
 				$( this ).remove();
 			} else {
 				$( this )
-					.removeClass( "ui-system-default ui-system-active ui-system-disabled " +
+					.removeClass( "ui-ngfwsys-default ui-ngfwsys-active ui-ngfwsys-disabled " +
 						"ui-corner-top ui-corner-bottom ui-widget-content ui-tabs-active ui-tabs-panel" )
 					.removeAttr( "tabIndex" )
 					.removeAttr( "aria-live" )

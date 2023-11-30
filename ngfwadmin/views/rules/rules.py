@@ -1,5 +1,5 @@
-from ngfwadmin.views.connect.connect import *
 from ngfwadmin.rest.rules.rules import *
+from ngfwadmin.views.connect.connect import *
 from ngfwadmin.rest.rules.sub import sub_warp, sub_delete, sub_insert
 
 from django.shortcuts import redirect, render
@@ -12,12 +12,15 @@ dictsub = {}
 # Страница правил
 def rules(request):
     try:
+        # Подключение
+        dev = get_connect()
+
         # проверка подключения
         if 'url' not in dev:
             return redirect('connect')
 
         # подключение
-        url = dev['url']
+        url = dev.get('url')
 
         # применить настройки правил
         if request.method == 'POST':
@@ -58,12 +61,15 @@ def rules(request):
 # Страница добавления правила
 def rules_add(request):
     try:
+        # Подключение
+        dev = get_connect()
+
         # проверка подключения
         if 'url' not in dev:
             return redirect('connect')
 
         # подключение
-        url = dev['url']
+        url = dev.get('url')
 
         # создать список
         if request.method == 'POST':
@@ -95,12 +101,15 @@ def rules_add(request):
 # Страница редактирования правила
 def rules_edit(request, id):
     try:
+        # Подключение
+        dev = get_connect()
+
         # проверка подключения
         if 'url' not in dev:
             return redirect('connect')
 
         # подключение
-        url = dev['url']
+        url = dev.get('url')
 
         # создать список
         if request.method == 'POST':
@@ -145,12 +154,15 @@ def rules_edit(request, id):
 # Страница редактирования подправил
 def rules_sub_edit(request, id):
     try:
+        # Подключение
+        dev = get_connect()
+
         # проверка подключения
         if 'url' not in dev:
             return redirect('connect')
 
         # подключение
-        url = dev['url']
+        url = dev.get('url')
         login = dev['login']
         password = dev['password']
 
