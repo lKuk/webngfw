@@ -1,13 +1,20 @@
-from .views import *
 from django.urls import path
+
+from ngfwadmin.views.sys.sys import *
+from ngfwadmin.views.debug.error import *
+from ngfwadmin.views.rules.rules import *
+from ngfwadmin.views.rules.lists import *
+from ngfwadmin.views.debug.table import *
+from ngfwadmin.views.rules.history import *
 
 urlpatterns = [
     # Форма подключения к устройству
     path('connect/', connect, name='connect'),
 
-    # Dashboard
-    path('', system, name='system'),
-    path('system/', system, name='system'),
+    # Состояние
+    path('', sys, name='sys'),
+    path('sys/', sys, name='sys'),
+    path('ports/', ports, name='ports'),
 
     # Редактор правила
     path('rules/', rules, name='rules'),
@@ -29,4 +36,3 @@ urlpatterns = [
     # Отображение ошибок
     path('error/', error, name='error'),
 ]
-

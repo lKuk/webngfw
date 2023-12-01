@@ -61,6 +61,24 @@ def list_select_all(url):
     return details
 
 
+# Установить содержимое списка
+def content_set(url, login, password, idlist, filetext):
+    filetext = filetext + '\n'
+    response = requests.put(f"{url}/rules/lists/{idlist}/content", data=filetext, auth=(login, password))
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    return response.content
+
+
+# Получить содержимое списка
+def content_get(url, idlist):
+    response = requests.get(f"{url}/rules/lists/{idlist}/content")
+    if response.status_code != 200:
+        return ''
+    details = response.text.rstrip('\n')
+    return details
+
+
 # Наполнить список
 def list_warp(url, list):
     try:
