@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-airplay"></i>Порты
+        </h4>
+    </li>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Состояние портов</h5>
+                        </div>
+                        <ul class="breadcrumb m-t-10">
+                            <li class="breadcrumb-item"><a href="{% url 'ports' %}"><i
+                                    class="feather icon-airplay p-r-5"></i>Порты</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table id="col-reorder" class="display table nowrap table-striped table-hover footable">
+                                <thead>
+                                    <tr>
+                                        <th>number</th>             {# Номер порта #}
+                                        <th>link_status</th>        {# Статус #}
+                                        <th>link_speed</th>         {# Скорость порта (Мбит) #}
+
+                                        <th>ibits_per_sec</th>      {# Входящая скорость (бит/сек.) #}
+                                        <th>ipackets</th>           {# Входящих пакетов количество (шт.) #}
+                                        <th>ipackets_per_sec</th>   {# Входящих пакетов в секунду (шт/сек.) #}
+                                        <th>ibytes</th>             {# Входящих байт всего (байт) #}
+                                        <th>ierrors</th>            {# Входящих ошибок всего (шт) #}
+                                        <th>imissed</th>            {# Входящих потерь всего (шт) #}
+                                        <th>imissed_per_sec</th>    {# Входящих потерь в секунду (шт/сек.) #}
+
+                                        <th>obits_per_sec</th>      {# Исходящих скорость (бит/сек.) #}
+                                        <th>opackets</th>           {# Исходящих пакетов количество (шт.) #}
+                                        <th>opackets_per_sec</th>   {# Исходящих пакетов в секунду (шт/сек.) #}
+                                        <th>obytes</th>             {# Исходящих байт всего (байт) #}
+                                        <th>oerrors</th>            {# Исходящих ошибок всего (шт) #}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for p in ports %}
+                                    <tr>
+                                        <td style="display: table-cell;">{{ p.number }}</td>
+                                        <td style="display: table-cell;">{{ p.link_status }}</td>
+                                        <td style="display: table-cell;">{{ p.link_speed }}</td>
+                                        <td style="display: table-cell;">{{ p.ibits_per_sec }}</td>
+                                        <td style="display: table-cell;">{{ p.ipackets }}</td>
+                                        <td style="display: table-cell;">{{ p.ipackets_per_sec }}</td>
+                                        <td style="display: table-cell;">{{ p.ibytes }}</td>
+                                        <td style="display: table-cell;">{{ p.ierrors }}</td>
+                                        <td style="display: table-cell;">{{ p.imissed }}</td>
+                                        <td style="display: table-cell;">{{ p.imissed_per_sec }}</td>
+                                        <td style="display: table-cell;">{{ p.obits_per_sec }}</td>
+                                        <td style="display: table-cell;">{{ p.opackets }}</td>
+                                        <td style="display: table-cell;">{{ p.opackets_per_sec }}</td>
+                                        <td style="display: table-cell;">{{ p.obytes }}</td>
+                                        <td style="display: table-cell;">{{ p.oerrors }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

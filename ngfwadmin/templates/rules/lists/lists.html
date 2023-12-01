@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-list"></i>Списки NGFW
+        </h4>
+    </li>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Списки фильтрации сетевого трафика</h5>
+                        </div>
+                        <ul class="breadcrumb m-t-10">
+                            <li class="breadcrumb-item"><a href="{% url 'lists' %}"><i
+                                    class="feather icon-list p-r-5"></i>Списки</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <!-- Кнопка Добавить -->
+                        <div class="row">
+                            <div class="col">
+                                <a href="{% url 'lists_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row m-t-10">
+                            <div class="col">
+                                <!-- Таблица списков -->
+                                <div class="table-responsive">
+                                    <table id="col-reorder"
+                                           class="display table nowrap table-striped table-hover footable">
+                                        <thead>
+                                        <tr>
+                                            <th title="Удаление"><i class="feather icon-trash"></i></th>
+                                            <th>Метка</th>
+                                            <th>Тип</th>
+                                            <th>Название</th>
+                                            <th>Описание</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for l in lists %}
+                                            <tr>
+                                                <!-- Удаление -->
+                                                <td style="display: table-cell;">
+                                                    <div>
+                                                        <a href="{% url 'lists' %}?delete={{ l.id }}"
+                                                           onclick="return confirm('{{ l.description|truncatechars:50 }}\nУдалить список?');">
+                                                            <i class="feather icon-trash"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <!-- Метка -->
+                                                <td style="display: table-cell;">
+                                                    {% if l.type == 'list' %}
+                                                        <p class="mb-1">{{ 'Список' }}</p>
+                                                    {% elif l.type == 'lib' %}
+                                                        <p class="mb-1">{{ 'Библиотека' }}</p>
+                                                    {% else %}
+                                                        <p class="mb-1">{{ l.type }}</p>
+                                                    {% endif %}
+                                                </td>
+                                                <!-- Тип файла -->
+                                                <td style="display: table-cell;">{{ l.fprint }}</td>
+                                                <!-- Название -->
+                                                <td style="display: table-cell;">
+                                                    <a href="{% url 'lists_edit' l.id %}">{{ l.name }}</a>
+                                                </td>
+                                                <!-- Описание -->
+                                                <td style="display: table-cell;">{{ l.description|wordwrap:70|linebreaksbr }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

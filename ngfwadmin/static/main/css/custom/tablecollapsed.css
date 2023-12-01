@@ -1,0 +1,21 @@
+.dropdown {
+  display: none;
+}
+
+.dropdown--visible {
+  display: table-row;
+}
+
+.dropdown td:first-child {
+  padding-left: calc(5px + 15px * var(--level));
+}
+
+.btn
+{
+  height: 40px;
+  width: 200px;
+  color: #154088;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid #154088;
+}

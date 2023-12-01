@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load base_tag %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-trending-up"></i>Правила NGFW
+        </h4>
+    </li>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Правила фильтрации сетевого трафика</h5>
+                        </div>
+                        <ul class="breadcrumb m-t-10">
+                            <li class="breadcrumb-item"><a href="{% url 'rules' %}"><i
+                                    class="feather icon-trending-up p-r-5"></i>Правила</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <!-- Кнопки  -->
+                        <div class="row">
+                            <div class="col text-left">
+                                <form action="" method="post" id="ruleApplyForm">
+                                    {% csrf_token %}
+                                    <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2"
+                                       style="width: 160px">Добавить</a>
+                                    <button type="submit" name="btnApply"
+                                            onclick="{% if description.status.upper == 'SET' %}return false{% endif %}"
+                                            class="btn {% if description.status.upper == 'SET' %}disabled btn-secondary{% else %}btn-warning{% endif %} shadow-2"
+                                            style="width: 160px">Установить
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col text-right">
+                                <i class="feather icon-chevrons-down" onclick="ShowSubrules()"
+                                   style="font-size: 1.2rem; color: #1e6abc;"></i>
+                                <i class="feather icon-chevrons-up" onclick="HideSubrules()"
+                                   style="font-size: 1.2rem; color: #1e6abc;"></i>
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- Уведомление  -->
+                        {% if description.status.upper != 'SET' %}
+                            <div class="row m-t-10">
+                                <div class="col">
+                                    <div class="col alert alert-warning my-0" role="alert">
+                                        <div class="row">
+                                            <div class="col-md-auto">
+                                                <div class="spinner-border text-warning" role="status"></div>
+                                            </div>
+                                            <div class="col">
+                                                Изменено: <a class="text-dark">{{ description.date_edit }}</a><br/>
+                                                Последняя установка правил выполнена: <a
+                                                    class="text-dark">{{ description.date_set }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <!-- Таблица  -->
+                        <div class="row m-t-10">
+                            <div class="col">
+                                <div class="table-responsive">
+                                    <table id="col-reorder"
+                                           class="display table nowrap table-striped table-hover footable"
+                                           style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th title="Удаление"><i class="feather icon-trash"></i></th>
+                                            <th title="Статус"><i class="feather icon-check-square"
+                                                                  style="font-size: 1.05rem;"></i></th>
+                                            <th title="Включено/Выключено">Вкл</th>
+                                            <th title="Запрещено/Разрешено">Тип</th>
+                                            <th>Название</th>
+                                            <th>Подправила</th>
+                                            <th>Описание</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for r in rules %}
+                                            <tr>
+                                                {# Удаление #}
+                                                <td style="display: table-cell;">
+                                                    <div>
+                                                        <a href="{% url 'rules' %}?delete={{ r.id }}"
+                                                           onclick="return confirm('{{ r.name }}\nУдалить правило?');">
+                                                            <i class="feather icon-trash"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                {# Статус #}
+                                                <td style="display: table-cell;">
+                                                    {% if r.status.upper == 'SET' %}
+                                                        <i class="feather icon-check-square"
+                                                           style="font-size: 1.05rem; color: #2f9c0a;"
+                                                           title="Применено"></i>
+                                                    {% elif r.status.upper == 'NOT SET' %}
+                                                        <i class="feather icon-square"
+                                                           style="font-size: 1.05rem; color: #1e6abc;"
+                                                           title="Не применено"></i>
+                                                    {% elif r.status.upper == 'EDITED' %}
+                                                        <i class="feather icon-edit"
+                                                           style="font-size: 1.05rem; color: #ba8b00;"
+                                                           title="Изменено, не применено"></i>
+                                                    {% else %}
+                                                        {{ r.status }}
+                                                    {% endif %}
+                                                </td>
+                                                {# Включено #}
+                                                <td style="display: table-cell;">
+                                                    {% if r.is_enable.upper == 'TRUE' %}
+                                                        <p class="m-0 text-success">Вкл.</p>
+                                                    {% elif r.is_enable.upper == 'FALSE' %}
+                                                        <p class="m-0">Выкл.</p>
+                                                    {% else %}
+                                                        <p class="m-0">{{ r.is_enable }}</p>
+                                                    {% endif %}
+                                                </td>
+                                                {# black/white #}
+                                                <td style="display: table-cell;">
+                                                    {% if r.rtype.upper == 'BLACK' %}
+                                                        <p class="m-0" style="color: #2f0800">Запрещено</p>
+                                                        {# <i class="feather icon-star-on" style="font-size: 1.05rem; color: #666;" title="Запрещено"></i>#}
+                                                    {% elif r.rtype.upper == 'WHITE' %}
+                                                        <p class="m-0" style="color: #1c561d">Разрешено</p>
+                                                        {# <i class="feather icon-star-on" style="font-size: 1.05rem; color: #8fcedd;" title="Разрешено"></i>#}
+                                                    {% else %}
+                                                        {{ r.rtype }}
+                                                    {% endif %}
+                                                </td>
+                                                {# Название #}
+                                                <td style="display: table-cell;">
+                                                    <a href="{% url 'rules_edit' r.id %}">{{ r.name|truncatechars:50 }}</a>
+                                                </td>
+                                                {# Подправила #}
+                                                <td style="display: table-cell;">
+                                                    <a class="text-dark m-t-5 m-r-5" data-toggle="collapse"
+                                                       href="#collapse_{{ r.id }}"
+                                                       role="button"
+                                                       aria-expanded="true"><i class="feather icon-chevron-down"></i>
+                                                    </a>
+                                                    <a href="{% url 'rules_sub_edit' r.id %}">{% count_sub r %}</a>
+                                                    <div class="collapse hide devHide m-l-20" id="collapse_{{ r.id }}">
+                                                        {% for s in r.sub2 %}
+                                                            {# Инвертированное #}
+                                                            {% if s.is_invert == '0' %}
+                                                                <i title="Не инвертированное"
+                                                                   class="feather icon-arrow-up-right"
+                                                                   style="color: #000"></i>
+                                                            {% elif s.is_invert == '1' %}
+                                                                <i title="Инвертированное"
+                                                                   class="feather icon-arrow-down-left"
+                                                                   style="color: #000"></i>
+                                                            {% else %}
+                                                                {{ s.is_invert }}
+                                                            {% endif %}
+                                                            {# Описание подправила и значение #}
+                                                            {{ s.ar_description|truncatechars:30 }}{{ ' - ' }}
+                                                            <a href="{% url 'lists_edit' s.fid_or_val %}">{{ s.list_name }}</a>
+                                                            <br/>
+                                                        {% endfor %}
+                                                    </div>
+                                                </td>
+                                                {# Описание #}
+                                                <td style="display: table-cell;">{{ r.description|wordwrap:70|linebreaksbr }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function ShowSubrules() {
+            let hideCollapse = document.getElementsByClassName('devHide');
+            var btnSub = document.getElementById('btnSubShow');
+
+            for (let i = 0; i < hideCollapse.length; i += 1) {
+                hideCollapse[i].classList.remove('hide');
+                hideCollapse[i].classList.add('show');
+            }
+        }
+
+        function HideSubrules() {
+            let hideCollapse = document.getElementsByClassName('devHide');
+            var btnSub = document.getElementById('btnSub');
+
+            for (let i = 0; i < hideCollapse.length; i += 1) {
+                hideCollapse[i].classList.remove('show');
+                hideCollapse[i].classList.add('hide');
+            }
+        }
+
+    </script>
+
+{% endblock content %}

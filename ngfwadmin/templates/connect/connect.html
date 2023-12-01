@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>Подключение NGFW</title>
+    <link rel="icon" href="{% static 'main/images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/animation/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/fonts/fontawesome/css/fontawesome-all.min.css' %}">
+</head>
+
+<body style="background: #C5D8FF">
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <div class="auth-bg">
+                <span class="r"></span>
+                <span class="r s"></span>
+                <span class="r s"></span>
+                <span class="r"></span>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Подключение</h5>
+                </div>
+                <div class="card-body text-center">
+                    <form action="{% url 'connect' %}" method="post" id="connectForm">
+                        {% csrf_token %}
+                            <p>{{ form.non_field_errors }}</p>
+                            {% for f in form %}
+                                <div class="form-group text-left">
+                                    <label for="{{ f.id_for_label }}" id="">{{ f.label }}: </label>
+                                    {{ f }}
+                                    <div class="text-danger">{{ f.errors }}</div>
+                                </div>
+                            {% endfor %}
+                        <button type="submit" class="btn btn-primary shadow-2 m-t-4" style="width: 160px">Подключиться</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'main/js/vendor-all.min.js' %}"></script>
+    <script src="{% static 'main/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'main/js/pcoded.min.js' %}"></script>
+
+</body>
+</html>
