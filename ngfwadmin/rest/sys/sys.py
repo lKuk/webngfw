@@ -20,15 +20,6 @@ def serial_get(url):
     return details
 
 
-# Получить версию
-def lcores_get(url):
-    response = requests.get(f"{url}/system/lcores")
-    if response.status_code != 200:
-        raise Exception(response.url, response.text)
-    details = response.json()
-    return details
-
-
 # Получить статус
 def status_get(url):
     response = requests.get(f"{url}/system/status")

@@ -1,5 +1,5 @@
 from ngfwadmin.forms import *
-from ngfwadmin.views.debug.debug import exception
+from ngfwadmin.views.debug.error import exception
 
 from django.shortcuts import redirect, render
 
@@ -54,7 +54,7 @@ def connect(request):
                                   'password': password,
                                   'url': url}
                 # Подключение выполнено
-                return redirect('ngfwsys')
+                return redirect('sys')
         # Подключение повторно
         else:
             form = ConnectForm()
