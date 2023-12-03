@@ -18,26 +18,42 @@
                 url: '{% url 'sys' %}?ajax',
                 dataType: 'json',
                 success: function (response) {
-                    let content = response.content;
-                    // Обновить время
-                    let start_time = content.uptime.start_time;
-                    let d = content.uptime.days;
-                    let h = content.uptime.hours;
-                    let m = content.uptime.mins;
-                    let s = content.uptime.secs;
-                    let time = `Время работы: ${d}д. ${h}ч.  ${m}мин. ${s}сек.`
-                    let currentTime = document.getElementById('currentTime')
-                    currentTime.textContent = time;
 
+                    // Время работы
+                    if('uptime' in response) {
+                        let uptime = response.uptime;
+                        let m = uptime.mins;
+                        let s = uptime.secs;
+                        let d = uptime.days;
+                        let h = uptime.hours;
+                        let value = `Время работы: ${d}д. ${h}ч.  ${m}мин. ${s}сек.`;
+                        let currentTime = document.getElementById('currentTime');
+                        currentTime.textContent = value;
+                    }
+                    // Память
+                    if('ram' in response) {
+                        let ram = response.ram;
+                        let used = ram.used;
+                        let total = ram.total;
+                        let percent = ram.percent;
+                        let value = `Память: проценты (${percent}), всего (${total}), используется (${used})`;
+                        let currentRam = document.getElementById('currentRam');
+                        currentRam.textContent = value;
+                    }
 
-                    //let content = document.getElementById('currentCores');
-                    //let json = JSON.parse(currentTime);
-                    //let core0 = json['Core0'];
-                    print(content);
-                    //currentTime.textContent = core0;
+                    // Диски
+                    if('disk' in response) {
+                        let disk = response.disk;
+                        let used = disk.used;
+                        let total = disk.total;
+                        let percent = disk.percent;
+                        let value = `Диски: проценты (${percent}), всего (${total}), используется (${used})`
+                        let currentDisk = document.getElementById('currentDisk')
+                        currentDisk.textContent = value;
+                    }
                 }
             });
-            setTimeout(refreshSysAjax, 5000);
+            setTimeout(refreshSysAjax, 1000);
         }
 
         // Выполнить при загрузке страницы
@@ -79,11 +95,11 @@
                         <p class="text-dark">Серийный номер: {{ serial.serial_number }}</p>
                         <p class="text-dark">Статус системы: {{ status.main_status }} - {{ status.sub_status }}</p>
                         <p class="text-dark">Время старта: {{ uptime.start_time }}
-                            <br/>Время работы: {{ uptime.days }}д. {{ uptime.hours }}ч. {{ uptime.mins }}мин. {{ uptime.secs }}сек.</p>
+                        <p class="text-dark" id="currentTime">Время работы: {{ uptime.days }}д. {{ uptime.hours }}ч. {{ uptime.mins }}мин. {{ uptime.secs }}сек.</p>
 
-                        <p class="text-dark">Память: {{ ram }}</p>
-                        <p class="text-dark">Диски: {{ disk }}</p>
-                        <p class="text-dark">Ядра процессора: {{ lcores }}</p>
+                        <p class="text-dark" id="currentRam">Память: {{ ram }}</p>
+                        <p class="text-dark" id="currentDisk">Диски: {{ disk }}</p>
+                        <p class="text-dark" id="currentCores">Ядра процессора: {{ lcores }}</p>
                     </div>
                 </div>
             </div>
