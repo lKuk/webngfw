@@ -37,11 +37,13 @@ urlpatterns = [
     path('rules/history/', history, name='history'),
 
     # Протоколы
-    path('protocol/ip/', protocol_ip, name='protocol_ip'),
     path('protocol/arp/', protocol_arp, name='protocol_arp'),
     path('protocol/nat/', protocol_nat, name='protocol_nat'),
     path('protocol/icmp/', protocol_icmp, name='protocol_icmp'),
     path('protocol/dhcp/', protocol_dhcp, name='protocol_dhcp'),
+    path('protocol/ip_route/', protocol_ip_route, name='protocol_ip_route'),
+    path('protocol/ip_route/new', protocol_ip_route_add, name='protocol_ip_route_add'),
+    path('protocol/ip_config/', protocol_ip_config, name='protocol_ip_config'),
 
     # Справочные таблицы
     path('rules/table/<slug:name>/', table, name='table'),
