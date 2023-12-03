@@ -9,53 +9,60 @@
 {% block script %}
     <script src="{% static 'main/plugins/jquery/js/jquery.min.js' %}"></script>
     <script>
-        function refreshSysAjax() {
-            $.ajax({
+        // Запрос данных Ajax
+        function RequestAjax() {
+            // Параметры
+            const param = {
                 type: 'GET',
-                url: '{% url 'state' %}?ajax',
                 dataType: 'json',
-                success: function (response) {
-
-                    // Время работы
-                    if('uptime' in response) {
-                        let uptime = response.uptime;
-                        let m = uptime.mins;
-                        let s = uptime.secs;
-                        let d = uptime.days;
-                        let h = uptime.hours;
-                        let value = `Время работы: ${d}д. ${h}ч.  ${m}мин. ${s}сек.`;
-                        let currentTime = document.getElementById('currentTime');
-                        currentTime.textContent = value;
-                    }
-                    // Память
-                    if('ram' in response) {
-                        let ram = response.ram;
-                        let used = ram.used;
-                        let total = ram.total;
-                        let percent = ram.percent;
-                        let value = `Память: проценты (${percent}), всего (${total}), используется (${used})`;
-                        let currentRam = document.getElementById('currentRam');
-                        currentRam.textContent = value;
-                    }
-
-                    // Диски
-                    if('disk' in response) {
-                        let disk = response.disk;
-                        let used = disk.used;
-                        let total = disk.total;
-                        let percent = disk.percent;
-                        let value = `Диски: проценты (${percent}), всего (${total}), используется (${used})`
-                        let currentDisk = document.getElementById('currentDisk')
-                        currentDisk.textContent = value;
-                    }
-                }
-            });
-            setTimeout(refreshSysAjax, 1000);
+                url: '{% url 'state' %}?ajax',
+                success: Update
+            }
+            // Выполнить запрос
+            $.ajax(param);
+            // Запустить повторно по таймеру
+            setTimeout(RequestAjax, 1000);
         }
 
-        // Выполнить при загрузке страницы
+        // Обновление страницы
+        function Update(response) {
+            // Время работы
+            if('uptime' in response) {
+                let uptime = response.uptime;
+                let m = uptime.mins;
+                let s = uptime.secs;
+                let d = uptime.days;
+                let h = uptime.hours;
+                let value = `Время работы: ${d}д. ${h}ч.  ${m}мин. ${s}сек.`;
+                let currentTime = document.getElementById('currentTime');
+                currentTime.textContent = value;
+            }
+            // Память
+            if('ram' in response) {
+                let ram = response.ram;
+                let used = ram.used;
+                let total = ram.total;
+                let percent = ram.percent;
+                let value = `Память: проценты (${percent}), всего (${total}), используется (${used})`;
+                let currentRam = document.getElementById('currentRam');
+                currentRam.textContent = value;
+            }
+
+            // Диски
+            if('disk' in response) {
+                let disk = response.disk;
+                let used = disk.used;
+                let total = disk.total;
+                let percent = disk.percent;
+                let value = `Диски: проценты (${percent}), всего (${total}), используется (${used})`
+                let currentDisk = document.getElementById('currentDisk')
+                currentDisk.textContent = value;
+            }
+        }
+
+        // Запуск при загрузке страницы
         window.addEventListener('load', () => {
-            refreshSysAjax();
+            RequestAjax();
         });
     </script>
 
