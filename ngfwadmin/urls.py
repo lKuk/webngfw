@@ -17,11 +17,9 @@ urlpatterns = [
 
     # Система
     path('sys/', sys, name='sys'),
-    path('sys_ajax/', sys_ajax, name='sys_ajax'),
 
     # Порты
     path('ports/', ports, name='ports'),
-    path('ports_ajax/', ports_ajax, name='ports_ajax'),
 
     # Редактор правила
     path('rules/', rules, name='rules'),

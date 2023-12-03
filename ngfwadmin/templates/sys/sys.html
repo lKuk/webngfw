@@ -15,13 +15,25 @@
         function refreshSysAjax() {
             $.ajax({
                 type: 'GET',
-                url: '{% url 'sys_ajax' %}',
+                url: '{% url 'sys' %}?ajax',
                 dataType: 'json',
                 success: function (response) {
+                    let content = response.content;
+                    // Обновить время
+                    let start_time = content.uptime.start_time;
+                    let d = content.uptime.days;
+                    let h = content.uptime.hours;
+                    let m = content.uptime.mins;
+                    let s = content.uptime.secs;
+                    let time = `Время работы: ${d}д. ${h}ч.  ${m}мин. ${s}сек.`
+                    let currentTime = document.getElementById('currentTime')
+                    currentTime.textContent = time;
+
+
                     //let content = document.getElementById('currentCores');
                     //let json = JSON.parse(currentTime);
                     //let core0 = json['Core0'];
-                    //print(response);
+                    print(content);
                     //currentTime.textContent = core0;
                 }
             });
