@@ -10,29 +10,19 @@ def sys(request):
     try:
         # Подключение
         dev = get_connect()
-
         # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')
-
+        # обновляемое содержимое
+        context = sys_ajax()
         # подключение
         url = dev.get('url')
-        uptime = uptime_get(url)
         serial = serial_get(url)
-        status = status_get(url)
         version = version_get(url)
-        ram = monitoring_ram_get(url)
-        disk = monitoring_disk_get(url)
-        lcores = monitoring_lcores_get(url)
-
-        context = {'dev': dev,
-                   'ram': ram,
-                   'disk': disk,
-                   'lcores': lcores,
-                   'serial': serial,
-                   'uptime': uptime,
-                   'status': status,
-                   'version': version}
+        # Наполнить содержимое
+        context['dev'] = dev
+        context['serial'] = serial
+        context['version'] = version
         return render(request, 'sys/sys.html', context=context)
     except Exception as ex:
         return exception(request, ex)
@@ -40,30 +30,25 @@ def sys(request):
 
 # Данные для обновления системы
 def sys_ajax():
+    context = {}
+    # Подключение
+    dev = get_connect()
+    if 'url' not in dev:
+        return context
     try:
-        # Подключение
-        dev = get_connect()
-
-        # Проверка подключения
-        if 'url' not in dev:
-            return
-
-        # подключение
-        url = dev.get('url')
-
         # Получить данные
+        url = dev.get('url')
         uptime = uptime_get(url)
         status = status_get(url)
         ram = monitoring_ram_get(url)
         disk = monitoring_disk_get(url)
         lcores = monitoring_lcores_get(url)
-
-        # данные в словарь
-        context = {'ram': ram,
-                   'disk': disk,
-                   'lcores': lcores,
-                   'uptime': uptime,
-                   'status': status}
-        return context
+        # Наполнить содержимое
+        context['ram'] = ram
+        context['disk'] = disk
+        context['lcores'] = lcores
+        context['uptime'] = uptime
+        context['status'] = status
     except:
-        return
+        return context
+    return context

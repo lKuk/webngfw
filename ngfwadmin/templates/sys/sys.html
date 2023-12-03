@@ -10,6 +10,32 @@
 
 {# Скрипты #}
 {% block script %}
+{#    <script src="{% static 'main/plugins/jquery/js/jquery.min.js' %}"></script>#}
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>
+        function refreshSysAjax() {
+            $.ajax({
+                type: 'GET',
+                url: '{% url 'sys_ajax' %}',
+                dataType: 'json',
+                success: function (response) {
+                    //let content = document.getElementById('currentCores');
+                    //let json = JSON.parse(currentTime);
+                    //let core0 = json['Core0'];
+                    //print(response);
+                    //currentTime.textContent = core0;
+                }
+            });
+            setTimeout(refreshSysAjax, 5000);
+        }
+
+        // Выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            refreshSysAjax();
+        });
+    </script>
+
+
 {% endblock script %}
 
 {# Заголовок #}
