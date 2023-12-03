@@ -1,6 +1,6 @@
 from django.urls import path
 
-from ngfwadmin.views.sys.sys import *
+from ngfwadmin.views.state.state import *
 from ngfwadmin.views.ports.ports import *
 from ngfwadmin.views.debug.error import *
 from ngfwadmin.views.rules.rules import *
@@ -14,10 +14,10 @@ urlpatterns = [
     path('connect/', connect, name='connect'),
 
     # По умолчанию
-    path('', sys, name='sys'),
+    path('', state, name='state'),
 
     # Система
-    path('sys/', sys, name='sys'),
+    path('state/', state, name='state'),
 
     # Порты
     path('ports/', ports, name='ports'),

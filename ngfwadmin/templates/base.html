@@ -41,18 +41,18 @@
         <div class="navbar-content scroll-div">
             <ul class="nav pcoded-inner-navbar">
 
-                <!-- Группа - Состояние -->
+                <!-- Группа - Система -->
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Состояние</label>
+                    <label>Система</label>
                 </li>
 
-                <!-- Система -->
-                <li class="nav-item {% is_active request 'sys' 'active' %}">
-                    <a href="{% url 'sys' %}" class="nav-link">
+                <!-- Состояние -->
+                <li class="nav-item {% is_active request 'state' 'active' %}">
+                    <a href="{% url 'state' %}" class="nav-link">
                         <span class="pcoded-micon">
                             <i class="feather icon-home"></i>
                         </span>
-                        <span class="pcoded-mtext">Система</span>
+                        <span class="pcoded-mtext">Состояние</span>
                     </a>
                 </li>
 
@@ -186,7 +186,7 @@
 <header class="navbar pcoded-header navbar-expand-lg navbar-light">
     <div class="m-header">
         <a class="mobile-menu" id="mobile-collapse1" href="#!"><span></span></a>
-        <a href="{% url 'sys' %}" class="b-brand">
+        <a href="{% url 'state' %}" class="b-brand">
             <div class="b-bg">
                 <i class="feather icon-trending-up"></i>
             </div>

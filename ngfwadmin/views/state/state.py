@@ -1,13 +1,13 @@
-from ngfwadmin.rest.sys.sys import *
+from ngfwadmin.rest.state.state import *
 from ngfwadmin.views.connect.connect import *
-from ngfwadmin.rest.monitoring.monitoring import *
+from ngfwadmin.rest.state.monitoring import *
 
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 
 # Страница системы
-def sys(request):
+def state(request):
     try:
         # Подключение
         dev = get_connect()
@@ -36,6 +36,6 @@ def sys(request):
         if ajax is not None:
             return JsonResponse(context)
         # Вернуть сформированную страницу
-        return render(request, 'sys/sys.html', context=context)
+        return render(request, 'state/state.html', context=context)
     except Exception as ex:
         return exception(request, ex)

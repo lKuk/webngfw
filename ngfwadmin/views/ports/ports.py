@@ -23,6 +23,6 @@ def ports(request):
         if ajax is not None:
             return JsonResponse(context)
         # Вернуть сформированную страницу
-        return render(request, 'sys/ports.html', context=context)
+        return render(request, 'state/../../templates/ports/ports.html', context=context)
     except Exception as ex:
         return exception(request, ex)

@@ -12,7 +12,7 @@
         function refreshSysAjax() {
             $.ajax({
                 type: 'GET',
-                url: '{% url 'sys' %}?ajax',
+                url: '{% url 'state' %}?ajax',
                 dataType: 'json',
                 success: function (response) {
 
@@ -83,7 +83,7 @@
                             <h5>Параметры системы</h5>
                         </div>
                         <ul class="breadcrumb m-t-10">
-                            <li class="breadcrumb-item"><a href="{% url 'sys' %}"><i
+                            <li class="breadcrumb-item"><a href="{% url 'state' %}"><i
                                     class="feather icon-home p-r-5"></i>Система</a></li>
                         </ul>
                     </div>
