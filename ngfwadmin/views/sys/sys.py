@@ -1,5 +1,4 @@
 from ngfwadmin.rest.sys.sys import *
-from ngfwadmin.rest.ports.ports import *
 from ngfwadmin.views.connect.connect import *
 from ngfwadmin.rest.monitoring.monitoring import *
 
@@ -39,21 +38,32 @@ def sys(request):
         return exception(request, ex)
 
 
-# Страница состояния портов
-def ports(request):
+# Данные для обновления системы
+def sys_ajax():
     try:
         # Подключение
         dev = get_connect()
 
         # Проверка подключения
         if 'url' not in dev:
-            return redirect('connect')
+            return
 
         # подключение
         url = dev.get('url')
-        ports = ports_get(url)
-        context = {'dev': dev,
-                   'ports': ports}
-        return render(request, 'sys/ports.html', context=context)
-    except Exception as ex:
-        return exception(request, ex)
+
+        # Получить данные
+        uptime = uptime_get(url)
+        status = status_get(url)
+        ram = monitoring_ram_get(url)
+        disk = monitoring_disk_get(url)
+        lcores = monitoring_lcores_get(url)
+
+        # данные в словарь
+        context = {'ram': ram,
+                   'disk': disk,
+                   'lcores': lcores,
+                   'uptime': uptime,
+                   'status': status}
+        return context
+    except:
+        return

@@ -1,6 +1,7 @@
 from django.urls import path
 
 from ngfwadmin.views.sys.sys import *
+from ngfwadmin.views.ports.ports import *
 from ngfwadmin.views.debug.error import *
 from ngfwadmin.views.rules.rules import *
 from ngfwadmin.views.rules.lists import *

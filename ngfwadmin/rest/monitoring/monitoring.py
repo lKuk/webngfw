@@ -22,4 +22,9 @@ def monitoring_lcores_get(url):
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
-    return details
+    lcores = {}
+    for index in range(len(details)):
+        key = 'core_' + str(index)
+        value = details[index]
+        lcores[key] = value
+    return lcores
