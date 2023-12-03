@@ -7,6 +7,7 @@ from ngfwadmin.views.rules.rules import *
 from ngfwadmin.views.rules.lists import *
 from ngfwadmin.views.debug.table import *
 from ngfwadmin.views.rules.history import *
+from ngfwadmin.views.protocols.protocols import *
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -34,6 +35,13 @@ urlpatterns = [
 
     # История изменений
     path('rules/history/', history, name='history'),
+
+    # Протоколы
+    path('protocol/ip/', protocol_ip, name='protocol_ip'),
+    path('protocol/arp/', protocol_arp, name='protocol_arp'),
+    path('protocol/nat/', protocol_nat, name='protocol_nat'),
+    path('protocol/icmp/', protocol_icmp, name='protocol_icmp'),
+    path('protocol/dhcp/', protocol_dhcp, name='protocol_dhcp'),
 
     # Справочные таблицы
     path('rules/table/<slug:name>/', table, name='table'),

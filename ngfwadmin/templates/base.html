@@ -97,6 +97,60 @@
                     </a>
                 </li>
 
+
+                <!-- Группа - Протоколы -->
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Протоколы</label>
+                </li>
+
+                <!-- IP -->
+                <li class="nav-item {% is_active request '' 'active' %}">
+                    <a href="{% url 'protocol_ip' %}" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-wifi"></i>
+                        </span><span class="pcoded-mtext">Протокол IP</span>
+                    </a>
+                </li>
+
+                <!-- NAT -->
+                <li class="nav-item {% is_active request '' 'active' %}">
+                    <a href="{% url 'protocol_nat' %}" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-cast"></i>
+                        </span>
+                        <span class="pcoded-mtext">Протокол NAT</span>
+                    </a>
+                </li>
+
+                <!-- ARP -->
+                <li class="nav-item {% is_active request '' 'active' %}">
+                    <a href="{% url 'protocol_arp' %}" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-radio"></i>
+                        </span><span class="pcoded-mtext">Протокол ARP</span>
+                    </a>
+                </li>
+
+                <!-- DHCP -->
+                <li class="nav-item {% is_active request '' 'active' %}">
+                    <a href="{% url 'protocol_dhcp' %}" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-radio"></i>
+                        </span><span class="pcoded-mtext">Протокол DHCP</span>
+                    </a>
+                </li>
+
+                <!-- ICMP -->
+                <li class="nav-item {% is_active request '' 'active' %}">
+                    <a href="{% url 'protocol_icmp' %}" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-radio"></i>
+                        </span><span class="pcoded-mtext">Протокол ICMP</span>
+                    </a>
+                </li>
+
+
+
                 <!-- Группа - Сервис -->
                 <li class="nav-item pcoded-menu-caption">
                     <label>Сервис</label>
