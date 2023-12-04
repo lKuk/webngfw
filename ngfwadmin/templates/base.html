@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
     <link rel="icon" href="{% static 'main/images/favicon.ico' %}" type="image/x-icon">
     <!-- [ блок стилей css ] end --->
-
 </head>
 
 <body style="background: #C5D8FF">
@@ -150,7 +149,6 @@
                 </li>
 
 
-
                 <!-- Группа - Сервис -->
                 <li class="nav-item pcoded-menu-caption">
                     <label>Сервис</label>
@@ -163,15 +161,23 @@
                     </a>
                     <ul class="pcoded-submenu">
 
-                        <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>
-                        <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>
-                        <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>
-                        <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>
+                        <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}"
+                                                                                 class="">Atomic</a></li>
+                        <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format' %}"
+                                                                                 class="">Format</a></li>
+                        <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services' %}"
+                                                                                   class="">Services</a></li>
+                        <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols' %}"
+                                                                                    class="">Protocols</a></li>
 
-                        <li class="{% is_active request 'ports' 'active' %}"><a href="{% url 'table' 'ports'%}" class="">Ports</a></li>
-                        <li class="{% is_active request 'ports_avail' 'active' %}"><a href="{% url 'table' 'ports_avail'%}" class="">Ports avail</a></li>
-                        <li class="{% is_active request 'system_ports' 'active' %}"><a href="{% url 'table' 'system_ports'%}" class="">System ports</a></li>
-                        <li class="{% is_active request 'system_settings' 'active' %}"><a href="{% url 'table' 'system_settings'%}" class="">System settings</a></li>
+                        <li class="{% is_active request 'ports' 'active' %}"><a href="{% url 'table' 'ports' %}"
+                                                                                class="">Ports</a></li>
+                        <li class="{% is_active request 'ports_avail' 'active' %}"><a
+                                href="{% url 'table' 'ports_avail' %}" class="">Ports avail</a></li>
+                        <li class="{% is_active request 'system_ports' 'active' %}"><a
+                                href="{% url 'table' 'system_ports' %}" class="">System ports</a></li>
+                        <li class="{% is_active request 'system_settings' 'active' %}"><a
+                                href="{% url 'table' 'system_settings' %}" class="">System settings</a></li>
 
                     </ul>
                 </li>
@@ -206,7 +212,7 @@
         <!-- Справа -->
         <ul class="navbar-nav ml-auto">
             <!-- переподключение -->
-              <!-- переподключение -->
+            <!-- переподключение -->
             {% if dev.mode != 'local' %}
                 <li>
                     <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.ip }}</a>
@@ -260,9 +266,13 @@
 <script src="{% static 'main/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'main/js/pcoded.min.js' %}"></script>
 
+
+
 {% block script %}
 {% endblock script %}
 <!-- [ блок скриптов ] end --->
-
+ <!-- Knob chart Js -->
+    <script src="{% static 'main/plugins/chart-knob/js/jquery.knob.min.js' %}"></script>
+    <script src="{% static 'main/plugins/chart-knob/js/jquery.knob-custom.min.js' %}"></script>
 </body>
 </html>

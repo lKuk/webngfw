@@ -42,23 +42,38 @@
                         <div class="table-responsive">
                             <table id="col-reorder" class="display table nowrap table-striped table-hover footable">
                                 <thead>
-                                    <tr>
-                                        <th>number</th>             {# Номер порта #}
-                                        <th>link_status</th>        {# Статус #}
-                                        <th>link_speed</th>         {# Скорость порта (Мбит) #}
-                                        <th>ibits_per_sec</th>      {# Входящая скорость (бит/сек.) #}
-                                        <th>ipackets</th>           {# Входящих пакетов количество (шт.) #}
-                                        <th>ipackets_per_sec</th>   {# Входящих пакетов в секунду (шт/сек.) #}
-                                        <th>ibytes</th>             {# Входящих байт всего (байт) #}
-                                        <th>ierrors</th>            {# Входящих ошибок всего (шт) #}
-                                        <th>imissed</th>            {# Входящих потерь всего (шт) #}
-                                        <th>imissed_per_sec</th>    {# Входящих потерь в секунду (шт/сек.) #}
-                                        <th>obits_per_sec</th>      {# Исходящих скорость (бит/сек.) #}
-                                        <th>opackets</th>           {# Исходящих пакетов количество (шт.) #}
-                                        <th>opackets_per_sec</th>   {# Исходящих пакетов в секунду (шт/сек.) #}
-                                        <th>obytes</th>             {# Исходящих байт всего (байт) #}
-                                        <th>oerrors</th>            {# Исходящих ошибок всего (шт) #}
-                                    </tr>
+                                <tr>
+                                    <th>number</th>
+                                    {# Номер порта #}
+                                    <th>link_status</th>
+                                    {# Статус #}
+                                    <th>link_speed</th>
+                                    {# Скорость порта (Мбит) #}
+                                    <th>ibits_per_sec</th>
+                                    {# Входящая скорость (бит/сек.) #}
+                                    <th>ipackets</th>
+                                    {# Входящих пакетов количество (шт.) #}
+                                    <th>ipackets_per_sec</th>
+                                    {# Входящих пакетов в секунду (шт/сек.) #}
+                                    <th>ibytes</th>
+                                    {# Входящих байт всего (байт) #}
+                                    <th>ierrors</th>
+                                    {# Входящих ошибок всего (шт) #}
+                                    <th>imissed</th>
+                                    {# Входящих потерь всего (шт) #}
+                                    <th>imissed_per_sec</th>
+                                    {# Входящих потерь в секунду (шт/сек.) #}
+                                    <th>obits_per_sec</th>
+                                    {# Исходящих скорость (бит/сек.) #}
+                                    <th>opackets</th>
+                                    {# Исходящих пакетов количество (шт.) #}
+                                    <th>opackets_per_sec</th>
+                                    {# Исходящих пакетов в секунду (шт/сек.) #}
+                                    <th>obytes</th>
+                                    {# Исходящих байт всего (байт) #}
+                                    <th>oerrors</th>
+                                    {# Исходящих ошибок всего (шт) #}
+                                </tr>
                                 </thead>
                                 <tbody>
                                 {% for p in ports %}
@@ -84,6 +99,62 @@
                             </table>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Состояние портов</h5>
+                        </div>
+                        <ul class="breadcrumb m-t-10">
+                            <li class="breadcrumb-item"><a href="{% url 'ports' %}"><i
+                                    class="feather icon-airplay p-r-5"></i>Порты</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for p in ports %}
+                                <div class="col col-sm-4">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Тут что то будет</h5>
+                                        </div>
+                                        <div class="cacard-block">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="table">
+                                                        <tr>
+                                                            <td><i class="feather icon-arrow-up m-r-5"></i> Номер порта:
+                                                            </td>
+                                                            <td class="text-right"><span class="float-right"><a
+                                                                    class="text-secondary"
+                                                                    href="#!">{{ p.number }}</a></span>
+                                                            </td>
+                                                        </tr>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="table">
+                                                        <tr>
+                                                            <td><i class="feather icon-arrow-up m-r-5"></i> Номер порта:
+                                                            </td>
+                                                            <td class="text-right"><span class="float-right"><a
+                                                                    class="text-secondary"
+                                                                    href="#!">{{ p.number }}</a></span>
+                                                            </td>
+                                                        </tr>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
