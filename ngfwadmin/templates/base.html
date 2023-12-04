@@ -104,15 +104,15 @@
                 </li>
 
                 <!-- IP -->
-                <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_ip_route protocol_ip_config protocol_nat protocol_arp protocol_dhcp protocol_icmp' 'active pcoded-trigger' %}">
+                <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_route protocol_route_add protocol_ipconfig protocol_ipconfig_add protocol_nat protocol_arp protocol_dhcp protocol_icmp' 'active pcoded-trigger' %}">
                     <a href="#!" class="nav-link">
                         <span class="pcoded-micon">
                             <i class="feather icon-wifi"></i>
                         </span><span class="pcoded-mtext">Сетевые интерфейсы</span>
                     </a>
                     <ul class="pcoded-submenu">
-                        <li class="{% is_active request 'protocol_ip_config' 'active' %}"><a href="{% url 'protocol_ip_config'%}" class="">Конфигурация</a></li>
-                        <li class="{% is_active request 'protocol_ip_route' 'active' %}"><a href="{% url 'protocol_ip_route'%}" class="">ROUTE</a></li>
+                        <li class="{% is_active request 'protocol_ipconfig protocol_ipconfig_add' 'active' %}"><a href="{% url 'protocol_ipconfig'%}" class="">Подключения</a></li>
+                        <li class="{% is_active request 'protocol_route protocol_route_add' 'active' %}"><a href="{% url 'protocol_route'%}" class="">ROUTE</a></li>
                         <li class="{% is_active request 'protocol_nat' 'active' %}"><a href="{% url 'protocol_nat' %}" class="">NAT</a></li>
                         <li class="{% is_active request 'protocol_arp' 'active' %}"><a href="{% url 'protocol_arp' %}" class="">ARP</a></li>
                         <li class="{% is_active request 'protocol_dhcp' 'active' %}"><a href="{% url 'protocol_dhcp' %}" class="">DHCP</a></li>

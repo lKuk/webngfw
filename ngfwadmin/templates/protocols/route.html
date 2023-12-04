@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-wifi"></i>Маршруты IP
+        </h4>
+    </li>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Таблица статических маршрутов</h5>
+                        </div>
+                        <ul class="breadcrumb m-t-10">
+                            <li class="breadcrumb-item"><a href="{% url 'protocol_route' %}">
+                                <i class="feather icon-wifi p-r-5"></i>Маршруты</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <!-- Кнопка Добавить -->
+                        <div class="row">
+                            <div class="col">
+                                <a href="{% url 'protocol_route_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row m-t-10">
+                            <div class="col">
+                                <!-- Таблица списков -->
+                                <div class="table-responsive">
+                                    <table id="col-reorder"
+                                           class="display table nowrap table-striped table-hover footable">
+                                        <thead>
+                                        <tr>
+                                            <th title="Удаление"><i class="feather icon-trash"></i></th>
+                                            <th>Номер физического порта</th>
+                                            <th>IP-адрес</th>
+                                            <th>Шлюз</th>
+                                            <th>VLAN</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for r in route %}
+                                            <tr>
+                                                <!-- Удаление -->
+                                                <td style="display: table-cell;">
+                                                    <div>
+                                                        <a href="{% url 'protocol_route' %}?delete={{ r.id }}"
+                                                           onclick="return confirm('Удалить маршрут?');">
+                                                            <i class="feather icon-trash"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <!-- Порт -->
+                                                <td style="display: table-cell;">{{ r.port }}</td>
+                                                <!-- IP-адрес -->
+                                                <td style="display: table-cell;">{{ r.ip }}</td>
+                                                <!-- Шлюз -->
+                                                <td style="display: table-cell;">{{ r.ipgw }}</td>
+                                                <!-- VLAN -->
+                                                <td style="display: table-cell;">{{ r.vlan_id }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

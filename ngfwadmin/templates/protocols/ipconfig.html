@@ -19,7 +19,7 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-wifi"></i>Протокол IP
+            <i class="m-r-15 feather icon-wifi"></i>Подключения IP
         </h4>
     </li>
 {% endblock header %}
@@ -33,18 +33,18 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>Маршруты IP</h5>
+                            <h5>Настройки протокола IP и сетевых подключений</h5>
                         </div>
                         <ul class="breadcrumb m-t-10">
-                            <li class="breadcrumb-item"><a href="{% url 'lists' %}">
-                                <i class="feather icon-wifi p-r-5"></i>Маршруты</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'protocol_ipconfig' %}">
+                                <i class="feather icon-wifi p-r-5"></i>Подключения</a></li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <!-- Кнопка Добавить -->
                         <div class="row">
                             <div class="col">
-                                <a href="{% url 'protocol_ip_route_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
+                                <a href="{% url 'protocol_ipconfig_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
                             </div>
                         </div>
                         <hr>
@@ -52,37 +52,42 @@
                             <div class="col">
                                 <!-- Таблица списков -->
                                 <div class="table-responsive">
-                                    <table id="col-reorder"
-                                           class="display table nowrap table-striped table-hover footable">
+                                    <table id="col-reorder" class="display table nowrap table-striped table-hover footable">
                                         <thead>
                                         <tr>
                                             <th title="Удаление"><i class="feather icon-trash"></i></th>
+                                            <th>Номер физического порта</th>
+                                            <th>MAC-адрес</th>
                                             <th>IP-адрес</th>
                                             <th>Шлюз</th>
-                                            <th>Порт</th>
                                             <th>VLAN</th>
+                                            <th>ICMP</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {% for r in route %}
+                                        {% for conf in ipconfig %}
                                             <tr>
                                                 <!-- Удаление -->
                                                 <td style="display: table-cell;">
                                                     <div>
-                                                        <a href="{% url 'protocol_ip_route' %}?delete={{ r.id }}"
+                                                        <a href="{% url 'protocol_route' %}?delete={{ conf.id }}"
                                                            onclick="return confirm('Удалить маршрут?');">
                                                             <i class="feather icon-trash"></i>
                                                         </a>
                                                     </div>
                                                 </td>
-                                                <!-- IP-адрес -->
-                                                <td style="display: table-cell;">{{ r.ip }}</td>
-                                                <!-- Шлюз -->
-                                                <td style="display: table-cell;">{{ r.ipgw }}</td>
                                                 <!-- Порт -->
-                                                <td style="display: table-cell;">{{ r.port }}</td>
+                                                <td style="display: table-cell;">{{ conf.port }}</td>
+                                                <!-- MAC-адрес -->
+                                                <td style="display: table-cell;">{{ conf.mac }}</td>
+                                                <!-- IP-адрес -->
+                                                <td style="display: table-cell;">{{ conf.ip }}</td>
+                                                <!-- GetaWay -->
+                                                <td style="display: table-cell;">{{ conf.ipgw }}</td>
                                                 <!-- VLAN -->
-                                                <td style="display: table-cell;">{{ r.vlan_id }}</td>
+                                                <td style="display: table-cell;">{{ conf.vlan_id }}</td>
+                                                <!-- ICMP -->
+                                                <td style="display: table-cell;">{{ conf.is_icmp }}</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
