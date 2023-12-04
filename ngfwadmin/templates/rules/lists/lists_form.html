@@ -246,16 +246,18 @@
                 {% csrf_token %}
                 <div class="card-body">
                     <div class="row">
-                        <!-- Кнопки -->
-                        {% if action == 'add' %}
-                            <button type="submit" name="btnListInsert" class="btn btn-primary shadow-2"
-                                    style="width: 160px" onclick="FillContent()">Создать
-                            </button>
-                        {% else %}
-                            <button type="submit" name="btnListUpdate" class="btn btn-primary shadow-2"
-                                    style="width: 160px" onclick="FillContent()">Сохранить
-                            </button>
-                        {% endif %}
+                        <div class="col">
+                            <!-- Кнопки -->
+                            {% if action == 'add' %}
+                                <button type="submit" name="btnListInsert" class="btn btn-primary shadow-2"
+                                        style="width: 160px" onclick="FillContent()">Создать
+                                </button>
+                            {% else %}
+                                <button type="submit" name="btnListUpdate" class="btn btn-primary shadow-2"
+                                        style="width: 160px" onclick="FillContent()">Сохранить
+                                </button>
+                            {% endif %}
+                        </div>
                     </div>
                     <hr>
                     <div class="row">
