@@ -5,9 +5,9 @@ from django.shortcuts import render
 def exception(request, ex):
     context = {'ex': ex,
                'name': 'Exception'}
-    return render(request, 'Debug/error.html', context=context)
+    return render(request, 'debug/error.html', context=context)
 
 
 # Страница ошибки
 def error(request):
-    return render(request, 'Debug/error.html', context={'name': 'Error: 404 страница не найдена'})
+    return render(request, 'debug/error.html', context={'name': 'Error: 404 страница не найдена'})

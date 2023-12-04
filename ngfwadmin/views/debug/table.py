@@ -1,8 +1,7 @@
-from ngfwadmin.rest.sys.sys import sys_ports_get, settings_get
+from ngfwadmin.rest.state.state import sys_ports_get, settings_get
 from ngfwadmin.rest.rules.enum import *
 from ngfwadmin.rest.ports.ports import *
 from ngfwadmin.views.connect.connect import *
-from ngfwadmin.rest.monitoring.monitoring import *
 
 from django.shortcuts import redirect, render
 
