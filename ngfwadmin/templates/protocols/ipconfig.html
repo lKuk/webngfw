@@ -61,7 +61,6 @@
                                             <th>IP-адрес</th>
                                             <th>Шлюз</th>
                                             <th>VLAN</th>
-                                            <th>ICMP</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -86,8 +85,6 @@
                                                 <td style="display: table-cell;">{{ conf.ipgw }}</td>
                                                 <!-- VLAN -->
                                                 <td style="display: table-cell;">{{ conf.vlan_id }}</td>
-                                                <!-- ICMP -->
-                                                <td style="display: table-cell;">{{ conf.is_icmp }}</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
