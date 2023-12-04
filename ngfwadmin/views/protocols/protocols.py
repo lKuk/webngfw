@@ -48,13 +48,12 @@ def protocol_ip_route_add(request):
             if 'btnInsert' in request.POST:
                 # Получить параметры
                 ip = request.POST.get('ip')
-                port = request.POST.get('port')
+                mask = request.POST.get('mask')
                 ipgw = request.POST.get('ipgw')
-                vlan = request.POST.get('vlan')
                 # добавить маршрут
-                ip_router_insert(url, ip, port, ipgw, vlan)
+                ip_router_insert(url, ip, mask, ipgw)
                 # перейти к таблице маршрутов
-                return redirect('ip_router')
+                return redirect('protocol_ip_route')
         # Вернуть сформированную страницу
         return render(request, 'protocols/ip/ip_route_form.html')
     except Exception as ex:

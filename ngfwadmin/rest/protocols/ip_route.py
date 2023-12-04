@@ -3,12 +3,11 @@ import requests
 
 
 # Добавить список
-def ip_router_insert(url, ip, port, ipgw, vlan_id):
+def ip_router_insert(url, ip, mask, ipgw):
     dic = {
         'ip': str(ip),
-        'port': str(port),
-        'ipgw': str(ipgw),
-        'vlan_id': str(vlan_id)}
+        'mask': str(mask),
+        'ipgw': str(ipgw)}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
     response = requests.post(f"{url}/router/ip/route", json=details)

@@ -58,6 +58,15 @@
                 let currentDisk = document.getElementById('currentDisk')
                 currentDisk.textContent = value;
             }
+
+            // Процессоры
+            if('lcores' in response) {
+                let lcores = response.lcores;
+                let cores = JSON.stringify(lcores);
+                let value = `Ядра: ${cores}`
+                let currentCores = document.getElementById('currentCores')
+                currentCores.textContent = value;
+            }
         }
 
         // Запуск при загрузке страницы
@@ -103,7 +112,7 @@
 
                         <p class="text-dark" id="currentRam">Память: {{ ram }}</p>
                         <p class="text-dark" id="currentDisk">Диски: {{ disk }}</p>
-                        <p class="text-dark" id="currentCores">Ядра процессора: {{ lcores.core_0 }}</p>
+                        <p class="text-dark" id="currentCores">Ядра процессора: {{ lcores }}</p>
                     </div>
                 </div>
             </div>
