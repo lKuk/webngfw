@@ -148,8 +148,25 @@
 
             </div>
         </div>
+{#        <div class="row">#}
+{#            <div class="col-sm-12">#}
+{#                <div class="card">#}
+{#                    <div class="card-header">#}
+{#                        <h5>Процессор</h5>#}
+{#                    </div>#}
+{#                    <div class="card-block">#}
+{#                        {% for core in lcores %}#}
+{#                            <label for="{{ core }}">{{ core }}</label>#}
+{#                            <input id="{{ core }}" type="text" class="dial" value="0" data-width="200" data-height="200"#}
+{#                                   data-linecap="round" data-displayinput="true"#}
+{#                                   data-fgcolor="#1dc4e9" data-readonly="true">#}
+{#                        {% endfor %}#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
         <div class="row">
-            <div class="col-xl-4 col-md-6">
+            <div class="col-sm-6 col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h5>Диск</h5>
@@ -162,21 +179,20 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-md-6">
+            <div class="col-sm-6 col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h5>Память</h5>
                     </div>
                     <div class="card-block">
                         <p class="text-dark" id="currentRam">Память: {{ ram }}</p>
-                        <input id="currentRamT" type="text" class="dial" value="0" data-width="200"
-                               data-height="200"
-                               data-fgcolor="#A389D4" data-angleoffset="-125" data-anglearc="250"
-                               data-rotation="anticlockwise" data-readonly="true">
+                        <input id="currentRamT" type="text" class="dial" value="0" data-width="200" data-height="200"
+                               data-linecap="round" data-displayinput="true"
+                               data-fgcolor="#1dc4e9" data-readonly="true">
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4 col-md-6">
+            <div class="col-sm-12 col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h5>Процессор</h5>

@@ -25,7 +25,7 @@
 {% block content %}
 
     <div class="page-wrapper">
-        <div class="row">
+        <div class="row" hidden>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -104,6 +104,15 @@
             </div>
         </div>
         <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>Состояние портов</h5>
+                </div>
+                <ul class="breadcrumb m-t-10">
+                    <li class="breadcrumb-item"><a href="{% url 'ports' %}"><i
+                            class="feather icon-airplay p-r-5"></i>Порты</a></li>
+                </ul>
+            </div>
             <div class="card-body">
                 <div class="row">
                     {% for p in ports %}
@@ -114,27 +123,105 @@
                                     <div class="col-sm-4">{{ p.link_status }}</div>
                                     <div class="col-sm-4">{{ p.link_speed }}</div>
                                 </div>
-                                <div class="row border border-success">
-                                    <div class="col-sm-6 border border-success">
-                                        <div class="table-responsive">
-                                            <table>
-
-                                                    <tr>{{ p.ibits_per_sec }}</tr>
-                                                    <tr>{{ p.ipackets }}</tr>
-                                                    <tr>{{ p.ipackets_per_sec }}</tr>
-                                                    <tr>{{ p.ibytes }}</tr>
-
-                                            </table>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-sm-6 border border-top-0 border-success">
+                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                               title="Входящая скорость (бит/сек.)">{{ p.ibits_per_sec }}
+                                            бит/сек.</label><br>
+                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                               title="Входящих пакетов количество (шт.)">{{ p.ipackets }}
+                                            шт.</label><br>
+                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                               title="Входящих пакетов в секунду (шт/сек.)">{{ p.ipackets_per_sec }}
+                                            шт/сек.</label><br>
+                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                               title="Входящих байт всего (байт)">{{ p.ibytes }} байт</label><br>
                                     </div>
-                                    <div class="col-sm-6 border border-success">awd</div>
+                                    <div class="col-sm-6 border-bottom border-right border-success">
+                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                               title="Исходящая скорость (бит/сек.)">{{ p.obits_per_sec }}
+                                            бит/сек.</label><br>
+                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                               title="Исходящих пакетов количество (шт.)">{{ p.opackets }}
+                                            шт.</label><br>
+                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                               title="Исходящих пакетов в секунду (шт/сек.)">{{ p.opackets_per_sec }}
+                                            шт/сек.</label><br>
+                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                               title="Исходящих байт всего (байт)">{{ p.obytes }} байт</label><br>
+                                    </div>
+                                </div>
+                                <div class="row border border-top-0 border-success">
+                                    <div class="col-sm-3 border-right border-success">
+                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                               title="Входящих ошибок всего (шт)">{{ p.ierrors }}</label>
+                                    </div>
+                                    <div class="col-sm-3 border-right border-success">
+                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                               title="Входящих потерь всего (шт)">{{ p.imissed }}</label>
+                                    </div>
+                                    <div class="col-sm-3 border-right border-success">
+                                        <label style="margin-bottom: 0"
+                                               data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Входящих потерь в секунду (шт/сек.)">{{ p.imissed_per_sec }}
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                               title="Исходящих ошибок всего (шт)">{{ p.oerrors }}</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
+
+                </div>
+            </div>
+            <div class="card" hidden>
+                <div class="card-header">
+                    <div class="page-header-title">
+                        <h5>Ошибки</h5>
+                    </div>
+                    <ul class="breadcrumb m-t-10">
+                        <li class="breadcrumb-item"><a href="{% url 'ports' %}"><i
+                                class="feather icon-airplay p-r-5"></i>Порты</a></li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for p in ports %}
+                            <div class="col-sm-2">
+                                <div class="card-body ">
+                                    <div class="row border border-success">
+                                        <div class="col-sm-4">{{ p.number }}</div>
+                                        <div class="col-sm-4">{{ p.link_status }}</div>
+                                        <div class="col-sm-4">{{ p.link_speed }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 border border-top-0 border-success">
+                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                                   title="Входящих ошибок всего (шт)">{{ p.ierrors }} шт.
+                                            </label><br>
+                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                                   title="Входящих потерь всего (шт)">{{ p.imissed }}
+                                                шт.</label><br>
+                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                                   title="Входящих потерь в секунду (шт/сек.)">{{ p.imissed_per_sec }}
+                                                шт/сек.</label><br>
+                                        </div>
+                                        <div class="col-sm-6 border-bottom border-right border-success">
+                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                                   title="Исходящих ошибок всего (шт)">{{ p.oerrors }}
+                                                шт.</label><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 {% endblock content %}
