@@ -16,7 +16,6 @@ def monitoring_disk_get(url):
     details = response.json()
     return details
 
-
 def monitoring_lcores_get(url):
     response = requests.get(f"{url}/system/monitoring/lcores")
     if response.status_code != 200:
