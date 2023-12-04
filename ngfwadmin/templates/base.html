@@ -98,62 +98,34 @@
                 </li>
 
 
-                <!-- Группа - Сеть -->
+                <!-- Группа - Маршрутизация -->
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Сеть</label>
+                    <label>Маршрутизация</label>
                 </li>
 
-                <!-- IP -->
-                <li class="nav-item {% is_active request 'protocol_ipconfig protocol_ipconfig_add' 'active' %}">
-                    <a href="{% url 'protocol_ipconfig' %}" class="nav-link">
+                <!-- Сеть -->
+                <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_route protocol_route_add protocol_ipconfig protocol_ipconfig_add protocol_nat protocol_arp protocol_dhcp protocol_icmp' 'active pcoded-trigger' %}">
+                    <a href="#!" class="nav-link">
                         <span class="pcoded-micon">
                             <i class="feather icon-wifi"></i>
-                        </span><span class="pcoded-mtext">IP</span>
+                        </span><span class="pcoded-mtext">Сеть</span>
                     </a>
+                    <ul class="pcoded-submenu">
+                        <li class="{% is_active request 'protocol_ipconfig protocol_ipconfig_add' 'active' %}"><a href="{% url 'protocol_ipconfig'%}" class="">IP</a></li>
+                        <li class="{% is_active request 'protocol_route protocol_route_add' 'active' %}"><a href="{% url 'protocol_route'%}" class="">ROUTE</a></li>
+                        <li class="{% is_active request 'protocol_nat' 'active' %}"><a href="{% url 'protocol_nat' %}" class="">NAT</a></li>
+                        <li class="{% is_active request 'protocol_arp' 'active' %}"><a href="{% url 'protocol_arp' %}" class="">ARP</a></li>
+                        <li class="{% is_active request 'protocol_dhcp' 'active' %}"><a href="{% url 'protocol_dhcp' %}" class="">DHCP</a></li>
+                        <li class="{% is_active request 'protocol_icmp' 'active' %}"><a href="{% url 'protocol_icmp' %}" class="">ICMP</a></li>
+                    </ul>
                 </li>
 
-                <!-- ROUTE -->
-                <li class="nav-item {% is_active request 'protocol_route protocol_route_add' 'active' %}">
-                    <a href="{% url 'protocol_route' %}" class="nav-link">
+                <!-- Защита сети -->
+                <li class="nav-item {% is_active request '' 'active' %}">
+                    <a href="#" class="nav-link">
                         <span class="pcoded-micon">
-                            <i class="feather icon-wifi"></i>
-                        </span><span class="pcoded-mtext">ROUTE</span>
-                    </a>
-                </li>
-
-                <!-- NAT -->
-                <li class="nav-item {% is_active request 'protocol_nat' 'active' %}">
-                    <a href="{% url 'protocol_nat' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-wifi"></i>
-                        </span><span class="pcoded-mtext">NAT</span>
-                    </a>
-                </li>
-
-                <!-- ARP -->
-                <li class="nav-item {% is_active request 'protocol_arp' 'active' %}">
-                    <a href="{% url 'protocol_arp' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-wifi"></i>
-                        </span><span class="pcoded-mtext">ARP</span>
-                    </a>
-                </li>
-
-                <!-- DHCP -->
-                <li class="nav-item {% is_active request 'protocol_dhcp' 'active' %}">
-                    <a href="{% url 'protocol_dhcp' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-wifi"></i>
-                        </span><span class="pcoded-mtext">DHCP</span>
-                    </a>
-                </li>
-
-                <!-- ICMP -->
-                <li class="nav-item {% is_active request 'protocol_icmp' 'active' %}">
-                    <a href="{% url 'protocol_icmp' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-wifi"></i>
-                        </span><span class="pcoded-mtext">ICMP</span>
+                            <i class="feather icon-shield"></i>
+                        </span><span class="pcoded-mtext">Защита сети</span>
                     </a>
                 </li>
 
