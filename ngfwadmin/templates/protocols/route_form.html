@@ -63,6 +63,10 @@
             <i class="m-r-15 feather icon-wifi"></i>Маршруты IP
         </h4>
     </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50" style="background: transparent">
+        <li class="breadcrumb-item"><a href="{% url 'protocol_route' %}">Маршруты</a></li>
+        <li class="breadcrumb-item"><a href="#">Новый</a></li>
+    </ul>
 {% endblock header %}
 
 {# Содержимое #}
@@ -74,12 +78,6 @@
                 <div class="page-header-title">
                     <h5>Маршруты IP</h5>
                 </div>
-                <ul class="breadcrumb m-t-10">
-                    <li class="breadcrumb-item"><a href="{% url 'protocol_route' %}">
-                        <i class="feather icon-wifi p-r-5"></i>Маршруты</a>
-                    </li>
-                    <li class="breadcrumb-item"><a href="#!">Новый</a></li>
-                </ul>
             </div>
             <form action="" method="post" id="routeEditForm">
             {% csrf_token %}

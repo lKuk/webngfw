@@ -219,6 +219,17 @@
             <i class="m-r-15 feather icon-list"></i>{{ caption }}
         </h4>
     </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50" style="background: transparent">
+        {% if rule is None %}
+            <li class="breadcrumb-item"><a href="{% url 'lists' %}">Списки</a>
+            </li>
+        {% else %}
+            <li class="breadcrumb-item"><a href="{% url 'rules' %}">Правила</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'rules_edit' rule.id %}">{{ rule.name }}</a></li>
+            <li class="breadcrumb-item"><a href="#" onclick="history.back();">Подправила</a></li>
+        {% endif %}
+        <li class="breadcrumb-item"><a href="#">{% if list.name == None %}Новый{% else %}{{ list.name }}{% endif %}</a></li>
+    </ul>
 {% endblock header %}
 
 {# Содержимое #}
@@ -230,19 +241,6 @@
                 <div class="page-header-title">
                     <h5>Параметры списка</h5>
                 </div>
-                <ul class="breadcrumb m-t-10">
-                    {% if rule is None %}
-                        <li class="breadcrumb-item"><a href="{% url 'lists' %}"><i class="feather icon-list p-r-5"></i>Списки</a>
-                        </li>
-                    {% else %}
-                        <li class="breadcrumb-item"><a href="{% url 'rules' %}"><i
-                                class="feather icon-trending-up p-r-5"></i>Правила</a></li>
-                        <li class="breadcrumb-item"><a href="{% url 'rules_edit' rule.id %}">{{ rule.name }}</a></li>
-                        <li class="breadcrumb-item"><a href="#" onclick="history.back();">Подправила</a></li>
-                    {% endif %}
-                    <li class="breadcrumb-item"><a href="#!">{% if list.name == None %}Новый{% else %}
-                        {{ list.name }}{% endif %}</a></li>
-                </ul>
             </div>
             <form action="" method="post" id="listEditForm">
                 {% csrf_token %}

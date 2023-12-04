@@ -22,6 +22,9 @@
             <i class="m-r-15 feather icon-list"></i>Списки NGFW
         </h4>
     </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50" style="background: transparent">
+        <li class="breadcrumb-item"><a href="{% url 'lists' %}">Списки</a></li>
+    </ul>
 {% endblock header %}
 
 {# Содержимое #}
@@ -35,10 +38,6 @@
                         <div class="page-header-title">
                             <h5>Списки фильтрации сетевого трафика</h5>
                         </div>
-                        <ul class="breadcrumb m-t-10">
-                            <li class="breadcrumb-item"><a href="{% url 'lists' %}"><i
-                                    class="feather icon-list p-r-5"></i>Списки</a></li>
-                        </ul>
                     </div>
                     <div class="card-body">
                         <!-- Кнопка Добавить -->
