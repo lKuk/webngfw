@@ -57,10 +57,10 @@
                                         <tr>
                                             <th title="Удаление"><i class="feather icon-trash"></i></th>
                                             <th>Номер физического порта</th>
-                                            <th>MAC-адрес</th>
                                             <th>IP-адрес</th>
                                             <th>Шлюз</th>
                                             <th>VLAN</th>
+                                            <th>MAC-адрес</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -77,14 +77,14 @@
                                                 </td>
                                                 <!-- Порт -->
                                                 <td style="display: table-cell;">{{ conf.port }}</td>
-                                                <!-- MAC-адрес -->
-                                                <td style="display: table-cell;">{{ conf.mac }}</td>
                                                 <!-- IP-адрес -->
                                                 <td style="display: table-cell;">{{ conf.ip }}</td>
                                                 <!-- GetaWay -->
                                                 <td style="display: table-cell;">{{ conf.ipgw }}</td>
                                                 <!-- VLAN -->
                                                 <td style="display: table-cell;">{{ conf.vlan_id }}</td>
+                                                <!-- MAC-адрес -->
+                                                <td style="display: table-cell;">{{ conf.mac }}</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
