@@ -9,18 +9,17 @@
 
 {# Скрипты #}
 {% block script %}
-
-    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-
     <!-- Morris chart Js -->
     <script src="{% static 'main/plugins/chart-morris/js/raphael.min.js' %}"></script>
-
     <script src="{% static 'main/plugins/chart-morris/js/morris.min.js' %}"></script>
-
     <!-- Peity chart Js -->
     <script src="{% static 'main/plugins/chart-peity/js/jquery.peity.min.js' %}"></script>
-
+    <!-- Jquery Js -->
     <script src="{% static 'main/plugins/jquery/js/jquery.min.js' %}"></script>
+    <!-- Knob Js -->
+    <script src="{% static 'main/plugins/chart-knob/js/jquery.knob.min.js' %}"></script>
+    <script src="{% static 'main/plugins/chart-knob/js/jquery.knob-custom.min.js' %}"></script>
+    <!-- Обновление страницы -->
     <script>
         // Запрос данных Ajax
         function RequestAjax() {
@@ -34,7 +33,7 @@
             // Выполнить запрос
             $.ajax(param);
             // Запустить повторно по таймеру
-            setTimeout(RequestAjax, 10000);
+            setTimeout(RequestAjax, 1000);
         }
 
         // Обновление страницы
@@ -97,6 +96,15 @@
                 })
                 currentCores.textContent = lcoresJson;
             }
+
+            // Процессоры
+            if('lcores' in response) {
+                let lcores = response.lcores;
+                let cores = JSON.stringify(lcores);
+                let value = `Ядра: ${cores}`
+                let currentCores = document.getElementById('currentCores')
+                currentCores.textContent = value;
+            }
         }
 
         // Запуск при загрузке страницы
@@ -104,11 +112,6 @@
             RequestAjax();
         });
     </script>
-
-    <script>
-
-    </script>
-
 {% endblock script %}
 
 {# Заголовок #}
@@ -118,6 +121,9 @@
             <i class="m-r-15 feather icon-home"></i>Система
         </h4>
     </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50" style="background: transparent">
+        <li class="breadcrumb-item"><a href="{% url 'state' %}">Система</a></li>
+    </ul>
 {% endblock header %}
 
 {# Содержимое #}
@@ -131,10 +137,6 @@
                         <div class="page-header-title">
                             <h5>Параметры системы</h5>
                         </div>
-                        <ul class="breadcrumb m-t-10">
-                            <li class="breadcrumb-item"><a href="{% url 'state' %}"><i
-                                    class="feather icon-home p-r-5"></i>Система</a></li>
-                        </ul>
                     </div>
                     <div class="card-body">
                         <p class="text-dark">Версия ПО: {{ version.version }}</p>
@@ -166,16 +168,50 @@
 {#            </div>#}
 {#        </div>#}
         <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ядра процессора</h5>
+                    </div>
+                    <div class="card-block">
+                        <div class="row justify-content-center">
+                            {% for core in lcores %}
+                            <div class="col-auto">
+                                <div class="card">
+                                    <div class="card-header text-center m-0 p-0">
+                                        <h6>{{ core }}</h6>
+                                        <label for="{{ core }}" hidden>{{ core }}</label>
+                                    </div>
+                                    <div class="card-block text-center m-0 p-0">
+                                        <input id="{{ core }}" type="text" class="dial cores" value="0" data-width="120"
+                                               data-height="120"
+                                               data-fgcolor="#7A7" data-skin="tron" data-thickness=".1"
+                                               data-angleoffset="0"
+                                               data-readonly="true">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-sm-6 col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h5>Диск</h5>
                     </div>
                     <div class="card-block">
-                        <p class="text-dark" id="currentDisk">Диски: {{ disk }}</p>
-                        <input id="currentDiskT" type="text" class="dial" value="0" data-width="200" data-height="200"
-                               data-linecap="round" data-displayinput="true"
-                               data-fgcolor="#1dc4e9" data-readonly="true">
+                        <div class="row">
+                            <div class="col-auto text-center">
+                                <label for="currentDiskT" hidden>Диски</label>
+                                <input id="currentDiskT" type="text" class="dial" value="0" data-width="120" data-height="120"
+                                    data-fgcolor="#779" data-skin="tron" data-thickness=".1" data-angleoffset="0" data-readonly="true">
+                            </div>
+                            <div class="col">
+                                <span class="text-dark" id="currentDisk">Диски: {{ disk }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,27 +221,16 @@
                         <h5>Память</h5>
                     </div>
                     <div class="card-block">
-                        <p class="text-dark" id="currentRam">Память: {{ ram }}</p>
-                        <input id="currentRamT" type="text" class="dial" value="0" data-width="200" data-height="200"
-                               data-linecap="round" data-displayinput="true"
-                               data-fgcolor="#1dc4e9" data-readonly="true">
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Процессор</h5>
-                    </div>
-                    <div class="card-block">
-                        {% for core in lcores %}
-                            <label for="{{ core }}">{{ core }}</label>
-                            <input id="{{ core }}" type="text" class="dial cores" value="0" data-width="100"
-                                   data-height="100"
-                                   data-fgcolor="#1de9b6" data-skin="tron" data-thickness=".1"
-                                   data-angleoffset="180"
-                                   data-readonly="true">
-                        {% endfor %}
+                        <div class="row">
+                            <div class="col-auto text-center">
+                                <label for="currentRamT" hidden>Память</label>
+                                <input id="currentRamT" type="text" class="dial" value="0" data-width="120" data-height="120"
+                                    data-fgcolor="#779" data-skin="tron" data-thickness=".1" data-angleoffset="0" data-readonly="true">
+                            </div>
+                            <div class="col">
+                                <span class="text-dark" id="currentRam">Память: {{ ram }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

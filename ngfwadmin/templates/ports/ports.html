@@ -19,6 +19,9 @@
             <i class="m-r-15 feather icon-airplay"></i>Порты
         </h4>
     </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50" style="background: transparent">
+        <li class="breadcrumb-item"><a href="{% url 'ports' %}">Порты</a></li>
+    </ul>
 {% endblock header %}
 
 {# Содержимое #}
@@ -32,13 +35,8 @@
                         <div class="page-header-title">
                             <h5>Состояние портов</h5>
                         </div>
-                        <ul class="breadcrumb m-t-10">
-                            <li class="breadcrumb-item"><a href="{% url 'ports' %}"><i
-                                    class="feather icon-airplay p-r-5"></i>Порты</a></li>
-                        </ul>
                     </div>
                     <div class="card-body">
-
                         <div class="table-responsive">
                             <table id="col-reorder" class="display table nowrap table-striped table-hover footable">
                                 <thead>
@@ -98,7 +96,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -114,9 +111,9 @@
                 </ul>
             </div>
             <div class="card-body">
-                <div class="row">
+                <div class="row justify-content-center">
                     {% for p in ports %}
-                        <div class="col-sm-2">
+                        <div class="col-auto">
                             <div class="card-body">
                                 <div class="row border border-success">
                                     <div class="col-sm-4">{{ p.number }}</div>

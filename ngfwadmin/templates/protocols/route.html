@@ -19,11 +19,11 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-list"></i>Списки NGFW
+            <i class="m-r-15 feather icon-wifi"></i>Маршруты IP
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50" style="background: transparent">
-        <li class="breadcrumb-item"><a href="{% url 'lists' %}">Списки</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'protocol_route' %}">Маршруты</a></li>
     </ul>
 {% endblock header %}
 
@@ -32,18 +32,18 @@
 
     <div class="page-wrapper">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>Списки фильтрации сетевого трафика</h5>
+                            <h5>Таблица статических маршрутов</h5>
                         </div>
                     </div>
                     <div class="card-body">
                         <!-- Кнопка Добавить -->
                         <div class="row">
                             <div class="col">
-                                <a href="{% url 'lists_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
+                                <a href="{% url 'protocol_route_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
                             </div>
                         </div>
                         <hr>
@@ -56,42 +56,32 @@
                                         <thead>
                                         <tr>
                                             <th title="Удаление"><i class="feather icon-trash"></i></th>
-                                            <th>Метка</th>
-                                            <th>Тип</th>
-                                            <th>Название</th>
-                                            <th>Описание</th>
+                                            <th>Номер физического порта</th>
+                                            <th>IP-адрес</th>
+                                            <th>Шлюз</th>
+                                            <th>VLAN</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {% for l in lists %}
+                                        {% for r in route %}
                                             <tr>
                                                 <!-- Удаление -->
                                                 <td style="display: table-cell;">
                                                     <div>
-                                                        <a href="{% url 'lists' %}?delete={{ l.id }}"
-                                                           onclick="return confirm('{{ l.description|truncatechars:50 }}\nУдалить список?');">
+                                                        <a href="{% url 'protocol_route' %}?delete={{ r.id }}"
+                                                           onclick="return confirm('Удалить маршрут?');">
                                                             <i class="feather icon-trash"></i>
                                                         </a>
                                                     </div>
                                                 </td>
-                                                <!-- Метка -->
-                                                <td style="display: table-cell;">
-                                                    {% if l.type == 'list' %}
-                                                        <p class="mb-1">{{ 'Список' }}</p>
-                                                    {% elif l.type == 'lib' %}
-                                                        <p class="mb-1">{{ 'Библиотека' }}</p>
-                                                    {% else %}
-                                                        <p class="mb-1">{{ l.type }}</p>
-                                                    {% endif %}
-                                                </td>
-                                                <!-- Тип файла -->
-                                                <td style="display: table-cell;">{{ l.fprint }}</td>
-                                                <!-- Название -->
-                                                <td style="display: table-cell;">
-                                                    <a href="{% url 'lists_edit' l.id %}">{{ l.name }}</a>
-                                                </td>
-                                                <!-- Описание -->
-                                                <td style="display: table-cell;">{{ l.description|wordwrap:70|linebreaksbr }}</td>
+                                                <!-- Порт -->
+                                                <td style="display: table-cell;">{{ r.port }}</td>
+                                                <!-- IP-адрес -->
+                                                <td style="display: table-cell;">{{ r.ip }}</td>
+                                                <!-- Шлюз -->
+                                                <td style="display: table-cell;">{{ r.ipgw }}</td>
+                                                <!-- VLAN -->
+                                                <td style="display: table-cell;">{{ r.vlan_id }}</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>

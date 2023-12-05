@@ -7,7 +7,12 @@ from ngfwadmin.views.rules.rules import *
 from ngfwadmin.views.rules.lists import *
 from ngfwadmin.views.debug.table import *
 from ngfwadmin.views.rules.history import *
-from ngfwadmin.views.protocols.protocols import *
+from ngfwadmin.views.protocols.nat import *
+from ngfwadmin.views.protocols.arp import *
+from ngfwadmin.views.protocols.dhcp import *
+from ngfwadmin.views.protocols.icmp import *
+from ngfwadmin.views.protocols.route import *
+from ngfwadmin.views.protocols.ipconfig import *
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -37,11 +42,14 @@ urlpatterns = [
     path('rules/history/', history, name='history'),
 
     # Протоколы
-    path('protocol/ip/', protocol_ip, name='protocol_ip'),
     path('protocol/arp/', protocol_arp, name='protocol_arp'),
     path('protocol/nat/', protocol_nat, name='protocol_nat'),
     path('protocol/icmp/', protocol_icmp, name='protocol_icmp'),
     path('protocol/dhcp/', protocol_dhcp, name='protocol_dhcp'),
+    path('protocol/route/', protocol_route, name='protocol_route'),
+    path('protocol/route/new', protocol_route_add, name='protocol_route_add'),
+    path('protocol/ipconfig/', protocol_ipconfig, name='protocol_ipconfig'),
+    path('protocol/ipconfig/new', protocol_ipconfig_add, name='protocol_ipconfig_add'),
 
     # Справочные таблицы
     path('rules/table/<slug:name>/', table, name='table'),
