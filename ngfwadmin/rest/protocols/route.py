@@ -4,6 +4,8 @@ import requests
 
 # Добавить список
 def ip_router_insert(url, ip, mask, ipgw):
+    if ipgw is None or ipgw.strip() == '':
+        ipgw = '-'
     dic = {
         'ip': str(ip),
         'mask': str(mask),

@@ -28,7 +28,6 @@
                 </div>
                 <span class="b-title">NGFW "Барбакан"</span>
             </a>
-            <a class="mobile-menu" id="mobile-collapse" href="#"><span></span></a>
         </div>
         <div class="navbar-content scroll-div">
             <ul class="nav pcoded-inner-navbar">
@@ -123,47 +122,24 @@
 
                 <!-- Группа - Контентная фильтрация -->
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Контентная фильтрация</label>
+                    <label>Администрирование</label>
                 </li>
 
                 <!-- Контентная фильтрация Статус -->
-                <li class="nav-item {% is_active request '' 'active' %}">
-                    <a href="#" class="nav-link">
+                <li class="nav-item {% is_active request 'inspection' 'active' %}">
+                    <a href="{% url 'inspection' %}" class="nav-link">
                         <span class="pcoded-micon">
                             <i class="feather icon-filter"></i>
-                        </span><span class="pcoded-mtext">Статус</span>
+                        </span><span class="pcoded-mtext">Контентная фильтрация</span>
                     </a>
                 </li>
 
-                <!-- Группа - СОВ -->
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Обнаружение вторжений</label>
-                </li>
-
-                <!-- СОВ Статус -->
-                <li class="nav-item {% is_active request '' 'active' %}">
-                    <a href="#" class="nav-link">
+                <!-- Система обнаружения вторжений -->
+                <li class="nav-item {% is_active request 'ipsids' 'active' %}">
+                    <a href="{% url 'ipsids' %}" class="nav-link">
                         <span class="pcoded-micon">
-                            <i class="feather icon-triangle"></i>
-                        </span><span class="pcoded-mtext">Статус</span>
-                    </a>
-                </li>
-
-                <!-- СОВ Статус -->
-                <li class="nav-item {% is_active request '' 'active' %}">
-                    <a href="#" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-triangle"></i>
-                        </span><span class="pcoded-mtext">Правила СОВ</span>
-                    </a>
-                </li>
-
-                <!-- СОВ Статус -->
-                <li class="nav-item {% is_active request '' 'active' %}">
-                    <a href="#" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-triangle"></i>
-                        </span><span class="pcoded-mtext">Конфигурация СОВ</span>
+                            <i class="feather icon-alert-triangle"></i>
+                        </span><span class="pcoded-mtext">Обнаружение вторжений</span>
                     </a>
                 </li>
 

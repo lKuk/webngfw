@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Стили #}
+{% block style %}
+    <!-- codemirrior -->
+    <script src="{% static 'codemirrior/codemirror.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'codemirrior/codemirror.css' %}">
+
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" href="{% static 'main/fonts/fontawesome/css/fontawesome-all.min.css' %}">
+    <!-- animation css -->
+    <link rel="stylesheet" href="{% static 'main/plugins/animation/css/animate.min.css' %}">
+    <!-- select2 css -->
+    <link rel="stylesheet" href="{% static 'main/plugins/select2/css/select2.min.css' %}">
+    <!-- multi-select css -->
+    <link rel="stylesheet" href="{% static 'main/plugins/multi-select/css/multi-select.css' %}">
+
+{% endblock style %}
+
+{% block script %}
+    <!-- select2 Js -->
+    <script src="{% static 'main/plugins/select2/js/select2.full.min.js' %}"></script>
+    <!-- multi-select Js -->
+    <script src="{% static 'main/plugins/multi-select/js/jquery.quicksearch.js' %}"></script>
+    <script src="{% static 'main/plugins/multi-select/js/jquery.multi-select.js' %}"></script>
+    <!-- form-select-custom Js -->
+    <script src="{% static 'main/js/pages/form-select-custom.js' %}"></script>
+
+    <!-- Отображение нумерации строк -->
+    <script>
+        // Отображение нумерации строк
+        function EditorTextArea() {
+            const content = document.getElementById("content");
+            let codeMirror = {lineNumbers: true, mode: "text/html",matchBrackets: true};
+            CodeMirror.fromTextArea(content, codeMirror);
+        }
+
+        // Выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            EditorTextArea();
+        });
+    </script>
+
+    <!-- Обновление статуса -->
+    <script>
+        // Запрос данных Ajax
+        function PostStatusAjax() {
+            let status = document.getElementById('status');
+            let checked = status.checked;
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'ipsids' %}',
+                data: {'checked': checked },
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+    </script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-alert-triangle"></i>Конфигурация системы обнаружения вторжений
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'ipsids' %}">Система обнаружения вторжений</a></li>
+    </ul>
+{% endblock header %}
+
+
+{# Содержимое #}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>Конфигурация</h5>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="switch switch-primary d-inline m-r-10">
+                            <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.ipsids_enable == 'true' %}checked{% endif %}>
+                            <label for="status" class="cr"></label>
+                        </div>
+                        <label class="text-dark">Включить систему обнаружения вторжений</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="content" hidden></label>
+                        <div class="form-control">
+                            <textarea id="content" name="content" rows="20">{{ content }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

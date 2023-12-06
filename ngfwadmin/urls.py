@@ -6,6 +6,7 @@ from ngfwadmin.views.debug.error import *
 from ngfwadmin.views.rules.rules import *
 from ngfwadmin.views.rules.lists import *
 from ngfwadmin.views.debug.table import *
+from ngfwadmin.views.ipsids.ipsids import *
 from ngfwadmin.views.rules.history import *
 from ngfwadmin.views.protocols.nat import *
 from ngfwadmin.views.protocols.arp import *
@@ -13,6 +14,7 @@ from ngfwadmin.views.protocols.dhcp import *
 from ngfwadmin.views.protocols.icmp import *
 from ngfwadmin.views.protocols.route import *
 from ngfwadmin.views.protocols.ipconfig import *
+from ngfwadmin.views.inspection.inspection import *
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -40,6 +42,12 @@ urlpatterns = [
 
     # История изменений
     path('rules/history/', history, name='history'),
+
+    # Система обнаружения вторжений
+    path('ipsids/', ipsids, name='ipsids'),
+
+    # Контентная фильтрация
+    path('inspection/', inspection, name='inspection'),
 
     # Протоколы
     path('protocol/arp/', protocol_arp, name='protocol_arp'),
