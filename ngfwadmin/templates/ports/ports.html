@@ -10,6 +10,74 @@
 
 {# Скрипты #}
 {% block script %}
+    <script>
+        // Запрос данных Ajax
+        function RequestAjax() {
+            // Параметры
+            const param = {
+                type: 'GET',
+                dataType: 'json',
+                url: '{% url 'ports' %}?ajax',
+                success: Update
+            }
+            // Выполнить запрос
+            $.ajax(param);
+            // Запустить повторно по таймеру
+            setTimeout(RequestAjax, 1000);
+        }
+
+        // Обновление страницы
+        function Update(response) {
+
+            // Время работы
+            if ('ports' in response) {
+                let ports = response.ports;
+                let portsJson = JSON.stringify(ports);
+                {#alert(portsJson);#}
+                const ex = JSON.parse(portsJson);
+                for (const [key, value] of Object.entries(ex)) {
+                    let oneport = JSON.stringify(value);
+                    const exOnePort = JSON.parse(oneport);
+                    var number = exOnePort['number'];
+                    var link_status = exOnePort['link_status'];
+                    var link_speed = exOnePort['link_speed'];
+                    var ibits_per_sec = exOnePort['ibits_per_sec'];
+                    var ipackets = exOnePort['ipackets'];
+                    var ipackets_per_sec = exOnePort['ipackets_per_sec'];
+
+
+                                    <th>ibytes</th>
+                                    {# Входящих байт всего (байт) + #}
+                                    <th>ierrors</th>
+                                    {# Входящих ошибок всего (шт) #}
+                                    <th>imissed</th>
+                                    {# Входящих потерь всего (шт) #}
+                                    <th>imissed_per_sec</th>
+                                    {# Входящих потерь в секунду (шт/сек.) #}
+                                    <th>obits_per_sec</th>
+                                    {# Исходящих скорость (бит/сек.) + #}
+                                    <th>opackets</th>
+                                    {# Исходящих пакетов количество (шт.) + #}
+                                    <th>opackets_per_sec</th>
+                                    {# Исходящих пакетов в секунду (шт/сек.) + #}
+                                    <th>obytes</th>
+                                    {# Исходящих байт всего (байт) + #}
+                                    <th>oerrors</th>
+                                    {# Исходящих ошибок всего (шт) #}
+
+
+                    var vumberValue = document.getElementById(number);
+                    var link_statusValue = document.getElementById(number + "_" + "link_status");
+                    alert(link_statusValue.textContent);
+                }
+            }
+        }
+
+        // Запуск при загрузке страницы
+        window.addEventListener('load', () => {
+            RequestAjax();
+        });
+    </script>
 {% endblock script %}
 
 {# Заголовок #}
@@ -117,57 +185,57 @@
                         <div class="col-auto">
                             <div class="card-body" style="width: 300px">
                                 <div class="row border border-success">
-                                    <div class="col-sm-4 text-left" style="width: 100px">{{ p.number }}</div>
-                                    <div class="col-sm-4 text-center" style="width: 100px">{{ p.link_status }}</div>
-                                    <div class="col-sm-4 text-right" style="width: 100px">{{ p.link_speed }}</div>
+                                    <div id="{{ p.number }}" class="col-sm-4 text-left" style="width: 100px">{{ p.number }}</div>
+                                    <div id="{{ p.number }}_link_status" class="col-sm-4 text-center" style="width: 100px">{{ p.link_status }}</div>
+                                    <div id="{{ p.number }}_link_speed" class="col-sm-4 text-right" style="width: 100px">{{ p.link_speed }}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6 border border-success  border-top-0">
-                                        <label style="margin-bottom: 0"
+                                        <label id="{{ p.number }}_ibits_per_sec" style="margin-bottom: 0"
                                                data-toggle="tooltip" data-placement="top"
                                                title="Входящая скорость (бит/сек.)">{{ p.ibits_per_sec }}
                                             бит/сек.</label><br>
-                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                        <label id="{{ p.number }}_ipackets" style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Входящих пакетов количество (шт.)">{{ p.ipackets }}
                                             шт.</label><br>
-                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                        <label id="{{ p.number }}_ipackets_per_sec" style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Входящих пакетов в секунду (шт/сек.)">{{ p.ipackets_per_sec }}
                                             шт/сек.</label><br>
-                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                        <label id="{{ p.number }}_ibytes" style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Входящих байт всего (байт)">{{ p.ibytes }} байт</label><br>
                                     </div>
                                     <div class="col-sm-6 border-bottom border-right border-success">
-                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                        <label id="{{ p.number }}_obits_per_sec" style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Исходящая скорость (бит/сек.)">{{ p.obits_per_sec }}
                                             бит/сек.</label><br>
-                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                        <label id="{{ p.number }}_opackets" style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Исходящих пакетов количество (шт.)">{{ p.opackets }}
                                             шт.</label><br>
-                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                        <label id="{{ p.number }}_opackets_per_sec" style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Исходящих пакетов в секунду (шт/сек.)">{{ p.opackets_per_sec }}
                                             шт/сек.</label><br>
-                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                        <label id="{{ p.number }}_obytes" style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Исходящих байт всего (байт)">{{ p.obytes }} байт</label><br>
                                     </div>
                                 </div>
                                 <div class="row border border-top-0 border-success">
                                     <div class="col-sm-3 border-right border-success text-center">
-                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                        <label id="{{ p.number }}_ierrors" style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Входящих ошибок всего (шт)">{{ p.ierrors }}</label>
                                     </div>
                                     <div class="col-sm-3 border-right border-success text-center">
-                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                        <label id="{{ p.number }}_imissed" style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Входящих потерь всего (шт)">{{ p.imissed }}</label>
                                     </div>
                                     <div class="col-sm-3 border-right border-success text-center">
-                                        <label style="margin-bottom: 0"
+                                        <label id="{{ p.number }}_imissed_per_sec" style="margin-bottom: 0"
                                                data-toggle="tooltip"
                                                data-placement="top"
                                                title="Входящих потерь в секунду (шт/сек.)">{{ p.imissed_per_sec }}
                                         </label>
                                     </div>
                                     <div class="col-sm-3 text-center">
-                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                        <label id="{{ p.number }}_oerrors" style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Исходящих ошибок всего (шт)">{{ p.oerrors }}</label>
                                     </div>
                                 </div>
