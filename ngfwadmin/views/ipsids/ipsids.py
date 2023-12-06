@@ -22,20 +22,24 @@ def ipsids(request):
             status_set(url, checked)
             return
 
-        # Вернуть данные
-        rules = request.GET.get("rules")
-        if rules is not None:
-            #context = rules_get(url)
-            return HttpResponse('123') #(context)
+        # # Вернуть данные
+        # rules = request.GET.get("rules")
+        # if rules is not None:
+        #     #context = rules_get(url)
+        #     return HttpResponse('123') #(context)
+        #
+        # # Вернуть данные
+        # config = request.GET.get("config")
+        # if config is not None:
+        #     context = configuration_get(url)
+        #     return HttpResponse(context)
 
-        # Вернуть данные
-        config = request.GET.get("config")
-        if config is not None:
-            context = configuration_get(url)
-            return HttpResponse(context)
-
+        rules = rules_get(url)
         status = status_get(url)
+        config = configuration_get(url)
         context = {'dev': dev,
+                   'rules': rules,
+                   'config': config,
                    'status': status}
         # Вернуть сформированную страницу
         return render(request, 'ipsids/ipsids.html', context=context)
