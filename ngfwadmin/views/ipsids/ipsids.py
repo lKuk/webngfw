@@ -1,6 +1,7 @@
 from ngfwadmin.rest.ipsids.ipsids import *
 from ngfwadmin.views.connect.connect import *
 
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
 
@@ -20,6 +21,15 @@ def ipsids(request):
         if checked is not None:
             status_set(url, checked)
             return
+
+        # Вернуть данные
+        rules = request.GET.get("rules")
+        if rules is not None:
+            context = rules_get(url)
+            return HttpResponse(context)
+
+        # rules = rules_get(url)
+        # config = configuration_get(url)
 
         status = status_get(url)
         context = {'dev': dev,

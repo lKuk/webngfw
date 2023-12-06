@@ -30,15 +30,20 @@
     <!-- Отображение нумерации строк -->
     <script>
         // Отображение нумерации строк
-        function EditorTextArea() {
-            const content = document.getElementById("content");
+        function codeMirrorTextArea(element) {
+            const textArea = document.getElementById(element);
             let codeMirror = {lineNumbers: true, mode: "text/html",matchBrackets: true};
-            CodeMirror.fromTextArea(content, codeMirror);
+            CodeMirror.fromTextArea(textArea, codeMirror);
         }
-
         // Выполнить при загрузке страницы
         window.addEventListener('load', () => {
-            EditorTextArea();
+            // Установить нумерацию
+            codeMirrorTextArea('rules');
+            codeMirrorTextArea('config');
+            // Для работы codeMirror скрытого
+            const configTab = document.getElementById("configTab");
+            configTab.classList.remove("show");
+            configTab.classList.remove("active");
         });
     </script>
 
@@ -58,6 +63,36 @@
             // Выполнить запрос
             $.ajax(param);
         }
+    </script>
+
+    <script>
+        // Запрос данных Ajax - Rules
+        function RequestRulesAjax() {
+            // Параметры
+            const param = {
+                type: 'GET',
+                dataType: 'json',
+                url: '{% url 'ipsids' %}?rules',
+                success: UpdateRules
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+
+        // Обновление страницы
+        function UpdateRules(response) {
+            // Время работы
+            if ('rules' in response) {
+                let value = response.rules;
+                let rules = document.getElementById('rules');
+                rules.textContent = value;
+            }
+        }
+
+        // Выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            RequestRulesAjax();
+        });
     </script>
 {% endblock script %}
 
@@ -84,7 +119,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row">
+                <div class="row p-b-30">
                     <div class="col">
                         <div class="switch switch-primary d-inline m-r-10">
                             <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.ipsids_enable == 'true' %}checked{% endif %}>
@@ -95,9 +130,33 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label for="content" hidden></label>
-                        <div class="form-control">
-                            <textarea id="content" name="content" rows="20">{{ content }}</textarea>
+                        <!-- Кнопки -->
+                        <button type="submit" name="btnListUpdate" class="btn btn-primary shadow-2" style="width: 160px" >Сохранить</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link text-uppercase show active" id="profile-tab" data-toggle="tab" href="#rulesTab" role="tab">Правила</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-uppercase show" id="home-tab" data-toggle="tab" href="#configTab" role="tab">Конфигурация</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content p-2" id="myTabContent">
+                            <div class="tab-pane fade active show" id="rulesTab" role="tabpanel" >
+                                <label for="rules" hidden></label>
+                                <div class="form-control">
+                                    <textarea id="rules" name="rules" rows="20"></textarea>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade active show" id="configTab" role="tabpanel" aria-labelledby="home-tab">
+                                <label for="config" hidden></label>
+                                <div class="form-control">
+                                    <textarea id="config" name="config" rows="20"></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
