@@ -13,6 +13,7 @@ from ngfwadmin.views.protocols.dhcp import *
 from ngfwadmin.views.protocols.icmp import *
 from ngfwadmin.views.protocols.route import *
 from ngfwadmin.views.protocols.ipconfig import *
+from ngfwadmin.views.inspection.inspection import *
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -40,6 +41,9 @@ urlpatterns = [
 
     # История изменений
     path('rules/history/', history, name='history'),
+
+    # Контентная фильтрация
+    path('inspection/', inspection, name='inspection'),
 
     # Протоколы
     path('protocol/arp/', protocol_arp, name='protocol_arp'),
