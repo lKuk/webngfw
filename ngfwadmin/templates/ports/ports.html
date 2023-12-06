@@ -38,37 +38,66 @@
                 for (const [key, value] of Object.entries(ex)) {
                     let oneport = JSON.stringify(value);
                     const exOnePort = JSON.parse(oneport);
+
                     var number = exOnePort['number'];
+                    var numberEl = document.getElementById(number);
+                    numberEl.textContent = number;
+
                     var link_status = exOnePort['link_status'];
+                    var link_statusEl = document.getElementById(number + "_" + "link_status");
+                    link_statusEl.textContent = link_status;
+
                     var link_speed = exOnePort['link_speed'];
+                    var link_speedEl = document.getElementById(number + "_" + "link_speed");
+                    link_speedEl.textContent = link_speed;
+
                     var ibits_per_sec = exOnePort['ibits_per_sec'];
+                    var ibits_per_secEl = document.getElementById(number + "_" + "ibits_per_sec");
+                    ibits_per_secEl.textContent = ibits_per_sec;
+
                     var ipackets = exOnePort['ipackets'];
+                    var ipacketsEl = document.getElementById(number + "_" + "ipackets");
+                    ipacketsEl.textContent = ipackets;
+
                     var ipackets_per_sec = exOnePort['ipackets_per_sec'];
+                    var ipackets_per_secEl = document.getElementById(number + "_" + "ipackets_per_sec");
+                    ipackets_per_secEl.textContent = ipackets_per_sec;
 
+                    var ibytes = exOnePort['ibytes'];
+                    var ibytesEl = document.getElementById(number + "_" + "ibytes");
+                    ibytesEl.textContent = ibytes;
 
-                                    <th>ibytes</th>
-                                    {# Входящих байт всего (байт) + #}
-                                    <th>ierrors</th>
-                                    {# Входящих ошибок всего (шт) #}
-                                    <th>imissed</th>
-                                    {# Входящих потерь всего (шт) #}
-                                    <th>imissed_per_sec</th>
-                                    {# Входящих потерь в секунду (шт/сек.) #}
-                                    <th>obits_per_sec</th>
-                                    {# Исходящих скорость (бит/сек.) + #}
-                                    <th>opackets</th>
-                                    {# Исходящих пакетов количество (шт.) + #}
-                                    <th>opackets_per_sec</th>
-                                    {# Исходящих пакетов в секунду (шт/сек.) + #}
-                                    <th>obytes</th>
-                                    {# Исходящих байт всего (байт) + #}
-                                    <th>oerrors</th>
-                                    {# Исходящих ошибок всего (шт) #}
+                    var ierrors = exOnePort['ierrors'];
+                    var ierrorsEl = document.getElementById(number + "_" + "ierrors");
+                    ierrorsEl.textContent = ierrors;
 
+                    var imissed = exOnePort['imissed'];
+                    var imissedEl = document.getElementById(number + "_" + "imissed");
+                    imissedEl.textContent = imissed;
 
-                    var vumberValue = document.getElementById(number);
-                    var link_statusValue = document.getElementById(number + "_" + "link_status");
-                    alert(link_statusValue.textContent);
+                    var imissed_per_sec = exOnePort['imissed_per_sec'];
+                    var imissed_per_secEl = document.getElementById(number + "_" + "imissed_per_sec");
+                    imissed_per_secEl.textContent = imissed_per_sec;
+
+                    var obits_per_sec = exOnePort['obits_per_sec'];
+                    var obits_per_secEl = document.getElementById(number + "_" + "obits_per_sec");
+                    obits_per_secEl.textContent = obits_per_sec;
+
+                    var opackets = exOnePort['opackets'];
+                    var opacketsEl = document.getElementById(number + "_" + "opackets");
+                    opacketsEl.textContent = opackets;
+
+                    var opackets_per_sec = exOnePort['opackets_per_sec'];
+                    var opackets_per_secEl = document.getElementById(number + "_" + "opackets_per_sec");
+                    opackets_per_secEl.textContent = opackets_per_sec;
+
+                    var obytes = exOnePort['obytes'];
+                    var obytesEl = document.getElementById(number + "_" + "obytes");
+                    obytesEl.textContent = obytes;
+
+                    var oerrors = exOnePort['oerrors'];
+                    var oerrorsEl = document.getElementById(number + "_" + "oerrors");
+                    oerrorsEl.textContent = oerrors;
                 }
             }
         }
