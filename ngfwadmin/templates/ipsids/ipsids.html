@@ -17,7 +17,7 @@
             const param = {
                 type: "GET",
                 dataType: "json",
-                url: '{% url 'inspection' %}',
+                url: '{% url 'ipsids' %}',
                 data: {'checked': checked },
             }
             // Выполнить запрос
@@ -30,11 +30,11 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-filter"></i>Статус контентной фильтрации
+            <i class="m-r-15 feather icon-alert-triangle"></i>Конфигурация системы обнаружения вторжений
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
-        <li class="breadcrumb-item"><a href="{% url 'inspection' %}">Контентная фильтрация</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'ipsids' %}">Система обнаружения вторжений</a></li>
     </ul>
 {% endblock header %}
 
@@ -45,16 +45,16 @@
         <div class="card">
             <div class="card-header">
                 <div class="page-header-title">
-                    <h5>Статус</h5>
+                    <h5>Конфигурация</h5>
                 </div>
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <div class="switch switch-primary d-inline m-r-10">
-                        <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.tls_mitm_enable == 'true' %}checked{% endif %}>
+                        <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.ipsids_enable == 'true' %}checked{% endif %}>
                         <label for="status" class="cr"></label>
                     </div>
-                    <label class="text-dark">Включить контентную фильтрацию</label>
+                    <label class="text-dark">Включить систему обнаружения вторжений</label>
                 </div>
             </div>
         </div>

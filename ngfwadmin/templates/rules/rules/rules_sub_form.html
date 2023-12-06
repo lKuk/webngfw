@@ -77,7 +77,7 @@
             <i class="m-r-15 feather icon-trending-up"></i>Редактировать подправила
         </h4>
     </li>
-    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50" style="background: transparent">
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
         <li class="breadcrumb-item"><a href="{% url 'rules' %}">Правила</a></li>
         <li class="breadcrumb-item"><a href="{% url 'rules_edit' rule.id %}">{% if rule.name == None %}Новое{% else %}{{ rule.name }}{% endif %}</a></li>
         <li class="breadcrumb-item"><a href="{% url 'rules_sub_edit' rule.id %}">Подправила</a></li>

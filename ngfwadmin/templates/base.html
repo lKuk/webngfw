@@ -122,7 +122,7 @@
 
                 <!-- Группа - Контентная фильтрация -->
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Фильтрация</label>
+                    <label>Администрирование</label>
                 </li>
 
                 <!-- Контентная фильтрация Статус -->
@@ -134,35 +134,12 @@
                     </a>
                 </li>
 
-                <!-- Группа - СОВ -->
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Обнаружение вторжений</label>
-                </li>
-
-                <!-- СОВ Статус -->
+                <!-- Система обнаружения вторжений -->
                 <li class="nav-item {% is_active request '' 'active' %}">
-                    <a href="#" class="nav-link">
+                    <a href="{% url 'ipsids' %}" class="nav-link">
                         <span class="pcoded-micon">
-                            <i class="feather icon-triangle"></i>
-                        </span><span class="pcoded-mtext">Статус</span>
-                    </a>
-                </li>
-
-                <!-- СОВ Статус -->
-                <li class="nav-item {% is_active request '' 'active' %}">
-                    <a href="#" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-triangle"></i>
-                        </span><span class="pcoded-mtext">Правила СОВ</span>
-                    </a>
-                </li>
-
-                <!-- СОВ Статус -->
-                <li class="nav-item {% is_active request '' 'active' %}">
-                    <a href="#" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-triangle"></i>
-                        </span><span class="pcoded-mtext">Конфигурация СОВ</span>
+                            <i class="feather icon-alert-triangle"></i>
+                        </span><span class="pcoded-mtext">Система обнаружения вторжений</span>
                     </a>
                 </li>
 

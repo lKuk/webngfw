@@ -1,11 +1,11 @@
+from ngfwadmin.rest.ipsids.ipsids import *
 from ngfwadmin.views.connect.connect import *
-from ngfwadmin.rest.inspection.inspection import *
 
 from django.shortcuts import redirect, render
 
 
 # Страница состояния портов
-def inspection(request):
+def ipsids(request):
     try:
         # Подключение
         dev = get_connect()
@@ -25,6 +25,6 @@ def inspection(request):
         context = {'dev': dev,
                    'status': status}
         # Вернуть сформированную страницу
-        return render(request, 'inspection/inspection.html', context=context)
+        return render(request, 'ipsids/ipsids.html', context=context)
     except Exception as ex:
         return exception(request, ex)

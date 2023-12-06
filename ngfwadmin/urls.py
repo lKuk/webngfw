@@ -6,6 +6,7 @@ from ngfwadmin.views.debug.error import *
 from ngfwadmin.views.rules.rules import *
 from ngfwadmin.views.rules.lists import *
 from ngfwadmin.views.debug.table import *
+from ngfwadmin.views.ipsids.ipsids import *
 from ngfwadmin.views.rules.history import *
 from ngfwadmin.views.protocols.nat import *
 from ngfwadmin.views.protocols.arp import *
@@ -41,6 +42,9 @@ urlpatterns = [
 
     # История изменений
     path('rules/history/', history, name='history'),
+
+    # Система обнаружения вторжений
+    path('ipsids/', ipsids, name='ipsids'),
 
     # Контентная фильтрация
     path('inspection/', inspection, name='inspection'),
