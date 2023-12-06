@@ -23,43 +23,6 @@
         <li class="breadcrumb-item"><a href="{% url 'ports' %}">Порты</a></li>
     </ul>
 
-
-    <style>
-        .container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: #222;
-        }
-
-        .inputDev {
-            border-radius: 4px;
-            border-color: #1abc9c;
-            border-style: solid;
-            background-color: transparent;
-        }
-
-        /* da ainda pra ter uma borda em gradient, mas ai não aceita radius :( */
-        .input-gradient {
-            border-color: #fff; /* fallback */
-            border-image: linear-gradient(-45deg, #3498db, #e67e22) 1
-        }
-
-        /* Ainda da pra usar o currentColor <3 */
-        .input-current {
-            border-color: #1abc9c;
-        }
-
-        .text {
-            width: 500px;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-image: linear-gradient(-45deg, #3498db, #e67e22)
-        }
-    </style>
 {% endblock header %}
 
 {# Содержимое #}
