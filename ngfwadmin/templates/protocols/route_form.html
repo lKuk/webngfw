@@ -61,7 +61,7 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-wifi"></i>Маршруты IP
+            <i class="m-r-15 feather icon-wifi"></i>Создание нового маршрута
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
@@ -84,8 +84,10 @@
             {% csrf_token %}
                 <div class="card-body">
                     <div class="row">
-                        <!-- Кнопки -->
-                        <button type="submit" name="btnInsert" class="btn btn-primary shadow-2" style="width: 160px">Создать</button>
+                        <div class="col">
+                            <!-- Кнопки -->
+                            <button type="submit" name="btnInsert" class="btn btn-primary shadow-2" style="width: 160px">Создать</button>
+                        </div>
                     </div>
                     <hr>
                     <div class="row">

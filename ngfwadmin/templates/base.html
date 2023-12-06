@@ -126,7 +126,7 @@
                 </li>
 
                 <!-- Контентная фильтрация Статус -->
-                <li class="nav-item {% is_active request '' 'active' %}">
+                <li class="nav-item {% is_active request 'inspection' 'active' %}">
                     <a href="{% url 'inspection' %}" class="nav-link">
                         <span class="pcoded-micon">
                             <i class="feather icon-filter"></i>
@@ -135,11 +135,11 @@
                 </li>
 
                 <!-- Система обнаружения вторжений -->
-                <li class="nav-item {% is_active request '' 'active' %}">
+                <li class="nav-item {% is_active request 'ipsids' 'active' %}">
                     <a href="{% url 'ipsids' %}" class="nav-link">
                         <span class="pcoded-micon">
                             <i class="feather icon-alert-triangle"></i>
-                        </span><span class="pcoded-mtext">Система обнаружения вторжений</span>
+                        </span><span class="pcoded-mtext">Обнаружение вторжений</span>
                     </a>
                 </li>
 

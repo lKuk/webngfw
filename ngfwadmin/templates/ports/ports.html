@@ -16,12 +16,13 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-airplay"></i>Порты
+            <i class="m-r-15 feather icon-airplay"></i>Физические порты устройства
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
         <li class="breadcrumb-item"><a href="{% url 'ports' %}">Порты</a></li>
     </ul>
+
 {% endblock header %}
 
 {# Содержимое #}
@@ -114,15 +115,16 @@
                 <div class="row justify-content-center">
                     {% for p in ports %}
                         <div class="col-auto">
-                            <div class="card-body">
+                            <div class="card-body" style="width: 300px">
                                 <div class="row border border-success">
-                                    <div class="col-sm-4">{{ p.number }}</div>
-                                    <div class="col-sm-4">{{ p.link_status }}</div>
-                                    <div class="col-sm-4">{{ p.link_speed }}</div>
+                                    <div class="col-sm-4 text-left" style="width: 100px">{{ p.number }}</div>
+                                    <div class="col-sm-4 text-center" style="width: 100px">{{ p.link_status }}</div>
+                                    <div class="col-sm-4 text-right" style="width: 100px">{{ p.link_speed }}</div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-6 border border-top-0 border-success">
-                                        <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                    <div class="col-sm-6 border border-success  border-top-0">
+                                        <label style="margin-bottom: 0"
+                                               data-toggle="tooltip" data-placement="top"
                                                title="Входящая скорость (бит/сек.)">{{ p.ibits_per_sec }}
                                             бит/сек.</label><br>
                                         <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
@@ -149,22 +151,22 @@
                                     </div>
                                 </div>
                                 <div class="row border border-top-0 border-success">
-                                    <div class="col-sm-3 border-right border-success">
+                                    <div class="col-sm-3 border-right border-success text-center">
                                         <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Входящих ошибок всего (шт)">{{ p.ierrors }}</label>
                                     </div>
-                                    <div class="col-sm-3 border-right border-success">
+                                    <div class="col-sm-3 border-right border-success text-center">
                                         <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Входящих потерь всего (шт)">{{ p.imissed }}</label>
                                     </div>
-                                    <div class="col-sm-3 border-right border-success">
+                                    <div class="col-sm-3 border-right border-success text-center">
                                         <label style="margin-bottom: 0"
                                                data-toggle="tooltip"
                                                data-placement="top"
                                                title="Входящих потерь в секунду (шт/сек.)">{{ p.imissed_per_sec }}
                                         </label>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-3 text-center">
                                         <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
                                                title="Исходящих ошибок всего (шт)">{{ p.oerrors }}</label>
                                     </div>
