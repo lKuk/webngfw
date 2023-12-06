@@ -19,8 +19,102 @@
     <!-- Knob Js -->
     <script src="{% static 'main/plugins/chart-knob/js/jquery.knob.min.js' %}"></script>
     <script src="{% static 'main/plugins/chart-knob/js/jquery.knob-custom.min.js' %}"></script>
+
+    <script src="{% static 'main/plugins/chart-echarts/js/echarts-en.min.js' %}"></script>
     <!-- Обновление страницы -->
     <script>
+        var domdynamic = document.getElementById("chart-DynamicLineBar");
+        var myChartdynamic = echarts.init(domdynamic);
+        var option = null;
+        $(document).ready(function () {
+            option = {
+                legend: {
+                    data: ['Ядро 1', 'Ядро 2', "Ядро 3", "Ядро 4"]
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#283b56'
+                        }
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    // data: ['A', 'B', 'C', 'E', 'F', 'G', 'Q', 'R']
+                    data: (function () {
+                        var now = new Date();
+                        var res = [];
+                        var len = 60;
+                        while (len--) {
+                            res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
+                            now = new Date(now - 2000);
+                        }
+                        return res;
+                    })()
+                },
+                yAxis: {
+                    type: 'value',
+                    scale: true,
+                    max: 100,
+                    min: 0
+                },
+                series: [
+                    {
+                        name: 'Ядро 1',
+                        data: (function () {
+                            var res = [];
+                            var len = 60;
+                            while (len--) {
+                                res.push(0);
+                            }
+                            return res;
+                        })(),
+                        type: 'line'
+                    },
+                    {
+                        name: 'Ядро 2',
+                        data: (function () {
+                            var res = [];
+                            var len = 60;
+                            while (len--) {
+                                res.push(0);
+                            }
+                            return res;
+                        })(),
+                        type: 'line'
+                    },
+                    {
+                        name: 'Ядро 3',
+                        data: (function () {
+                            var res = [];
+                            var len = 60;
+                            while (len--) {
+                                res.push(0);
+                            }
+                            return res;
+                        })(),
+                        type: 'line'
+                    },
+                    {
+                        name: 'Ядро 4',
+                        data: (function () {
+                            var res = [];
+                            var len = 60;
+                            while (len--) {
+                                res.push(0);
+                            }
+                            return res;
+                        })(),
+                        type: 'line'
+                    }
+                ]
+            };
+            option && myChartdynamic.setOption(option);
+        });
+
+
         // Запрос данных Ajax
         function RequestAjax() {
             // Параметры
@@ -82,8 +176,7 @@
             if ('lcores' in response) {
                 let lcores = response.lcores;
                 let lcoresJson = JSON.stringify(lcores);
-                const ex = JSON.parse(lcoresJson)
-                let currentCores = document.getElementById('currentCores')
+                const ex = JSON.parse(lcoresJson);
                 let cores = document.getElementsByClassName('cores')
                 Array.prototype.forEach.call(cores, function (el) {
                     let core = el.id
@@ -94,16 +187,19 @@
                     var event = new Event('change')
                     el.dispatchEvent(event)
                 })
-                currentCores.textContent = lcoresJson;
-            }
 
-            // Процессоры
-            if('lcores' in response) {
-                let lcores = response.lcores;
-                let cores = JSON.stringify(lcores);
-                let value = `Ядра: ${cores}`
-                let currentCores = document.getElementById('currentCores')
-                currentCores.textContent = value;
+                var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+                var i = 0;
+                for (const [key, value] of Object.entries(ex)) {
+                    let intCoreValue = parseInt(value)
+                    var data = option.series[i].data;
+                    data.shift();
+                    data.push(intCoreValue);
+                    i = i + 1;
+                }
+                option.xAxis.data.shift();
+                option.xAxis.data.push(axisData);
+                option && myChartdynamic.setOption(option);
             }
         }
 
@@ -150,23 +246,23 @@
 
             </div>
         </div>
-{#        <div class="row">#}
-{#            <div class="col-sm-12">#}
-{#                <div class="card">#}
-{#                    <div class="card-header">#}
-{#                        <h5>Процессор</h5>#}
-{#                    </div>#}
-{#                    <div class="card-block">#}
-{#                        {% for core in lcores %}#}
-{#                            <label for="{{ core }}">{{ core }}</label>#}
-{#                            <input id="{{ core }}" type="text" class="dial" value="0" data-width="200" data-height="200"#}
-{#                                   data-linecap="round" data-displayinput="true"#}
-{#                                   data-fgcolor="#1dc4e9" data-readonly="true">#}
-{#                        {% endfor %}#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
+        {#        <div class="row">#}
+        {#            <div class="col-sm-12">#}
+        {#                <div class="card">#}
+        {#                    <div class="card-header">#}
+        {#                        <h5>Процессор</h5>#}
+        {#                    </div>#}
+        {#                    <div class="card-block">#}
+        {#                        {% for core in lcores %}#}
+        {#                            <label for="{{ core }}">{{ core }}</label>#}
+        {#                            <input id="{{ core }}" type="text" class="dial" value="0" data-width="200" data-height="200"#}
+        {#                                   data-linecap="round" data-displayinput="true"#}
+        {#                                   data-fgcolor="#1dc4e9" data-readonly="true">#}
+        {#                        {% endfor %}#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -176,21 +272,22 @@
                     <div class="card-block">
                         <div class="row justify-content-center">
                             {% for core in lcores %}
-                            <div class="col-auto">
-                                <div class="card">
-                                    <div class="card-header text-center m-0 p-0">
-                                        <h6>{{ core }}</h6>
-                                        <label for="{{ core }}" hidden>{{ core }}</label>
-                                    </div>
-                                    <div class="card-block text-center m-0 p-0">
-                                        <input id="{{ core }}" type="text" class="dial cores" value="0" data-width="120"
-                                               data-height="120"
-                                               data-fgcolor="#7A7" data-skin="tron" data-thickness=".1"
-                                               data-angleoffset="0"
-                                               data-readonly="true">
+                                <div class="col-auto">
+                                    <div class="card">
+                                        <div class="card-header text-center m-0 p-0">
+                                            <h6>{{ core }}</h6>
+                                            <label for="{{ core }}" hidden>{{ core }}</label>
+                                        </div>
+                                        <div class="card-block text-center m-0 p-0">
+                                            <input id="{{ core }}" type="text" class="dial cores" value="0"
+                                                   data-width="120"
+                                                   data-height="120"
+                                                   data-fgcolor="#7A7" data-skin="tron" data-thickness=".1"
+                                                   data-angleoffset="0"
+                                                   data-readonly="true">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             {% endfor %}
                         </div>
                     </div>
@@ -205,8 +302,10 @@
                         <div class="row">
                             <div class="col-auto text-center">
                                 <label for="currentDiskT" hidden>Диски</label>
-                                <input id="currentDiskT" type="text" class="dial" value="0" data-width="120" data-height="120"
-                                    data-fgcolor="#779" data-skin="tron" data-thickness=".1" data-angleoffset="0" data-readonly="true">
+                                <input id="currentDiskT" type="text" class="dial" value="0" data-width="120"
+                                       data-height="120"
+                                       data-fgcolor="#779" data-skin="tron" data-thickness=".1" data-angleoffset="0"
+                                       data-readonly="true">
                             </div>
                             <div class="col">
                                 <span class="text-dark" id="currentDisk">Диски: {{ disk }}</span>
@@ -224,13 +323,27 @@
                         <div class="row">
                             <div class="col-auto text-center">
                                 <label for="currentRamT" hidden>Память</label>
-                                <input id="currentRamT" type="text" class="dial" value="0" data-width="120" data-height="120"
-                                    data-fgcolor="#779" data-skin="tron" data-thickness=".1" data-angleoffset="0" data-readonly="true">
+                                <input id="currentRamT" type="text" class="dial" value="0" data-width="120"
+                                       data-height="120"
+                                       data-fgcolor="#779" data-skin="tron" data-thickness=".1" data-angleoffset="0"
+                                       data-readonly="true">
                             </div>
                             <div class="col">
                                 <span class="text-dark" id="currentRam">Память: {{ ram }}</span>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Нагрузка процессора</h5>
+                    </div>
+                    <div class="card-block  text-center">
+                        <div id="chart-DynamicLineBar" style="width: 100%; height: 350px;"></div>
                     </div>
                 </div>
             </div>
