@@ -60,6 +60,8 @@
                                             <th>Шлюз</th>
                                             <th>VLAN</th>
                                             <th>MAC-адрес</th>
+                                            <th>ICMP</th>
+                                            <th>Зона</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -84,6 +86,10 @@
                                                 <td style="display: table-cell;">{{ conf.vlan_id }}</td>
                                                 <!-- MAC-адрес -->
                                                 <td style="display: table-cell;">{{ conf.mac }}</td>
+                                                <!-- ICMP -->
+                                                <td style="display: table-cell;">{{ conf.is_icmp }}</td>
+                                                <!-- Зона -->
+                                                <td style="display: table-cell;">{{ conf.is_wan }}</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>

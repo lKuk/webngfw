@@ -2,7 +2,6 @@ import json
 import requests
 
 
-
 # Получить статус
 def status_get(url):
     response = requests.get(f"{url}/ipsids/status")
