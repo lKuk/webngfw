@@ -25,11 +25,14 @@ def ipsids(request):
         # Вернуть данные
         rules = request.GET.get("rules")
         if rules is not None:
-            context = rules_get(url)
-            return HttpResponse(context)
+            #context = rules_get(url)
+            return HttpResponse('123') #(context)
 
-        # rules = rules_get(url)
-        # config = configuration_get(url)
+        # Вернуть данные
+        config = request.GET.get("config")
+        if config is not None:
+            context = configuration_get(url)
+            return HttpResponse(context)
 
         status = status_get(url)
         context = {'dev': dev,

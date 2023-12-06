@@ -68,31 +68,23 @@
     <script>
         // Запрос данных Ajax - Rules
         function RequestRulesAjax() {
-            // Параметры
             const param = {
                 type: 'GET',
-                dataType: 'json',
+                dataType: 'text',
                 url: '{% url 'ipsids' %}?rules',
                 success: UpdateRules
             }
-            // Выполнить запрос
             $.ajax(param);
         }
-
-        // Обновление страницы
         function UpdateRules(response) {
-            // Время работы
-            if ('rules' in response) {
-                let value = response.rules;
-                let rules = document.getElementById('rules');
-                rules.textContent = value;
-            }
+            InsertTextAtCursor(response);
         }
-
-        // Выполнить при загрузке страницы
-        window.addEventListener('load', () => {
-            RequestRulesAjax();
-        });
+        // добавление текста в TextArea
+        function InsertTextAtCursor(text) {
+            CodeMirror.fromTextArea(document.getElementById('rules'), {
+                lineNumbers: true
+            }).setValue(text);
+        }
     </script>
 {% endblock script %}
 
@@ -130,12 +122,15 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <!-- Кнопки -->
-                        <button type="submit" name="btnListUpdate" class="btn btn-primary shadow-2" style="width: 160px" >Сохранить</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
+
+                        <button type="submit" name="btnRulesLoad" class="btn btn-primary shadow-2" style="width: 160px" onclick="RequestRulesAjax()" >Загрузить</button>
+                        <label for="rules" hidden></label>
+                        <div class="form-control">
+                            <textarea id="rules" name="rules" rows="20"></textarea>
+                        </div>
+
+
+
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link text-uppercase show active" id="profile-tab" data-toggle="tab" href="#rulesTab" role="tab">Правила</a>
@@ -146,16 +141,8 @@
                         </ul>
                         <div class="tab-content p-2" id="myTabContent">
                             <div class="tab-pane fade active show" id="rulesTab" role="tabpanel" >
-                                <label for="rules" hidden></label>
-                                <div class="form-control">
-                                    <textarea id="rules" name="rules" rows="20"></textarea>
-                                </div>
                             </div>
                             <div class="tab-pane fade active show" id="configTab" role="tabpanel" aria-labelledby="home-tab">
-                                <label for="config" hidden></label>
-                                <div class="form-control">
-                                    <textarea id="config" name="config" rows="20"></textarea>
-                                </div>
                             </div>
                         </div>
                     </div>
