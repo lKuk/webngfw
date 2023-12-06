@@ -3,10 +3,45 @@
 
 {# Стили #}
 {% block style %}
+    <!-- codemirrior -->
+    <script src="{% static 'codemirrior/codemirror.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'codemirrior/codemirror.css' %}">
+
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" href="{% static 'main/fonts/fontawesome/css/fontawesome-all.min.css' %}">
+    <!-- animation css -->
+    <link rel="stylesheet" href="{% static 'main/plugins/animation/css/animate.min.css' %}">
+    <!-- select2 css -->
+    <link rel="stylesheet" href="{% static 'main/plugins/select2/css/select2.min.css' %}">
+    <!-- multi-select css -->
+    <link rel="stylesheet" href="{% static 'main/plugins/multi-select/css/multi-select.css' %}">
+
 {% endblock style %}
 
-{# Скрипты #}
 {% block script %}
+    <!-- select2 Js -->
+    <script src="{% static 'main/plugins/select2/js/select2.full.min.js' %}"></script>
+    <!-- multi-select Js -->
+    <script src="{% static 'main/plugins/multi-select/js/jquery.quicksearch.js' %}"></script>
+    <script src="{% static 'main/plugins/multi-select/js/jquery.multi-select.js' %}"></script>
+    <!-- form-select-custom Js -->
+    <script src="{% static 'main/js/pages/form-select-custom.js' %}"></script>
+
+    <!-- Отображение нумерации строк -->
+    <script>
+        // Отображение нумерации строк
+        function EditorTextArea() {
+            const content = document.getElementById("content");
+            let codeMirror = {lineNumbers: true, mode: "text/html",matchBrackets: true};
+            CodeMirror.fromTextArea(content, codeMirror);
+        }
+
+        // Выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            EditorTextArea();
+        });
+    </script>
+
     <!-- Обновление статуса -->
     <script>
         // Запрос данных Ajax
@@ -49,12 +84,22 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="form-group">
-                    <div class="switch switch-primary d-inline m-r-10">
-                        <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.ipsids_enable == 'true' %}checked{% endif %}>
-                        <label for="status" class="cr"></label>
+                <div class="row">
+                    <div class="col">
+                        <div class="switch switch-primary d-inline m-r-10">
+                            <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.ipsids_enable == 'true' %}checked{% endif %}>
+                            <label for="status" class="cr"></label>
+                        </div>
+                        <label class="text-dark">Включить систему обнаружения вторжений</label>
                     </div>
-                    <label class="text-dark">Включить систему обнаружения вторжений</label>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="content" hidden></label>
+                        <div class="form-control">
+                            <textarea id="content" name="content" rows="20">{{ content }}</textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
