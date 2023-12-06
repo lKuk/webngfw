@@ -67,7 +67,7 @@
                             var res = [];
                             var len = 180;
                             while (len--) {
-                                res.push(0);
+                                res.push(1);
                             }
                             return res;
                         })(),
@@ -79,7 +79,7 @@
                             var res = [];
                             var len = 180;
                             while (len--) {
-                                res.push(0);
+                                res.push(1);
                             }
                             return res;
                         })(),
@@ -91,7 +91,7 @@
                             var res = [];
                             var len = 180;
                             while (len--) {
-                                res.push(0);
+                                res.push(1);
                             }
                             return res;
                         })(),
@@ -103,7 +103,7 @@
                             var res = [];
                             var len = 180;
                             while (len--) {
-                                res.push(0);
+                                res.push(1);
                             }
                             return res;
                         })(),
@@ -191,8 +191,12 @@
                 var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
                 var i = 0;
                 for (const [key, value] of Object.entries(ex)) {
-                    let intCoreValue = parseInt(value)
+                    let intCoreValue = parseInt(value);
                     var data = option.series[i].data;
+                    if (intCoreValue === 0)
+                    {
+                        intCoreValue = 1;
+                    }
                     data.shift();
                     data.push(intCoreValue);
                     i = i + 1;
@@ -246,25 +250,9 @@
 
             </div>
         </div>
-        {#        <div class="row">#}
-        {#            <div class="col-sm-12">#}
-        {#                <div class="card">#}
-        {#                    <div class="card-header">#}
-        {#                        <h5>Процессор</h5>#}
-        {#                    </div>#}
-        {#                    <div class="card-block">#}
-        {#                        {% for core in lcores %}#}
-        {#                            <label for="{{ core }}">{{ core }}</label>#}
-        {#                            <input id="{{ core }}" type="text" class="dial" value="0" data-width="200" data-height="200"#}
-        {#                                   data-linecap="round" data-displayinput="true"#}
-        {#                                   data-fgcolor="#1dc4e9" data-readonly="true">#}
-        {#                        {% endfor %}#}
-        {#                    </div>#}
-        {#                </div>#}
-        {#            </div>#}
-        {#        </div>#}
+
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12" hidden>
                 <div class="card">
                     <div class="card-header">
                         <h5>Ядра процессора</h5>
