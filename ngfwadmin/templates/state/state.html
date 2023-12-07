@@ -39,8 +39,8 @@
                         var res = [];
                         var len = 180;
                         while (len--) {
-                            let date = now.getMinutes().toString().padStart(2 ,'0');
-                            date += ':' + now.getSeconds().toString().padStart(2 ,'0');
+                            let date = now.getMinutes().toString().padStart(2, '0');
+                            date += ':' + now.getSeconds().toString().padStart(2, '0');
                             res.unshift(date);
                             now = new Date(now - 2000);
                         }
@@ -64,7 +64,8 @@
                             }
                             return res;
                         })(),
-                        type: 'line'
+                        type: 'line',
+                        showSymbol: false,
                     },
                     {
                         name: 'Ядро 2',
@@ -76,7 +77,8 @@
                             }
                             return res;
                         })(),
-                        type: 'line'
+                        type: 'line',
+                        showSymbol: false,
                     },
                     {
                         name: 'Ядро 3',
@@ -88,7 +90,8 @@
                             }
                             return res;
                         })(),
-                        type: 'line'
+                        type: 'line',
+                        showSymbol: false,
                     },
                     {
                         name: 'Ядро 4',
@@ -100,7 +103,8 @@
                             }
                             return res;
                         })(),
-                        type: 'line'
+                        type: 'line',
+                        showSymbol: false,
                     }
                 ]
             };
@@ -181,14 +185,15 @@
                     el.dispatchEvent(event)
                 })
 
-                var axisData = (new Date()).getMinutes().toString().padStart(2 ,'0');
-                axisData += ':' + (new Date()).getSeconds().toString().padStart(2 ,'0');
+
+
+                var axisData = (new Date()).getMinutes().toString().padStart(2, '0');
+                axisData += ':' + (new Date()).getSeconds().toString().padStart(2, '0');
                 var i = 0;
                 for (const [key, value] of Object.entries(ex)) {
                     let intCoreValue = parseInt(value);
                     var data = option.series[i].data;
-                    if (intCoreValue === 0)
-                    {
+                    if (intCoreValue === 0) {
                         intCoreValue = 1;
                     }
                     data.shift();
@@ -247,7 +252,8 @@
                                 <p class="text-dark">Время старта: {{ uptime.start_time }}</p>
                             </div>
                             <div class="col-auto">
-                                <p class="text-dark" id="currentTime">Время работы: {{ uptime.days }}д. {{ uptime.hours }}ч. {{ uptime.mins }}мин. {{ uptime.secs }}сек.</p>
+                                <p class="text-dark" id="currentTime">Время
+                                    работы: {{ uptime.days }}д. {{ uptime.hours }}ч. {{ uptime.mins }}мин. {{ uptime.secs }}сек.</p>
                             </div>
                         </div>
                     </div>
