@@ -60,7 +60,6 @@
     </ul>
 {% endblock header %}
 
-
 {# Содержимое #}
 {% block content %}
     <div class="page-wrapper">
@@ -80,38 +79,41 @@
                         <label class="text-dark">Включить систему обнаружения вторжений</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <!-- Кнопки -->
-                        <button type="submit" name="btnListUpdate" class="btn btn-primary shadow-2" style="width: 160px" >Сохранить</button>
+                <form action="" method="post" id="IpsIdsForm">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            <!-- Кнопки -->
+                            <button type="submit" name="btnIpsIdsUpdate" class="btn btn-primary shadow-2" style="width: 160px" >Сохранить</button>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link text-uppercase show active" id="profile-tab" data-toggle="tab" href="#rulesTab" role="tab">Правила</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-uppercase show" id="home-tab" data-toggle="tab" href="#configTab" role="tab">Конфигурация</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content p-2" id="myTabContent">
-                            <div class="tab-pane fade active show" id="rulesTab" role="tabpanel" >
-                                <label for="rules" hidden></label>
-                                <div class="form-control">
-                                    <textarea id="rules" name="rules" rows="20">{{ rules }}</textarea>
+                    <div class="row">
+                        <div class="col">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link text-uppercase show active" id="profile-tab" data-toggle="tab" href="#rulesTab" role="tab">Правила</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-uppercase show" id="home-tab" data-toggle="tab" href="#configTab" role="tab">Конфигурация</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content p-2" id="myTabContent">
+                                <div class="tab-pane fade active show" id="rulesTab" role="tabpanel" >
+                                    <label for="rules" hidden></label>
+                                    <div class="form-control">
+                                        <textarea id="rules" name="rules" rows="20">{{ rules }}</textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade active show" id="configTab" role="tabpanel" aria-labelledby="home-tab">
-                                <label for="config" hidden></label>
-                                <div class="form-control">
-                                    <textarea id="config" name="config" rows="20">{{ config }}</textarea>
+                                <div class="tab-pane fade active show" id="configTab" role="tabpanel" aria-labelledby="home-tab">
+                                    <label for="config" hidden></label>
+                                    <div class="form-control">
+                                        <textarea id="config" name="config" rows="20">{{ config }}</textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

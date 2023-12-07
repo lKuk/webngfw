@@ -22,17 +22,17 @@ def ipsids(request):
             status_set(url, checked)
             return
 
-        # # Вернуть данные
-        # rules = request.GET.get("rules")
-        # if rules is not None:
-        #     #context = rules_get(url)
-        #     return HttpResponse('123') #(context)
-        #
-        # # Вернуть данные
-        # config = request.GET.get("config")
-        # if config is not None:
-        #     context = configuration_get(url)
-        #     return HttpResponse(context)
+        # сохранить ipsids
+        if request.method == 'POST':
+            # добавить список
+            if 'btnIpsIdsUpdate' in request.POST:
+                # Получить параметры
+                rules = request.POST.get('rules')
+                config = request.POST.get('config')
+                # сохранить параметры
+                rules_set(url, rules)
+                configuration_set(url, config)
+                return
 
         rules = rules_get(url)
         status = status_get(url)

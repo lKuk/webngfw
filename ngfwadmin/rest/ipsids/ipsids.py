@@ -20,6 +20,14 @@ def rules_get(url):
     return details
 
 
+# Установить правила
+def rules_set(url, filetext):
+    response = requests.put(f"{url}/ipsids/rules", data=filetext)
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    return response.content
+
+
 # Получить конфигурацию
 def configuration_get(url):
     response = requests.get(f"{url}/ipsids/configuration")
@@ -29,14 +37,9 @@ def configuration_get(url):
     return details
 
 
-# Изменить список
-def status_set(url, status):
-    dic = {'ipsids_enable': status}
-    sjson = json.dumps(dic)
-    details = json.loads(sjson)
-    response = requests.put(f"{url}/ipsids/status", json=details)
+# Установить конфигурацию
+def configuration_set(url, filetext):
+    response = requests.put(f"{url}/ipsids/configuration", data=filetext)
     if response.status_code != 200:
-        raise Exception(response.url, response.text, details)
+        raise Exception(response.url, response.text)
     return response.content
-
-
