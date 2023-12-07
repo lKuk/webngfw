@@ -143,30 +143,29 @@
                     </a>
                 </li>
 
-                <!-- Группа - Сервис -->
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Сервис</label>
-                </li>
-
-                <!-- Debug -->
-                <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}">
-                    <a href="#" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>
-                    </a>
-                    <ul class="pcoded-submenu">
-
-                        <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>
-                        <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>
-                        <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>
-                        <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>
-
-                        <li class="{% is_active request 'ports' 'active' %}"><a href="{% url 'table' 'ports'%}" class="">Ports</a></li>
-                        <li class="{% is_active request 'ports_avail' 'active' %}"><a href="{% url 'table' 'ports_avail'%}" class="">Ports avail</a></li>
-                        <li class="{% is_active request 'system_ports' 'active' %}"><a href="{% url 'table' 'system_ports'%}" class="">System ports</a></li>
-                        <li class="{% is_active request 'system_settings' 'active' %}"><a href="{% url 'table' 'system_settings'%}" class="">System settings</a></li>
-
-                    </ul>
-                </li>
+{#                <!-- Группа - Сервис -->#}
+{#                <li class="nav-item pcoded-menu-caption">#}
+{#                    <label>Сервис</label>#}
+{#                </li>#}
+{#                <!-- Debug -->#}
+{#                <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}">#}
+{#                    <a href="#" class="nav-link">#}
+{#                        <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>#}
+{#                    </a>#}
+{#                    <ul class="pcoded-submenu">#}
+{##}
+{#                        <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>#}
+{#                        <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>#}
+{#                        <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>#}
+{#                        <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>#}
+{##}
+{#                        <li class="{% is_active request 'ports' 'active' %}"><a href="{% url 'table' 'ports'%}" class="">Ports</a></li>#}
+{#                        <li class="{% is_active request 'ports_avail' 'active' %}"><a href="{% url 'table' 'ports_avail'%}" class="">Ports avail</a></li>#}
+{#                        <li class="{% is_active request 'system_ports' 'active' %}"><a href="{% url 'table' 'system_ports'%}" class="">System ports</a></li>#}
+{#                        <li class="{% is_active request 'system_settings' 'active' %}"><a href="{% url 'table' 'system_settings'%}" class="">System settings</a></li>#}
+{##}
+{#                    </ul>#}
+{#                </li>#}
 
             </ul>
         </div>
