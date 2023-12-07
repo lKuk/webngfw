@@ -21,6 +21,8 @@ def monitoring_lcores_get(url):
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
+    if 'cpu_workload' in details:
+        details = details['cpu_workload']
     lcores = {}
     for index in range(len(details)):
         key = 'core_' + str(index)
