@@ -3,38 +3,109 @@
 
 {# Стили #}
 {% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
 {% endblock style %}
 
 {# Скрипты #}
 {% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+    <!-- Обновление статуса -->
+    <script>
+        // Запрос данных Ajax
+        function PostStatusAjax() {
+            let status = document.getElementById('status');
+            let checked = status.checked;
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'protocol_nat' %}',
+                data: {'checked': checked },
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+    </script>
 {% endblock script %}
 
 {# Заголовок #}
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-home"></i>Протокол NAT
+            <i class="m-r-15 feather icon-wifi"></i>Преобразование сетевых адресов NAT
         </h4>
     </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'protocol_nat' %}">Конфигурация NAT</a></li>
+    </ul>
 {% endblock header %}
 
 {# Содержимое #}
 {% block content %}
-
     <div class="page-wrapper">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="page-header-title">
-                            <h5>Протокол NAT</h5>
+        <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>Конфигурация NAT</h5>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row p-b-30">
+                    <div class="col">
+                        <div class="switch switch-primary d-inline m-r-10">
+                            <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.nat_enable == 'true' %}checked{% endif %}>
+                            <label for="status" class="cr"></label>
                         </div>
+                        <label class="text-dark">Включить преобразование сетевых адресов NAT</label>
                     </div>
-                    <div class="card-body">
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{ static_port }}
+{#                        <!-- Таблица списков -->#}
+{#                        <div class="table-responsive">#}
+{#                            <table id="col-reorder"#}
+{#                                   class="display table nowrap table-striped table-hover footable">#}
+{#                                <thead>#}
+{#                                <tr>#}
+{#                                    <th title="Удаление"><i class="feather icon-trash"></i></th>#}
+{#                                    <th></th>#}
+{#                                    <th></th>#}
+{#                                    <th></th>#}
+{#                                    <th></th>#}
+{#                                    <th></th>#}
+{#                                </tr>#}
+{#                                </thead>#}
+{#                                <tbody>#}
+{#                                {% for p in static_port %}#}
+{#                                    <tr>#}
+{#                                        <!-- Удаление -->#}
+{#                                        <td style="display: table-cell;">#}
+{#                                            <div>#}
+{#                                                <a href="{% url 'protocol_nat' %}?delete={{ p.ind }}"#}
+{#                                                   onclick="return confirm('Удалить запись?');">#}
+{#                                                    <i class="feather icon-trash"></i>#}
+{#                                                </a>#}
+{#                                            </div>#}
+{#                                        </td>#}
+{#                                        <!-- Тип файла -->#}
+{#                                        <td style="display: table-cell;">{{ p.port_lan }}</td>#}
+{#                                        <td style="display: table-cell;">{{ p.ip_lan }}</td>#}
+{#                                        <td style="display: table-cell;">{{ p.port_wan }}</td>#}
+{#                                        <td style="display: table-cell;">{{ p.protocol }}</td>#}
+{#                                        <td style="display: table-cell;">{{ p.ip_wan }}</td>#}
+{#                                    </tr>#}
+{#                                {% endfor %}#}
+{#                                </tbody>#}
+{#                            </table>#}
+{#                        </div>#}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock content %}
