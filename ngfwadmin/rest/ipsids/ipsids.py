@@ -11,6 +11,17 @@ def status_get(url):
     return details
 
 
+# Установить статус
+def status_set(url, status):
+    dic = {'ipsids_enable': status}
+    sjson = json.dumps(dic)
+    details = json.loads(sjson)
+    response = requests.put(f"{url}/ipsids/status", json=details)
+    if response.status_code != 200:
+        raise Exception(response.url, response.text, details)
+    return response.content
+
+
 # Получить правила
 def rules_get(url):
     response = requests.get(f"{url}/ipsids/rules")
