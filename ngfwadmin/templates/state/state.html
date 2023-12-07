@@ -20,7 +20,7 @@
         $(document).ready(function () {
             option = {
                 legend: {
-                    data: ['Ядро 1', 'Ядро 2', "Ядро 3", "Ядро 4"]
+                    data: []
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -53,60 +53,7 @@
                     max: 100,
                     min: 0
                 },
-                series: [
-                    {
-                        name: 'Ядро 1',
-                        data: (function () {
-                            var res = [];
-                            var len = 180;
-                            while (len--) {
-                                res.push(1);
-                            }
-                            return res;
-                        })(),
-                        type: 'line',
-                        showSymbol: false,
-                    },
-                    {
-                        name: 'Ядро 2',
-                        data: (function () {
-                            var res = [];
-                            var len = 180;
-                            while (len--) {
-                                res.push(1);
-                            }
-                            return res;
-                        })(),
-                        type: 'line',
-                        showSymbol: false,
-                    },
-                    {
-                        name: 'Ядро 3',
-                        data: (function () {
-                            var res = [];
-                            var len = 180;
-                            while (len--) {
-                                res.push(1);
-                            }
-                            return res;
-                        })(),
-                        type: 'line',
-                        showSymbol: false,
-                    },
-                    {
-                        name: 'Ядро 4',
-                        data: (function () {
-                            var res = [];
-                            var len = 180;
-                            while (len--) {
-                                res.push(1);
-                            }
-                            return res;
-                        })(),
-                        type: 'line',
-                        showSymbol: false,
-                    }
-                ]
+                series: []
             };
             option && myChartdynamic.setOption(option);
         });
@@ -185,6 +132,33 @@
                     el.dispatchEvent(event)
                 })
 
+                //Добавить все подписи ядер
+                if (option.legend.data.length < Object.keys(ex).length) {
+                    let j = option.legend.data.length + 1
+                    for (j; j < Object.keys(ex).length + 1; j += 1) {
+                        option.legend.data.push("Ядро " + j)
+                    }
+                }
+
+                if (option.series.length < Object.keys(ex).length) {
+                    let j = option.series.length + 1
+                    for (j; j < Object.keys(ex).length + 1; j += 1) {
+                        let typeOption = {
+                            name: option.legend.data[j - 1],
+                            data: (function () {
+                                var res = [];
+                                var len = 180;
+                                while (len--) {
+                                    res.push(1);
+                                }
+                                return res;
+                            })(),
+                            type: 'line',
+                            showSymbol: false,
+                        }
+                        option.series.push(typeOption);
+                    }
+                }
 
 
                 var axisData = (new Date()).getMinutes().toString().padStart(2, '0');
