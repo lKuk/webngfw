@@ -70,7 +70,7 @@
                                                 <!-- Удаление -->
                                                 <td style="display: table-cell;">
                                                     <div>
-                                                        <a href="{% url 'protocol_ipconfig' %}?delete={{ conf.id }}"
+                                                        <a href="{% url 'protocol_ipconfig' %}?delete={{ conf.id }}&port={{ conf.port }}"
                                                            onclick="return confirm('Удалить маршрут?');">
                                                             <i class="feather icon-trash"></i>
                                                         </a>

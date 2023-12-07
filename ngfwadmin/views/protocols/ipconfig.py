@@ -17,10 +17,11 @@ def protocol_ipconfig(request):
         # подключение
         url = dev.get('url')
         # удалить маршрут
+        port = request.GET.get("port")
         delete = request.GET.get("delete")
-        if delete is not None:
+        if port is not None and delete is not None:
             # удалить маршрут
-            ipconfig_delete(url, delete)
+            ipconfig_delete(url, delete, port)
             # перейти к таблице списков
             return redirect('protocol_ipconfig')
         # Данные страницы

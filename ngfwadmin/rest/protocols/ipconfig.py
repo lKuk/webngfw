@@ -19,8 +19,9 @@ def ipconfig_insert(url, ip, mask, vlan, port, ipgw):
 
 
 # Удалить список
-def ipconfig_delete(url, id):
-    dic = {'ind': id}
+def ipconfig_delete(url, id, port):
+    dic = {'id': id,
+           'port': port }
     sjson = json.dumps(dic)
     details = json.loads(sjson)
     response = requests.delete(f"{url}/router/ip/config", json=details)
