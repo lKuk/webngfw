@@ -1,0 +1,377 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script>
+        // Запрос данных Ajax
+        function RequestAjax() {
+            // Параметры
+            const param = {
+                type: 'GET',
+                dataType: 'json',
+                url: '{% url 'ports' %}?ajax',
+                success: Update
+            }
+            // Выполнить запрос
+            $.ajax(param);
+            // Запустить повторно по таймеру
+            setTimeout(RequestAjax, 1000);
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) {
+                return '0';
+            } else {
+                var k = 1024;
+                var dm = decimals < 0 ? 0 : decimals;
+                var sizes = ['Б', 'КБ', 'МБ', 'ГБ', 'ТБ'];
+                var i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            }
+        }
+
+        function formatBites(bytes, decimals = 2) {
+            bytes = bytes / 8;
+            if (bytes === 0) {
+                return '0';
+            } else {
+                var k = 1024;
+                var dm = decimals < 0 ? 0 : decimals;
+                var sizes = ['Б', 'КБ', 'МБ', 'ГБ', 'ТБ'];
+                var i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            }
+        }
+
+        // Обновление страницы
+        function Update(response) {
+
+            // Время работы
+            if ('ports' in response) {
+                let ports = response.ports;
+                let portsJson = JSON.stringify(ports);
+                {#alert(portsJson);#}
+                const ex = JSON.parse(portsJson);
+                for (const [key, value] of Object.entries(ex)) {
+                    let oneport = JSON.stringify(value);
+                    const exOnePort = JSON.parse(oneport);
+
+                    //+
+                    var number = exOnePort['number'];
+                    var numberEl = document.getElementById(number);
+                    numberEl.textContent = number;
+
+                    //+
+                    var link_status = exOnePort['link_status'];
+                    var link_statusEl = document.getElementById(number + "_" + "link_status");
+                    link_statusEl.textContent = link_status;
+
+                    //+
+                    var link_speed = exOnePort['link_speed'];
+                    var link_speedEl = document.getElementById(number + "_" + "link_speed");
+                    link_speedEl.textContent = link_speed;
+
+                    //+
+                    var ibits_per_sec = exOnePort['ibits_per_sec'];
+                    var ibits_per_secEl = document.getElementById(number + "_" + "ibits_per_sec");
+                    ibits_per_secEl.textContent = formatBites(parseInt(ibits_per_sec)) + "/c";
+
+                    //+
+                    var ipackets = exOnePort['ipackets'];
+                    var ipacketsEl = document.getElementById(number + "_" + "ipackets");
+                    ipacketsEl.textContent = ipackets + " шт";
+
+                    //+
+                    var ipackets_per_sec = exOnePort['ipackets_per_sec'];
+                    var ipackets_per_secEl = document.getElementById(number + "_" + "ipackets_per_sec");
+                    ipackets_per_secEl.textContent = ipackets_per_sec + " шт/с";
+
+                    //+
+                    var ibytes = exOnePort['ibytes'];
+                    var ibytesEl = document.getElementById(number + "_" + "ibytes");
+                    ibytesEl.textContent = formatBytes(parseInt(ibytes));
+
+                    //+
+                    var ierrors = exOnePort['ierrors'];
+                    var ierrorsEl = document.getElementById(number + "_" + "ierrors");
+                    ierrorsEl.textContent = ierrors;
+
+                    //+
+                    var imissed = exOnePort['imissed'];
+                    var imissedEl = document.getElementById(number + "_" + "imissed");
+                    imissedEl.textContent = imissed;
+
+                    //+
+                    var imissed_per_sec = exOnePort['imissed_per_sec'];
+                    var imissed_per_secEl = document.getElementById(number + "_" + "imissed_per_sec");
+                    imissed_per_secEl.textContent = imissed_per_sec;
+
+                    //+
+                    var obits_per_sec = exOnePort['obits_per_sec'];
+                    var obits_per_secEl = document.getElementById(number + "_" + "obits_per_sec");
+                    obits_per_secEl.textContent = formatBites(parseInt(obits_per_sec)) + "/c";
+
+                    //+
+                    var opackets = exOnePort['opackets'];
+                    var opacketsEl = document.getElementById(number + "_" + "opackets");
+                    opacketsEl.textContent = opackets + " шт";
+
+                    //+
+                    var opackets_per_sec = exOnePort['opackets_per_sec'];
+                    var opackets_per_secEl = document.getElementById(number + "_" + "opackets_per_sec");
+                    opackets_per_secEl.textContent = opackets_per_sec + " шт/с";
+
+                    //+
+                    var obytes = exOnePort['obytes'];
+                    var obytesEl = document.getElementById(number + "_" + "obytes");
+                    obytesEl.textContent = formatBytes(parseInt(obytes));
+
+                    //+
+                    var oerrors = exOnePort['oerrors'];
+                    var oerrorsEl = document.getElementById(number + "_" + "oerrors");
+                    oerrorsEl.textContent = oerrors;
+                }
+            }
+        }
+
+        // Запуск при загрузке страницы
+        window.addEventListener('load', () => {
+            RequestAjax();
+        });
+    </script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-airplay"></i>Физические порты устройства
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'ports' %}">Порты</a></li>
+    </ul>
+
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+    <div class="page-wrapper">
+        <div class="row" hidden>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Состояние портов</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="col-reorder" class="display table nowrap table-striped table-hover footable">
+                                <thead>
+                                <tr>
+                                    <th>number</th>
+                                    {# Номер порта #}
+                                    <th>link_status</th>
+                                    {# Статус #}
+                                    <th>link_speed</th>
+                                    {# Скорость порта (Мбит) #}
+                                    <th>ibits_per_sec</th>
+                                    {# Входящая скорость (бит/сек.) + )#}
+                                    <th>ipackets</th>
+                                    {# Входящих пакетов количество (шт.) + #}
+                                    <th>ipackets_per_sec</th>
+                                    {# Входящих пакетов в секунду (шт/сек.) + #}
+                                    <th>ibytes</th>
+                                    {# Входящих байт всего (байт) + #}
+                                    <th>ierrors</th>
+                                    {# Входящих ошибок всего (шт) #}
+                                    <th>imissed</th>
+                                    {# Входящих потерь всего (шт) #}
+                                    <th>imissed_per_sec</th>
+                                    {# Входящих потерь в секунду (шт/сек.) #}
+                                    <th>obits_per_sec</th>
+                                    {# Исходящих скорость (бит/сек.) + #}
+                                    <th>opackets</th>
+                                    {# Исходящих пакетов количество (шт.) + #}
+                                    <th>opackets_per_sec</th>
+                                    {# Исходящих пакетов в секунду (шт/сек.) + #}
+                                    <th>obytes</th>
+                                    {# Исходящих байт всего (байт) + #}
+                                    <th>oerrors</th>
+                                    {# Исходящих ошибок всего (шт) #}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for p in ports %}
+                                    <tr>
+                                        <td style="display: table-cell;">{{ p.number }}</td>
+                                        <td style="display: table-cell;">{{ p.link_status }}</td>
+                                        <td style="display: table-cell;">{{ p.link_speed }}</td>
+                                        <td style="display: table-cell;">{{ p.ibits_per_sec }}</td>
+                                        <td style="display: table-cell;">{{ p.ipackets }}</td>
+                                        <td style="display: table-cell;">{{ p.ipackets_per_sec }}</td>
+                                        <td style="display: table-cell;">{{ p.ibytes }}</td>
+                                        <td style="display: table-cell;">{{ p.ierrors }}</td>
+                                        <td style="display: table-cell;">{{ p.imissed }}</td>
+                                        <td style="display: table-cell;">{{ p.imissed_per_sec }}</td>
+                                        <td style="display: table-cell;">{{ p.obits_per_sec }}</td>
+                                        <td style="display: table-cell;">{{ p.opackets }}</td>
+                                        <td style="display: table-cell;">{{ p.opackets_per_sec }}</td>
+                                        <td style="display: table-cell;">{{ p.obytes }}</td>
+                                        <td style="display: table-cell;">{{ p.oerrors }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>Состояние портов</h5>
+                </div>
+                <ul class="breadcrumb m-t-10">
+                    <li class="breadcrumb-item"><a href="{% url 'ports' %}"><i
+                            class="feather icon-airplay p-r-5"></i>Порты</a></li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    {% for p in ports %}
+                        <div class="col-auto">
+                            <div class="card-body" style="width: 300px">
+                                <div class="row border border-success">
+                                    <div id="{{ p.number }}" class="col-sm-4 text-left"
+                                         style="width: 100px" data-toggle="tooltip" data-placement="left"
+                                         title="Номер"></div>
+                                    <div id="{{ p.number }}_link_status" class="col-sm-4 text-center"
+                                         style="width: 100px" data-toggle="tooltip" data-placement="top" title="Статус">{{ p.link_status }}</div>
+                                    <div id="{{ p.number }}_link_speed" class="col-sm-4 text-right"
+                                         style="width: 100px" data-toggle="tooltip" data-placement="right" title="Скорость порта (Мбит)">{{ p.link_speed }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 border border-success  border-top-0 text-center">
+                                        <label id="{{ p.number }}_ibits_per_sec" style="margin-bottom: 0"
+                                               data-toggle="tooltip" data-placement="top"
+                                               title="Входящая скорость">{{ p.ibits_per_sec }}
+                                            бит/сек.</label><br>
+                                        <label id="{{ p.number }}_ipackets" style="margin-bottom: 0"
+                                               data-toggle="tooltip" data-placement="top"
+                                               title="Количество входящих пакетов (шт.)">{{ p.ipackets }}
+                                            шт.</label><br>
+                                        <label id="{{ p.number }}_ipackets_per_sec" style="margin-bottom: 0"
+                                               data-toggle="tooltip" data-placement="top"
+                                               title="Количество входящих пакетов в секунду (шт/сек.)">{{ p.ipackets_per_sec }}
+                                            шт/сек.</label><br>
+                                        <label id="{{ p.number }}_ibytes" style="margin-bottom: 0" data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Входящее количество">{{ p.ibytes }} байт</label><br>
+                                    </div>
+                                    <div class="col-sm-6 border-bottom border-right border-success text-center">
+                                        <label id="{{ p.number }}_obits_per_sec" style="margin-bottom: 0"
+                                               data-toggle="tooltip" data-placement="top"
+                                               title="Исходящая скорость">{{ p.obits_per_sec }}
+                                            бит/сек.</label><br>
+                                        <label id="{{ p.number }}_opackets" style="margin-bottom: 0"
+                                               data-toggle="tooltip" data-placement="top"
+                                               title="Количество исходящих пакетов (шт.)">{{ p.opackets }}
+                                            шт.</label><br>
+                                        <label id="{{ p.number }}_opackets_per_sec" style="margin-bottom: 0"
+                                               data-toggle="tooltip" data-placement="top"
+                                               title="Исходящих пакетов в секунду (шт/сек.)">{{ p.opackets_per_sec }}
+                                            шт/сек.</label><br>
+                                        <label id="{{ p.number }}_obytes" style="margin-bottom: 0" data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Исходящее количество">{{ p.obytes }} байт</label><br>
+                                    </div>
+                                </div>
+                                <div class="row border border-top-0 border-success">
+                                    <div class="col-sm-3 border-right border-success text-center">
+                                        <label id="{{ p.number }}_ierrors" style="margin-bottom: 0"
+                                               data-toggle="tooltip" data-placement="top"
+                                               title="Входящих ошибок всего (шт)">{{ p.ierrors }}</label>
+                                    </div>
+                                    <div class="col-sm-3 border-right border-success text-center">
+                                        <label id="{{ p.number }}_imissed" style="margin-bottom: 0"
+                                               data-toggle="tooltip" data-placement="top"
+                                               title="Входящих потерь всего (шт)">{{ p.imissed }}</label>
+                                    </div>
+                                    <div class="col-sm-3 border-right border-success text-center">
+                                        <label id="{{ p.number }}_imissed_per_sec" style="margin-bottom: 0"
+                                               data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Входящих потерь в секунду (шт/сек.)">{{ p.imissed_per_sec }}
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-3 text-center">
+                                        <label id="{{ p.number }}_oerrors" style="margin-bottom: 0"
+                                               data-toggle="tooltip" data-placement="top"
+                                               title="Исходящих ошибок всего (шт)">{{ p.oerrors }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+            <div class="card" hidden>
+                <div class="card-header">
+                    <div class="page-header-title">
+                        <h5>Ошибки</h5>
+                    </div>
+                    <ul class="breadcrumb m-t-10">
+                        <li class="breadcrumb-item"><a href="{% url 'ports' %}"><i
+                                class="feather icon-airplay p-r-5"></i>Порты</a></li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for p in ports %}
+                            <div class="col-sm-2">
+                                <div class="card-body ">
+                                    <div class="row border border-success">
+                                        <div class="col-sm-4">{{ p.number }}</div>
+                                        <div class="col-sm-4">{{ p.link_status }}</div>
+                                        <div class="col-sm-4">{{ p.link_speed }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 border border-top-0 border-success">
+                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                                   title="Входящих ошибок всего (шт)">{{ p.ierrors }} шт.
+                                            </label><br>
+                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                                   title="Входящих потерь всего (шт)">{{ p.imissed }}
+                                                шт.</label><br>
+                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                                   title="Входящих потерь в секунду (шт/сек.)">{{ p.imissed_per_sec }}
+                                                шт/сек.</label><br>
+                                        </div>
+                                        <div class="col-sm-6 border-bottom border-right border-success">
+                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"
+                                                   title="Исходящих ошибок всего (шт)">{{ p.oerrors }}
+                                                шт.</label><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock content %}

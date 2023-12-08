@@ -54,7 +54,7 @@ def connect(request):
                                   'password': password,
                                   'url': url}
                 # Подключение выполнено
-                return redirect('sys')
+                return redirect('state')
         # Подключение повторно
         else:
             form = ConnectForm()

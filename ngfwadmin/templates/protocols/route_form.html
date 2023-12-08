@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Стили #}
+{% block style %}
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <!-- Валидации -->
+    <script>
+        // Скрипт валидации
+        function Validate(elementId, validLiId, validDivId, format, text) {
+            // Получить контролы валидации
+            const element = document.getElementById(elementId);
+            const validLi = document.getElementById(validLiId);
+            const validDiv = document.getElementById(validDivId);
+            // Выполнить проверку содержимого
+            validDiv.hidden = true;
+            if (element.value.match(format))
+                return true;
+            // Отобразить ошибку
+            validDiv.hidden = false;
+            validDiv.classList.add('text-danger');
+            validDiv.classList.remove("invalid-feedback")
+            validLi.textContent =  text;
+            return false;
+        }
+
+        // Валидация в зависимости от формата
+        function ValidateAll(event) {
+            // определить формат валидации
+            const formatIp = /(^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$)/;
+            const formatIpgw = /(^\s*$)|(^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$)/;
+            const formatMask = /(^([0-9]|[1-2][\d]|3[0-2])$)/;
+
+            // выполнить валидацию
+            let res1 = Validate("mask", "validLi_mask", "validDiv_mask", formatMask, "Введите целое число от 0 до 32.");
+            let res2 = Validate("ip", "validLi_ip", "validDiv_ip", formatIp, "Введите действительный IPv4 или IPv6 адрес.");
+            let res3 = Validate("ipgw", "validLi_ipgw", "validDiv_ipgw", formatIpgw, "Введите действительный IPv4 или IPv6 адрес.");
+
+            // отменить отправку формы на сервер
+            if (res1 === false
+                || res2 === false
+                || res3 === false) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+        }
+
+        // Выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            // Подписаться на событие валидации формы
+            const routeEditForm = document.getElementById("routeEditForm");
+            routeEditForm.addEventListener("submit", ValidateAll);
+        });
+    </script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-wifi"></i>Создание нового маршрута
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'protocol_route' %}">Маршруты</a></li>
+        <li class="breadcrumb-item"><a href="#">Новый</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+    <div class="page-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>Маршруты IP</h5>
+                </div>
+            </div>
+            <form action="" method="post" id="routeEditForm">
+            {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <!-- Кнопки -->
+                            <button type="submit" name="btnInsert" class="btn btn-primary shadow-2" style="width: 160px">Создать</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <!-- Параметры -->
+                        <div class="col-md-6 col-xl-4">
+                            <!-- IP-адрес -->
+                            <div class="form-group">
+                                <label for="ip">IP-адрес:</label>
+                                <input id="ip" name="ip" type="text" class="form-control" required>
+                                <div class="invalid-feedback" id="validDiv_ip">
+                                    <ul>
+                                        <li id="validLi_ip"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Маска -->
+                            <div class="form-group">
+                                <label for="mask">Маска:</label>
+                                <input id="mask" name="mask" type="text" class="form-control" required>
+                                <div class="invalid-feedback" id="validDiv_mask">
+                                    <ul>
+                                        <li id="validLi_mask"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- GateWay -->
+                            <div class="form-group">
+                                <label for="ipgw">Шлюз по-умолчанию:</label>
+                                <input id="ipgw" name="ipgw" type="text" class="form-control">
+                                <div>
+                                    <ul>
+                                        <li>Если значение не задано, сеть непосредственно присоединена</li>
+                                    </ul>
+                                </div>
+                                <div class="invalid-feedback" id="validDiv_ipgw">
+                                    <ul>
+                                        <li id="validLi_ipgw"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

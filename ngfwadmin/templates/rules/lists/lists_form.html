@@ -219,45 +219,44 @@
             <i class="m-r-15 feather icon-list"></i>{{ caption }}
         </h4>
     </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        {% if rule is None %}
+            <li class="breadcrumb-item"><a href="{% url 'lists' %}">Списки</a>
+            </li>
+        {% else %}
+            <li class="breadcrumb-item"><a href="{% url 'rules' %}">Правила</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'rules_edit' rule.id %}">{{ rule.name }}</a></li>
+            <li class="breadcrumb-item"><a href="#" onclick="history.back();">Подправила</a></li>
+        {% endif %}
+        <li class="breadcrumb-item"><a href="#">{% if list.name == None %}Новый{% else %}{{ list.name }}{% endif %}</a></li>
+    </ul>
 {% endblock header %}
 
 {# Содержимое #}
 {% block content %}
-
     <div class="page-wrapper">
         <div class="card">
             <div class="card-header">
                 <div class="page-header-title">
                     <h5>Параметры списка</h5>
                 </div>
-                <ul class="breadcrumb m-t-10">
-                    {% if rule is None %}
-                        <li class="breadcrumb-item"><a href="{% url 'lists' %}"><i class="feather icon-list p-r-5"></i>Списки</a>
-                        </li>
-                    {% else %}
-                        <li class="breadcrumb-item"><a href="{% url 'rules' %}"><i
-                                class="feather icon-trending-up p-r-5"></i>Правила</a></li>
-                        <li class="breadcrumb-item"><a href="{% url 'rules_edit' rule.id %}">{{ rule.name }}</a></li>
-                        <li class="breadcrumb-item"><a href="#" onclick="history.back();">Подправила</a></li>
-                    {% endif %}
-                    <li class="breadcrumb-item"><a href="#!">{% if list.name == None %}Новый{% else %}
-                        {{ list.name }}{% endif %}</a></li>
-                </ul>
             </div>
             <form action="" method="post" id="listEditForm">
                 {% csrf_token %}
                 <div class="card-body">
                     <div class="row">
-                        <!-- Кнопки -->
-                        {% if action == 'add' %}
-                            <button type="submit" name="btnListInsert" class="btn btn-primary shadow-2"
-                                    style="width: 160px" onclick="FillContent()">Создать
-                            </button>
-                        {% else %}
-                            <button type="submit" name="btnListUpdate" class="btn btn-primary shadow-2"
-                                    style="width: 160px" onclick="FillContent()">Сохранить
-                            </button>
-                        {% endif %}
+                        <div class="col">
+                            <!-- Кнопки -->
+                            {% if action == 'add' %}
+                                <button type="submit" name="btnListInsert" class="btn btn-primary shadow-2"
+                                        style="width: 160px" onclick="FillContent()">Создать
+                                </button>
+                            {% else %}
+                                <button type="submit" name="btnListUpdate" class="btn btn-primary shadow-2"
+                                        style="width: 160px" onclick="FillContent()">Сохранить
+                                </button>
+                            {% endif %}
+                        </div>
                     </div>
                     <hr>
                     <div class="row">
@@ -358,5 +357,4 @@
             </form>
         </div>
     </div>
-
 {% endblock content %}

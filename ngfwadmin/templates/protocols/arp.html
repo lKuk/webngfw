@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-wifi"></i>Протокол определения адреса ARP
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'protocol_arp' %}">Протокол ARP</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Протокол ARP</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Кнопка Добавить -->
+                        <div class="row">
+                            <div class="col">
+                                <form action="" method="post" id="listEditForm">
+                                    {% csrf_token %}
+                                    <button type="submit" name="btnClear" class="btn btn-primary shadow-2" style="width: 160px">Очистить</button>
+                                </form>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row m-t-10">
+                            <div class="col">
+                                <!-- Таблица списков -->
+                                <div class="table-responsive">
+                                    <table id="col-reorder"
+                                           class="display table nowrap table-striped table-hover footable">
+                                        <thead>
+                                        <tr>
+                                            <th>Тип</th>
+                                            <th>МАС-адрес</th>
+                                            <th>IP-адрес</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for a in arp %}
+                                            <tr>
+                                                <td style="display: table-cell;">{{ a.is_static }}</td>
+                                                <td style="display: table-cell;">{{ a.mac }}</td>
+                                                <td style="display: table-cell;">{{ a.ip }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

@@ -1,19 +1,32 @@
 from django.urls import path
 
-from ngfwadmin.views.sys.sys import *
+from ngfwadmin.views.state.state import *
+from ngfwadmin.views.ports.ports import *
 from ngfwadmin.views.debug.error import *
 from ngfwadmin.views.rules.rules import *
 from ngfwadmin.views.rules.lists import *
 from ngfwadmin.views.debug.table import *
+from ngfwadmin.views.ipsids.ipsids import *
 from ngfwadmin.views.rules.history import *
+from ngfwadmin.views.protocols.nat import *
+from ngfwadmin.views.protocols.arp import *
+from ngfwadmin.views.protocols.dhcp import *
+from ngfwadmin.views.protocols.icmp import *
+from ngfwadmin.views.protocols.route import *
+from ngfwadmin.views.protocols.ipconfig import *
+from ngfwadmin.views.inspection.inspection import *
 
 urlpatterns = [
     # Форма подключения к устройству
     path('connect/', connect, name='connect'),
 
-    # Состояние
-    path('', sys, name='sys'),
-    path('sys/', sys, name='sys'),
+    # По умолчанию
+    path('', state, name='state'),
+
+    # Система
+    path('state/', state, name='state'),
+
+    # Порты
     path('ports/', ports, name='ports'),
 
     # Редактор правила
@@ -29,6 +42,22 @@ urlpatterns = [
 
     # История изменений
     path('rules/history/', history, name='history'),
+
+    # Система обнаружения вторжений
+    path('ipsids/', ipsids, name='ipsids'),
+
+    # Контентная фильтрация
+    path('inspection/', inspection, name='inspection'),
+
+    # Протоколы
+    path('protocol/arp/', protocol_arp, name='protocol_arp'),
+    path('protocol/nat/', protocol_nat, name='protocol_nat'),
+    path('protocol/icmp/', protocol_icmp, name='protocol_icmp'),
+    path('protocol/dhcp/', protocol_dhcp, name='protocol_dhcp'),
+    path('protocol/route/', protocol_route, name='protocol_route'),
+    path('protocol/route/new', protocol_route_add, name='protocol_route_add'),
+    path('protocol/ipconfig/', protocol_ipconfig, name='protocol_ipconfig'),
+    path('protocol/ipconfig/new', protocol_ipconfig_add, name='protocol_ipconfig_add'),
 
     # Справочные таблицы
     path('rules/table/<slug:name>/', table, name='table'),

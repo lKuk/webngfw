@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Стили #}
+{% block style %}
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <!-- Knob Js -->
+    <script src="{% static 'main/plugins/chart-knob/js/jquery.knob.min.js' %}"></script>
+    <script src="{% static 'main/plugins/chart-knob/js/jquery.knob-custom.min.js' %}"></script>
+
+    <script src="{% static 'main/plugins/chart-echarts/js/echarts-en.min.js' %}"></script>
+    <!-- Обновление страницы -->
+    <script>
+        var domdynamic = document.getElementById("chart-DynamicLineBar");
+        var myChartdynamic = echarts.init(domdynamic);
+        var option = null;
+        $(document).ready(function () {
+            option = {
+                legend: {
+                    data: []
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#283b56'
+                        }
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    // data: ['A', 'B', 'C', 'E', 'F', 'G', 'Q', 'R']
+                    data: (function () {
+                        var now = new Date();
+                        var res = [];
+                        var len = 180;
+                        while (len--) {
+                            let date = now.getMinutes().toString().padStart(2, '0');
+                            date += ':' + now.getSeconds().toString().padStart(2, '0');
+                            res.unshift(date);
+                            now = new Date(now - 2000);
+                        }
+                        return res;
+                    })()
+                },
+                yAxis: {
+                    type: 'value',
+                    scale: true,
+                    max: 100,
+                    min: 0
+                },
+                series: []
+            };
+            option && myChartdynamic.setOption(option);
+        });
+
+        // Запрос данных Ajax
+        function RequestAjax() {
+            // Параметры
+            const param = {
+                type: 'GET',
+                dataType: 'json',
+                url: '{% url 'state' %}?ajax',
+                success: Update
+            }
+            // Выполнить запрос
+            $.ajax(param);
+            // Запустить повторно по таймеру
+            setTimeout(RequestAjax, 1000);
+        }
+
+        // Обновление страницы
+        function Update(response) {
+            // Время работы
+            if ('uptime' in response) {
+                let uptime = response.uptime;
+                let m = uptime.mins;
+                let s = uptime.secs;
+                let d = uptime.days;
+                let h = uptime.hours;
+                let value = `Время работы: ${d}д. ${h}ч.  ${m}мин. ${s}сек.`;
+                let currentTime = document.getElementById('currentTime');
+                currentTime.textContent = value;
+            }
+            // Память
+            if ('ram' in response) {
+                let ram = response.ram;
+                let used = ram.used;
+                let total = ram.total;
+                let percent = ram.percent;
+                let value = `Память: проценты (${percent}), всего (${total}), используется (${used})`;
+                let currentRam = document.getElementById('currentRam');
+                let currentRamT = document.getElementById('currentRamT');
+                currentRam.textContent = value;
+                currentRamT.value = percent
+                let event = new Event('change')
+                currentRamT.dispatchEvent(event)
+            }
+
+            // Диски
+            if ('disk' in response) {
+                let disk = response.disk;
+                let used = disk.used;
+                let total = disk.total;
+                let percent = disk.percent;
+                let value = `Диски: проценты (${percent}), всего (${total}), используется (${used})`
+                let currentDisk = document.getElementById('currentDisk')
+                let currentDiskT = document.getElementById('currentDiskT')
+                currentDisk.textContent = value;
+                currentDiskT.value = percent
+                let event = new Event('change')
+                currentDiskT.dispatchEvent(event)
+            }
+            // Ядра
+            if ('lcores' in response) {
+                let lcores = response.lcores;
+                let lcoresJson = JSON.stringify(lcores);
+                const ex = JSON.parse(lcoresJson);
+                let cores = document.getElementsByClassName('cores')
+                Array.prototype.forEach.call(cores, function (el) {
+                    let core = el.id
+                    let coreValue = ex[core]
+                    let intCoreValue = parseInt(coreValue)
+                    el.value = intCoreValue.toString() + '%'
+                    // Create a new 'change' event
+                    var event = new Event('change')
+                    el.dispatchEvent(event)
+                })
+
+                //Добавить все подписи ядер
+                if (option.legend.data.length < Object.keys(ex).length) {
+                    let j = option.legend.data.length + 1
+                    for (j; j < Object.keys(ex).length + 1; j += 1) {
+                        option.legend.data.push("Ядро " + j)
+                    }
+                }
+
+                if (option.series.length < Object.keys(ex).length) {
+                    let j = option.series.length + 1
+                    for (j; j < Object.keys(ex).length + 1; j += 1) {
+                        let typeOption = {
+                            name: option.legend.data[j - 1],
+                            data: (function () {
+                                var res = [];
+                                var len = 180;
+                                while (len--) {
+                                    res.push(1);
+                                }
+                                return res;
+                            })(),
+                            type: 'line',
+                            showSymbol: false,
+                        }
+                        option.series.push(typeOption);
+                    }
+                }
+
+
+                var axisData = (new Date()).getMinutes().toString().padStart(2, '0');
+                axisData += ':' + (new Date()).getSeconds().toString().padStart(2, '0');
+                var i = 0;
+                for (const [key, value] of Object.entries(ex)) {
+                    let intCoreValue = parseInt(value);
+                    var data = option.series[i].data;
+                    if (intCoreValue === 0) {
+                        intCoreValue = 1;
+                    }
+                    data.shift();
+                    data.push(intCoreValue);
+                    i = i + 1;
+                }
+                option.xAxis.data.shift();
+                option.xAxis.data.push(axisData);
+                option && myChartdynamic.setOption(option);
+            }
+        }
+
+        // Запуск при загрузке страницы
+        window.addEventListener('load', () => {
+            RequestAjax();
+        });
+    </script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-home"></i>Мониторинг текущего состояний системы
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'state' %}">Система</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Параметры</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <p class="text-dark">Версия ПО: {{ version.version }}</p>
+                            </div>
+                            <div class="col-auto">
+                                <p class="text-dark">Серийный номер: {{ serial.serial_number }}</p>
+                            </div>
+                            <div class="col-auto">
+                                <p class="text-dark">Статус системы: {{ status.main_status }}</p>
+                            </div>
+                            <div class="col-auto">
+                                <p class="text-dark">Время старта: {{ uptime.start_time }}</p>
+                            </div>
+                            <div class="col-auto">
+                                <p class="text-dark" id="currentTime">Время
+                                    работы: {{ uptime.days }}д. {{ uptime.hours }}ч. {{ uptime.mins }}мин. {{ uptime.secs }}сек.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" hidden>
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ядра процессора</h5>
+                    </div>
+                    <div class="card-block">
+                        <div class="row justify-content-center">
+                            {% for core in lcores %}
+                                <div class="col-auto">
+                                    <div class="card">
+                                        <div class="card-header text-center m-0 p-0">
+                                            <h6>{{ core }}</h6>
+                                            <label for="{{ core }}" hidden>{{ core }}</label>
+                                        </div>
+                                        <div class="card-block text-center m-0 p-0">
+                                            <input id="{{ core }}" type="text" class="dial cores" value="0"
+                                                   data-width="120"
+                                                   data-height="120"
+                                                   data-fgcolor="#7A7" data-skin="tron" data-thickness=".1"
+                                                   data-angleoffset="0"
+                                                   data-readonly="true">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Диск</h5>
+                    </div>
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-auto text-center">
+                                <label for="currentDiskT" hidden>Диски</label>
+                                <input id="currentDiskT" type="text" class="dial" value="0" data-width="120"
+                                       data-height="120"
+                                       data-fgcolor="#779" data-skin="tron" data-thickness=".1" data-angleoffset="0"
+                                       data-readonly="true">
+                            </div>
+                            <div class="col">
+                                <span class="text-dark" id="currentDisk">Диски: {{ disk }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Память</h5>
+                    </div>
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-auto text-center">
+                                <label for="currentRamT" hidden>Память</label>
+                                <input id="currentRamT" type="text" class="dial" value="0" data-width="120"
+                                       data-height="120"
+                                       data-fgcolor="#779" data-skin="tron" data-thickness=".1" data-angleoffset="0"
+                                       data-readonly="true">
+                            </div>
+                            <div class="col">
+                                <span class="text-dark" id="currentRam">Память: {{ ram }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Нагрузка процессора</h5>
+                    </div>
+                    <div class="card-block  text-center">
+                        <div id="chart-DynamicLineBar" style="width: 100%; height: 350px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}

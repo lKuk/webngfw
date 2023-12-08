@@ -18,6 +18,10 @@
             <i class="m-r-15 feather icon-trending-up"></i>{{ caption }}
         </h4>
     </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'rules' %}">Правила</a></li>
+        <li class="breadcrumb-item"><a href="#">{% if rule.name == None %}Новое{% else %}{{ rule.name }}{% endif %}</a></li>
+    </ul>
 {% endblock header %}
 
 {# Содержимое #}
@@ -29,12 +33,6 @@
                 <div class="page-header-title">
                     <h5>Параметры правила</h5>
                 </div>
-                <ul class="breadcrumb m-t-10">
-                    <li class="breadcrumb-item"><a href="{% url 'rules' %}"><i
-                            class="feather icon-trending-up p-r-5"></i>Правила</a></li>
-                    <li class="breadcrumb-item"><a href="#!">{% if rule.name == None %}Новое{% else %}
-                        {{ rule.name }}{% endif %}</a></li>
-                </ul>
             </div>
             <form action="" method="post" id="ruleEditForm">
                 {% csrf_token %}

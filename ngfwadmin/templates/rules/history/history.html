@@ -19,9 +19,12 @@
 {% block header %}
      <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-clock"></i>История NGFW
+            <i class="m-r-15 feather icon-clock"></i>История конфигурирования правил фильтрации сетевого трафика
         </h4>
     </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'history' %}">История</a></li>
+    </ul>
 {% endblock header %}
 
 {# Содержимое #}
@@ -33,11 +36,8 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>История конфигурирования правил фильтрации сетевого трафика</h5>
+                            <h5>История</h5>
                         </div>
-                        <ul class="breadcrumb m-t-10">
-                            <li class="breadcrumb-item"><a href="{% url 'history' %}"><i class="feather icon-clock p-r-5"></i>История</a></li>
-                        </ul>
                     </div>
                     <div class="card-body">
                         <!-- [Таблица истории] start -->

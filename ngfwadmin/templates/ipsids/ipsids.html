@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Стили #}
+{% block style %}
+    <!-- codemirrior -->
+    <script src="{% static 'codemirrior/codemirror.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'codemirrior/codemirror.css' %}">
+{% endblock style %}
+
+{% block script %}
+    <!-- Отображение нумерации строк -->
+    <script>
+        // Отображение нумерации строк
+        function codeMirrorTextArea(element) {
+            const textArea = document.getElementById(element);
+            let codeMirror = {lineNumbers: true, mode: "text/html",matchBrackets: true};
+            CodeMirror.fromTextArea(textArea, codeMirror);
+        }
+        // Выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            // Установить нумерацию
+            codeMirrorTextArea('rules');
+            codeMirrorTextArea('config');
+            // Для работы codeMirror скрытого
+            const configTab = document.getElementById("configTab");
+            configTab.classList.remove("show");
+            configTab.classList.remove("active");
+        });
+    </script>
+
+    <!-- Обновление статуса -->
+    <script>
+        // Запрос данных Ajax
+        function PostStatusAjax() {
+            let status = document.getElementById('status');
+            let checked = status.checked;
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'ipsids' %}',
+                data: {'checked': checked },
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+    </script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-alert-triangle"></i>Конфигурация системы обнаружения вторжений
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'ipsids' %}">Система обнаружения вторжений</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>Конфигурация</h5>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row p-b-30">
+                    <div class="col">
+                        <div class="switch switch-primary d-inline m-r-10">
+                            <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.ipsids_enable == 'true' %}checked{% endif %}>
+                            <label for="status" class="cr"></label>
+                        </div>
+                        <label class="text-dark">Включить систему обнаружения вторжений</label>
+                    </div>
+                </div>
+                <form action="" method="post" id="IpsIdsForm">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            <!-- Кнопки -->
+                            <button type="submit" name="btnIpsIdsUpdate" class="btn btn-primary shadow-2" style="width: 160px" >Сохранить</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link text-uppercase show active" id="profile-tab" data-toggle="tab" href="#rulesTab" role="tab">Правила</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-uppercase show" id="home-tab" data-toggle="tab" href="#configTab" role="tab">Конфигурация</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content p-2" id="myTabContent">
+                                <div class="tab-pane fade active show" id="rulesTab" role="tabpanel" >
+                                    <label for="rules" hidden></label>
+                                    <div class="form-control">
+                                        <textarea id="rules" name="rules" rows="20">{{ rules }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade active show" id="configTab" role="tabpanel" aria-labelledby="home-tab">
+                                    <label for="config" hidden></label>
+                                    <div class="form-control">
+                                        <textarea id="config" name="config" rows="20">{{ config }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
