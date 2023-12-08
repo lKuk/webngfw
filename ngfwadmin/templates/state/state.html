@@ -78,11 +78,11 @@
             // Время работы
             if ('uptime' in response) {
                 let uptime = response.uptime;
-                let m = uptime.mins;
-                let s = uptime.secs;
-                let d = uptime.days;
-                let h = uptime.hours;
-                let value = `Время работы: ${d}д. ${h}ч.  ${m}мин. ${s}сек.`;
+                let m = uptime.mins.toString().padStart(2, '0');
+                let s = uptime.secs.toString().padStart(2, '0');
+                let d = uptime.days.toString().padStart(2, '0');
+                let h = uptime.hours.toString().padStart(2, '0');
+                let value = `${d}д. ${h}:${m}:${s}`;
                 let currentTime = document.getElementById('currentTime');
                 currentTime.textContent = value;
             }
@@ -207,27 +207,90 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>Параметры</h5>
+                            <h5>Состояние системы</h5>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-auto">
-                                <p class="text-dark">Версия ПО: {{ version.version }}</p>
+                                <div class="card card-customer h-75">
+                                    <div class="card-block">
+                                        <div class="row align-items-center justify-content-center">
+                                            <div class="col-auto">
+                                                 <i class="feather icon-tag f-50 text-white bg-info"></i>
+                                            </div>
+                                            <div class="col-auto">
+                                                <h6 class="text-muted">Серийный номер</h6>
+                                                <h4 class="text-muted f-w-300">{{ serial.serial_number }}</h4>
+                                            </div>
+                                             <div class="col-auto">
+                                                <h6 class="text-muted">Версия ПО</h6>
+                                                <h4 class="text-muted f-w-300">{{ version.version }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-auto">
-                                <p class="text-dark">Серийный номер: {{ serial.serial_number }}</p>
+                                <div class="card card-customer h-75">
+                                    <div class="card-block">
+                                        <div class="row align-items-center justify-content-center">
+                                            <div class="col-auto">
+                                                 <i class="feather icon-clock f-50 text-white bg-info"></i>
+                                            </div>
+                                            <div class="col-auto">
+                                                <h5 class="text-muted">{{ status.main_status }}</h5>
+                                                <h4 id="currentTime" class="text-muted f-w-300">00д. 00:00:00</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+
+
+
+
                             <div class="col-auto">
-                                <p class="text-dark">Статус системы: {{ status.main_status }}</p>
+                                <div class="card card-customer">
+                                    <div class="card-block">
+                                        <div class="row align-items-center justify-content-center">
+                                            <div class="col">
+                                                <h2 class="mb-2 f-w-300">3210</h2>
+                                                <h5 class="text-muted mb-0">Happy Customer</h5>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="feather icon-users f-30 text-white theme-bg"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+
+
                             <div class="col-auto">
-                                <p class="text-dark">Время старта: {{ uptime.start_time }}</p>
+                                <div class="card card-customer h-75">
+                                    <div class="card-block">
+                                        <div class="row align-items-center justify-content-center">
+                                            <div class="col-auto">
+                                                 <div class="col-auto text-center">
+                                                    <label for="currentDiskT" hidden>Диски</label>
+                                                    <input id="currentDiskT" type="text" class="dial" value="0" data-width="80"
+                                                           data-height="80" data-skin="dial" data-thickness=".1" data-angleoffset="0"
+                                                           data-readonly="true">
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="text-dark" id="currentDisk">Диски: {{ disk }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-auto">
-                                <p class="text-dark" id="currentTime">Время
-                                    работы: {{ uptime.days }}д. {{ uptime.hours }}ч. {{ uptime.mins }}мин. {{ uptime.secs }}сек.</p>
-                            </div>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -270,18 +333,17 @@
                         <h5>Диск</h5>
                     </div>
                     <div class="card-block">
-                        <div class="row">
-                            <div class="col-auto text-center">
-                                <label for="currentDiskT" hidden>Диски</label>
-                                <input id="currentDiskT" type="text" class="dial" value="0" data-width="120"
-                                       data-height="120"
-                                       data-fgcolor="#779" data-skin="tron" data-thickness=".1" data-angleoffset="0"
-                                       data-readonly="true">
-                            </div>
-                            <div class="col">
-                                <span class="text-dark" id="currentDisk">Диски: {{ disk }}</span>
-                            </div>
-                        </div>
+{#                        <div class="row">#}
+{#                            <div class="col-auto text-center">#}
+{#                                <label for="currentDiskT" hidden>Диски</label>#}
+{#                                <input id="currentDiskT" type="text" class="dial" value="0" data-width="120"#}
+{#                                       data-height="120" data-skin="tron" data-thickness=".1" data-angleoffset="0"#}
+{#                                       data-readonly="true">#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <span class="text-dark" id="currentDisk">Диски: {{ disk }}</span>#}
+{#                            </div>#}
+{#                        </div>#}
                     </div>
                 </div>
             </div>
@@ -295,8 +357,7 @@
                             <div class="col-auto text-center">
                                 <label for="currentRamT" hidden>Память</label>
                                 <input id="currentRamT" type="text" class="dial" value="0" data-width="120"
-                                       data-height="120"
-                                       data-fgcolor="#779" data-skin="tron" data-thickness=".1" data-angleoffset="0"
+                                       data-height="120" data-skin="tron" data-thickness=".1" data-angleoffset="0"
                                        data-readonly="true">
                             </div>
                             <div class="col">
