@@ -31,7 +31,7 @@ def static_port_select(url):
     return details
 
 
-# Изменить  порты nat
+# Изменить порты nat
 def static_port_insert(url, ip_lan, port_lan, ip_wan, port_wan, protocol):
     dic = {
         'ip_lan': str(ip_lan),
@@ -49,7 +49,7 @@ def static_port_insert(url, ip_lan, port_lan, ip_wan, port_wan, protocol):
 
 # Удалить  порты nat
 def static_port_delete(url, id):
-    response = requests.delete(f"{url}/router/nat/static_port" + str(id))
+    response = requests.delete(f"{url}/router/nat/static_port/" + str(id))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content

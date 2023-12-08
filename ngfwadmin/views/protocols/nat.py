@@ -21,6 +21,15 @@ def protocol_nat(request):
             status_set(url, checked)
             return
 
+        # удалить nat
+        delete = request.GET.get("delete")
+        if delete is not None:
+            # удалить маршрут
+            static_port_delete(url, delete)
+            # перейти к таблице списков
+            return redirect('protocol_nat')
+
+        # Получить данные
         status = status_get(url)
         static_port = static_port_select(url)
 
@@ -56,7 +65,7 @@ def protocol_nat_add(request):
                 # добавить маршрут
                 static_port_insert(url, ip_lan, port_lan, ip_wan, port_wan, protocol)
                 # перейти к таблице маршрутов
-                return redirect('protocol_route')
+                return redirect('protocol_nat')
         # Вернуть сформированную страницу
         return render(request, 'protocols/nat_form.html')
     except Exception as ex:
