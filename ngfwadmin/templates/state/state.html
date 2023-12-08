@@ -89,9 +89,9 @@
             // Память
             if ('ram' in response) {
                 let ram = response.ram;
-                let total = 'Всего:' + ram.total.toString();
-                let used = 'Используется:' + ram.used.toString();
-                let percent = 'Проценты:' + ram.percent.toString();
+                let total = 'Всего:' + ram.total.toFixed(1).toString();
+                let used = 'Используется:' + ram.used.toFixed(1).toString();
+                let percent = 'Проценты:' + ram.percent.toFixed(1).toString();
                 let innerHtml = percent + "<br>" + used  + "<br>" + total;
                 let currentRam = document.getElementById('currentRam');
                 let currentRamT = document.getElementById('currentRamT');
@@ -104,9 +104,9 @@
             // Диски
             if ('disk' in response) {
                 let disk = response.disk;
-                let total = 'Всего:' + disk.total.toString();
-                let used = 'Используется:' + disk.used.toString();
-                let percent = 'Проценты:' + disk.percent.toString();
+                let total = 'Всего:' + disk.total.toFixed(1).toString();
+                let used = 'Используется:' + disk.used.toFixed(1).toString();
+                let percent = 'Проценты:' + disk.percent.toFixed(1).toString();
                 let innerHtml = percent + "<br>" + used  + "<br>" + total;
                 let currentDisk = document.getElementById('currentDisk');
                 let currentDiskT = document.getElementById('currentDiskT');
@@ -255,7 +255,7 @@
                                             <div class="col-auto">
                                                 <div class="col-auto text-center">
                                                     <label for="currentDiskT" hidden>Диски</label>
-                                                    <input id="currentDiskT" type="text" class="dial" value="0"
+                                                    <input id="currentDiskT" type="text" class="dial" value="70"
                                                            data-width="80" data-height="80"
                                                            data-linecap="round" data-displayinput="true"
                                                            data-fgcolor="#17A2BA" data-readonly="true">
@@ -263,7 +263,7 @@
                                             </div>
                                             <div class="col-auto">
                                                 <h4 id="currentTime" class="text-muted f-w-300">Диски</h4>
-                                                <h6 class="text-muted" id="currentDisk"></h6>
+                                                <h6 class="text-muted" id="currentDisk">Проценты:<br>Используется:<br>Всего:</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -276,14 +276,14 @@
                                             <div class="col-auto">
                                                  <div class="col-auto text-center">
                                                      <label for="currentRamT" hidden>Память</label>
-                                                     <input id="currentRamT" type="text" class="dial" value="0" data-width="80" data-height="80"
+                                                     <input id="currentRamT" type="text" class="dial" value="70" data-width="80" data-height="80"
                                                            data-linecap="round" data-displayinput="true"
                                                            data-fgcolor="#17A2BA" data-readonly="true">
                                                 </div>
                                             </div>
                                             <div class="col-auto">
                                                 <h4 id="currentTime" class="text-muted f-w-300">Память</h4>
-                                                <h6 class="text-muted" id="currentRam"></h6>
+                                                <h6 class="text-muted" id="currentRam">Проценты:<br>Используется:<br>Всего:</h6>
                                             </div>
                                         </div>
                                     </div>
