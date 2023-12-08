@@ -56,9 +56,9 @@
                                         <thead>
                                         <tr>
                                             <th title="Удаление"><i class="feather icon-trash"></i></th>
-                                            <th>Номер физического порта</th>
-                                            <th>IP-адрес</th>
+                                            <th>Подсеть</th>
                                             <th>Шлюз</th>
+                                            <th>Номер физического порта</th>
                                             <th>VLAN</th>
                                         </tr>
                                         </thead>
@@ -74,12 +74,12 @@
                                                         </a>
                                                     </div>
                                                 </td>
-                                                <!-- Порт -->
-                                                <td style="display: table-cell;">{{ r.port }}</td>
-                                                <!-- IP-адрес -->
+                                                <!-- Подсеть -->
                                                 <td style="display: table-cell;">{{ r.ip }}</td>
                                                 <!-- Шлюз -->
                                                 <td style="display: table-cell;">{{ r.ipgw }}</td>
+                                                <!-- Порт -->
+                                                <td style="display: table-cell;">{{ r.port }}</td>
                                                 <!-- VLAN -->
                                                 <td style="display: table-cell;">{{ r.vlan_id }}</td>
                                             </tr>
