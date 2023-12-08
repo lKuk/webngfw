@@ -50,8 +50,9 @@ urlpatterns = [
 
     # Протоколы
     path('protocol/arp/', protocol_arp, name='protocol_arp'),
-    path('protocol/nat/', protocol_nat, name='protocol_nat'),
     path('protocol/dhcp/', protocol_dhcp, name='protocol_dhcp'),
+    path('protocol/nat/', protocol_nat, name='protocol_nat'),
+    path('protocol/nat/new/', protocol_nat_add, name='protocol_nat_add'),
     path('protocol/route/', protocol_route, name='protocol_route'),
     path('protocol/route/new', protocol_route_add, name='protocol_route_add'),
     path('protocol/ipconfig/', protocol_ipconfig, name='protocol_ipconfig'),

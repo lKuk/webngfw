@@ -29,3 +29,27 @@ def static_port_select(url):
         raise Exception(response.url, response.text)
     details = response.json()
     return details
+
+
+# Изменить  порты nat
+def static_port_insert(url, ip_lan, port_lan, ip_wan, port_wan, protocol):
+    dic = {
+        'ip_lan': str(ip_lan),
+        'ip_wan': str(ip_wan),
+        'port_lan': str(port_lan),
+        'port_wan': str(port_wan),
+        'protocol': str(protocol)}
+    sjson = json.dumps(dic)
+    details = json.loads(sjson)
+    response = requests.post(f"{url}/router/nat/static_port", json=details)
+    if response.status_code != 200:
+        raise Exception(response.url, response.text, details)
+    return response.content
+
+
+# Удалить  порты nat
+def static_port_delete(url, id):
+    response = requests.delete(f"{url}/router/nat/static_port" + str(id))
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    return response.content
