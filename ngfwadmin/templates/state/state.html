@@ -89,31 +89,31 @@
             // Память
             if ('ram' in response) {
                 let ram = response.ram;
-                let used = ram.used;
-                let total = ram.total;
-                let percent = ram.percent;
-                let value = `Память: проценты (${percent}), всего (${total}), используется (${used})`;
+                let total = 'Всего:' + ram.total.toString();
+                let used = 'Используется:' + ram.used.toString();
+                let percent = 'Проценты:' + ram.percent.toString();
+                let innerHtml = percent + "<br>" + used  + "<br>" + total;
                 let currentRam = document.getElementById('currentRam');
                 let currentRamT = document.getElementById('currentRamT');
-                currentRam.textContent = value;
-                currentRamT.value = percent
-                let event = new Event('change')
-                currentRamT.dispatchEvent(event)
+                currentRam.innerHTML = innerHtml;
+                currentRamT.value = ram.percent;
+                let event = new Event('change');
+                currentRamT.dispatchEvent(event);
             }
 
             // Диски
             if ('disk' in response) {
                 let disk = response.disk;
-                let used = disk.used;
-                let total = disk.total;
-                let percent = disk.percent;
-                let value = `Диски: проценты (${percent}), всего (${total}), используется (${used})`
-                let currentDisk = document.getElementById('currentDisk')
-                let currentDiskT = document.getElementById('currentDiskT')
-                currentDisk.textContent = value;
-                currentDiskT.value = percent
-                let event = new Event('change')
-                currentDiskT.dispatchEvent(event)
+                let total = 'Всего:' + disk.total.toString();
+                let used = 'Используется:' + disk.used.toString();
+                let percent = 'Проценты:' + disk.percent.toString();
+                let innerHtml = percent + "<br>" + used  + "<br>" + total;
+                let currentDisk = document.getElementById('currentDisk');
+                let currentDiskT = document.getElementById('currentDiskT');
+                currentDisk.innerHTML = innerHtml;
+                currentDiskT.value = disk.percent;
+                let event = new Event('change');
+                currentDiskT.dispatchEvent(event);
             }
             // Ядра
             if ('lcores' in response) {
@@ -220,12 +220,12 @@
                                                  <i class="feather icon-tag f-50 text-white bg-info"></i>
                                             </div>
                                             <div class="col-auto">
-                                                <h6 class="text-muted">Серийный номер</h6>
                                                 <h4 class="text-muted f-w-300">{{ serial.serial_number }}</h4>
+                                                <h6 class="text-muted">Серийный номер</h6>
                                             </div>
                                              <div class="col-auto">
-                                                <h6 class="text-muted">Версия ПО</h6>
                                                 <h4 class="text-muted f-w-300">{{ version.version }}</h4>
+                                                <h6 class="text-muted">Версия ПО</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -239,100 +239,98 @@
                                                  <i class="feather icon-clock f-50 text-white bg-info"></i>
                                             </div>
                                             <div class="col-auto">
-                                                <h5 class="text-muted">{{ status.main_status }}</h5>
                                                 <h4 id="currentTime" class="text-muted f-w-300">00д. 00:00:00</h4>
+                                                <h5 class="text-success">
+                                                    <span class="badge badge-success">{{ status.main_status }}</span>
+                                                </h5>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-
-
-
                             <div class="col-auto">
-                                <div class="card card-customer">
+                                <div class="card card-customer h-75">
                                     <div class="card-block">
                                         <div class="row align-items-center justify-content-center">
-                                            <div class="col">
-                                                <h2 class="mb-2 f-w-300">3210</h2>
-                                                <h5 class="text-muted mb-0">Happy Customer</h5>
+                                            <div class="col-auto">
+                                                <div class="col-auto text-center">
+                                                    <label for="currentDiskT" hidden>Диски</label>
+                                                    <input id="currentDiskT" type="text" class="dial" value="0"
+                                                           data-width="80" data-height="80"
+                                                           data-linecap="round" data-displayinput="true"
+                                                           data-fgcolor="#17A2BA" data-readonly="true">
+                                                </div>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="feather icon-users f-30 text-white theme-bg"></i>
+                                                <h4 id="currentTime" class="text-muted f-w-300">Диски</h4>
+                                                <h6 class="text-muted" id="currentDisk"></h6>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-
                             <div class="col-auto">
                                 <div class="card card-customer h-75">
                                     <div class="card-block">
                                         <div class="row align-items-center justify-content-center">
                                             <div class="col-auto">
                                                  <div class="col-auto text-center">
-                                                    <label for="currentDiskT" hidden>Диски</label>
-                                                    <input id="currentDiskT" type="text" class="dial" value="0" data-width="80"
-                                                           data-height="80" data-skin="dial" data-thickness=".1" data-angleoffset="0"
-                                                           data-readonly="true">
+                                                     <label for="currentRamT" hidden>Память</label>
+                                                     <input id="currentRamT" type="text" class="dial" value="0" data-width="80" data-height="80"
+                                                           data-linecap="round" data-displayinput="true"
+                                                           data-fgcolor="#17A2BA" data-readonly="true">
                                                 </div>
                                             </div>
                                             <div class="col-auto">
-                                                <span class="text-dark" id="currentDisk">Диски: {{ disk }}</span>
+                                                <h4 id="currentTime" class="text-muted f-w-300">Память</h4>
+                                                <h6 class="text-muted" id="currentRam"></h6>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12" hidden>
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Ядра процессора</h5>
-                    </div>
-                    <div class="card-block">
-                        <div class="row justify-content-center">
-                            {% for core in lcores %}
-                                <div class="col-auto">
-                                    <div class="card">
-                                        <div class="card-header text-center m-0 p-0">
-                                            <h6>{{ core }}</h6>
-                                            <label for="{{ core }}" hidden>{{ core }}</label>
-                                        </div>
-                                        <div class="card-block text-center m-0 p-0">
-                                            <input id="{{ core }}" type="text" class="dial cores" value="0"
-                                                   data-width="120"
-                                                   data-height="120"
-                                                   data-fgcolor="#7A7" data-skin="tron" data-thickness=".1"
-                                                   data-angleoffset="0"
-                                                   data-readonly="true">
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Диск</h5>
-                    </div>
-                    <div class="card-block">
+{#        <div class="row">#}
+{#            <div class="col-md-12" hidden>#}
+{#                <div class="card">#}
+{#                    <div class="card-header">#}
+{#                        <h5>Ядра процессора</h5>#}
+{#                    </div>#}
+{#                    <div class="card-block">#}
+{#                        <div class="row justify-content-center">#}
+{#                            {% for core in lcores %}#}
+{#                                <div class="col-auto">#}
+{#                                    <div class="card">#}
+{#                                        <div class="card-header text-center m-0 p-0">#}
+{#                                            <h6>{{ core }}</h6>#}
+{#                                            <label for="{{ core }}" hidden>{{ core }}</label>#}
+{#                                        </div>#}
+{#                                        <div class="card-block text-center m-0 p-0">#}
+{#                                            <input id="{{ core }}" type="text" class="dial cores" value="0"#}
+{#                                                   data-width="120"#}
+{#                                                   data-height="120"#}
+{#                                                   data-fgcolor="#7A7" data-skin="tron" data-thickness=".1"#}
+{#                                                   data-angleoffset="0"#}
+{#                                                   data-readonly="true">#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-sm-6 col-md-6">#}
+{#                <div class="card">#}
+{#                    <div class="card-header">#}
+{#                        <h5>Диск</h5>#}
+{#                    </div>#}
+{#                    <div class="card-block">#}
 {#                        <div class="row">#}
 {#                            <div class="col-auto text-center">#}
 {#                                <label for="currentDiskT" hidden>Диски</label>#}
@@ -344,30 +342,30 @@
 {#                                <span class="text-dark" id="currentDisk">Диски: {{ disk }}</span>#}
 {#                            </div>#}
 {#                        </div>#}
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Память</h5>
-                    </div>
-                    <div class="card-block">
-                        <div class="row">
-                            <div class="col-auto text-center">
-                                <label for="currentRamT" hidden>Память</label>
-                                <input id="currentRamT" type="text" class="dial" value="0" data-width="120"
-                                       data-height="120" data-skin="tron" data-thickness=".1" data-angleoffset="0"
-                                       data-readonly="true">
-                            </div>
-                            <div class="col">
-                                <span class="text-dark" id="currentRam">Память: {{ ram }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-sm-6 col-md-6">#}
+{#                <div class="card">#}
+{#                    <div class="card-header">#}
+{#                        <h5>Память</h5>#}
+{#                    </div>#}
+{#                    <div class="card-block">#}
+{#                        <div class="row">#}
+{#                            <div class="col-auto text-center">#}
+{#                                <label for="currentRamT" hidden>Память</label>#}
+{#                                <input id="currentRamT" type="text" class="dial" value="0" data-width="120"#}
+{#                                       data-height="120" data-skin="tron" data-thickness=".1" data-angleoffset="0"#}
+{#                                       data-readonly="true">#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <span class="text-dark" id="currentRam">Память: {{ ram }}</span>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
