@@ -33,9 +33,10 @@ def ipsids(request):
                 rules_set(url, rules)
                 configuration_set(url, config)
 
-        rules = rules_get(url)
+        # Данные страницы
         status = status_get(url)
-        config = configuration_get(url)
+        rules = 'rules test 11111' #rules_get(url)
+        config = 'config test 22222' #configuration_get(url)
         context = {'dev': dev,
                    'rules': rules,
                    'config': config,
