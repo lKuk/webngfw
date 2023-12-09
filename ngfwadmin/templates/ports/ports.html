@@ -241,15 +241,18 @@
                 <div class="row justify-content-center">
                     {% for p in ports %}
                         <div class="col-auto">
-                            <div class="card-body" style="width: 280px">
-                                <div class="row border border-dark p-t-10" style="background: #9dc1d3">
-                                    <div class="col-auto text-left" data-toggle="tooltip" title="Номер порта">
+                            <div class="card-body" style="width: 290px">
+                                <div class="row border border-dark p-t-5" style="background: #9dc1d3">
+                                    <div class="col-auto text-right px-2">
+                                        <img src="{% static 'main/svg/ethernet.svg' %}" width="26" height="26" alt="">
+                                    </div>
+                                    <div class="col-auto text-left p-t-5" data-toggle="tooltip" title="Номер порта">
                                         <h5 id="{{ p.number }}">_</h5>
                                     </div>
-                                    <div class="col-auto text-center" data-toggle="tooltip" title="Статус">
+                                    <div class="col-auto text-center p-t-5" data-toggle="tooltip" title="Статус">
                                         <h5 id="{{ p.number }}_link_status">DOWN</h5>
                                     </div>
-                                    <div class="col-auto text-left" data-toggle="tooltip" title="Скорость порта (Мбит)">
+                                    <div class="col-auto text-left p-t-5" data-toggle="tooltip" title="Скорость порта (Мбит)">
                                         <h5 id="{{ p.number }}_link_speed">0 Мбит</h5>
                                     </div>
                                 </div>
