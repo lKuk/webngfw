@@ -9,8 +9,6 @@
 {% endblock style %}
 
 {% block script %}
-
-
     <!-- Обновление статуса -->
     <script>
         // Запрос данных Ajax
@@ -28,6 +26,30 @@
             $.ajax(param);
         }
     </script>
+
+    <!-- CСкачивание правил -->
+    <script>
+        // Запрос данных Ajax
+        function LoadRulesAjax() {
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "html",
+                data: {getRules: 'true'},
+                url: '{% url 'ipsids' %}',
+                success: SaveFileRules
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+        function SaveFileRules(data)
+        {
+            alert(data)
+        }
+    </script>
+
+
+
 {% endblock script %}
 
 {# Заголовок #}
@@ -70,7 +92,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Скачать</button>
+                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px" onclick="LoadRulesAjax()">Скачать</button>
                         <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
                     </div>
                 </div>
