@@ -6,9 +6,12 @@
     <!-- codemirrior -->
     <script src="{% static 'codemirrior/codemirror.js' %}"></script>
     <link rel="stylesheet" href="{% static 'codemirrior/codemirror.css' %}">
+    <!-- fileupload-custom css -->
+    <link rel="stylesheet" href="{% static 'main/css/pages/fileupload.css' %}">
 {% endblock style %}
 
 {% block script %}
+    <script src="{% static 'main/plugins/fileupload/js/dropzone-amd-module.min.js' %}"></script>
     <!-- Обновление статуса -->
     <script>
         // Запрос данных Ajax
@@ -20,7 +23,7 @@
                 type: "GET",
                 dataType: "json",
                 url: '{% url 'ipsids' %}',
-                data: {'checked': checked },
+                data: {'checked': checked},
             }
             // Выполнить запрос
             $.ajax(param);
@@ -42,9 +45,50 @@
             // Выполнить запрос
             $.ajax(param);
         }
-        function SaveFileRules(data)
+
+        // Запрос данных Ajax
+        function LoadConfigAjax() {
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "html",
+                data: {getConfig: 'true'},
+                url: '{% url 'ipsids' %}',
+                success: SaveFileConfig
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+
+        function SaveFileRules(data) {
+            download(data, "rules", "txt")
+        }
+
+        function SaveFileConfig(data) {
+            download(data, "config", "txt")
+        }
+
+        function download(data, filename, type) {
+            var file = new Blob([data], {type: type});
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, filename);
+            else { // Others
+                var a = document.createElement("a"),
+                    url = URL.createObjectURL(file);
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function () {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 0);
+            }
+        }
+
+        function UploadRules()
         {
-            alert(data)
+
         }
     </script>
 
@@ -92,8 +136,17 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px" onclick="LoadRulesAjax()">Скачать</button>
-                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
+                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
+                                onclick="LoadRulesAjax()">Скачать
+                        </button>
+                        <button type="submit" name="btnRulesPost" class="btn btn-primary shadow-2" style="width: 160px" onclick="UploadRules()">
+                            Загрузить
+                        </button>
+                        <form action="{% static 'main/plugins/fileupload/js/file-upload.php' %}" class="dropzone">
+                            <div class="fallback">
+                                <input name="file" type="file"/>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <hr>
@@ -105,8 +158,12 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Скачать</button>
-                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
+                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
+                                onclick="LoadConfigAjax()">Скачать
+                        </button>
+                        <button type="submit" name="btnCondigPost" class="btn btn-primary shadow-2"
+                                style="width: 160px">Загрузить
+                        </button>
                     </div>
                 </div>
             </div>

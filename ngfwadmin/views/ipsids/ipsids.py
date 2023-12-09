@@ -25,19 +25,22 @@ def ipsids(request):
         # скачать правила
         getRules = request.GET.get("getRules")
         if getRules is not None:
-            rules = 'qwe123' # rules_get(url)
+            rules = rules_get(url)
             return HttpResponse(rules)
 
-        # # сохранить ipsids
-        # if request.method == 'POST':
-        #     # добавить список
-        #     if 'btnIpsIdsUpdate' in request.POST:
-        #         # Получить параметры
-        #         rules = request.POST.get('rules')
-        #         config = request.POST.get('config')
-        #         # сохранить параметры
-        #         rules_set(url, rules)
-        #         configuration_set(url, config)
+        getCongig  = request.GET.get("getConfig")
+        if getCongig is not None:
+            config = configuration_get(url)
+            return HttpResponse(config)
+
+        # сохранить ipsids
+        if request.method == 'POST':
+            # добавить список
+            if 'btnRulesPost' in request.POST:
+                # Получить параметры
+                rules = request.POST.get('rules')
+                # сохранить параметры
+                rules_set(url, rules)
 
 
         # rules = rules_get(url)
