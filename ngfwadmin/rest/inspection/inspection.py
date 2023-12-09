@@ -23,10 +23,22 @@ def status_set(url, status):
     return response.content
 
 
+# Получить сертификаты
 def ca_get(url):
     response = requests.get(f"{url}/inspection/ca")
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
     return details
+
+
+# Установить сертификаты
+def ca_set(url, cer, key):
+    dic = {'cer': cer, 'key': key}
+    sjson = json.dumps(dic)
+    details = json.loads(sjson)
+    response = requests.put(f"{url}/inspection/ca", json=details)
+    if response.status_code != 200:
+        raise Exception(response.url, response.text, details)
+    return response.content
 
