@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+{% load base_tag %}
+
 
 {# Стили #}
 {% block style %}
@@ -50,11 +52,38 @@
             </div>
             <div class="card-body">
                 <div class="form-group">
-                    <div class="switch switch-primary d-inline m-r-10">
-                        <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.tls_mitm_enable == 'true' %}checked{% endif %}>
-                        <label for="status" class="cr"></label>
+                    <div class="row p-b-30">
+                        <div class="col">
+                            <div class="switch switch-primary d-inline m-r-10">
+                                <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.tls_mitm_enable == 'true' %}checked{% endif %}>
+                                <label for="status" class="cr"></label>
+                            </div>
+                            <label class="text-dark">Включить контентную фильтрацию</label>
+                        </div>
                     </div>
-                    <label class="text-dark">Включить контентную фильтрацию</label>
+                    <div class="row">
+                        <div class="col">
+                            <label for="rules">Ключ:</label>
+                            <p class="text-muted">{% replace ca.key '\n' '' %}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <label for="config">Сертификат:</label>
+                            <p class="text-muted">{% replace ca.cer '\n' '' %}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
