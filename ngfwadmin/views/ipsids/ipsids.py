@@ -22,24 +22,30 @@ def ipsids(request):
             status_set(url, checked)
             return
 
-        # сохранить ipsids
-        if request.method == 'POST':
-            # добавить список
-            if 'btnIpsIdsUpdate' in request.POST:
-                # Получить параметры
-                rules = request.POST.get('rules')
-                config = request.POST.get('config')
-                # сохранить параметры
-                rules_set(url, rules)
-                configuration_set(url, config)
+        # скачать правила
+        getRules = request.GET.get("getRules")
+        if getRules is not None:
+            rules = 'qwe123' # rules_get(url)
+            return HttpResponse(rules)
+
+        # # сохранить ipsids
+        # if request.method == 'POST':
+        #     # добавить список
+        #     if 'btnIpsIdsUpdate' in request.POST:
+        #         # Получить параметры
+        #         rules = request.POST.get('rules')
+        #         config = request.POST.get('config')
+        #         # сохранить параметры
+        #         rules_set(url, rules)
+        #         configuration_set(url, config)
+
+
+        # rules = rules_get(url)
+        # config = configuration_get(url)
 
         # Данные страницы
         status = status_get(url)
-        rules = 'rules test 11111' #rules_get(url)
-        config = 'config test 22222' #configuration_get(url)
         context = {'dev': dev,
-                   'rules': rules,
-                   'config': config,
                    'status': status}
         # Вернуть сформированную страницу
         return render(request, 'ipsids/ipsids.html', context=context)

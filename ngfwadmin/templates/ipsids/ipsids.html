@@ -6,13 +6,9 @@
     <!-- codemirrior -->
     <script src="{% static 'codemirrior/codemirror.js' %}"></script>
     <link rel="stylesheet" href="{% static 'codemirrior/codemirror.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/pages/fileupload.css' %}">
-
-    assets/css/pages/fileupload.css
 {% endblock style %}
 
 {% block script %}
-    <script src="{% static 'main/plugins/fileupload/js/dropzone-amd-module.min.js' %}"></script>
     <!-- Обновление статуса -->
     <script>
         // Запрос данных Ajax
@@ -24,22 +20,36 @@
                 type: "GET",
                 dataType: "json",
                 url: '{% url 'ipsids' %}',
-                data: {'checked': checked},
+                data: {'checked': checked },
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+    </script>
+
+    <!-- CСкачивание правил -->
+    <script>
+        // Запрос данных Ajax
+        function LoadRulesAjax() {
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "html",
+                data: {getRules: 'true'},
+                url: '{% url 'ipsids' %}',
                 success: SaveFileRules
             }
             // Выполнить запрос
             $.ajax(param);
         }
-
-        function SaveFileRules(request)
+        function SaveFileRules(data)
         {
-            if ('rules' in request)
-            {
-                alert("awd")
-            }
+            alert(data)
         }
-
     </script>
+
+
+
 {% endblock script %}
 
 {# Заголовок #}
@@ -82,15 +92,8 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px" onclick="PostStatusAjax()">Скачать</button>
+                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px" onclick="LoadRulesAjax()">Скачать</button>
                         <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
-                        <form action="{% static 'main/plugins/fileupload/js/file-upload.php' %}"
-                              class="dropzone dz-clickable">
-                            <div class="dz-message">Выберите файл для загрузки</div>
-                            <div class="fallback">
-                                <input name="file" type="file" multiple/>
-                            </div>
-                        </form>
                     </div>
                 </div>
                 <hr>
