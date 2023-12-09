@@ -26,20 +26,20 @@
             setTimeout(RequestAjax, 6000);
         }
 
+        // Преобразовать в систему СИ
         function formatSi(val) {
             if (val === 0)
                 return '0 ';
-            const dec = 1;
+            const dec = 2;
             const k = 1024;
             const dm = dec < 0 ? 0 : dec;
             const sizes = ['', 'К', 'М', 'Г', 'Т', ''];
             const i = Math.floor(Math.log(val) / Math.log(k));
-            return formatSi((val / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            return parseFloat((val / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
         }
 
         // Обновление страницы
         function Update(response) {
-
             // Время работы
             if ('ports' in response) {
                 let ports = response.ports;
@@ -66,14 +66,11 @@
 
                     ///////////////////////////////////////////////////////////////////////
 
-
                     // Левая колонка - входящий - скорость порта
                     var ibits_per_sec = exOnePort['ibits_per_sec'];
                     var ibits_per_secEl = document.getElementById(number + "_" + "ibits_per_sec");
-                    ibits_per_sec = parseInt(ibits_per_sec);
-                    ibits_per_sec = formatSi(ibits_per_sec);
-                    //ibits_per_secEl.textContent = formatSi(ibits_per_sec) + "бит/cек";
-/*
+                    ibits_per_secEl.textContent = formatSi(ibits_per_sec) + "бит/cек";
+
                     // Левая колонка - входящий - количество пакетов порта
                     var ipackets = exOnePort['ipackets'];
                     var ipacketsEl = document.getElementById(number + "_" + "ipackets");
@@ -133,7 +130,7 @@
                     var oerrors = exOnePort['oerrors'];
                     var oerrorsEl = document.getElementById(number + "_" + "oerrors");
                     oerrorsEl.textContent = oerrors;
-*/
+
                 }
             }
         }
@@ -244,7 +241,7 @@
                 <div class="row justify-content-center">
                     {% for p in ports %}
                         <div class="col-auto">
-                            <div class="card-body" style="width: 250px">
+                            <div class="card-body" style="width: 280px">
                                 <div class="row border border-dark p-t-10" style="background: #9dc1d3">
                                     <div class="col-auto text-left" data-toggle="tooltip" title="Номер физического порта">
                                         <h5 id="{{ p.number }}"></h5>
@@ -257,7 +254,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-6 border border-dark border-top-0 text-left p-2">
+                                    <div class="col-sm-6 border border-dark border-top-0 text-left p-t-5">
                                         <div class="row-auto" data-toggle="tooltip" title="Входящая скорость порта">
                                             <h6 id="{{ p.number }}_ibits_per_sec">{{ p.ibits_per_sec }}</h6>
                                         </div>
@@ -271,22 +268,19 @@
                                             <h6 id="{{ p.number }}_ibytes">{{ p.ibytes }}</h6>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 border-bottom border-right border-dark text-center">
-                                        <label id="{{ p.number }}_obits_per_sec" style="margin-bottom: 0"
-                                               data-toggle="tooltip" data-placement="top"
-                                               title="Исходящая скорость">{{ p.obits_per_sec }}
-                                            бит/сек.</label><br>
-                                        <label id="{{ p.number }}_opackets" style="margin-bottom: 0"
-                                               data-toggle="tooltip" data-placement="top"
-                                               title="Количество исходящих пакетов (шт.)">{{ p.opackets }}
-                                            шт.</label><br>
-                                        <label id="{{ p.number }}_opackets_per_sec" style="margin-bottom: 0"
-                                               data-toggle="tooltip" data-placement="top"
-                                               title="Исходящих пакетов в секунду (шт/сек.)">{{ p.opackets_per_sec }}
-                                            шт/сек.</label><br>
-                                        <label id="{{ p.number }}_obytes" style="margin-bottom: 0" data-toggle="tooltip"
-                                               data-placement="top"
-                                               title="Исходящее количество">{{ p.obytes }} байт</label><br>
+                                    <div class="col-sm-6 border-bottom border-right border-dark text-left p-t-5">
+                                         <div class="row-auto" data-toggle="tooltip" title="Исходящая скорость порта">
+                                            <h6 id="{{ p.number }}_obits_per_sec">{{ p.obits_per_sec }}</h6>
+                                        </div>
+                                        <div class="row-auto" data-toggle="tooltip" title="Количество исходящих пакетов">
+                                            <h6 id="{{ p.number }}_opackets">{{ p.obits_per_sec }}</h6>
+                                        </div>
+                                        <div class="row-auto" data-toggle="tooltip" title="Количество исходящих пакетов в секунду">
+                                            <h6 id="{{ p.number }}_opackets_per_sec">{{ p.opackets_per_sec }}</h6>
+                                        </div>
+                                        <div class="row-auto" data-toggle="tooltip" title="Исходящее количество байт">
+                                            <h6 id="{{ p.number }}_obytes">{{ p.obytes }}</h6>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row border border-top-0 border-dark">
