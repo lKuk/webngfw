@@ -21,8 +21,10 @@ def inspection(request):
             status_set(url, checked)
             return
 
+        ca = ca_get(url)
         status = status_get(url)
-        context = {'dev': dev,
+        context = {'ca': ca,
+                   'dev': dev,
                    'status': status}
         # Вернуть сформированную страницу
         return render(request, 'inspection/inspection.html', context=context)

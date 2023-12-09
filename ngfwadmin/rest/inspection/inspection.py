@@ -2,7 +2,6 @@ import json
 import requests
 
 
-
 # Получить статус
 def status_get(url):
     response = requests.get(f"{url}/inspection/status")
@@ -41,4 +40,3 @@ def ca_set(url, cer, key):
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
-
