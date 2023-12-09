@@ -243,7 +243,7 @@
                         <div class="col-auto">
                             <div class="card-body" style="width: 280px">
                                 <div class="row border border-dark p-t-10" style="background: #9dc1d3">
-                                    <div class="col-auto text-left" data-toggle="tooltip" title="Номер физического порта">
+                                    <div class="col-auto text-left" data-toggle="tooltip" title="Номер порта">
                                         <h5 id="{{ p.number }}"></h5>
                                     </div>
                                     <div class="col-auto text-center" data-toggle="tooltip" title="Статус">
@@ -254,57 +254,47 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-6 border border-dark border-top-0 text-left p-t-5">
-                                        <div class="row-auto" data-toggle="tooltip" title="Входящая скорость порта">
+                                    <div class="col-sm-6 border border-dark border-top-0 text-left p-t-5" style="background: #ddf1ff">
+                                        <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Вх. скорость порта">
                                             <h6 id="{{ p.number }}_ibits_per_sec">{{ p.ibits_per_sec }}</h6>
                                         </div>
-                                        <div class="row-auto" data-toggle="tooltip" title="Количество входящих пакетов">
-                                            <h6 id="{{ p.number }}_ipackets">{{ p.ibits_per_sec }}</h6>
-                                        </div>
-                                        <div class="row-auto" data-toggle="tooltip" title="Количество входящих пакетов в секунду">
-                                            <h6 id="{{ p.number }}_ipackets_per_sec">{{ p.ipackets_per_sec }}</h6>
-                                        </div>
-                                        <div class="row-auto" data-toggle="tooltip" title="Входящее количество байт">
+                                        <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Вх. количество байт">
                                             <h6 id="{{ p.number }}_ibytes">{{ p.ibytes }}</h6>
                                         </div>
+                                        <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Вх. скорость пакетов">
+                                            <h6 id="{{ p.number }}_ipackets_per_sec">{{ p.ipackets_per_sec }}</h6>
+                                        </div>
+                                        <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Вх. количество пакетов">
+                                            <h6 id="{{ p.number }}_ipackets">{{ p.ibits_per_sec }}</h6>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6 border-bottom border-right border-dark text-left p-t-5">
-                                         <div class="row-auto" data-toggle="tooltip" title="Исходящая скорость порта">
+                                    <div class="col-sm-6 border-bottom border-right border-dark text-left p-t-5" style="background: #ddf1ff">
+                                         <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Исх. скорость порта">
                                             <h6 id="{{ p.number }}_obits_per_sec">{{ p.obits_per_sec }}</h6>
                                         </div>
-                                        <div class="row-auto" data-toggle="tooltip" title="Количество исходящих пакетов">
-                                            <h6 id="{{ p.number }}_opackets">{{ p.obits_per_sec }}</h6>
+                                        <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Исх. количество байт">
+                                            <h6 id="{{ p.number }}_obytes">{{ p.obytes }}</h6>
                                         </div>
-                                        <div class="row-auto" data-toggle="tooltip" title="Количество исходящих пакетов в секунду">
+                                        <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Исх. скорость пакетов">
                                             <h6 id="{{ p.number }}_opackets_per_sec">{{ p.opackets_per_sec }}</h6>
                                         </div>
-                                        <div class="row-auto" data-toggle="tooltip" title="Исходящее количество байт">
-                                            <h6 id="{{ p.number }}_obytes">{{ p.obytes }}</h6>
+                                        <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Исх. количество пакетов">
+                                            <h6 id="{{ p.number }}_opackets">{{ p.obits_per_sec }}</h6>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row border border-top-0 border-dark">
-                                    <div class="col-sm-3 border-right border-dark text-center">
-                                        <label id="{{ p.number }}_ierrors" style="margin-bottom: 0"
-                                               data-toggle="tooltip" data-placement="top"
-                                               title="Входящих ошибок всего (шт)">{{ p.ierrors }}</label>
+                                <div class="row border border-top-0 border-dark text-center" style="background: peachpuff">
+                                    <div class="col-sm-3" data-toggle="tooltip" data-placement="bottom" title="Вх. потерь (шт)">
+                                        <h6 id="{{ p.number }}_imissed" class="my-1">{{ p.imissed }}</h6>
                                     </div>
-                                    <div class="col-sm-3 border-right border-dark text-center">
-                                        <label id="{{ p.number }}_imissed" style="margin-bottom: 0"
-                                               data-toggle="tooltip" data-placement="top"
-                                               title="Входящих потерь всего (шт)">{{ p.imissed }}</label>
+                                    <div class="col-sm-3 border-left border-dark" data-toggle="tooltip" data-placement="bottom" title="Вх. скорость потерь (шт/сек)">
+                                        <h6 id="{{ p.number }}_imissed_per_sec" class="my-1">{{ p.imissed_per_sec }}</h6>
                                     </div>
-                                    <div class="col-sm-3 border-right border-dark text-center">
-                                        <label id="{{ p.number }}_imissed_per_sec" style="margin-bottom: 0"
-                                               data-toggle="tooltip"
-                                               data-placement="top"
-                                               title="Входящих потерь в секунду (шт/сек.)">{{ p.imissed_per_sec }}
-                                        </label>
+                                    <div class="col-sm-3 border-left border-dark" data-toggle="tooltip" data-placement="bottom" title="Вх. ошибок (шт)">
+                                        <h6 id="{{ p.number }}_ierrors" class="my-1">{{ p.ierrors }}</h6>
                                     </div>
-                                    <div class="col-sm-3 text-center">
-                                        <label id="{{ p.number }}_oerrors" style="margin-bottom: 0"
-                                               data-toggle="tooltip" data-placement="top"
-                                               title="Исходящих ошибок всего (шт)">{{ p.oerrors }}</label>
+                                    <div class="col-sm-3 border-left border-dark" data-toggle="tooltip" data-placement="bottom" title="Исх. ошибок (шт)">
+                                        <h6 id="{{ p.number }}_oerrors" class="my-1">{{ p.oerrors }}</h6>
                                     </div>
                                 </div>
                             </div>

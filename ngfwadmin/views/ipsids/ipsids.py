@@ -39,7 +39,6 @@ def ipsids(request):
         #         rules_set(url, rules)
         #         configuration_set(url, config)
 
-
         # rules = rules_get(url)
         # config = configuration_get(url)
 
