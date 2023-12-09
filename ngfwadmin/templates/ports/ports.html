@@ -244,13 +244,13 @@
                             <div class="card-body" style="width: 280px">
                                 <div class="row border border-dark p-t-10" style="background: #9dc1d3">
                                     <div class="col-auto text-left" data-toggle="tooltip" title="Номер порта">
-                                        <h5 id="{{ p.number }}"></h5>
+                                        <h5 id="{{ p.number }}">_</h5>
                                     </div>
                                     <div class="col-auto text-center" data-toggle="tooltip" title="Статус">
-                                        <h5 id="{{ p.number }}_link_status"></h5>
+                                        <h5 id="{{ p.number }}_link_status">DOWN</h5>
                                     </div>
                                     <div class="col-auto text-left" data-toggle="tooltip" title="Скорость порта (Мбит)">
-                                        <h5 id="{{ p.number }}_link_speed"></h5>
+                                        <h5 id="{{ p.number }}_link_speed">0 Мбит</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -287,7 +287,7 @@
                                     <div class="col-sm-3" data-toggle="tooltip" data-placement="bottom" title="Вх. потерь (шт)">
                                         <h6 id="{{ p.number }}_imissed" class="my-1">{{ p.imissed }}</h6>
                                     </div>
-                                    <div class="col-sm-3 border-left border-dark" data-toggle="tooltip" data-placement="bottom" title="Вх. скорость потерь (шт/сек)">
+                                    <div class="col-sm-3 border-left border-dark" data-toggle="tooltip" data-placement="bottom" title="Вх. ск. потерь (шт/сек)">
                                         <h6 id="{{ p.number }}_imissed_per_sec" class="my-1">{{ p.imissed_per_sec }}</h6>
                                     </div>
                                     <div class="col-sm-3 border-left border-dark" data-toggle="tooltip" data-placement="bottom" title="Вх. ошибок (шт)">
