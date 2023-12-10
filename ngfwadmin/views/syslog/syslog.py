@@ -13,8 +13,17 @@ def syslog(request):
         # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')
+
         # подключение
         url = dev.get('url')
+
+        # изменить статус
+        checked = request.GET.get("checked")
+        typesys = request.GET.get("typesys")
+        if checked is not None and typesys is not None:
+            type_set(url, checked, typesys)
+            return
+
         server = get_syslog_server(url)
         types = get_syslog_types(url)
         context = {'dev': dev,
