@@ -20,10 +20,67 @@
                 type: "GET",
                 dataType: "json",
                 url: '{% url 'inspection' %}',
-                data: {'checked': checked },
+                data: {'checked': checked},
             }
             // Выполнить запрос
             $.ajax(param);
+        }
+
+        // Запрос данных Ajax
+        function LoadKey() {
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "html",
+                data: {getKey: 'true'},
+                url: '{% url 'inspection' %}',
+                success: SaveFileKey
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+
+        // Запрос данных Ajax
+        function LoadCer() {
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "html",
+                data: {getCer: 'true'},
+                url: '{% url 'inspection' %}',
+                success: SaveFileCer
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+
+        // Ключ
+        function SaveFileKey(data) {
+            download(data, "key", "txt")
+        }
+         // Ключ
+        function SaveFileCer(data) {
+            download(data, "cert", "txt")
+        }
+
+
+        // Скачать файл
+        function download(data, filename, type) {
+            var file = new Blob([data], {type: type});
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, filename);
+            else { // Others
+                var a = document.createElement("a"),
+                    url = URL.createObjectURL(file);
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function () {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 0);
+            }
         }
     </script>
 {% endblock script %}
@@ -55,7 +112,8 @@
                     <div class="row p-b-30">
                         <div class="col">
                             <div class="switch switch-primary d-inline m-r-10">
-                                <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.tls_mitm_enable == 'true' %}checked{% endif %}>
+                                <input type="checkbox" id="status" onchange="PostStatusAjax()"
+                                       {% if status.tls_mitm_enable == 'true' %}checked{% endif %}>
                                 <label for="status" class="cr"></label>
                             </div>
                             <label class="text-dark">Включить контентную фильтрацию</label>
@@ -64,24 +122,31 @@
                     <div class="row">
                         <div class="col">
                             <label for="rules">Ключ:</label>
-                            <p class="text-muted">{% replace ca.key '\n' '' %}</p>
+{#                            <p class="text-muted">{% replace ca.key '\n' '' %}</p>#}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
+                                    onclick="LoadKey()">Скачать
+                            </button>
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить
+                            </button>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col">
                             <label for="config">Сертификат:</label>
-                            <p class="text-muted">{% replace ca.cer '\n' '' %}</p>
+{#                            <p class="text-muted">{% replace ca.cer '\n' '' %}</p>#}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px" onclick="LoadCer()">Скачать
+                            </button>
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить
+                            </button>
                         </div>
                     </div>
                 </div>

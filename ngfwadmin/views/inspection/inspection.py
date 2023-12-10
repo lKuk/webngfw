@@ -1,3 +1,5 @@
+from django.http import HttpResponse
+
 from ngfwadmin.views.connect.connect import *
 from ngfwadmin.rest.inspection.inspection import *
 
@@ -20,6 +22,20 @@ def inspection(request):
         if checked is not None:
             status_set(url, checked)
             return
+
+        # скачать правила
+        getKey = request.GET.get("getKey")
+        if getKey is not None:
+            Ca = ca_get(url)
+            key = Ca['key']
+            return HttpResponse(key)
+
+            # скачать правила
+        getCer = request.GET.get("getCer")
+        if getCer is not None:
+            Ca = ca_get(url)
+            cert = Ca['cer']
+            return HttpResponse(cert)
 
         ca = ca_get(url)
         status = status_get(url)

@@ -28,19 +28,16 @@ def ipsids(request):
             rules = rules_get(url)
             return HttpResponse(rules)
 
-        getCongig  = request.GET.get("getConfig")
+        getCongig = request.GET.get("getConfig")
         if getCongig is not None:
             config = configuration_get(url)
             return HttpResponse(config)
 
-        # сохранить ipsids
-        if request.method == 'POST':
-            # добавить список
-            if 'btnRulesPost' in request.POST:
-                # Получить параметры
-                rules = request.POST.get('rules')
-                # сохранить параметры
-                rules_set(url, rules)
+        postRules = request.GET.get("postRules")
+        # добавить список
+        if postRules is not None:
+            # сохранить параметры
+            rules_set(url, postRules)
 
         # rules = rules_get(url)
         # config = configuration_get(url)

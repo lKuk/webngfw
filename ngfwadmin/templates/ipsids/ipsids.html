@@ -96,14 +96,23 @@
             input.onchange = e => {
                 // getting a hold of the file reference
                 var file = e.target.files[0];
-                alert(file.name)
                 // setting up the reader
                 var reader = new FileReader();
                 reader.readAsText(file, 'UTF-8');
                 // here we tell the reader what to do when it's done reading...
                 reader.onload = readerEvent => {
                     var content = readerEvent.target.result; // this is the content!
-                    alert(content);
+                    var contentStr = content.toString();
+                    alert(contentStr)
+                    // Параметры
+                    const param = {
+                        type: "GET",
+                        dataType: "json",
+                        url: '{% url 'ipsids' %}',
+                        data: {postRules: contentStr},
+                    }
+                    // Выполнить запрос
+                    $.ajax(param);
                 }
             }
             input.click();
@@ -177,7 +186,7 @@
                         <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
                                 onclick="LoadRulesAjax()">Скачать
                         </button>
-                        <button id="inputRuleIdBtn" type="submit" name="btnRulesPost" class="btn btn-primary shadow-2"
+                        <button id="inputRuleIdBtn" name="btnRulesPost" class="btn btn-primary shadow-2"
                                 style="width: 160px"
                                 onclick="UploadRules()">
                             Загрузить
