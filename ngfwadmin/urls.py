@@ -14,6 +14,7 @@ from ngfwadmin.views.protocols.dhcp import *
 from ngfwadmin.views.protocols.route import *
 from ngfwadmin.views.protocols.ipconfig import *
 from ngfwadmin.views.inspection.inspection import *
+from ngfwadmin.views.syslog.syslog import *
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -47,6 +48,8 @@ urlpatterns = [
 
     # Контентная фильтрация
     path('inspection/', inspection, name='inspection'),
+
+    path('syslog/', syslog, name='syslog'),
 
     # Протоколы
     path('protocol/arp/', protocol_arp, name='protocol_arp'),

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+{% load base_tag %}
+
+
+{# Стили #}
+{% block style %}
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-filter"></i>syslog
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'inspection' %}">syslog</a></li>
+    </ul>
+{% endblock header %}
+
+
+{# Содержимое #}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="ip" class="text-left">IP</label>
+                        <input id="ip" type="text" class="form-control" value="{{ server.host }}">
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="port" class="text-left">Порт</label>
+                        <input id="port" type="text" class="form-control" value="{{ server.port }}">
+                    </div>
+                    <div class="col-sm-3">
+                        <br>
+                        <div class="btn btn-primary ">Сохранить</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-body">
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}
