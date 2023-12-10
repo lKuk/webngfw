@@ -24,6 +24,13 @@ def syslog(request):
             type_set(url, checked, typesys)
             return
 
+
+        ipServer = request.GET.get("ipServer")
+        portServer = request.GET.get("portServer")
+        if ipServer is not None and portServer is not None:
+            server_set(url, ipServer, portServer)
+            return
+
         server = get_syslog_server(url)
         types = get_syslog_types(url)
         context = {'dev': dev,

@@ -28,3 +28,12 @@ def type_set(url, status, typesys):
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
+
+def server_set(url, ipServer, portServer):
+    dic = {"port": portServer, "host": ipServer}
+    sjson = json.dumps(dic)
+    details = json.loads(sjson)
+    response = requests.put(f"{url}/system/syslog/server", json=details)
+    if response.status_code != 200:
+        raise Exception(response.url, response.text, details)
+    return response.content
