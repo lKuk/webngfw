@@ -29,7 +29,7 @@
                 <span class="b-title">NGFW "Барбакан"</span>
             </a>
         </div>
-        <div class="navbar-content scroll-div">
+        <div class="navbar-content scroll-div overflow-auto">
             <ul class="nav pcoded-inner-navbar">
                 <!-- Группа - Система -->
                 <li class="nav-item pcoded-menu-caption">
@@ -147,11 +147,11 @@
                 </li>
 
                 <!-- syslog -->
-                <li class="nav-item {% is_active request 'ipsids' 'active' %}">
+                <li class="nav-item {% is_active request 'syslog' 'active' %}">
                     <a href="{% url 'syslog' %}" class="nav-link">
                         <span class="pcoded-micon">
-                            <i class="feather icon-alert-triangle"></i>
-                        </span><span class="pcoded-mtext">Syslog</span>
+                            <i class="feather icon-monitor"></i>
+                        </span><span class="pcoded-mtext">Системный журнал</span>
                     </a>
                 </li>
 
