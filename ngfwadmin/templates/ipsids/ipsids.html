@@ -60,14 +60,17 @@
             $.ajax(param);
         }
 
+        // Правлиа
         function SaveFileRules(data) {
             download(data, "rules", "txt")
         }
 
+        // Конфиг
         function SaveFileConfig(data) {
             download(data, "config", "txt")
         }
 
+        // Скачать файл
         function download(data, filename, type) {
             var file = new Blob([data], {type: type});
             if (window.navigator.msSaveOrOpenBlob) // IE10+
@@ -86,9 +89,44 @@
             }
         }
 
-        function UploadRules()
-        {
+        function UploadRules() {
+            var input = document.createElement('input');
+            input.type = 'file';
 
+            input.onchange = e => {
+                // getting a hold of the file reference
+                var file = e.target.files[0];
+                alert(file.name)
+                // setting up the reader
+                var reader = new FileReader();
+                reader.readAsText(file, 'UTF-8');
+                // here we tell the reader what to do when it's done reading...
+                reader.onload = readerEvent => {
+                    var content = readerEvent.target.result; // this is the content!
+                    alert(content);
+                }
+            }
+            input.click();
+        }
+
+        function UploadConfig() {
+            var input = document.createElement('input');
+            input.type = 'file';
+
+            input.onchange = e => {
+                // getting a hold of the file reference
+                var file = e.target.files[0];
+                alert(file.name)
+                // setting up the reader
+                var reader = new FileReader();
+                reader.readAsText(file, 'UTF-8');
+                // here we tell the reader what to do when it's done reading...
+                reader.onload = readerEvent => {
+                    var content = readerEvent.target.result; // this is the content!
+                    alert(content);
+                }
+            }
+            input.click();
         }
     </script>
 
@@ -139,14 +177,11 @@
                         <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
                                 onclick="LoadRulesAjax()">Скачать
                         </button>
-                        <button type="submit" name="btnRulesPost" class="btn btn-primary shadow-2" style="width: 160px" onclick="UploadRules()">
+                        <button id="inputRuleIdBtn" type="submit" name="btnRulesPost" class="btn btn-primary shadow-2"
+                                style="width: 160px"
+                                onclick="UploadRules()">
                             Загрузить
                         </button>
-                        <form action="{% static 'main/plugins/fileupload/js/file-upload.php' %}" class="dropzone">
-                            <div class="fallback">
-                                <input name="file" type="file"/>
-                            </div>
-                        </form>
                     </div>
                 </div>
                 <hr>
@@ -162,7 +197,7 @@
                                 onclick="LoadConfigAjax()">Скачать
                         </button>
                         <button type="submit" name="btnCondigPost" class="btn btn-primary shadow-2"
-                                style="width: 160px">Загрузить
+                                style="width: 160px" onclick="UploadConfig()">Загрузить
                         </button>
                     </div>
                 </div>
