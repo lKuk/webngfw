@@ -16,8 +16,10 @@ def syslog(request):
         # подключение
         url = dev.get('url')
         server = get_syslog_server(url)
+        types = get_syslog_types(url)
         context = {'dev': dev,
                    'server': server,
+                   'types': types
                    }
         # Вернуть данные
         ajax = request.GET.get("ajax")

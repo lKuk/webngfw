@@ -9,6 +9,23 @@
 
 {# Скрипты #}
 {% block script %}
+    <script>
+        // Запрос данных Ajax
+        function PostStatusAjax() {
+            let status = document.getElementById('status');
+            let checked = status.checked;
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'ipsids' %}',
+                data: {'checked': checked},
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+    </script>
+
 {% endblock script %}
 
 {# Заголовок #}
@@ -46,7 +63,81 @@
 
             </div>
             <div class="card-body">
-
+                <div class="row">
+                    <div class="col-sm-3">{{ types.tracts.name }}</div>
+                    <div class="col-sm-3">{{ types.tracts.status }}</div>
+                    <div class="col-sm-4">{{ types.tracts.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.cli.name }}</div>
+                    <div class="col-sm-3">{{ types.cli.status }}</div>
+                    <div class="col-sm-4">{{ types.cli.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.status.name }}</div>
+                    <div class="col-sm-3">{{ types.status.status }}</div>
+                    <div class="col-sm-4">{{ types.status.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.port.name }}</div>
+                    <div class="col-sm-3">{{ types.port.status }}</div>
+                    <div class="col-sm-4">{{ types.port.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.mgmt_port.name }}</div>
+                    <div class="col-sm-3">{{ types.mgmt_port.status }}</div>
+                    <div class="col-sm-4">{{ types.mgmt_port.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.graylog_port.name }}</div>
+                    <div class="col-sm-3">{{ types.graylog_port.status }}</div>
+                    <div class="col-sm-4">{{ types.graylog_port.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.arp_poisoning.name }}</div>
+                    <div class="col-sm-3">{{ types.arp_poisoning.status }}</div>
+                    <div class="col-sm-4">{{ types.arp_poisoning.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.ipsids.name }}</div>
+                    <div class="col-sm-3">{{ types.ipsids.status }}</div>
+                    <div class="col-sm-4">{{ types.ipsids.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.hw_hdd.name }}</div>
+                    <div class="col-sm-3">{{ types.hw_hdd.status }}</div>
+                    <div class="col-sm-4">{{ types.hw_hdd.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.hw_ram.name }}</div>
+                    <div class="col-sm-3">{{ types.hw_ram.status }}</div>
+                    <div class="col-sm-4">{{ types.hw_ram.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.flow.name }}</div>
+                    <div class="col-sm-3">{{ types.flow.status }}</div>
+                    <div class="col-sm-4">{{ types.flow.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.hw_cpu.name }}</div>
+                    <div class="col-sm-3">{{ types.hw_cpu.status }}</div>
+                    <div class="col-sm-4">{{ types.hw_cpu.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.dhcp.name }}</div>
+                    <div class="col-sm-3">{{ types.dhcp.status }}</div>
+                    <div class="col-sm-4">{{ types.dhcp.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.rule.name }}</div>
+                    <div class="col-sm-3">{{ types.rule.status }}</div>
+                    <div class="col-sm-4">{{ types.rule.description }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">{{ types.icmp_flood.name }}</div>
+                    <div class="col-sm-3">{{ types.icmp_flood.status }}</div>
+                    <div class="col-sm-4">{{ types.icmp_flood.description }}</div>
+                </div>
             </div>
         </div>
     </div>
