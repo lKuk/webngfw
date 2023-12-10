@@ -64,15 +64,20 @@
     <div class="page-wrapper">
         <div class="card">
             <div class="card-header">
-                <div class="row">
-                    <div class="col-auto text-center">
-                        <label for="ipText" class="text-left">IP</label>
+                <div class="page-header-title">
+                    <h5>Параметры системного журнала</h5>
+                </div>
+            </div>
+            <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                <div class="row py-4">
+                    <div class="col-auto p-r-0 p-t-10">
+                        <label for="ipText">IP адрес:</label>
                     </div>
                     <div class="col-auto">
                         <input id="ipText" type="text" class="form-control" value="{{ server.host }}">
                     </div>
-                    <div class="col-auto">
-                        <label for="portText" class="text-left">Порт</label>
+                    <div class="col-auto p-r-0 p-t-10">
+                        <label for="portText">Порт:</label>
                     </div>
                     <div class="col-auto">
                         <input id="portText" type="text" class="form-control" value="{{ server.port }}">
@@ -82,8 +87,6 @@
                     </div>
                 </div>
 
-            </div>
-            <div class="card-body" style="margin-top: 0; padding-top: 10px">
                 {% for key, value in types.items %}
                     <div class="row">
                         {#                        <div class="col-sm-3">{{ value.name }}</div>#}
