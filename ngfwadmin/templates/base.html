@@ -31,7 +31,6 @@
         </div>
         <div class="navbar-content scroll-div">
             <ul class="nav pcoded-inner-navbar">
-
                 <!-- Группа - Система -->
                 <li class="nav-item pcoded-menu-caption">
                     <label>Система</label>
@@ -102,11 +101,16 @@
                         </span><span class="pcoded-mtext">Сеть</span>
                     </a>
                     <ul class="pcoded-submenu">
-                        <li class="{% is_active request 'protocol_ipconfig protocol_ipconfig_add' 'active' %}"><a href="{% url 'protocol_ipconfig'%}" class="">IP</a></li>
-                        <li class="{% is_active request 'protocol_route protocol_route_add' 'active' %}"><a href="{% url 'protocol_route'%}" class="">ROUTE</a></li>
-                        <li class="{% is_active request 'protocol_nat' 'active' %}"><a href="{% url 'protocol_nat' %}" class="">NAT</a></li>
-                        <li class="{% is_active request 'protocol_arp' 'active' %}"><a href="{% url 'protocol_arp' %}" class="">ARP</a></li>
-                        <li class="{% is_active request 'protocol_dhcp' 'active' %}"><a href="{% url 'protocol_dhcp' %}" class="">DHCP</a></li>
+                        <li class="{% is_active request 'protocol_ipconfig protocol_ipconfig_add' 'active' %}"><a
+                                href="{% url 'protocol_ipconfig' %}" class="">IP</a></li>
+                        <li class="{% is_active request 'protocol_route protocol_route_add' 'active' %}"><a
+                                href="{% url 'protocol_route' %}" class="">ROUTE</a></li>
+                        <li class="{% is_active request 'protocol_nat' 'active' %}"><a href="{% url 'protocol_nat' %}"
+                                                                                       class="">NAT</a></li>
+                        <li class="{% is_active request 'protocol_arp' 'active' %}"><a href="{% url 'protocol_arp' %}"
+                                                                                       class="">ARP</a></li>
+                        <li class="{% is_active request 'protocol_dhcp' 'active' %}"><a href="{% url 'protocol_dhcp' %}"
+                                                                                        class="">DHCP</a></li>
                     </ul>
                 </li>
 
@@ -142,29 +146,38 @@
                     </a>
                 </li>
 
-{#                <!-- Группа - Сервис -->#}
-{#                <li class="nav-item pcoded-menu-caption">#}
-{#                    <label>Сервис</label>#}
-{#                </li>#}
-{#                <!-- Debug -->#}
-{#                <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}">#}
-{#                    <a href="#" class="nav-link">#}
-{#                        <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>#}
-{#                    </a>#}
-{#                    <ul class="pcoded-submenu">#}
-{##}
-{#                        <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>#}
-{#                        <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>#}
-{#                        <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>#}
-{#                        <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>#}
-{##}
-{#                        <li class="{% is_active request 'ports' 'active' %}"><a href="{% url 'table' 'ports'%}" class="">Ports</a></li>#}
-{#                        <li class="{% is_active request 'ports_avail' 'active' %}"><a href="{% url 'table' 'ports_avail'%}" class="">Ports avail</a></li>#}
-{#                        <li class="{% is_active request 'system_ports' 'active' %}"><a href="{% url 'table' 'system_ports'%}" class="">System ports</a></li>#}
-{#                        <li class="{% is_active request 'system_settings' 'active' %}"><a href="{% url 'table' 'system_settings'%}" class="">System settings</a></li>#}
-{##}
-{#                    </ul>#}
-{#                </li>#}
+                <!-- syslog -->
+                <li class="nav-item {% is_active request 'syslog' 'active' %}">
+                    <a href="{% url 'syslog' %}" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-alert-triangle"></i>
+                        </span><span class="pcoded-mtext">Syslog</span>
+                    </a>
+                </li>
+
+                {#                <!-- Группа - Сервис -->#}
+                {#                <li class="nav-item pcoded-menu-caption">#}
+                {#                    <label>Сервис</label>#}
+                {#                </li>#}
+                {#                <!-- Debug -->#}
+                {#                <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}">#}
+                {#                    <a href="#" class="nav-link">#}
+                {#                        <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>#}
+                {#                    </a>#}
+                {#                    <ul class="pcoded-submenu">#}
+                {##}
+                {#                        <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>#}
+                {#                        <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>#}
+                {#                        <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>#}
+                {#                        <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>#}
+                {##}
+                {#                        <li class="{% is_active request 'ports' 'active' %}"><a href="{% url 'table' 'ports'%}" class="">Ports</a></li>#}
+                {#                        <li class="{% is_active request 'ports_avail' 'active' %}"><a href="{% url 'table' 'ports_avail'%}" class="">Ports avail</a></li>#}
+                {#                        <li class="{% is_active request 'system_ports' 'active' %}"><a href="{% url 'table' 'system_ports'%}" class="">System ports</a></li>#}
+                {#                        <li class="{% is_active request 'system_settings' 'active' %}"><a href="{% url 'table' 'system_settings'%}" class="">System settings</a></li>#}
+                {##}
+                {#                    </ul>#}
+                {#                </li>#}
 
             </ul>
         </div>
@@ -173,7 +186,7 @@
 <!-- [ navigation menu ] end -->
 
 <!-- [ Header ] start -->
-<header class="navbar pcoded-header navbar-expand-lg navbar-light">
+<header class="navbar pcoded-header navbar-expand-lg navbar-light ">
     <div class="m-header">
         <a class="mobile-menu" id="mobile-collapse1" href="#"><span></span></a>
         <a href="{% url 'state' %}" class="b-brand">
@@ -196,7 +209,7 @@
         <!-- Справа -->
         <ul class="navbar-nav ml-auto">
             <!-- переподключение -->
-              <!-- переподключение -->
+            <!-- переподключение -->
             {% if dev.mode != 'local' %}
                 <li>
                     <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.ip }}</a>

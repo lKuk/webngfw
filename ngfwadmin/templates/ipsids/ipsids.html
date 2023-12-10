@@ -6,9 +6,12 @@
     <!-- codemirrior -->
     <script src="{% static 'codemirrior/codemirror.js' %}"></script>
     <link rel="stylesheet" href="{% static 'codemirrior/codemirror.css' %}">
+    <!-- fileupload-custom css -->
+    <link rel="stylesheet" href="{% static 'main/css/pages/fileupload.css' %}">
 {% endblock style %}
 
 {% block script %}
+    <script src="{% static 'main/plugins/fileupload/js/dropzone-amd-module.min.js' %}"></script>
     <!-- Обновление статуса -->
     <script>
         // Запрос данных Ajax
@@ -20,35 +23,85 @@
                 type: "GET",
                 dataType: "json",
                 url: '{% url 'ipsids' %}',
-                data: {'checked': checked },
+                data: {'checked': checked},
             }
             // Выполнить запрос
             $.ajax(param);
         }
     </script>
-
-    <!-- CСкачивание правил -->
+    <!-- Скачивание файлов правил и конфигурации -->
     <script>
-        // Запрос данных Ajax
+        // Запрос правил Ajax
         function LoadRulesAjax() {
+            Visible('rulesDownload', true);
             // Параметры
             const param = {
                 type: "GET",
                 dataType: "html",
-                data: {getRules: 'true'},
+                data: {get_rules: 'true'},
                 url: '{% url 'ipsids' %}',
                 success: SaveFileRules
             }
             // Выполнить запрос
             $.ajax(param);
         }
-        function SaveFileRules(data)
-        {
-            alert(data)
+        // Сохранение файла правил
+        function SaveFileRules(data) {
+            DownloadFile(data, "Rules", "txt");
+            Visible('rulesDownload', false);
+        }
+        // Запрос конфигурации Ajax
+        function LoadConfigAjax() {
+            Visible('configDownload', true);
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "html",
+                data: {get_config: 'true'},
+                url: '{% url 'ipsids' %}',
+                success: SaveFileConfig
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+        // Сохранение файла конфигурации
+        function SaveFileConfig(data) {
+            DownloadFile(data, "Config", "txt")
+            Visible('configDownload', false);
+        }
+        // Функция скачивания файла
+        function DownloadFile(data, filename, type) {
+            const file = new Blob([data], {type: type});
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, filename);
+            else { // Others
+                const a = document.createElement("a"),
+                    url = URL.createObjectURL(file);
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function () {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 0);
+            }
         }
     </script>
-
-
+    <!-- Загрузка файлов правил и конфигурации -->
+    <script>
+        // Выбрали файл правил
+        function Visible(element, visible) {
+            document.getElementById(element).hidden = !visible;
+        }
+        // Выбрали файл правил
+        function FileSelect(input, label) {
+            const elementInput = document.getElementById(input);
+            const elementLabel = document.getElementById(label);
+            const file = elementInput.files[0];
+            elementLabel.textContent = file.name;
+        }
+    </script>
 
 {% endblock script %}
 
@@ -67,46 +120,99 @@
 {# Содержимое #}
 {% block content %}
     <div class="page-wrapper">
-        <div class="card">
-            <div class="card-header">
-                <div class="page-header-title">
-                    <h5>Конфигурация СОВ</h5>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Конфигурация СОВ</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="switch switch-primary d-inline m-r-10">
+                                    <input type="checkbox" id="status" onchange="PostStatusAjax()"
+                                           {% if status.ipsids_enable == 'true' %}checked{% endif %}>
+                                    <label for="status" class="cr"></label>
+                                </div>
+                                <label class="text-dark">Включить систему обнаружения вторжений</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="card-body">
-                <div class="row p-b-30">
-                    <div class="col">
-                        <div class="switch switch-primary d-inline m-r-10">
-                            <input type="checkbox" id="status" onchange="PostStatusAjax()"
-                                   {% if status.ipsids_enable == 'true' %}checked{% endif %}>
-                            <label for="status" class="cr"></label>
+            <div class="col-lg-6 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Правила СОВ</h5>
                         </div>
-                        <label class="text-dark">Включить систему обнаружения вторжений</label>
+                    </div>
+                    <div class="card-body">
+                        <h6>Скачать правила СОВ</h6>
+                        <div class="input-group cust-file-button mb-3">
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
+                                    onclick="LoadRulesAjax()">Скачать</button>
+                            <div id="rulesDownload" class="spinner-border text-primary m-1" role="status" hidden>
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <br>
+                        <h6>Загрузить правила СОВ</h6>
+                        <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                            <div class="input-group cust-file-button mb-3">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-primary shadow-2" onclick="Visible('rulesLoading', true)" style="width: 160px">Загрузить</button>
+                                </div>
+                                <div class="custom-file">
+                                    <input id="rulesFile" name="rules" type="file" class="custom-file-input"
+                                           onchange="FileSelect('rulesFile', 'rulesFileName')">
+                                    <label id="rulesFileName" class="custom-file-label">{{ labelRule }}</label>
+                                </div>
+                                <div id="rulesLoading" class="spinner-border text-primary m-1" role="status" hidden>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <label for="rules">Правила:</label>
-                        <div>{{ rules }}</div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Конфигурация СОВ</h5>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px" onclick="LoadRulesAjax()">Скачать</button>
-                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col">
-                        <label for="config">Конфигурация</label>
-                        <div>{{ config }}</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Скачать</button>
-                        <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
+                    <div class="card-body">
+                        <h6>Скачать конфигурацию СОВ</h6>
+                        <div class="input-group cust-file-button mb-3">
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
+                                    onclick="LoadConfigAjax()">Скачать</button>
+                            <div id="configDownload" class="spinner-border text-primary m-1" role="status" hidden>
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <br>
+                        <h6>Загрузить конфигурацию СОВ</h6>
+                        <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                            <div class="input-group cust-file-button mb-3">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-primary shadow-2" onclick="Visible('configLoading', true)" style="width: 160px">Загрузить</button>
+                                </div>
+                                <div class="custom-file">
+                                    <input id="configFile" name="config" type="file" class="custom-file-input"
+                                           onchange="FileSelect('configFile', 'configFileName')">
+                                    <label id="configFileName" class="custom-file-label">{{ labelConfig }}</label>
+                                </div>
+                                <div id="configLoading" class="spinner-border text-primary m-1" role="status" hidden>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

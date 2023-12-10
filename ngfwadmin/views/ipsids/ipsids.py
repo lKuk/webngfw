@@ -13,39 +13,54 @@ def ipsids(request):
         # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')
-        # подключение
+        # Подключение
         url = dev.get('url')
 
-        # изменить статус
+        # Изменить статус
         checked = request.GET.get("checked")
         if checked is not None:
             status_set(url, checked)
             return
 
-        # скачать правила
-        getRules = request.GET.get("getRules")
-        if getRules is not None:
-            rules = 'qwe123' # rules_get(url)
+        # Скачать правила
+        get_rules = request.GET.get("get_rules")
+        if get_rules is not None:
+            rules = rules_get(url)
             return HttpResponse(rules)
 
-        # # сохранить ipsids
-        # if request.method == 'POST':
-        #     # добавить список
-        #     if 'btnIpsIdsUpdate' in request.POST:
-        #         # Получить параметры
-        #         rules = request.POST.get('rules')
-        #         config = request.POST.get('config')
-        #         # сохранить параметры
-        #         rules_set(url, rules)
-        #         configuration_set(url, config)
+        # Скачать конфигурацию
+        get_config = request.GET.get("get_config")
+        if get_config is not None:
+            config = configuration_get(url)
+            return HttpResponse(config)
 
-        # rules = rules_get(url)
-        # config = configuration_get(url)
+        labelRule = 'Выберете файл загрузки правил'
+        labelConfig = 'Выберете файл загрузки конфигурации'
+        # Загрузка файлов
+        if request.method == 'POST':
+            # Загрузить правила
+            if 'rules' in request.FILES:
+                file = request.FILES['rules']
+                content = ''
+                for chunk in file.chunks():
+                    content += chunk.decode("utf-8")
+                rules_set(url, content)
+                labelRule = 'Загрузка правил выполнена успешно!'
+            # Загрузить конфигурацию
+            if 'config' in request.FILES:
+                file = request.FILES['config']
+                content = ''
+                for chunk in file.chunks():
+                    content += chunk.decode("utf-8")
+                configuration_set(url, content)
+                labelConfig = 'Загрузка конфигурации выполнена успешно!'
 
         # Данные страницы
         status = status_get(url)
         context = {'dev': dev,
-                   'status': status}
+                   'status': status,
+                   'labelRule': labelRule,
+                   'labelConfig': labelConfig}
         # Вернуть сформированную страницу
         return render(request, 'ipsids/ipsids.html', context=context)
     except Exception as ex:
