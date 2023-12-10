@@ -14,6 +14,4 @@ def get_syslog_types(url):
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
-    if 'Версия ПО' in details:
-        details['version'] = details['Версия ПО']
     return details
