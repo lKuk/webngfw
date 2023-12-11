@@ -1,5 +1,8 @@
-from ngfwadmin.rest.rules.enum import *
-from ngfwadmin.rest.rules.lists import *
+import json
+import requests
+
+from ngfwadmin.rest.rules.lists import list_select
+from ngfwadmin.rest.rules.enum import enum_atomic_get, enum_format_get
 
 
 # Добавить подправило

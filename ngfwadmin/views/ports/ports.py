@@ -1,8 +1,10 @@
-from ngfwadmin.rest.ports.ports import *
-from ngfwadmin.views.connect.connect import *
 
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+
+from ngfwadmin.rest.ports.ports import ports_get
+from ngfwadmin.views.debug.error import exception
+from ngfwadmin.views.connect.connect import get_connect
 
 
 # Страница состояния портов

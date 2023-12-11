@@ -1,5 +1,5 @@
-from ngfwadmin.rest.rules.enum import *
-from ngfwadmin.rest.rules.lists import *
+import json
+import requests
 
 
 # Добавить правило

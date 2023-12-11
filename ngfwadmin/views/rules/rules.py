@@ -1,8 +1,14 @@
-from ngfwadmin.rest.rules.rules import *
-from ngfwadmin.views.connect.connect import *
-from ngfwadmin.rest.rules.sub import sub_warp, sub_delete, sub_insert
+import json
 
 from django.shortcuts import redirect, render
+
+from ngfwadmin.views.debug.error import exception
+from ngfwadmin.views.connect.connect import get_connect
+from ngfwadmin.rest.rules.sub import sub_warp, sub_delete, sub_insert
+from ngfwadmin.rest.rules.enum import enum_format_get, enum_atomic_get
+from ngfwadmin.rest.rules.lists import list_insert, content_set, list_select_all
+from ngfwadmin.rest.rules.rules import rule_apply, rule_select_all, rule_delete
+from ngfwadmin.rest.rules.rules import rule_description, rule_insert, rule_update, rule_select
 
 
 # подправило

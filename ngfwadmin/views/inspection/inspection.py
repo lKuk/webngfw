@@ -1,9 +1,9 @@
 from django.http import HttpResponse
-
-from ngfwadmin.views.connect.connect import *
-from ngfwadmin.rest.inspection.inspection import *
-
 from django.shortcuts import redirect, render
+
+from ngfwadmin.views.debug.error import exception
+from ngfwadmin.views.connect.connect import get_connect
+from ngfwadmin.rest.inspection.inspection import ca_get, status_set, ca_set, status_get
 
 
 # Страница состояния портов

@@ -1,9 +1,9 @@
 
 from django.shortcuts import redirect, render
 
-from ngfwadmin.rest.protocols.arp import *
 from ngfwadmin.views.debug.error import exception
 from ngfwadmin.views.connect.connect import get_connect
+from ngfwadmin.rest.protocols.arp import arp_select, arp_clear
 
 
 # Страница протокола arp

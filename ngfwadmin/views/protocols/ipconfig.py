@@ -1,9 +1,9 @@
 
 from django.shortcuts import redirect, render
 
-from ngfwadmin.rest.protocols.ipconfig import *
 from ngfwadmin.views.debug.error import exception
 from ngfwadmin.views.connect.connect import get_connect
+from ngfwadmin.rest.protocols.ipconfig import ipconfig_delete, ipconfig_select_all, ipconfig_insert
 
 
 # Страница протокола ip

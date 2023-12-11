@@ -1,8 +1,10 @@
 from django.shortcuts import redirect, render
-from ngfwadmin.views.debug.error import exception
 
-from ngfwadmin.rest.protocols.nat import *
-from ngfwadmin.views.connect.connect import *
+from ngfwadmin.views.debug.error import exception
+from ngfwadmin.views.connect.connect import get_connect
+from ngfwadmin.rest.inspection.inspection import status_set
+from ngfwadmin.rest.protocols.nat import static_port_delete, status_get, static_port_select, static_port_insert
+
 
 # Страница протокола nat
 def protocol_nat(request):

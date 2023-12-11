@@ -1,8 +1,8 @@
-
-from ngfwadmin.rest.rules.history import *
-from ngfwadmin.views.connect.connect import *
-
 from django.shortcuts import redirect, render
+
+from ngfwadmin.views.debug.error import exception
+from ngfwadmin.views.connect.connect import get_connect
+from ngfwadmin.rest.rules.history import history_set, history_get
 
 
 # Страница истории изменений правил

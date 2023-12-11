@@ -1,9 +1,10 @@
-from ngfwadmin.rest.state.state import *
-from ngfwadmin.views.connect.connect import *
-from ngfwadmin.rest.state.monitoring import *
-
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+
+from ngfwadmin.views.debug.error import exception
+from ngfwadmin.views.connect.connect import get_connect
+from ngfwadmin.rest.state.state import uptime_get, serial_get, status_get, version_get
+from ngfwadmin.rest.state.monitoring import monitoring_ram_get, monitoring_disk_get, monitoring_lcores_get
 
 
 # Страница системы

@@ -1,7 +1,7 @@
-from ngfwadmin.forms import *
-from ngfwadmin.views.debug.error import exception
-
 from django.shortcuts import redirect, render
+
+from ngfwadmin.forms import ConnectForm
+from ngfwadmin.views.debug.error import exception
 
 
 # устройство

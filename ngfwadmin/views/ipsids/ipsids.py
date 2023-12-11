@@ -1,8 +1,10 @@
-from ngfwadmin.rest.ipsids.ipsids import *
-from ngfwadmin.views.connect.connect import *
-
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+
+from ngfwadmin.views.debug.error import exception
+from ngfwadmin.views.connect.connect import get_connect
+from ngfwadmin.rest.inspection.inspection import status_set
+from ngfwadmin.rest.ipsids.ipsids import rules_get, configuration_get, rules_set, configuration_set, status_get
 
 
 # Страница состояния портов

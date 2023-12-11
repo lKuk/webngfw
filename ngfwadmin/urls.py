@@ -1,20 +1,21 @@
 from django.urls import path
 
-from ngfwadmin.views.state.state import *
-from ngfwadmin.views.ports.ports import *
-from ngfwadmin.views.debug.error import *
-from ngfwadmin.views.rules.rules import *
-from ngfwadmin.views.rules.lists import *
-from ngfwadmin.views.debug.table import *
-from ngfwadmin.views.ipsids.ipsids import *
-from ngfwadmin.views.rules.history import *
-from ngfwadmin.views.protocols.nat import *
-from ngfwadmin.views.protocols.arp import *
-from ngfwadmin.views.protocols.dhcp import *
-from ngfwadmin.views.protocols.route import *
-from ngfwadmin.views.protocols.ipconfig import *
-from ngfwadmin.views.inspection.inspection import *
-from ngfwadmin.views.syslog.syslog import *
+from ngfwadmin.views.debug.error import error
+from ngfwadmin.views.debug.table import table
+from ngfwadmin.views.ports.ports import ports
+from ngfwadmin.views.state.state import state
+from ngfwadmin.views.ipsids.ipsids import ipsids
+from ngfwadmin.views.syslog.syslog import syslog
+from ngfwadmin.views.rules.history import history
+from ngfwadmin.views.connect.connect import connect
+from ngfwadmin.views.protocols.arp import protocol_arp
+from ngfwadmin.views.protocols.dhcp import protocol_dhcp
+from ngfwadmin.views.inspection.inspection import inspection
+from ngfwadmin.views.rules.lists import lists, lists_add, lists_edit
+from ngfwadmin.views.protocols.nat import protocol_nat, protocol_nat_add
+from ngfwadmin.views.protocols.route import protocol_route, protocol_route_add
+from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_edit
+from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
 
 urlpatterns = [
     # Форма подключения к устройству

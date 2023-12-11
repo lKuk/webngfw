@@ -1,9 +1,9 @@
-from ngfwadmin.rest.state.state import *
-from ngfwadmin.views.connect.connect import *
-from ngfwadmin.rest.syslog.syslog import *
-
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+
+from ngfwadmin.views.debug.error import exception
+from ngfwadmin.views.connect.connect import get_connect
+from ngfwadmin.rest.syslog.syslog import type_set, server_set, get_syslog_server, get_syslog_types
 
 
 def syslog(request):
