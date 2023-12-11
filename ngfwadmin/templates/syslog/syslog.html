@@ -12,14 +12,32 @@
     <script>
         // Запрос данных Ajax
         function PostStatusAjax() {
-            let status = document.getElementById('status');
-            let checked = status.checked;
+            var id = event.target.id
+            let checked = event.target.checked;
             // Параметры
             const param = {
                 type: "GET",
                 dataType: "json",
-                url: '{% url 'ipsids' %}',
-                data: {'checked': checked},
+                url: '{% url 'syslog' %}',
+                data: {'checked': checked, typesys: id},
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+
+         // Запрос данных Ajax
+        function PostServerAjax() {
+            let ip = document.getElementById("ipText")
+            let port = document.getElementById("portText")
+
+            let ipValue = ip.value
+            let portValue = port.value
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'syslog' %}',
+                data: {ipServer: ipValue, portServer: portValue},
             }
             // Выполнить запрос
             $.ajax(param);
@@ -32,11 +50,11 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-filter"></i>syslog
+            <i class="m-r-15 feather icon-monitor"></i>Конфигурация системного журнала
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
-        <li class="breadcrumb-item"><a href="{% url 'inspection' %}">syslog</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'syslog' %}">Системный журнал</a></li>
     </ul>
 {% endblock header %}
 
@@ -46,35 +64,41 @@
     <div class="page-wrapper">
         <div class="card">
             <div class="card-header">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label for="ipText" class="text-left">IP</label>
+                <div class="page-header-title">
+                    <h5>Параметры системного журнала</h5>
+                </div>
+            </div>
+            <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                <div class="row py-4">
+                    <div class="col-auto p-r-0 p-t-10">
+                        <label for="ipText">IP адрес:</label>
+                    </div>
+                    <div class="col-auto">
                         <input id="ipText" type="text" class="form-control" value="{{ server.host }}">
                     </div>
-                    <div class="col-sm-3">
-                        <label for="portText" class="text-left">Порт</label>
+                    <div class="col-auto p-r-0 p-t-10">
+                        <label for="portText">Порт:</label>
+                    </div>
+                    <div class="col-auto">
                         <input id="portText" type="text" class="form-control" value="{{ server.port }}">
                     </div>
-                    <div class="col-sm-3">
-                        <br>
-                        <div class="btn btn-primary ">Сохранить</div>
+                    <div class="col-auto">
+                        <div class="btn btn-primary" onclick="PostServerAjax()">Сохранить</div>
                     </div>
                 </div>
 
-            </div>
-            <div class="card-body">
                 {% for key, value in types.items %}
                     <div class="row">
-                        <div class="col-sm-3">{{ value.name }}</div>
-                        <div class="col-sm-4">
+                        {#                        <div class="col-sm-3">{{ value.name }}</div>#}
+                        <div class="col-auto">
                             <div class="switch switch-primary d-inline m-r-10">
-                                <input type="checkbox" id="{{ key }}"
-                                       {% if value.status %}checked{% endif %}>
+                                <input type="checkbox" id="{{ key }}" {% if value.status %}checked{% endif %} hidden
+                                       onchange="PostStatusAjax()">
                                 <label for="{{ key }}" class="cr"></label>
-                                <label class="text-dark">{{ value.description }}</label>
+                                <label class="text-dark" style="margin-left: 10px">{{ value.name }}</label>
                             </div>
                         </div>
-                        <div class="col-sm-4">{{ value.description }} {{ value.status }}</div>
+                        {#                        <div class="col-sm-4">{{ value.description }} {{ value.status }}</div>#}
                     </div>
                 {% endfor %}
 
