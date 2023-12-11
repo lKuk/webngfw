@@ -118,7 +118,18 @@
             if ('lcores' in response) {
                 let lcores = response.lcores;
                 let lcoresJson = JSON.stringify(lcores);
-                const ex = JSON.parse(lcoresJson);
+                let ex = JSON.parse(lcoresJson);
+
+                const temperature = document.getElementById('temperature');
+                let temp = parseFloat(ex['temperature']);
+                temp = temp.toFixed(1);
+                temperature.textContent = temp;
+                const cpu_average = document.getElementById('cpu_average');
+                let cpu = parseFloat(ex['cpu_average']);
+                cpu = cpu.toFixed(1);
+                cpu_average.textContent = cpu;
+
+                ex = ex['cpu_workload'];
                 let cores = document.getElementsByClassName('cores')
                 Array.prototype.forEach.call(cores, function (el) {
                     let core = el.id
@@ -326,8 +337,19 @@
                     <div class="card-header">
                         <h5>Состояние процессора</h5>
                     </div>
-                    <div class="card-block text-center py-0 my-0">
-                        <div id="chart-DynamicLineBar" style="width: 100%; height: 250px;"></div>
+                    <div class="card-body">
+                        <div class="row-12 text-center">
+                            <div class="text-center p-0 m-0">
+                                <div id="chart-DynamicLineBar" style="width: 100%; height: 250px;"></div>
+                            </div>
+                            <span class="text-dark h6">Температура:</span>
+                            <span class="text-dark h6" id="temperature"></span>
+                            <span class="text-dark h6 p-r-15">&#8451;</span>
+
+                            <span class="text-dark h6 p-l-15">Загрузка:</span>
+                            <span class="text-dark h6" id="cpu_average"></span>
+                            <span class="text-dark h6">%</span>
+                        </div>
                     </div>
                 </div>
             </div>

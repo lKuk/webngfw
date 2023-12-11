@@ -24,11 +24,12 @@ def monitoring_lcores_get(url):
     if 'message' in details:
         details = details['message']
         raise Exception(response.url, details)
-    if 'cpu_workload' in details:
-        details = details['cpu_workload']
-    lcores = {}
-    for index in range(len(details)):
-        key = 'core_' + str(index)
-        value = details[index]
-        lcores[key] = value
-    return lcores
+    return details
+    # if 'cpu_workload' in details:
+    #     details = details['cpu_workload']
+    # lcores = {}
+    # for index in range(len(details)):
+    #     key = 'core_' + str(index)
+    #     value = details[index]
+    #     lcores[key] = value
+    # return lcores
