@@ -9,6 +9,22 @@
 
 {# Скрипты #}
 {% block script %}
+    <!-- Отображение нумерации строк -->
+    <script>
+        // Отображение нумерации строк
+        function EditorTextArea() {
+            CodeMirror.fromTextArea(document.getElementById("key"), {
+                lineNumbers: true,
+                mode: "text/html",
+                matchBrackets: true
+            });
+        }
+
+        // Выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            EditorTextArea();
+        });
+    </script>
     <!-- Обновление статуса -->
     <script>
         // Запрос данных Ajax
@@ -26,13 +42,86 @@
             $.ajax(param);
         }
     </script>
+     <!-- Скачивание файлов -->
+    <script>
+        // Запрос ключа Ajax
+        function LoadKeyAjax() {
+            Visible('keyDownload', true);
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "html",
+                data: {get_key: 'true'},
+                url: '{% url 'inspection' %}',
+                success: SaveFileKey
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+        // Сохранение файла ключа
+        function SaveFileKey(data) {
+            DownloadFile(data, "Key", "txt");
+            Visible('keyDownload', false);
+        }
+        // Запрос сертификата Ajax
+        function LoadCerAjax() {
+            Visible('cerDownload', true);
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "html",
+                data: {get_cer: 'true'},
+                url: '{% url 'inspection' %}',
+                success: SaveFileCer
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+        // Сохранение файла сертификата
+        function SaveFileCer(data) {
+            DownloadFile(data, "Certificate", "txt")
+            Visible('cerDownload', false);
+        }
+        // Функция скачивания файла
+        function DownloadFile(data, filename, type) {
+            const file = new Blob([data], {type: type});
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, filename);
+            else { // Others
+                const a = document.createElement("a"),
+                    url = URL.createObjectURL(file);
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function () {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 0);
+            }
+        }
+    </script>
+    <!-- Загрузка файлов -->
+    <script>
+        // Выбрали файл правил
+        function Visible(element, visible) {
+            document.getElementById(element).hidden = !visible;
+        }
+        // Выбрали файл правил
+        function FileSelect(input, label) {
+            const elementInput = document.getElementById(input);
+            const elementLabel = document.getElementById(label);
+            const file = elementInput.files[0];
+            elementLabel.textContent = file.name;
+        }
+    </script>
 {% endblock script %}
 
 {# Заголовок #}
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-filter"></i>Статус контентной фильтрации
+            <i class="m-r-15 feather icon-filter"></i>Конфигурация контентной фильтрации
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
@@ -44,48 +133,114 @@
 {# Содержимое #}
 {% block content %}
     <div class="page-wrapper">
-        <div class="card">
-            <div class="card-header">
-                <div class="page-header-title">
-                    <h5>Статус</h5>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Статус контентной фильтрации</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="switch switch-primary d-inline m-r-10">
+                                    <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.tls_mitm_enable == 'true' %}checked{% endif %}>
+                                    <label for="status" class="cr"></label>
+                                </div>
+                                <label class="text-dark">Включить контентную фильтрацию</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="card-body">
-                <div class="form-group">
-                    <div class="row p-b-30">
-                        <div class="col">
-                            <div class="switch switch-primary d-inline m-r-10">
-                                <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.tls_mitm_enable == 'true' %}checked{% endif %}>
-                                <label for="status" class="cr"></label>
+            <div class="col-lg-6 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Ключ</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h6>Скачать ключ:</h6>
+                        <div class="input-group cust-file-button mb-3">
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
+                                    onclick="LoadKeyAjax()">Скачать</button>
+                            <div id="keyDownload" class="spinner-border text-primary m-1" role="status" hidden>
+                                <span class="sr-only">Loading...</span>
                             </div>
-                            <label class="text-dark">Включить контентную фильтрацию</label>
+                        </div>
+                        <br>
+                        <h6>Загрузить ключ:</h6>
+                        <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                            <div class="input-group cust-file-button mb-3">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-primary shadow-2" onclick="Visible('keyLoading', true)" style="width: 160px">Загрузить</button>
+                                </div>
+                                <div class="custom-file">
+                                    <input id="keyFile" name="key" type="file" class="custom-file-input"
+                                           onchange="FileSelect('keyFile', 'keyFileName')">
+                                    <label id="keyFileName" class="custom-file-label">{{ labelKey }}</label>
+                                </div>
+                                <div id="keyLoading" class="spinner-border text-primary m-1" role="status" hidden>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </form>
+                        {#<p class="text-muted">{% replace ca.key|truncatechars:1000 '\n' '' %}</p>#}
+                        {#<p class="text-muted" style="font-family: monospace;">{{ ca.key|linebreaksbr }}</p>#}
+                        <div class="form-group">
+                            <label for="key"></label>
+                            <textarea id="key" class="form-control" style="font-family: monospace;" rows="20" readonly>{{ ca.key }}</textarea>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="rules">Ключ:</label>
-                            <p class="text-muted">{% replace ca.key '\n' '' %}</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Cертификат</h5>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
+                    <div class="card-body">
+                        <h6>Скачать сертификат:</h6>
+                        <div class="input-group cust-file-button mb-3">
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
+                                    onclick="LoadCerAjax()">Скачать</button>
+                            <div id="cerDownload" class="spinner-border text-primary m-1" role="status" hidden>
+                                <span class="sr-only">Loading...</span>
+                            </div>
                         </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col">
-                            <label for="config">Сертификат:</label>
-                            <p class="text-muted">{% replace ca.cer '\n' '' %}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px">Загрузить</button>
+                        <br>
+                        <h6>Загрузить сертификат:</h6>
+                        <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                            <div class="input-group cust-file-button mb-3">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-primary shadow-2" onclick="Visible('cerLoading', true)" style="width: 160px">Загрузить</button>
+                                </div>
+                                <div class="custom-file">
+                                    <input id="cerFile" name="cer" type="file" class="custom-file-input"
+                                           onchange="FileSelect('cerFile', 'cerFileName')">
+                                    <label id="cerFileName" class="custom-file-label">{{ labelCer }}</label>
+                                </div>
+                                <div id="cerLoading" class="spinner-border text-primary m-1" role="status" hidden>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </form>
+                        {#<p class="text-muted te">{% replace ca.cer|truncatechars:1000 '\n' '' %}</p>#}
+                        {#<p class="text-muted" style="font-family: monospace;">{{ ca.cer|linebreaksbr }}</p>#}
+                        <div class="form-group">
+                            <label for="cer"></label>
+                            <textarea id="cer" class="form-control" style="font-family: monospace;" rows="20" readonly>{{ ca.cer }}</textarea>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 {% endblock content %}

@@ -32,8 +32,8 @@ def ca_get(url):
 
 
 # Установить сертификаты
-def ca_set(url, cer, key):
-    dic = {'cer': cer, 'key': key}
+def ca_set(url, key, cer):
+    dic = {'key': key, 'cer': cer}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
     response = requests.put(f"{url}/inspection/ca", json=details)
