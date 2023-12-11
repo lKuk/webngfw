@@ -28,32 +28,29 @@
 {# Содержимое #}
 {% block content %}
     {{ arp }}
+    {{ ipmp }}
+    {{ dhcp }}
     <div class="page-wrapper">
         <div class="card">
             <div class="card-header">
                 <div class="page-header-title">
-                    <h5>Подключение к серверу логирования</h5>
+                    <h5>ARP</h5>
                 </div>
             </div>
             <div class="card-body" style="margin-top: 0; padding-top: 10px">
                 <div class="row">
                     <div class="col-auto p-r-0 p-t-10">
-                        <label for="ipText">IP адрес:</label>
+                        <label for="ipText">Кол-во пакетов</label>
                     </div>
                     <div class="col-auto">
-                        <input id="ipText" type="text" class="form-control" value="{{ server.host }}">
-                        <div class="invalid-feedback" id="validDiv_ipText">
-                            <ul>
-                                <li id="validLi_ipText"></li>
-                            </ul>
-                        </div>
+                        <input id="ipText" type="text" class="form-control" value="{{ arp.limits }}">
                     </div>
 
                     <div class="col-auto p-r-0 p-t-10">
-                        <label for="portText">Порт:</label>
+                        <label for="portText">Порты:</label>
                     </div>
                     <div class="col-auto">
-                        <input id="portText" type="text" class="form-control" value="{{ server.port }}">
+                        <input id="portText" type="text" class="form-control" value="{{ arp.ports }}">
                         <div class="invalid-feedback" id="validDiv_portText">
                             <ul>
                                 <li id="validLi_portText"></li>
@@ -61,9 +58,12 @@
                         </div>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-primary shadow-2" onclick="PostServerAjax()" style="width: 160px">
-                            Сохранить
-                        </button>
+                        <div class="switch switch-primary d-inline m-r-10">
+                            <input type="checkbox" id="statusArp" {% if arp.status == 'true' %}checked{% endif %} hidden
+                                   onchange="PostStatusAjax()">
+                            <label for="statusArp" class="cr"></label>
+                            <label class="text-dark" style="margin-left: 10px">Статус</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,23 +71,58 @@
         <div class="card">
             <div class="card-header">
                 <div class="page-header-title">
-                    <h5>Параметры логирования в системный журнал</h5>
+                    <h5>IPMP</h5>
                 </div>
             </div>
             <div class="card-body" style="margin-top: 0; padding-top: 10px">
                 <div class="row">
-                    {% for key, value in types.items %}
-                        <div class="col-xl-4 col-lg-6">
-                            <div class="switch switch-primary d-inline m-r-10">
-                                <input type="checkbox" id="{{ key }}" {% if value.status %}checked{% endif %} hidden
-                                       onchange="PostStatusAjax()">
-                                <label for="{{ key }}" class="cr"></label>
-                                <label class="text-dark" style="margin-left: 10px">{{ value.name }}</label>
-                                <br>
-                                <p class="text-muted m-0 py-0 p-l-50">({{ value.description }})</p>
-                            </div>
+                    <div class="col-auto p-r-0 p-t-10">
+                        <label for="ipText">Кол-во пакетов</label>
+                    </div>
+                    <div class="col-auto">
+                        <input id="ipText" type="text" class="form-control" value="{{ ipmp.limits }}">
+                    </div>
+
+                    <div class="col-auto p-r-0 p-t-10">
+                        <label for="portText">Порты:</label>
+                    </div>
+                    <div class="col-auto">
+                        <input id="portText" type="text" class="form-control" value="{{ ipmp.ports }}">
+                        <div class="invalid-feedback" id="validDiv_portText">
+                            <ul>
+                                <li id="validLi_portText"></li>
+                            </ul>
                         </div>
-                    {% endfor %}
+                    </div>
+                    <div class="col-auto">
+                        <div class="switch switch-primary d-inline m-r-10">
+                            <input type="checkbox" id="statusIPMP" {% if ipmp.status == 'true' %}checked{% endif %}
+                                   hidden
+                                   onchange="PostStatusAjax()">
+                            <label for="statusIPMP" class="cr"></label>
+                            <label class="text-dark" style="margin-left: 10px">Статус</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>DHCP</h5>
+                </div>
+            </div>
+            <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="switch switch-primary d-inline m-r-10">
+                            <input type="checkbox" id="statusDHCP" {% if dhcp.dhcp_snooping == 'true' %}checked{% endif %}
+                                   hidden
+                                   onchange="PostStatusAjax()">
+                            <label for="statusDHCP" class="cr"></label>
+                            <label class="text-dark" style="margin-left: 10px">Статус</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
