@@ -15,6 +15,7 @@ from ngfwadmin.views.protocols.route import *
 from ngfwadmin.views.protocols.ipconfig import *
 from ngfwadmin.views.inspection.inspection import *
 from ngfwadmin.views.syslog.syslog import *
+from ngfwadmin.views.protect.protect import *
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -49,7 +50,11 @@ urlpatterns = [
     # Контентная фильтрация
     path('inspection/', inspection, name='inspection'),
 
+    #Системный журнал
     path('syslog/', syslog, name='syslog'),
+
+    #Защита сети
+    path('protect/', protect, name='protect'),
 
     # Протоколы
     path('protocol/arp/', protocol_arp, name='protocol_arp'),

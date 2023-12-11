@@ -15,11 +15,8 @@
         function Validate(elementId, validLiId, validDivId, format, text) {
             // Получить контролы валидации
             const element = document.getElementById(elementId);
-            {#alert(element.id + element.textContent)#}
             const validLi = document.getElementById(validLiId);
-            {#alert(validLi.id + validLi.textContent)#}
             const validDiv = document.getElementById(validDivId);
-            {#alert(validDiv.id + validDiv.textContent)#}
             // Выполнить проверку содержимого
             validDiv.hidden = true;
             if (element.value.match(format))
@@ -41,9 +38,6 @@
             // выполнить валидацию
             let res1 = Validate("ipText", "validLi_ipText", "validDiv_ipText", formatIp, "Введите действительный IPv4 или IPv6 адрес.");
             let res2 = Validate("portText", "validLi_portText", "validDiv_portText", formatPort, "Введите целое число от 0 до 65535.");
-
-            {#alert(res1)#}
-            {#alert(res2)#}
 
             // отменить отправку формы на сервер
             if (res1 === false || res2 === false) {

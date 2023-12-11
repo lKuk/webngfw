@@ -116,8 +116,8 @@
                 </li>
 
                 <!-- Защита сети -->
-                <li class="nav-item {% is_active request '' 'active' %}">
-                    <a href="#" class="nav-link">
+                <li class="nav-item {% is_active request 'protect' 'active' %}">
+                    <a href="{% url 'protect' %}" class="nav-link">
                         <span class="pcoded-micon">
                             <i class="feather icon-shield"></i>
                         </span><span class="pcoded-mtext">Защита сети</span>
