@@ -10,7 +10,6 @@
     <!-- Knob Js -->
     <script src="{% static 'main/plugins/chart-knob/js/jquery.knob.min.js' %}"></script>
     <script src="{% static 'main/plugins/chart-knob/js/jquery.knob-custom.min.js' %}"></script>
-
     <script src="{% static 'main/plugins/chart-echarts/js/echarts-en.min.js' %}"></script>
     <!-- Обновление страницы -->
     <script>
@@ -210,14 +209,14 @@
                             <h5>Состояние системы</h5>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body py-0 my-0">
                         <div class="row">
                             <div class="col-auto">
-                                <div class="card card-customer h-75">
+                                <div class="card card-customer">
                                     <div class="card-block">
                                         <div class="row align-items-center justify-content-center">
                                             <div class="col-auto">
-                                                 <i class="feather icon-tag f-50 text-white bg-info"></i>
+                                                 <i class="feather icon-tag f-40 text-white bg-info"></i>
                                             </div>
                                             <div class="col-auto">
                                                 <h4 class="text-muted f-w-300">{{ serial.serial_number }}</h4>
@@ -232,11 +231,11 @@
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <div class="card card-customer h-75">
+                                <div class="card card-customer">
                                     <div class="card-block">
                                         <div class="row align-items-center justify-content-center">
                                             <div class="col-auto">
-                                                 <i class="feather icon-clock f-50 text-white bg-info"></i>
+                                                 <i class="feather icon-clock f-40 text-white bg-info"></i>
                                             </div>
                                             <div class="col-auto">
                                                 <h4 id="currentTime" class="text-muted f-w-300">00д. 00:00:00</h4>
@@ -249,12 +248,38 @@
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <div class="card card-customer h-75">
+                                <div class="card card-customer">
                                     <div class="card-block">
                                         <div class="row align-items-center justify-content-center">
                                             <div class="col-auto">
-                                                <div class="col-auto text-center">
-                                                    <label for="currentDiskT" hidden>Диски</label>
+                                                 <i class="feather icon-power f-38 text-white bg-info"></i>
+                                            </div>
+                                            <div class="col-auto">
+                                                <h4 class="text-muted f-w-300">{{ uptime.start_time }}</h4>
+                                                <a href="#" onclick="confirm('Выполнить перезагрузку системы?');">Перезагрузка системы</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Состояние памяти</h5>
+                        </div>
+                    </div>
+                    <div class="card-body py-0 my-0">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="card card-customer">
+                                    <div class="card-block">
+                                        <div class="row align-items-center justify-content-center">
+                                            <div class="col-auto">
+                                                <div class="col-auto text-center m-0 p-0">
+                                                    <label for="currentDiskT" hidden></label>
                                                     <input id="currentDiskT" type="text" class="dial" value="70"
                                                            data-width="80" data-height="80"
                                                            data-linecap="round" data-displayinput="true"
@@ -270,12 +295,12 @@
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <div class="card card-customer h-75">
+                                <div class="card card-customer">
                                     <div class="card-block">
                                         <div class="row align-items-center justify-content-center">
                                             <div class="col-auto">
-                                                 <div class="col-auto text-center">
-                                                     <label for="currentRamT" hidden>Память</label>
+                                                 <div class="col-auto text-center m-0 p-0">
+                                                     <label for="currentRamT" hidden></label>
                                                      <input id="currentRamT" type="text" class="dial" value="70" data-width="80" data-height="80"
                                                            data-linecap="round" data-displayinput="true"
                                                            data-fgcolor="#17A2BA" data-readonly="true">
@@ -295,85 +320,14 @@
             </div>
         </div>
 
-{#        <div class="row">#}
-{#            <div class="col-md-12" hidden>#}
-{#                <div class="card">#}
-{#                    <div class="card-header">#}
-{#                        <h5>Ядра процессора</h5>#}
-{#                    </div>#}
-{#                    <div class="card-block">#}
-{#                        <div class="row justify-content-center">#}
-{#                            {% for core in lcores %}#}
-{#                                <div class="col-auto">#}
-{#                                    <div class="card">#}
-{#                                        <div class="card-header text-center m-0 p-0">#}
-{#                                            <h6>{{ core }}</h6>#}
-{#                                            <label for="{{ core }}" hidden>{{ core }}</label>#}
-{#                                        </div>#}
-{#                                        <div class="card-block text-center m-0 p-0">#}
-{#                                            <input id="{{ core }}" type="text" class="dial cores" value="0"#}
-{#                                                   data-width="120"#}
-{#                                                   data-height="120"#}
-{#                                                   data-fgcolor="#7A7" data-skin="tron" data-thickness=".1"#}
-{#                                                   data-angleoffset="0"#}
-{#                                                   data-readonly="true">#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            {% endfor %}#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="col-sm-6 col-md-6">#}
-{#                <div class="card">#}
-{#                    <div class="card-header">#}
-{#                        <h5>Диск</h5>#}
-{#                    </div>#}
-{#                    <div class="card-block">#}
-{#                        <div class="row">#}
-{#                            <div class="col-auto text-center">#}
-{#                                <label for="currentDiskT" hidden>Диски</label>#}
-{#                                <input id="currentDiskT" type="text" class="dial" value="0" data-width="120"#}
-{#                                       data-height="120" data-skin="tron" data-thickness=".1" data-angleoffset="0"#}
-{#                                       data-readonly="true">#}
-{#                            </div>#}
-{#                            <div class="col">#}
-{#                                <span class="text-dark" id="currentDisk">Диски: {{ disk }}</span>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="col-sm-6 col-md-6">#}
-{#                <div class="card">#}
-{#                    <div class="card-header">#}
-{#                        <h5>Память</h5>#}
-{#                    </div>#}
-{#                    <div class="card-block">#}
-{#                        <div class="row">#}
-{#                            <div class="col-auto text-center">#}
-{#                                <label for="currentRamT" hidden>Память</label>#}
-{#                                <input id="currentRamT" type="text" class="dial" value="0" data-width="120"#}
-{#                                       data-height="120" data-skin="tron" data-thickness=".1" data-angleoffset="0"#}
-{#                                       data-readonly="true">#}
-{#                            </div>#}
-{#                            <div class="col">#}
-{#                                <span class="text-dark" id="currentRam">Память: {{ ram }}</span>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Нагрузка процессора</h5>
+                        <h5>Состояние процессора</h5>
                     </div>
-                    <div class="card-block  text-center">
-                        <div id="chart-DynamicLineBar" style="width: 100%; height: 350px;"></div>
+                    <div class="card-block text-center py-0 my-0">
+                        <div id="chart-DynamicLineBar" style="width: 100%; height: 250px;"></div>
                     </div>
                 </div>
             </div>
