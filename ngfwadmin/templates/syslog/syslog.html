@@ -65,11 +65,11 @@
         <div class="card">
             <div class="card-header">
                 <div class="page-header-title">
-                    <h5>Параметры системного журнала</h5>
+                    <h5>Подключение к серверу логирования</h5>
                 </div>
             </div>
             <div class="card-body" style="margin-top: 0; padding-top: 10px">
-                <div class="row py-4">
+                <div class="row">
                     <div class="col-auto p-r-0 p-t-10">
                         <label for="ipText">IP адрес:</label>
                     </div>
@@ -86,7 +86,15 @@
                         <div class="btn btn-primary" onclick="PostServerAjax()">Сохранить</div>
                     </div>
                 </div>
-
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>Параметры логирования в системный журнал</h5>
+                </div>
+            </div>
+            <div class="card-body" style="margin-top: 0; padding-top: 10px">
                 {% for key, value in types.items %}
                     <div class="row">
                         {#                        <div class="col-sm-3">{{ value.name }}</div>#}
