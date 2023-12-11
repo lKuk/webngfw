@@ -90,6 +90,29 @@
     </script>
     <!-- Загрузка файлов правил и конфигурации -->
     <script>
+        /*
+        // Загрузка файла правил
+        $(document).ready(function (e) {
+            $('#rulesLoad').on('click', function (event) {
+                event.preventDefault()
+                const form_data = new FormData();
+                form_data.append("rules", document.getElementById('rulesFile').files[0]);
+                const csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
+                const headers = {'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest', 'X-CSRFToken': csrf_token};
+                $.ajax({
+                   type: 'POST',
+                  url: '{% url 'ipsids' %}',
+                  dataType: "json",
+                  cache: false,
+                  contentType: false,
+                  processData: false,
+                  headers: headers,
+                  data: form_data
+                });
+            });
+        });
+        */
+
         // Выбрали файл правил
         function Visible(element, visible) {
             document.getElementById(element).hidden = !visible;

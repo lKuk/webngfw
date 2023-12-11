@@ -50,7 +50,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="page-header-title">
-                    <h5>Конфигурация NAT</h5>
+                    <h5>Проброс портов NAT</h5>
                 </div>
             </div>
             <div class="card-body">
@@ -79,11 +79,12 @@
                                 <thead>
                                 <tr>
                                     <th title="Удаление"><i class="feather icon-trash"></i></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
+                                    <th>№</th>
+                                    <th>Порт LAN</th>
+                                    <th>IP адрес LAN</th>
+                                    <th>Порт WAN</th>
+                                    <th>IP адрес WAN</th>
+                                    <th>Протокол</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -99,11 +100,12 @@
                                             </div>
                                         </td>
                                         <!-- Тип файла -->
-                                        <td style="display: table-cell;">{{ p.port_lan }}</td>
+                                        <td style="display: table-cell;">{{ p.ind }}</td>
                                         <td style="display: table-cell;">{{ p.ip_lan }}</td>
+                                        <td style="display: table-cell;">{{ p.port_lan }}</td>
+                                        <td style="display: table-cell;">{{ p.ip_wan }}</td>
                                         <td style="display: table-cell;">{{ p.port_wan }}</td>
                                         <td style="display: table-cell;">{{ p.protocol }}</td>
-                                        <td style="display: table-cell;">{{ p.ip_wan }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
