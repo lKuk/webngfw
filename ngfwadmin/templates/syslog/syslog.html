@@ -95,22 +95,20 @@
                 </div>
             </div>
             <div class="card-body" style="margin-top: 0; padding-top: 10px">
-                {% for key, value in types.items %}
-                    <div class="row">
-                        {#                        <div class="col-sm-3">{{ value.name }}</div>#}
-                        <div class="col-auto">
+                <div class="row">
+                    {% for key, value in types.items %}
+                        <div class="col-xl-4 col-lg-6">
                             <div class="switch switch-primary d-inline m-r-10">
                                 <input type="checkbox" id="{{ key }}" {% if value.status %}checked{% endif %} hidden
                                        onchange="PostStatusAjax()">
                                 <label for="{{ key }}" class="cr"></label>
                                 <label class="text-dark" style="margin-left: 10px">{{ value.name }}</label>
+                                <br>
+                                <p class="text-muted m-0 py-0 p-l-50">({{ value.description }})</p>
                             </div>
                         </div>
-                        {#                        <div class="col-sm-4">{{ value.description }} {{ value.status }}</div>#}
-                    </div>
-                {% endfor %}
-
-
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
