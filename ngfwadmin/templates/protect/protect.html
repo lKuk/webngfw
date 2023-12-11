@@ -27,9 +27,6 @@
 
 {# Содержимое #}
 {% block content %}
-    {{ arp }}
-    {{ ipmp }}
-    {{ dhcp }}
     <div class="page-wrapper">
         <div class="card">
             <div class="card-header">
@@ -59,8 +56,8 @@
                     </div>
                     <div class="col-auto">
                         <div class="switch switch-primary d-inline m-r-10">
-                            <input type="checkbox" id="statusArp" {% if arp.status == 'true' %}checked{% endif %} hidden
-                                   onchange="PostStatusAjax()">
+                            <input type="checkbox" id="statusArp" {% if arp.status == 'true' %}checked{% endif %}
+                                   hidden>
                             <label for="statusArp" class="cr"></label>
                             <label class="text-dark" style="margin-left: 10px">Статус</label>
                         </div>
@@ -97,8 +94,7 @@
                     <div class="col-auto">
                         <div class="switch switch-primary d-inline m-r-10">
                             <input type="checkbox" id="statusIPMP" {% if ipmp.status == 'true' %}checked{% endif %}
-                                   hidden
-                                   onchange="PostStatusAjax()">
+                                   hidden>
                             <label for="statusIPMP" class="cr"></label>
                             <label class="text-dark" style="margin-left: 10px">Статус</label>
                         </div>
@@ -116,7 +112,8 @@
                 <div class="row">
                     <div class="col-auto">
                         <div class="switch switch-primary d-inline m-r-10">
-                            <input type="checkbox" id="statusDHCP" {% if dhcp.dhcp_snooping == 'true' %}checked{% endif %}
+                            <input type="checkbox" id="statusDHCP"
+                                   {% if dhcp.dhcp_snooping == 'true' %}checked{% endif %}
                                    hidden
                                    onchange="PostStatusAjax()">
                             <label for="statusDHCP" class="cr"></label>
