@@ -159,78 +159,6 @@
 {% block content %}
 
     <div class="page-wrapper">
-        <div class="row" hidden>
-{#            <div class="col-md-12">#}
-{#                <div class="card">#}
-{#                    <div class="card-header">#}
-{#                        <div class="page-header-title">#}
-{#                            <h5>Состояние портов</h5>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                    <div class="card-body">#}
-{#                        <div class="table-responsive">#}
-{#                            <table id="col-reorder" class="display table nowrap table-striped table-hover footable">#}
-{#                                <thead>#}
-{#                                <tr>#}
-{#                                    <th>number</th>#}
-                                    {# Номер порта #}
-{#                                    <th>link_status</th>#}
-                                    {# Статус #}
-{#                                    <th>link_speed</th>#}
-                                    {# Скорость порта (Мбит) #}
-{#                                    <th>ibits_per_sec</th>#}
-                                    {# Входящая скорость (бит/сек.) + )#}
-{#                                    <th>ipackets</th>#}
-                                    {# Входящих пакетов количество (шт.) + #}
-{#                                    <th>ipackets_per_sec</th>#}
-                                    {# Входящих пакетов в секунду (шт/сек.) + #}
-{#                                    <th>ibytes</th>#}
-                                    {# Входящих байт всего (байт) + #}
-{#                                    <th>ierrors</th>#}
-                                    {# Входящих ошибок всего (шт) #}
-{#                                    <th>imissed</th>#}
-                                    {# Входящих потерь всего (шт) #}
-{#                                    <th>imissed_per_sec</th>#}
-                                    {# Входящих потерь в секунду (шт/сек.) #}
-{#                                    <th>obits_per_sec</th>#}
-                                    {# Исходящих скорость (бит/сек.) + #}
-{#                                    <th>opackets</th>#}
-                                    {# Исходящих пакетов количество (шт.) + #}
-{#                                    <th>opackets_per_sec</th>#}
-                                    {# Исходящих пакетов в секунду (шт/сек.) + #}
-{#                                    <th>obytes</th>#}
-                                    {# Исходящих байт всего (байт) + #}
-{#                                    <th>oerrors</th>#}
-                                    {# Исходящих ошибок всего (шт) #}
-{#                                </tr>#}
-{#                                </thead>#}
-{#                                <tbody>#}
-{#                                {% for p in ports %}#}
-{#                                    <tr>#}
-{#                                        <td style="display: table-cell;">{{ p.number }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.link_status }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.link_speed }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.ibits_per_sec }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.ipackets }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.ipackets_per_sec }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.ibytes }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.ierrors }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.imissed }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.imissed_per_sec }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.obits_per_sec }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.opackets }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.opackets_per_sec }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.obytes }}</td>#}
-{#                                        <td style="display: table-cell;">{{ p.oerrors }}</td>#}
-{#                                    </tr>#}
-{#                                {% endfor %}#}
-{#                                </tbody>#}
-{#                            </table>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-        </div>
         <div class="card">
             <div class="card-header">
                 <div class="page-header-title">
@@ -244,7 +172,7 @@
                             <div class="card-body" style="width: 280px">
                                 <div class="row border border-dark p-t-5" style="background: #9dc1d3">
                                     <div class="col-auto text-right px-2">
-                                        <img src="{% static 'main/svg/ethernet.svg' %}" width="26" height="26" alt="">
+                                        <img src="{% static 'main/svg/ethernet.svg' %}" width="26" height="26" alt="" class="bg-white">
                                     </div>
                                     <div class="col-auto text-left p-t-5" data-toggle="tooltip" title="Номер порта">
                                         <h5 id="{{ p.number }}">{{ p.number }}</h5>
@@ -272,16 +200,16 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6 border-bottom border-right border-dark text-left p-t-5" style="background: #ddf1ff">
-                                         <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Исх. скорость порта">
+                                         <div class="row-auto" data-toggle="tooltip" data-placement="right" title="Исх. скорость порта">
                                             <h6 id="{{ p.number }}_obits_per_sec">0</h6>
                                         </div>
-                                        <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Исх. количество байт">
+                                        <div class="row-auto" data-toggle="tooltip" data-placement="right" title="Исх. количество байт">
                                             <h6 id="{{ p.number }}_obytes">0</h6>
                                         </div>
-                                        <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Исх. скорость пакетов">
+                                        <div class="row-auto" data-toggle="tooltip" data-placement="right" title="Исх. скорость пакетов">
                                             <h6 id="{{ p.number }}_opackets_per_sec">0</h6>
                                         </div>
-                                        <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Исх. количество пакетов">
+                                        <div class="row-auto" data-toggle="tooltip" data-placement="right" title="Исх. количество пакетов">
                                             <h6 id="{{ p.number }}_opackets">0</h6>
                                         </div>
                                     </div>
@@ -304,50 +232,6 @@
                         </div>
                     {% endfor %}
                 </div>
-            </div>
-            <div class="card" hidden>
-{#                <div class="card-header">#}
-{#                    <div class="page-header-title">#}
-{#                        <h5>Ошибки</h5>#}
-{#                    </div>#}
-{#                    <ul class="breadcrumb m-t-10">#}
-{#                        <li class="breadcrumb-item"><a href="{% url 'ports' %}"><i#}
-{#                                class="feather icon-airplay p-r-5"></i>Порты</a></li>#}
-{#                    </ul>#}
-{#                </div>#}
-{#                <div class="card-body">#}
-{#                    <div class="row">#}
-{#                        {% for p in ports %}#}
-{#                            <div class="col-sm-2">#}
-{#                                <div class="card-body ">#}
-{#                                    <div class="row border border-success">#}
-{#                                        <div class="col-sm-4">{{ p.number }}</div>#}
-{#                                        <div class="col-sm-4">{{ p.link_status }}</div>#}
-{#                                        <div class="col-sm-4">{{ p.link_speed }}</div>#}
-{#                                    </div>#}
-{#                                    <div class="row">#}
-{#                                        <div class="col-sm-6 border border-top-0 border-success">#}
-{#                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"#}
-{#                                                   title="Входящих ошибок всего (шт)">{{ p.ierrors }} шт.#}
-{#                                            </label><br>#}
-{#                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"#}
-{#                                                   title="Входящих потерь всего (шт)">{{ p.imissed }}#}
-{#                                                шт.</label><br>#}
-{#                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"#}
-{#                                                   title="Входящих потерь в секунду (шт/сек.)">{{ p.imissed_per_sec }}#}
-{#                                                шт/сек.</label><br>#}
-{#                                        </div>#}
-{#                                        <div class="col-sm-6 border-bottom border-right border-success">#}
-{#                                            <label style="margin-bottom: 0" data-toggle="tooltip" data-placement="top"#}
-{#                                                   title="Исходящих ошибок всего (шт)">{{ p.oerrors }}#}
-{#                                                шт.</label><br>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        {% endfor %}#}
-{#                    </div>#}
-{#                </div>#}
             </div>
         </div>
     </div>
