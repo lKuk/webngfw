@@ -9,6 +9,87 @@
 
 {# Скрипты #}
 {% block script %}
+    <script>
+        // Запрос данных Ajax
+        function PostStatusAjax() {
+            var id = event.target.id
+            let checked = event.target.checked;
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'write' %}',
+                data: {write_status: checked, write: id},
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+
+        // Запрос данных Ajax
+        function PostPortAjax() {
+            var id = event.target.id
+            let port = ''
+
+            if (id === 'writeInSave') {
+                port = document.getElementById('portWriteInText')
+            }
+            if (id === 'writeOutSave') {
+                port = document.getElementById('portwriteOutText')
+            }
+
+            let portValue = port.value
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'write' %}',
+                data: {port: portValue, write: id},
+            }
+
+            // Выполнить запрос
+            $.ajax(param);
+
+        }
+
+        var idSave = ''
+        function SavePcap() {
+            idSave = event.target.id
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "html",
+                data: {pcap: idSave},
+                url: '{% url 'write' %}',
+                success: Save
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+
+        // Сохранение файла конфигурации
+        function Save(data) {
+            DownloadFile(data, idSave, "pcap")
+        }
+
+        // Функция скачивания файла
+        function DownloadFile(data, filename, type) {
+            const file = new Blob([data], {type: type});
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, filename);
+            else { // Others
+                const a = document.createElement("a"),
+                    url = URL.createObjectURL(file);
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function () {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 0);
+            }
+        }
+    </script>
 
 {% endblock script %}
 
@@ -26,11 +107,6 @@
 
 {# Содержимое #}
 {% block content %}
-
-
-    {{ writeIn }}
-    {{ writeOut }}
-    {{ content }}
     <div class="page-wrapper">
         <div class="row">
             <div class="col-auto col-sm-6">
@@ -46,7 +122,7 @@
                                 <div class="switch switch-primary d-inline m-r-10">
                                     <input type="checkbox" id="writeIn"
                                            {% if writeIn.write_statusin == 'write' %}checked{% endif %}
-                                           hidden>
+                                           hidden onchange="PostStatusAjax()">
                                     <label for="writeIn" class="cr"></label>
                                     <label class="text-dark" style="margin-left: 10px">Включить запись входящего
                                         трафика</label>
@@ -56,7 +132,7 @@
                         <hr>
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-primary shadow-2" onclick="PostServerAjax()"
+                                <button id="writeInSave" class="btn btn-primary shadow-2" onclick="PostPortAjax()"
                                         style="width: 160px">Сохранить
                                 </button>
                             </div>
@@ -65,13 +141,13 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="portText">Порты:</label>
-                                    <input id="portText" type="text" class="form-control"
+                                    <label for="portWriteInText">Порты:</label>
+                                    <input id="portWriteInText" type="text" class="form-control"
                                            value="{{ writeIn.write_portin }}">
                                 </div>
-                                <div class="invalid-feedback" id="validDiv_portText">
+                                <div class="invalid-feedback" id="validDiv_portWriteInText">
                                     <ul>
-                                        <li id="validLi_portText"></li>
+                                        <li id="validLi_portWriteInText"></li>
                                     </ul>
                                 </div>
                             </div>
@@ -91,8 +167,8 @@
                             <div class="col-auto">
                                 <div class="switch switch-primary d-inline m-r-10">
                                     <input type="checkbox" id="writeOut"
-                                           {% if writeOut.write_statusin == 'write' %}checked{% endif %}
-                                           hidden>
+                                           {% if writeOut.write_statusout == 'write' %}checked{% endif %}
+                                           hidden onchange="PostStatusAjax()">
                                     <label for="writeOut" class="cr"></label>
                                     <label class="text-dark" style="margin-left: 10px">Включить запись исходящего
                                         трафика</label>
@@ -102,7 +178,7 @@
                         <hr>
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-primary shadow-2" onclick="PostServerAjax()"
+                                <button id="writeOutSave" class="btn btn-primary shadow-2" onclick="PostPortAjax()"
                                         style="width: 160px">Сохранить
                                 </button>
                             </div>
@@ -111,15 +187,64 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="portText">Порты:</label>
-                                    <input id="portText" type="text" class="form-control"
+                                    <label for="portwriteOutText">Порты:</label>
+                                    <input id="portwriteOutText" type="text" class="form-control"
                                            value="{{ writeOut.write_portout }}">
                                 </div>
-                                <div class="invalid-feedback" id="validDiv_portText">
+                                <div class="invalid-feedback" id="validDiv_portwriteOutText">
                                     <ul>
-                                        <li id="validLi_portText"></li>
+                                        <li id="validLi_portwriteOutText"></li>
                                     </ul>
                                 </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Запись входящего трафика</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col">
+                            <div class="table-responsive">
+                                <table id="col-reorder"
+                                       class="display table nowrap table-striped table-hover footable"
+                                       style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th title="Удаление"><i class="feather feather icon-save"></i></th>
+                                        <th title="Запрещено/Разрешено">Файл</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for file in content.name %}
+                                        <tr>
+                                            {# Сохранение #}
+                                            <td style="display: table-cell;">
+                                                <div>
+                                                    <a>
+                                                        <i id="{{ file }}" onclick="SavePcap()"
+                                                           class="feather icon-save"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    {{ file }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
