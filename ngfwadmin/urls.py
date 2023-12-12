@@ -51,7 +51,11 @@ urlpatterns = [
     # Контентная фильтрация
     path('inspection/', inspection, name='inspection'),
 
+    #Системный журнал
     path('syslog/', syslog, name='syslog'),
+
+    #Защита сети
+    path('protect/', protect, name='protect'),
 
     # Протоколы
     path('protocol/arp/', protocol_arp, name='protocol_arp'),
