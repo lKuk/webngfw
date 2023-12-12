@@ -17,6 +17,7 @@ from ngfwadmin.views.protocols.route import protocol_route, protocol_route_add
 from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_edit
 from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
 
+
 urlpatterns = [
     # Форма подключения к устройству
     path('connect/', connect, name='connect'),
