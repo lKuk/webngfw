@@ -3,6 +3,8 @@ from django.core.validators import MinValueValidator
 from django.core.validators import MaxValueValidator
 from django.core.validators import validate_ipv46_address
 
+from ngfwadmin.models import Device
+
 
 # Устройства NGFW
 class ConnectForm(forms.Form):
@@ -23,3 +25,7 @@ class ConnectForm(forms.Form):
                                label='Пароль',
                                initial='111111',
                                widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'password'}))
+
+    class Meta:
+        model = Device
+        fields = ["ip", "port", "login", "password"]
