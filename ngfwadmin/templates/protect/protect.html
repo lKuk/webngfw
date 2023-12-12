@@ -29,7 +29,7 @@
             let result = true;
 
             for (let port of arrayStr) {
-                if (port.match(format)) {
+                if (port.trim().match(format)) {
                 } else {
                     result = false
                     // Отобразить ошибку
@@ -132,11 +132,11 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-monitor"></i>Конфигурация системного журнала
+            <i class="m-r-15 feather icon-shield"></i>Защита сети
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
-        <li class="breadcrumb-item"><a href="{% url 'syslog' %}">Системный журнал</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'protect' %}">Защита сети</a></li>
     </ul>
 {% endblock header %}
 
@@ -149,10 +149,10 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>DHCP</h5>
+                            <h5>Защита сети DHCP</h5>
                         </div>
                     </div>
-                    <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-auto">
                                 <div class="switch switch-primary d-inline m-r-10">
@@ -161,7 +161,7 @@
                                            hidden
                                            onchange="PostStatusAjax()">
                                     <label for="statusDHCP" class="cr"></label>
-                                    <label class="text-dark" style="margin-left: 10px">Включить DHCP</label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить защиту от атак с использованием протокола DHCP</label>
                                 </div>
                             </div>
                         </div>
@@ -174,47 +174,43 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>ARP</h5>
+                            <h5>Защита сети ARP</h5>
                         </div>
                     </div>
-                    <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                    <div class="card-body">
                         <div class="row">
-                            <div class="col-auto">
+                            <div class="col">
                                 <div class="switch switch-primary d-inline m-r-10">
                                     <input type="checkbox" id="statusArp"
                                            {% if arp.status == 'true' %}checked{% endif %}
                                            hidden onchange="PostStatusAjax()">
                                     <label for="statusArp" class="cr"></label>
-                                    <label class="text-dark" style="margin-left: 10px">Включить ARP</label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить защиту от атак с использованием протокола ARP</label>
                                 </div>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-auto p-r-0 p-t-10">
-                                <label for="arplimits">Кол-во пакетов</label>
+                            <div class="col">
+                                <button id="arpBtn" class="btn btn-primary" onclick="PostServerAjax()" style="width: 160px;">Сохранить</button>
                             </div>
-                            <div class="col-auto" style="width: 20%">
-                                <input id="arplimits" type="text" class="form-control" value="{{ arp.limits }}">
-                            </div>
-
-                            <div class="col-auto p-r-0 p-t-10">
-                                <label for="arpports">Порты:</label>
-                            </div>
-                            <div class="col-auto" style="width: 56%">
-                                <input id="arpports" type="text" class="form-control" value="{{ arp.ports }}">
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="arplimits">Ограничение количества пакетов:</label>
+                                    <input id="arplimits" type="text" class="form-control" value="{{ arp.limits }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="arpports">Список портов устройства:</label>
+                                    <input id="arpports" type="text" class="form-control" value="{{ arp.ports }}">
+                                </div>
                                 <div class="invalid-feedback" id="validDiv_arpports">
                                     <ul>
                                         <li id="validLi_arpports"></li>
                                     </ul>
                                 </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-auto p-r-0 p-t-10">
-                                <button id="arpBtn" class="btn btn-primary" onclick="PostServerAjax()">Сохранить
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -224,47 +220,43 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>ICMP</h5>
+                            <h5>Защита сети ICMP</h5>
                         </div>
                     </div>
-                    <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                    <div class="card-body">
                         <div class="row">
-                            <div class="col-auto">
+                            <div class="col">
                                 <div class="switch switch-primary d-inline m-r-10">
                                     <input type="checkbox" id="statusICMP"
                                            {% if icmp.status == 'true' %}checked{% endif %}
                                            hidden onclick="PostStatusAjax()">
                                     <label for="statusICMP" class="cr"></label>
-                                    <label class="text-dark" style="margin-left: 10px">Включить ICMP</label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить защиту от атак с использованием протокола ICMP</label>
                                 </div>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-auto p-r-0 p-t-10">
-                                <label for="icmplimits">Кол-во пакетов</label>
+                            <div class="col">
+                                <button class="btn btn-primary" id="icmpBtn" onclick="PostServerAjax()" style="width: 160px;">Сохранить</button>
                             </div>
-                            <div class="col-auto" style="width: 20%">
-                                <input id="icmplimits" type="text" class="form-control" value="{{ icmp.limits }}">
-                            </div>
-
-                            <div class="col-auto p-r-0 p-t-10">
-                                <label for="icmpports">Порты:</label>
-                            </div>
-                            <div class="col-auto" style="width: 56%">
-                                <input id="icmpports" type="text" class="form-control" value="{{ icmp.ports }}">
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="icmplimits">Кол-во пакетов</label>
+                                    <input id="icmplimits" type="text" class="form-control" value="{{ icmp.limits }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="icmpports">Порты:</label>
+                                    <input id="icmpports" type="text" class="form-control" value="{{ icmp.ports }}">
+                                </div>
                                 <div class="invalid-feedback" id="validDiv_icmpports">
                                     <ul>
                                         <li id="validLi_icmpports"></li>
                                     </ul>
                                 </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-auto p-r-0 p-t-10">
-                                <button class="btn btn-primary" id="icmpBtn" onclick="PostServerAjax()">Сохранить
-                                </button>
                             </div>
                         </div>
                     </div>

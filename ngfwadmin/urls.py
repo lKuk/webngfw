@@ -7,6 +7,7 @@ from ngfwadmin.views.state.state import state
 from ngfwadmin.views.ipsids.ipsids import ipsids
 from ngfwadmin.views.syslog.syslog import syslog
 from ngfwadmin.views.rules.history import history
+from ngfwadmin.views.protect.protect import protect
 from ngfwadmin.views.connect.connect import connect
 from ngfwadmin.views.protocols.arp import protocol_arp
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp
