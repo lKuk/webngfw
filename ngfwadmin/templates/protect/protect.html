@@ -9,6 +9,122 @@
 
 {# Скрипты #}
 {% block script %}
+    <script>
+
+        // Скрипт валидации
+        function Validate(elementId, validLiId, validDivId, format, text) {
+            // Получить контролы валидации
+            const element = document.getElementById(elementId);
+            const validLi = document.getElementById(validLiId);
+            const validDiv = document.getElementById(validDivId);
+            // Выполнить проверку содержимого
+            validDiv.hidden = true;
+
+            if (element.value === 'all'){
+                return true
+            }
+
+            var arrayStr = element.value.split(',')
+
+            let result = true;
+
+            for (let port of arrayStr) {
+                if (port.match(format)) {
+                } else {
+                    result = false
+                    // Отобразить ошибку
+                    validDiv.hidden = false;
+                    validDiv.classList.add('text-danger');
+                    validDiv.classList.remove("invalid-feedback");
+                    text += ' ' + port + ';';
+                }
+            }
+            validLi.textContent = text;
+            return result;
+        }
+
+        // Валидация в зависимости от формата
+        function ValidateAll(protocol) {
+            // определить формат валидации
+            const formatPort = /^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$/;
+
+            let res = true;
+
+            if (protocol === 'arp') {
+                // выполнить валидацию
+                res = Validate("arpports", "validLi_arpports", "validDiv_arpports", formatPort, "Неверное значение порта:");
+            }
+            if (protocol === 'icmp') {
+                // выполнить валидацию
+                res = Validate("icmpports", "validLi_icmpports", "validDiv_icmpports", formatPort, "Неверное значение порта:");
+            }
+            return res
+        }
+
+        // Запрос данных Ajax
+        function PostStatusAjax() {
+            var id = event.target.id
+            let checked = event.target.checked;
+
+            let proto = ''
+            if (id === 'statusArp') {
+                proto = 'arp'
+            }
+            if (id === 'statusICMP') {
+                proto = 'icmp'
+            }
+            if (id === 'statusDHCP') {
+                proto = 'dhcp'
+            }
+
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'protect' %}',
+                data: {'status': checked, proto: proto},
+            }
+            // Выполнить запрос
+            $.ajax(param);
+
+        }
+
+        function PostServerAjax() {
+            var id = event.target.id
+
+            let limits = ''
+            let ports = ''
+            let valid = true
+
+            let proto = ''
+            if (id === 'arpBtn') {
+                proto = 'arp'
+                limits = document.getElementById('arplimits').value
+                ports = document.getElementById('arpports').value
+                valid = ValidateAll('arp')
+            }
+            if (id === 'icmpBtn') {
+                proto = 'icmp'
+                limits = document.getElementById('icmplimits').value
+                ports = document.getElementById('icmpports').value
+                valid = ValidateAll('icmp')
+            }
+
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'protect' %}',
+                data: {'limits': limits, 'ports': ports, proto: proto},
+            }
+
+            // Выполнить запрос
+            if (valid === true) {
+                $.ajax(param);
+            }
+        }
+
+    </script>
 
 {% endblock script %}
 
@@ -28,96 +144,128 @@
 {# Содержимое #}
 {% block content %}
     <div class="page-wrapper">
-        <div class="card">
-            <div class="card-header">
-                <div class="page-header-title">
-                    <h5>ARP</h5>
-                </div>
-            </div>
-            <div class="card-body" style="margin-top: 0; padding-top: 10px">
-                <div class="row">
-                    <div class="col-auto p-r-0 p-t-10">
-                        <label for="ipText">Кол-во пакетов</label>
-                    </div>
-                    <div class="col-auto">
-                        <input id="ipText" type="text" class="form-control" value="{{ arp.limits }}">
-                    </div>
-
-                    <div class="col-auto p-r-0 p-t-10">
-                        <label for="portText">Порты:</label>
-                    </div>
-                    <div class="col-auto">
-                        <input id="portText" type="text" class="form-control" value="{{ arp.ports }}">
-                        <div class="invalid-feedback" id="validDiv_portText">
-                            <ul>
-                                <li id="validLi_portText"></li>
-                            </ul>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>DHCP</h5>
                         </div>
                     </div>
-                    <div class="col-auto">
-                        <div class="switch switch-primary d-inline m-r-10">
-                            <input type="checkbox" id="statusArp" {% if arp.status == 'true' %}checked{% endif %}
-                                   hidden>
-                            <label for="statusArp" class="cr"></label>
-                            <label class="text-dark" style="margin-left: 10px">Статус</label>
+                    <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="switch switch-primary d-inline m-r-10">
+                                    <input type="checkbox" id="statusDHCP"
+                                           {% if dhcp.dhcp_snooping == 'true' %}checked{% endif %}
+                                           hidden
+                                           onchange="PostStatusAjax()">
+                                    <label for="statusDHCP" class="cr"></label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить DHCP</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-header">
-                <div class="page-header-title">
-                    <h5>IPMP</h5>
-                </div>
-            </div>
-            <div class="card-body" style="margin-top: 0; padding-top: 10px">
-                <div class="row">
-                    <div class="col-auto p-r-0 p-t-10">
-                        <label for="ipText">Кол-во пакетов</label>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>ARP</h5>
+                        </div>
                     </div>
-                    <div class="col-auto">
-                        <input id="ipText" type="text" class="form-control" value="{{ ipmp.limits }}">
-                    </div>
+                    <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="switch switch-primary d-inline m-r-10">
+                                    <input type="checkbox" id="statusArp"
+                                           {% if arp.status == 'true' %}checked{% endif %}
+                                           hidden onchange="PostStatusAjax()">
+                                    <label for="statusArp" class="cr"></label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить ARP</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-auto p-r-0 p-t-10">
+                                <label for="arplimits">Кол-во пакетов</label>
+                            </div>
+                            <div class="col-auto" style="width: 20%">
+                                <input id="arplimits" type="text" class="form-control" value="{{ arp.limits }}">
+                            </div>
 
-                    <div class="col-auto p-r-0 p-t-10">
-                        <label for="portText">Порты:</label>
-                    </div>
-                    <div class="col-auto">
-                        <input id="portText" type="text" class="form-control" value="{{ ipmp.ports }}">
-                        <div class="invalid-feedback" id="validDiv_portText">
-                            <ul>
-                                <li id="validLi_portText"></li>
-                            </ul>
+                            <div class="col-auto p-r-0 p-t-10">
+                                <label for="arpports">Порты:</label>
+                            </div>
+                            <div class="col-auto" style="width: 56%">
+                                <input id="arpports" type="text" class="form-control" value="{{ arp.ports }}">
+                                <div class="invalid-feedback" id="validDiv_arpports">
+                                    <ul>
+                                        <li id="validLi_arpports"></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="switch switch-primary d-inline m-r-10">
-                            <input type="checkbox" id="statusIPMP" {% if ipmp.status == 'true' %}checked{% endif %}
-                                   hidden>
-                            <label for="statusIPMP" class="cr"></label>
-                            <label class="text-dark" style="margin-left: 10px">Статус</label>
+                        <hr>
+                        <div class="row">
+                            <div class="col-auto p-r-0 p-t-10">
+                                <button id="arpBtn" class="btn btn-primary" onclick="PostServerAjax()">Сохранить
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <div class="page-header-title">
-                    <h5>DHCP</h5>
-                </div>
-            </div>
-            <div class="card-body" style="margin-top: 0; padding-top: 10px">
-                <div class="row">
-                    <div class="col-auto">
-                        <div class="switch switch-primary d-inline m-r-10">
-                            <input type="checkbox" id="statusDHCP"
-                                   {% if dhcp.dhcp_snooping == 'true' %}checked{% endif %}
-                                   hidden
-                                   onchange="PostStatusAjax()">
-                            <label for="statusDHCP" class="cr"></label>
-                            <label class="text-dark" style="margin-left: 10px">Статус</label>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>ICMP</h5>
+                        </div>
+                    </div>
+                    <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="switch switch-primary d-inline m-r-10">
+                                    <input type="checkbox" id="statusICMP"
+                                           {% if icmp.status == 'true' %}checked{% endif %}
+                                           hidden onclick="PostStatusAjax()">
+                                    <label for="statusICMP" class="cr"></label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить ICMP</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-auto p-r-0 p-t-10">
+                                <label for="icmplimits">Кол-во пакетов</label>
+                            </div>
+                            <div class="col-auto" style="width: 20%">
+                                <input id="icmplimits" type="text" class="form-control" value="{{ icmp.limits }}">
+                            </div>
+
+                            <div class="col-auto p-r-0 p-t-10">
+                                <label for="icmpports">Порты:</label>
+                            </div>
+                            <div class="col-auto" style="width: 56%">
+                                <input id="icmpports" type="text" class="form-control" value="{{ icmp.ports }}">
+                                <div class="invalid-feedback" id="validDiv_icmpports">
+                                    <ul>
+                                        <li id="validLi_icmpports"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-auto p-r-0 p-t-10">
+                                <button class="btn btn-primary" id="icmpBtn" onclick="PostServerAjax()">Сохранить
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

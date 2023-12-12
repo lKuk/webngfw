@@ -18,12 +18,46 @@ def protect(request):
         url = dev.get('url')
 
         arp = get_arp_protect(url)
-        ipmp = get_icmp_protect(url)
+        icmp = get_icmp_protect(url)
         dhcp = get_dhcp_snooping(url)
+
+        # изменить статус
+        checked = request.GET.get("status")
+        proto = request.GET.get("proto")
+        if checked is not None and proto is not None:
+            if proto == 'arp':
+                limits = arp['limits']
+                ports = arp['ports']
+                set_arp(url, limits, ports, checked)
+                return
+            if proto == 'icmp':
+                limits = icmp['limits']
+                ports = icmp['ports']
+                set_ipmp(url, limits, ports, checked)
+                return
+            if proto == 'dhcp':
+                set_dhcp(url, checked)
+                return
+            return
+
+        limits = request.GET.get('limits')
+        ports = request.GET.get('ports')
+        proto = request.GET.get("proto")
+        if limits is not None and ports is not None and proto is not None:
+            if proto == 'arp':
+                status = arp['status']
+                set_arp(url, limits, ports, status)
+                return
+            if proto == 'icmp':
+                status = icmp['status']
+                set_ipmp(url, limits, ports, status)
+                return
+            return
+
 
         context = {'dev': dev,
                    'arp': arp,
-                   'ipmp': ipmp,
+                   'icmp': icmp,
                    'dhcp': dhcp
                    }
         # Вернуть данные
