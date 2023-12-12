@@ -152,7 +152,7 @@
                     <a href="{% url 'syslog' %}" class="nav-link">
                         <span class="pcoded-micon">
                             <i class="feather icon-monitor"></i>
-                        </span><span class="pcoded-mtext">Системный журнал</span>
+                        </span><span class="pcoded-mtext">Логирование</span>
                     </a>
                 </li>
 
@@ -210,7 +210,6 @@
         <!-- Справа -->
         <ul class="navbar-nav ml-auto">
             <!-- переподключение -->
-              <!-- переподключение -->
             {% if dev.mode != 'local' %}
                 <li>
                     <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.ip }}</a>
