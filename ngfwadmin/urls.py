@@ -17,6 +17,7 @@ from ngfwadmin.views.protocols.nat import protocol_nat, protocol_nat_add
 from ngfwadmin.views.protocols.route import protocol_route, protocol_route_add
 from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_edit
 from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
+from ngfwadmin.views.write.write import write
 
 
 urlpatterns = [
@@ -57,6 +58,9 @@ urlpatterns = [
 
     #Защита сети
     path('protect/', protect, name='protect'),
+
+    #Запись трафика
+    path('write/', write, name='write'),
 
     # Протоколы
     path('protocol/arp/', protocol_arp, name='protocol_arp'),

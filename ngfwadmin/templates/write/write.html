@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+{% load base_tag %}
+
+
+{# Стили #}
+{% block style %}
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-monitor"></i>Запись трафика
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'write' %}">Трафик</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+
+    {{ writeIn }}
+    {{ writeOut }}
+    {{ content }}
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-auto col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Запись входящего трафика</h5>
+                        </div>
+                    </div>
+                    <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="switch switch-primary d-inline m-r-10">
+                                    <input type="checkbox" id="writeIn"
+                                           {% if writeIn.write_statusin == 'write' %}checked{% endif %}
+                                           hidden>
+                                    <label for="writeIn" class="cr"></label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить запись входящего
+                                        трафика</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary shadow-2" onclick="PostServerAjax()"
+                                        style="width: 160px">Сохранить
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="portText">Порты:</label>
+                                    <input id="portText" type="text" class="form-control"
+                                           value="{{ writeIn.write_portin }}">
+                                </div>
+                                <div class="invalid-feedback" id="validDiv_portText">
+                                    <ul>
+                                        <li id="validLi_portText"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Запись исходящего трафика</h5>
+                        </div>
+                    </div>
+                    <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="switch switch-primary d-inline m-r-10">
+                                    <input type="checkbox" id="writeOut"
+                                           {% if writeOut.write_statusin == 'write' %}checked{% endif %}
+                                           hidden>
+                                    <label for="writeOut" class="cr"></label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить запись исходящего
+                                        трафика</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary shadow-2" onclick="PostServerAjax()"
+                                        style="width: 160px">Сохранить
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="portText">Порты:</label>
+                                    <input id="portText" type="text" class="form-control"
+                                           value="{{ writeOut.write_portout }}">
+                                </div>
+                                <div class="invalid-feedback" id="validDiv_portText">
+                                    <ul>
+                                        <li id="validLi_portText"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
