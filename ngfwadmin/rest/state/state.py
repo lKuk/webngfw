@@ -54,3 +54,12 @@ def settings_get(url):
         raise Exception(response.url, response.text)
     details = response.json()
     return details
+
+
+# Получить версию
+def system_exit(url):
+    response = requests.post(f"{url}/system/exit")
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    details = response.json()
+    return details

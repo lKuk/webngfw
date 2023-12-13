@@ -11,6 +11,30 @@
     <script src="{% static 'main/plugins/chart-knob/js/jquery.knob.min.js' %}"></script>
     <script src="{% static 'main/plugins/chart-knob/js/jquery.knob-custom.min.js' %}"></script>
     <script src="{% static 'main/plugins/chart-echarts/js/echarts-en.min.js' %}"></script>
+    <!-- Отправка запроса на перезапуск -->
+    <script>
+        // Запрос данных Ajax
+        function RebootAjax() {
+            // Вопрос о перезапуске
+            let res = confirm('Выполнить перезагрузку системы?');
+            if(res === false)
+                return;
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'state' %}',
+                data: {'reboot': true },
+            }
+            // Выполнить запрос
+            $.ajax(param);
+            // получить контрол статуса
+            var text_status = document.getElementById("text-status");
+            text_status.textContent = "Перезагрузка";
+            text_status.classList.toggle('badge-warning', true);
+            text_status.classList.toggle('badge-success', false);
+        }
+    </script>
     <!-- Обновление страницы -->
     <script>
         var domdynamic = document.getElementById("chart-DynamicLineBar");
@@ -74,6 +98,21 @@
 
         // Обновление страницы
         function Update(response) {
+
+            // Статус
+            if ('status' in response) {
+                let status = response.status.main_status.toString();
+                let text_status = document.getElementById("text-status");
+                text_status.textContent = status;
+                text_status.classList.toggle('badge-light', false);
+                text_status.classList.toggle('badge-warning', false);
+                text_status.classList.toggle('badge-success', false);
+                if(status.toLowerCase() === 'работает')
+                    text_status.classList.toggle('badge-success', true);
+                else
+                    text_status.classList.toggle('badge-warning', true);
+            }
+
             // Время работы
             if ('uptime' in response) {
                 let uptime = response.uptime;
@@ -231,8 +270,8 @@
                                             </div>
                                             <div class="col-auto">
                                                 <h4 id="currentTime" class="text-muted f-w-300">00д. 00:00:00</h4>
-                                                <h5 class="text-success">
-                                                    <span class="badge badge-success">{{ status.main_status }}</span>
+                                                <h5>
+                                                    <span id="text-status" class="badge badge-light">{{ 'Статус' }}</span>
                                                 </h5>
                                             </div>
                                         </div>
@@ -248,7 +287,7 @@
                                             </div>
                                             <div class="col-auto">
                                                 <h4 class="text-muted f-w-300">{{ uptime.start_time }}</h4>
-                                                <a href="#" onclick="confirm('Выполнить перезагрузку системы?');">Перезагрузка системы</a>
+                                                <a href="#" onclick="RebootAjax()">Перезагрузка системы</a>
                                             </div>
                                         </div>
                                     </div>

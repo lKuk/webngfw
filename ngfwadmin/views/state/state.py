@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.rest.state.state import uptime_get, serial_get, status_get, version_get
+from ngfwadmin.rest.state.state import uptime_get, serial_get, status_get, version_get, system_exit
 from ngfwadmin.rest.state.monitoring import monitoring_ram_get, monitoring_disk_get, monitoring_lcores_get
 
 
@@ -17,6 +17,13 @@ def state(request):
             return redirect('connect')
         # подключение
         url = dev.get('url')
+
+        # Выполнить перезапуск
+        reboot = request.GET.get("reboot")
+        if reboot is not None:
+            system_exit(url)
+
+        # данные
         uptime = uptime_get(url)
         serial = serial_get(url)
         status = status_get(url)
@@ -32,10 +39,12 @@ def state(request):
                    'uptime': uptime,
                    'status': status,
                    'version': version}
+
         # Вернуть данные
         ajax = request.GET.get("ajax")
         if ajax is not None:
             return JsonResponse(context)
+
         # Вернуть сформированную страницу
         return render(request, 'state/state.html', context=context)
     except Exception as ex:
