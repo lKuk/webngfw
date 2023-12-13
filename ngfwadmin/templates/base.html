@@ -32,153 +32,158 @@
         <div class="navbar-content scroll-div overflow-auto">
             <ul class="nav pcoded-inner-navbar">
 
-                <!-- Группа - Система -->
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Система</label>
-                </li>
+                {% if dev.url is not None %}
 
-                <!-- Состояние -->
-                <li class="nav-item {% is_active request 'state' 'active' %}">
-                    <a href="{% url 'state' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-home"></i>
-                        </span>
-                        <span class="pcoded-mtext">Состояние</span>
-                    </a>
-                </li>
+                    <!-- Группа - Система -->
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Система</label>
+                    </li>
 
-                <li class="nav-item {% is_active request 'ports' 'active' %}">
-                    <a href="{% url 'ports' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-airplay"></i>
-                        </span>
-                        <span class="pcoded-mtext">Порты</span>
-                    </a>
-                </li>
+                    <!-- Состояние -->
+                    <li class="nav-item {% is_active request 'state' 'active' %}">
+                        <a href="{% url 'state' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-home"></i>
+                            </span>
+                            <span class="pcoded-mtext">Состояние</span>
+                        </a>
+                    </li>
 
-                <!-- Группа - Фильтрация -->
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Межсетевой экран</label>
-                </li>
+                    <!-- Порты -->
+                    <li class="nav-item {% is_active request 'ports' 'active' %}">
+                        <a href="{% url 'ports' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-airplay"></i>
+                            </span>
+                            <span class="pcoded-mtext">Порты</span>
+                        </a>
+                    </li>
 
-                <!-- Правила -->
-                <li class="nav-item {% is_active request 'rules rules_add rules_edit' 'active' %}">
-                    <a href="{% url 'rules' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-trending-up"></i>
-                        </span><span class="pcoded-mtext">Правила</span>
-                    </a>
-                </li>
+                    <!-- Группа - Фильтрация -->
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Межсетевой экран</label>
+                    </li>
 
-                <!-- Списки -->
-                <li class="nav-item {% is_active request 'lists lists_add lists_edit' 'active' %}">
-                    <a href="{% url 'lists' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-list"></i>
-                        </span><span class="pcoded-mtext">Списки</span>
-                    </a>
-                </li>
+                    <!-- Правила -->
+                    <li class="nav-item {% is_active request 'rules rules_add rules_edit' 'active' %}">
+                        <a href="{% url 'rules' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-trending-up"></i>
+                            </span><span class="pcoded-mtext">Правила</span>
+                        </a>
+                    </li>
 
-                <!-- История изменений  -->
-                <li class="nav-item {% is_active request 'history' 'active' %}">
-                    <a href="{% url 'history' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-clock"></i>
-                        </span><span class="pcoded-mtext">История</span>
-                    </a>
-                </li>
+                    <!-- Списки -->
+                    <li class="nav-item {% is_active request 'lists lists_add lists_edit' 'active' %}">
+                        <a href="{% url 'lists' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-list"></i>
+                            </span><span class="pcoded-mtext">Списки</span>
+                        </a>
+                    </li>
 
+                    <!-- История изменений  -->
+                    <li class="nav-item {% is_active request 'history' 'active' %}">
+                        <a href="{% url 'history' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-clock"></i>
+                            </span><span class="pcoded-mtext">История</span>
+                        </a>
+                    </li>
 
-                <!-- Группа - Маршрутизация -->
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Маршрутизация</label>
-                </li>
+                    <!-- Группа - Маршрутизация -->
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Маршрутизация</label>
+                    </li>
 
-                <!-- Сеть -->
-                <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_route protocol_route_add protocol_ipconfig protocol_ipconfig_add protocol_nat protocol_arp protocol_dhcp protocol_icmp' 'active pcoded-trigger' %}">
-                    <a href="#" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-wifi"></i>
-                        </span><span class="pcoded-mtext">Сеть</span>
-                    </a>
-                    <ul class="pcoded-submenu">
-                        <li class="{% is_active request 'protocol_ipconfig protocol_ipconfig_add' 'active' %}"><a
-                                href="{% url 'protocol_ipconfig' %}" class="">IP</a></li>
-                        <li class="{% is_active request 'protocol_route protocol_route_add' 'active' %}"><a
-                                href="{% url 'protocol_route' %}" class="">ROUTE</a></li>
-                        <li class="{% is_active request 'protocol_nat' 'active' %}"><a href="{% url 'protocol_nat' %}"
-                                                                                       class="">NAT</a></li>
-                        <li class="{% is_active request 'protocol_arp' 'active' %}"><a href="{% url 'protocol_arp' %}"
-                                                                                       class="">ARP</a></li>
-                        <li class="{% is_active request 'protocol_dhcp' 'active' %}"><a href="{% url 'protocol_dhcp' %}"
-                                                                                        class="">DHCP</a></li>
-                    </ul>
-                </li>
+                    <!-- Сеть -->
+                    <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_route protocol_route_add protocol_ipconfig protocol_ipconfig_add protocol_nat protocol_arp protocol_dhcp protocol_icmp' 'active pcoded-trigger' %}">
+                        <a href="#" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-wifi"></i>
+                            </span><span class="pcoded-mtext">Сеть</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="{% is_active request 'protocol_ipconfig protocol_ipconfig_add' 'active' %}"><a
+                                    href="{% url 'protocol_ipconfig' %}" class="">IP</a></li>
+                            <li class="{% is_active request 'protocol_route protocol_route_add' 'active' %}"><a
+                                    href="{% url 'protocol_route' %}" class="">ROUTE</a></li>
+                            <li class="{% is_active request 'protocol_nat' 'active' %}"><a href="{% url 'protocol_nat' %}"
+                                                                                           class="">NAT</a></li>
+                            <li class="{% is_active request 'protocol_arp' 'active' %}"><a href="{% url 'protocol_arp' %}"
+                                                                                           class="">ARP</a></li>
+                            <li class="{% is_active request 'protocol_dhcp' 'active' %}"><a href="{% url 'protocol_dhcp' %}"
+                                                                                            class="">DHCP</a></li>
+                        </ul>
+                    </li>
 
-                <!-- Защита сети -->
-                <li class="nav-item {% is_active request 'protect' 'active' %}">
-                    <a href="{% url 'protect' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-shield"></i>
-                        </span><span class="pcoded-mtext">Защита сети</span>
-                    </a>
-                </li>
+                    <!-- Защита сети -->
+                    <li class="nav-item {% is_active request 'protect' 'active' %}">
+                        <a href="{% url 'protect' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-shield"></i>
+                            </span><span class="pcoded-mtext">Защита сети</span>
+                        </a>
+                    </li>
 
-                <!-- Группа - Контентная фильтрация -->
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Администрирование</label>
-                </li>
+                    <!-- Группа - Контентная фильтрация -->
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Администрирование</label>
+                    </li>
 
-                <!-- Контентная фильтрация Статус -->
-                <li class="nav-item {% is_active request 'inspection' 'active' %}">
-                    <a href="{% url 'inspection' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-filter"></i>
-                        </span><span class="pcoded-mtext">Контентная фильтрация</span>
-                    </a>
-                </li>
+                    <!-- Контентная фильтрация Статус -->
+                    <li class="nav-item {% is_active request 'inspection' 'active' %}">
+                        <a href="{% url 'inspection' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-filter"></i>
+                            </span><span class="pcoded-mtext">Контентная фильтрация</span>
+                        </a>
+                    </li>
 
-                <!-- Система обнаружения вторжений -->
-                <li class="nav-item {% is_active request 'ipsids' 'active' %}">
-                    <a href="{% url 'ipsids' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-alert-triangle"></i>
-                        </span><span class="pcoded-mtext">Обнаружение вторжений</span>
-                    </a>
-                </li>
+                    <!-- Система обнаружения вторжений -->
+                    <li class="nav-item {% is_active request 'ipsids' 'active' %}">
+                        <a href="{% url 'ipsids' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-alert-triangle"></i>
+                            </span><span class="pcoded-mtext">Обнаружение вторжений</span>
+                        </a>
+                    </li>
 
-                <!-- syslog -->
-                <li class="nav-item {% is_active request 'syslog' 'active' %}">
-                    <a href="{% url 'syslog' %}" class="nav-link">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-monitor"></i>
-                        </span><span class="pcoded-mtext">Логирование</span>
-                    </a>
-                </li>
+                    <!-- syslog -->
+                    <li class="nav-item {% is_active request 'syslog' 'active' %}">
+                        <a href="{% url 'syslog' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-monitor"></i>
+                            </span><span class="pcoded-mtext">Логирование</span>
+                        </a>
+                    </li>
 
-{#                <!-- Группа - Сервис -->#}
-{#                <li class="nav-item pcoded-menu-caption">#}
-{#                    <label>Сервис</label>#}
-{#                </li>#}
-{#                <!-- Debug -->#}
-{#                <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}">#}
-{#                    <a href="#" class="nav-link">#}
-{#                        <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>#}
-{#                    </a>#}
-{#                    <ul class="pcoded-submenu">#}
-{##}
-{#                        <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>#}
-{#                        <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>#}
-{#                        <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>#}
-{#                        <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>#}
-{##}
-{#                        <li class="{% is_active request 'ports' 'active' %}"><a href="{% url 'table' 'ports'%}" class="">Ports</a></li>#}
-{#                        <li class="{% is_active request 'ports_avail' 'active' %}"><a href="{% url 'table' 'ports_avail'%}" class="">Ports avail</a></li>#}
-{#                        <li class="{% is_active request 'system_ports' 'active' %}"><a href="{% url 'table' 'system_ports'%}" class="">System ports</a></li>#}
-{#                        <li class="{% is_active request 'system_settings' 'active' %}"><a href="{% url 'table' 'system_settings'%}" class="">System settings</a></li>#}
-{##}
-{#                    </ul>#}
-{#                </li>#}
+                    <!-- Группа - Сервис -->
+                    <li class="nav-item pcoded-menu-caption" hidden>
+                        <label>Сервис</label>
+                    </li>
+
+                    <!-- Debug -->
+                    <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}" hidden>
+                        <a href="#" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+
+                            <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>
+                            <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>
+                            <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>
+                            <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>
+
+                            <li class="{% is_active request 'ports' 'active' %}"><a href="{% url 'table' 'ports'%}" class="">Ports</a></li>
+                            <li class="{% is_active request 'ports_avail' 'active' %}"><a href="{% url 'table' 'ports_avail'%}" class="">Ports avail</a></li>
+                            <li class="{% is_active request 'system_ports' 'active' %}"><a href="{% url 'table' 'system_ports'%}" class="">System ports</a></li>
+                            <li class="{% is_active request 'system_settings' 'active' %}"><a href="{% url 'table' 'system_settings'%}" class="">System settings</a></li>
+
+                        </ul>
+                    </li>
+
+                {% endif %}
 
             </ul>
         </div>
