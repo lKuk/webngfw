@@ -31,31 +31,19 @@ def write(request):
         checked = request.GET.get("write_status")
 
         # изменить статус
-        if checked is not None and write is not None:
-            # значение статуса
-            status = "stop"
-            if checked == 'true':
-                status = "write"
-            # запись входящего
-            if write == 'writeIn':
-                set_write_in(url, writeIn['write_portin'], status)
-            # запись исходящего
-            if write == 'writeOut':
-                set_write_out(url, writeOut['write_portout'], status)
-            return
-
-        # изменить порт
-        if port is not None and write is not None:
-            # сохранить порты входящего
-            if write == 'writeInSave':
-                if writeIn['write_statusin'] == 'pass':
-                    writeIn['write_statusin'] = 'stop'
-                set_write_in(url, port, writeIn['write_statusin'])
-            # сохранить порты исходящего
-            if write == 'writeOutSave':
-                if writeOut['write_statusout'] == 'pass':
-                    writeOut['write_statusout'] = 'stop'
-                set_write_out(url, port, writeOut['write_statusout'])
+        if checked is not None and write is not None and port is not None:
+            if checked == 'pass':
+                status = 'write'
+                if write == 'writeInSave':
+                    set_write_in(url, port, status)
+                if write == 'writeOutSave':
+                    set_write_out(url, port, status)
+            if checked == 'write':
+                status = 'stop'
+                if write == 'writeInSave':
+                    set_write_in(url, writeIn['write_portin'], status)
+                if write == 'writeOutSave':
+                    set_write_out(url, writeOut['write_portout'], status)
             return
 
         # скачать файл

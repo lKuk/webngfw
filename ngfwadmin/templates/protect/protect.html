@@ -106,6 +106,17 @@
                 }
             }
 
+            if (id === 'statusDHCP') {
+                // Параметры
+                param = {
+                    type: "GET",
+                    dataType: "json",
+                    url: '{% url 'protect' %}',
+                    data: {'status': checked, proto: proto},
+                }
+                $.ajax(param);
+            }
+
             // Выполнить запрос
             if (valid === true) {
                 $.ajax(param);
@@ -126,41 +137,6 @@
             }
 
 
-        }
-
-        function PostServerAjax() {
-            var id = event.target.id
-
-            let limits = ''
-            let ports = ''
-            let valid = true
-
-            let proto = ''
-            if (id === 'arpBtn') {
-                proto = 'arp'
-                limits = document.getElementById('arplimits').value
-                ports = document.getElementById('arpports').value
-                valid = ValidateAll('arp')
-            }
-            if (id === 'icmpBtn') {
-                proto = 'icmp'
-                limits = document.getElementById('icmplimits').value
-                ports = document.getElementById('icmpports').value
-                valid = ValidateAll('icmp')
-            }
-
-            // Параметры
-            const param = {
-                type: "GET",
-                dataType: "json",
-                url: '{% url 'protect' %}',
-                data: {'limits': limits, 'ports': ports, proto: proto},
-            }
-
-            // Выполнить запрос
-            if (valid === true) {
-                $.ajax(param);
-            }
         }
 
         function ReadOnly() {
