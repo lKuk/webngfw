@@ -60,13 +60,16 @@ urlpatterns = [
 
     # Протоколы
     path('protocol/arp/', protocol_arp, name='protocol_arp'),
-    path('protocol/dhcp/', protocol_dhcp, name='protocol_dhcp'),
     path('protocol/nat/', protocol_nat, name='protocol_nat'),
     path('protocol/nat/new/', protocol_nat_add, name='protocol_nat_add'),
     path('protocol/route/', protocol_route, name='protocol_route'),
     path('protocol/route/new', protocol_route_add, name='protocol_route_add'),
     path('protocol/ipconfig/', protocol_ipconfig, name='protocol_ipconfig'),
     path('protocol/ipconfig/new', protocol_ipconfig_add, name='protocol_ipconfig_add'),
+
+    path('protocol/dhcp/table/', protocol_dhcp, name='protocol_dhcp_table'),
+    path('protocol/dhcp/subnet/', protocol_dhcp, name='protocol_dhcp_subnet'),
+    path('protocol/dhcp/static/', protocol_dhcp, name='protocol_dhcp_static'),
 
     # Справочные таблицы
     path('rules/table/<slug:name>/', table, name='table'),

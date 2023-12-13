@@ -46,6 +46,7 @@
                                 <i class="feather icon-home"></i>
                             </span>
                             <span class="pcoded-mtext">Состояние</span>
+                            <span class="pcoded-badge label label-primary">New</span>
                         </a>
                     </li>
 
@@ -97,7 +98,7 @@
                     </li>
 
                     <!-- Сеть -->
-                    <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_route protocol_route_add protocol_ipconfig protocol_ipconfig_add protocol_nat protocol_arp protocol_dhcp protocol_icmp' 'active pcoded-trigger' %}">
+                    <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_ipconfig protocol_ipconfig_add protocol_route protocol_route_add protocol_nat protocol_arp protocol_dhcp protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_static' 'active pcoded-trigger' %}">
                         <a href="#" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-wifi"></i>
@@ -112,10 +113,22 @@
                                                                                            class="">NAT</a></li>
                             <li class="{% is_active request 'protocol_arp' 'active' %}"><a href="{% url 'protocol_arp' %}"
                                                                                            class="">ARP</a></li>
-                            <li class="{% is_active request 'protocol_dhcp' 'active' %}"><a href="{% url 'protocol_dhcp' %}"
-                                                                                            class="">DHCP</a></li>
+                            <li class="pcoded-hasmenu pcoded-trigger {% is_active request 'protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_static' 'active' %}" >
+                                <a href="#" class="">DHCP</a>
+                                <ul class="pcoded-submenu" style="display: block;">
+                                    <li class="{% is_active request 'protocol_dhcp_table' 'active' %}"><a href="{% url 'protocol_dhcp_table' %}">Выданные адреса</a></li>
+                                    <li class="{% is_active request 'protocol_dhcp_subnet' 'active' %}"><a href="{% url 'protocol_dhcp_subnet' %}">Настройки подсетей</a></li>
+                                    <li class="{% is_active request 'protocol_dhcp_static' 'active' %}"><a href="{% url 'protocol_dhcp_static' %}">Статические адреса</a></li>
+                                </ul>
+                                 <span class="pcoded-badge label label-danger">Dev</span>
+                            </li>
                         </ul>
                     </li>
+
+
+
+
+
 
                     <!-- Защита сети -->
                     <li class="nav-item {% is_active request 'protect' 'active' %}">
@@ -155,6 +168,7 @@
                             <span class="pcoded-micon">
                                 <i class="feather icon-monitor"></i>
                             </span><span class="pcoded-mtext">Логирование</span>
+                            <span class="pcoded-badge label label-primary">New</span>
                         </a>
                     </li>
 
