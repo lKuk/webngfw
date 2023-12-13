@@ -4,6 +4,8 @@ import requests
 
 # Добавить список
 def ipconfig_insert(url, ip, mask, vlan, port, ipgw):
+    if str(vlan) == '':
+        vlan = 0
     dic = {
         'ip': str(ip),
         'mask': str(mask),

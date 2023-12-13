@@ -57,7 +57,9 @@ def protocol_ipconfig_add(request):
                 ipconfig_insert(url, ip, mask, vlan, port, ipgw)
                 # перейти к таблице маршрутов
                 return redirect('protocol_ipconfig')
+        # Данные страницы
+        context = {'dev': dev}
         # Вернуть сформированную страницу
-        return render(request, 'protocols/ipconfig/ipconfig_form.html')
+        return render(request, 'protocols/ipconfig/ipconfig_form.html', context=context)
     except Exception as ex:
         return exception(request, ex)
