@@ -43,3 +43,14 @@ def dev_get(request):
         dev = {}
     # вернуть устройство
     return dev
+
+
+# Удалить подключение к устройству
+def dev_del(request):
+    # подключения
+    global dict_dev
+    # получить ключ сессию
+    session_key = request.session.session_key
+    # удалить устройство
+    if session_key in dict_dev:
+        del dict_dev[session_key]

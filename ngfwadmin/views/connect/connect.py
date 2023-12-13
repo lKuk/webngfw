@@ -1,13 +1,15 @@
 from django.shortcuts import redirect, render
 
 from ngfwadmin.forms import ConnectForm
-from ngfwadmin.views.connect.dev import dev_set
 from ngfwadmin.views.debug.error import exception
+from ngfwadmin.views.connect.dev import dev_set, dev_del
 
 
 # Страница подключения к устройству
 def connect(request):
     try:
+        # Удалить подключение
+        dev_del(request)
         # Подключение
         if request.method == 'POST':
             form = ConnectForm(request.POST)
