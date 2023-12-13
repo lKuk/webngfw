@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 
+from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.views.connect.connect import get_connect
 from ngfwadmin.rest.inspection.inspection import status_set
 from ngfwadmin.rest.protocols.nat import static_port_delete, status_get, static_port_select, static_port_insert
 
@@ -10,7 +10,7 @@ from ngfwadmin.rest.protocols.nat import static_port_delete, status_get, static_
 def protocol_nat(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
         # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')
@@ -48,7 +48,7 @@ def protocol_nat(request):
 def protocol_nat_add(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
         # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')

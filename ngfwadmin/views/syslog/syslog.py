@@ -1,15 +1,15 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
+from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.views.connect.connect import get_connect
 from ngfwadmin.rest.syslog.syslog import type_set, server_set, get_syslog_server, get_syslog_types
 
 
 def syslog(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
         # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')

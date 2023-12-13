@@ -1,15 +1,17 @@
-from ngfwadmin.rest.state.state import *
-from ngfwadmin.views.connect.connect import *
-from ngfwadmin.rest.protect.protect import *
-
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+
+from ngfwadmin.views.connect.dev import dev_get
+from ngfwadmin.views.debug.error import exception
+from ngfwadmin.rest.protect.protect import get_arp_protect, set_arp
+from ngfwadmin.rest.protect.protect import get_icmp_protect, set_ipmp
+from ngfwadmin.rest.protect.protect import get_dhcp_snooping, set_dhcp
 
 
 def protect(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
         # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')

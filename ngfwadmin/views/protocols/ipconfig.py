@@ -1,8 +1,8 @@
 
 from django.shortcuts import redirect, render
 
+from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.views.connect.connect import get_connect
 from ngfwadmin.rest.protocols.ipconfig import ipconfig_delete, ipconfig_select_all, ipconfig_insert
 
 
@@ -10,7 +10,7 @@ from ngfwadmin.rest.protocols.ipconfig import ipconfig_delete, ipconfig_select_a
 def protocol_ipconfig(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
         # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')
@@ -37,7 +37,7 @@ def protocol_ipconfig(request):
 def protocol_ipconfig_add(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
         # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')

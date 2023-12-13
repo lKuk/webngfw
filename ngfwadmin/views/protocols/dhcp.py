@@ -1,15 +1,15 @@
 
 from django.shortcuts import redirect, render
 
+from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.views.connect.connect import get_connect
 
 
 # Страница протокола dhcp
 def protocol_dhcp(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
         # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')

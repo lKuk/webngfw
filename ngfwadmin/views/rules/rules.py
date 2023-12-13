@@ -2,8 +2,8 @@ import json
 
 from django.shortcuts import redirect, render
 
+from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.views.connect.connect import get_connect
 from ngfwadmin.rest.rules.sub import sub_warp, sub_delete, sub_insert
 from ngfwadmin.rest.rules.enum import enum_format_get, enum_atomic_get
 from ngfwadmin.rest.rules.lists import list_insert, content_set, list_select_all
@@ -19,7 +19,7 @@ dictsub = {}
 def rules(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
 
         # проверка подключения
         if 'url' not in dev:
@@ -68,7 +68,7 @@ def rules(request):
 def rules_add(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
 
         # проверка подключения
         if 'url' not in dev:
@@ -108,7 +108,7 @@ def rules_add(request):
 def rules_edit(request, id):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
 
         # проверка подключения
         if 'url' not in dev:
@@ -161,7 +161,7 @@ def rules_edit(request, id):
 def rules_sub_edit(request, id):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
 
         # проверка подключения
         if 'url' not in dev:

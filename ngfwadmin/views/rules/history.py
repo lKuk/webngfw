@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 
+from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.views.connect.connect import get_connect
 from ngfwadmin.rest.rules.history import history_set, history_get
 
 
@@ -9,7 +9,7 @@ from ngfwadmin.rest.rules.history import history_set, history_get
 def history(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
 
         # Проверка подключения
         if 'url' not in dev:

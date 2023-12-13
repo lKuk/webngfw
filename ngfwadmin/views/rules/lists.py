@@ -2,8 +2,8 @@ import json
 
 from django.shortcuts import redirect, render
 
+from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.views.connect.connect import get_connect
 from ngfwadmin.rest.rules.lists import content_set, list_update, list_select, content_get
 from ngfwadmin.rest.rules.lists import list_delete, list_select_all, list_warp, list_insert
 from ngfwadmin.rest.rules.enum import enum_format_get, enum_protocols_get, enum_services_get
@@ -13,7 +13,7 @@ from ngfwadmin.rest.rules.enum import enum_format_get, enum_protocols_get, enum_
 def lists(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
 
         # Проверка подключения
         if 'url' not in dev:
@@ -54,7 +54,7 @@ def lists(request):
 def lists_add(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
 
         # Проверка подключения
         if 'url' not in dev:
@@ -110,7 +110,7 @@ def lists_add(request):
 def lists_edit(request, id):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
 
         # Проверка подключения
         if 'url' not in dev:

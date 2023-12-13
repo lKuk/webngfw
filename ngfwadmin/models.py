@@ -11,6 +11,7 @@ class Device(models.Model):
     password = models.CharField(max_length=255, verbose_name='Пароль')
     description = models.TextField(blank=True, verbose_name='Описание')
     objects = UserManager()
+
     # Мета класс для админки
     class Meta:
         verbose_name = 'Устройство NGFW'
