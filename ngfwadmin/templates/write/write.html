@@ -104,11 +104,11 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-monitor"></i>Запись трафика
+            <i class="m-r-15 feather icon-file-text"></i>Запись входящего и исходящего сетевого трафика
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
-        <li class="breadcrumb-item"><a href="{% url 'write' %}">Трафик</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'write' %}">Запись трафика</a></li>
     </ul>
 {% endblock header %}
 
@@ -228,7 +228,7 @@
                                             <!-- Удалить -->
                                             <td style="display: table-cell;">
                                                 <div>
-                                                    <a href="{% url 'lists' %}?delete={{ l.id }}"
+                                                    <a href="{% url 'write' %}?delete={{ file }}"
                                                        onclick="return confirm('Удалить файл {{ file }}?');">
                                                         <i class="feather icon-trash"></i>
                                                     </a>

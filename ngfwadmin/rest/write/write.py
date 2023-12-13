@@ -52,7 +52,7 @@ def get_write_content(url):
 
 
 # Получить содержимое файла
-def save_file(url, fileName):
+def get_write_content_file(url, fileName):
     response = requests.get(f"{url}/system/service/write/content/{fileName}")
     if response.status_code != 200:
         raise Exception(response.url, response.text)
@@ -60,3 +60,10 @@ def save_file(url, fileName):
     return details
 
 
+# Удалить файл
+def delete_write_content_file(url, fileName):
+    response = requests.delete(f"{url}/system/service/write/content/{fileName}")
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    details = response.text
+    return details
