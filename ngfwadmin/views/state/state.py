@@ -22,6 +22,7 @@ def state(request):
         reboot = request.GET.get("reboot")
         if reboot is not None:
             system_exit(url)
+            return
 
         # данные
         uptime = uptime_get(url)
