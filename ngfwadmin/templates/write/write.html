@@ -5,10 +5,17 @@
 
 {# Стили #}
 {% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
 {% endblock style %}
 
 {# Скрипты #}
 {% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+
     <script>
         // Запрос данных Ajax
         function PostStatusAjax() {
@@ -124,17 +131,14 @@
                                            {% if writeIn.write_statusin == 'write' %}checked{% endif %}
                                            hidden onchange="PostStatusAjax()">
                                     <label for="writeIn" class="cr"></label>
-                                    <label class="text-dark" style="margin-left: 10px">Включить запись входящего
-                                        трафика</label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить запись входящего трафика</label>
                                 </div>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col">
-                                <button id="writeInSave" class="btn btn-primary shadow-2" onclick="PostPortAjax()"
-                                        style="width: 160px">Сохранить
-                                </button>
+                                <button id="writeInSave" class="btn btn-primary shadow-2" onclick="PostPortAjax()" style="width: 160px">Сохранить</button>
                             </div>
                         </div>
                         <hr>
@@ -142,8 +146,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="portWriteInText">Порты:</label>
-                                    <input id="portWriteInText" type="text" class="form-control"
-                                           value="{{ writeIn.write_portin }}">
+                                    <input id="portWriteInText" type="text" class="form-control" value="{{ writeIn.write_portin }}">
                                 </div>
                                 <div class="invalid-feedback" id="validDiv_portWriteInText">
                                     <ul>
@@ -170,17 +173,14 @@
                                            {% if writeOut.write_statusout == 'write' %}checked{% endif %}
                                            hidden onchange="PostStatusAjax()">
                                     <label for="writeOut" class="cr"></label>
-                                    <label class="text-dark" style="margin-left: 10px">Включить запись исходящего
-                                        трафика</label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить запись исходящего трафика</label>
                                 </div>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col">
-                                <button id="writeOutSave" class="btn btn-primary shadow-2" onclick="PostPortAjax()"
-                                        style="width: 160px">Сохранить
-                                </button>
+                                <button id="writeOutSave" class="btn btn-primary shadow-2" onclick="PostPortAjax()"style="width: 160px">Сохранить</button>
                             </div>
                         </div>
                         <hr>
@@ -188,8 +188,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="portwriteOutText">Порты:</label>
-                                    <input id="portwriteOutText" type="text" class="form-control"
-                                           value="{{ writeOut.write_portout }}">
+                                    <input id="portwriteOutText" type="text" class="form-control" value="{{ writeOut.write_portout }}">
                                 </div>
                                 <div class="invalid-feedback" id="validDiv_portwriteOutText">
                                     <ul>
@@ -198,8 +197,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -209,7 +206,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>Запись входящего трафика</h5>
+                            <h5>Файлы записи сетевого трафика</h5>
                         </div>
                     </div>
                     <div class="card-body">
@@ -220,25 +217,29 @@
                                        style="width:100%">
                                     <thead>
                                     <tr>
-                                        <th title="Удаление"><i class="feather feather icon-save"></i></th>
-                                        <th title="Запрещено/Разрешено">Файл</th>
+                                        <th title="Удалить"><i class="feather icon-trash"></i></th>
+                                        <th>Файл</th>
+                                        <th title="Сохранить"><i class="feather feather icon-save"></i></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for file in content.name %}
                                         <tr>
-                                            {# Сохранение #}
+                                            <!-- Удалить -->
                                             <td style="display: table-cell;">
                                                 <div>
-                                                    <a>
-                                                        <i id="{{ file }}" onclick="SavePcap()"
-                                                           class="feather icon-save"></i>
+                                                    <a href="{% url 'lists' %}?delete={{ l.id }}"
+                                                       onclick="return confirm('Удалить файл {{ file }}?');">
+                                                        <i class="feather icon-trash"></i>
                                                     </a>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <!-- Имя файла -->
+                                            <td style="display: table-cell;">{{ file }}</td>
+                                            <!-- Сохранить -->
+                                            <td style="display: table-cell;">
                                                 <div>
-                                                    {{ file }}
+                                                    <a href="#"><i id="{{ file }}" onclick="SavePcap()" class="feather icon-save"></i></a>
                                                 </div>
                                             </td>
                                         </tr>

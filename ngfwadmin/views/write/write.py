@@ -1,16 +1,16 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 
+from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.views.connect.connect import get_connect
-from ngfwadmin.rest.write.write import get_write_in, get_write_out, get_write_content, set_write_in, set_write_out, \
-    save_file
+from ngfwadmin.rest.write.write import get_write_content, save_file
+from ngfwadmin.rest.write.write import get_write_in, get_write_out, set_write_in, set_write_out
 
 
 def write(request):
     try:
         # Подключение
-        dev = get_connect()
+        dev = dev_get(request)
         # Проверка подключения
         if 'url' not in dev:
             return redirect('connect')
@@ -54,7 +54,8 @@ def write(request):
             file = save_file(url, pcap)
             return HttpResponse(file)
 
-        context = {'writeIn': writeIn,
+        context = {'dev': dev,
+                   'writeIn': writeIn,
                    'writeOut': writeOut,
                    'content': content
                    }
