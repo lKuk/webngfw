@@ -30,7 +30,7 @@
         function formatSi(val) {
             if (val === 0)
                 return '0 ';
-            const dec = 2;
+            const dec = 1;
             const k = 1024;
             const dm = dec < 0 ? 0 : dec;
             const sizes = ['', 'К', 'М', 'Г', 'Т', ''];
@@ -113,23 +113,23 @@
                     //+
                     var imissed_per_sec = exOnePort['imissed_per_sec'];
                     var imissed_per_secEl = document.getElementById(number + "_" + "imissed_per_sec");
-                    imissed_per_secEl.textContent = imissed_per_sec;
+                    imissed_per_secEl.textContent = formatSi(parseInt(imissed_per_sec)) + "";
 
                     //+
                     var ierrors = exOnePort['ierrors'];
                     var ierrorsEl = document.getElementById(number + "_" + "ierrors");
-                    ierrorsEl.textContent = ierrors;
+                    ierrorsEl.textContent = formatSi(parseInt(ierrors)) + "";
 
                     //+
                     var imissed = exOnePort['imissed'];
                     var imissedEl = document.getElementById(number + "_" + "imissed");
-                    imissedEl.textContent = imissed;
+                    imissedEl.textContent = formatSi(parseInt(imissed)) + "";
 
 
                     //+
                     var oerrors = exOnePort['oerrors'];
                     var oerrorsEl = document.getElementById(number + "_" + "oerrors");
-                    oerrorsEl.textContent = oerrors;
+                    oerrorsEl.textContent = formatSi(parseInt(oerrors)) + "";
 
                 }
             }
@@ -169,7 +169,7 @@
                 <div class="row justify-content-center">
                     {% for p in ports %}
                         <div class="col-auto p-0">
-                            <div class="card-body" style="width: 280px">
+                            <div class="card-body" style="width: 300px">
                                 <div class="row border border-dark p-t-5" style="background: #9dc1d3">
                                     <div class="col-auto text-right px-2">
                                         <img src="{% static 'main/svg/ethernet.svg' %}" width="26" height="26" alt="" class="bg-white">
@@ -185,7 +185,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-6 border border-dark border-top-0 text-left p-t-5" style="background: #ddf1ff">
+                                    <div class="col-sm-6 border border-dark border-top-0 border-right-0 text-left p-t-5" style="background: #ddf1ff">
                                         <div class="row-auto" data-toggle="tooltip" data-placement="left" title="Вх. скорость порта">
                                             <h6 id="{{ p.number }}_ibits_per_sec">0</h6>
                                         </div>
@@ -215,16 +215,16 @@
                                     </div>
                                 </div>
                                 <div class="row border border-top-0 border-dark text-center" style="background: peachpuff">
-                                    <div class="col-sm-3" data-toggle="tooltip" data-placement="bottom" title="Вх. потерь (шт)">
+                                    <div class="col-sm-3 m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Вх. потерь (шт)">
                                         <h6 id="{{ p.number }}_imissed" class="my-1">0</h6>
                                     </div>
-                                    <div class="col-sm-3 border-left border-dark" data-toggle="tooltip" data-placement="bottom" title="Вх. ск. потерь (шт/сек)">
+                                    <div class="col-sm-3 m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Вх. ск. потерь (шт/сек)">
                                         <h6 id="{{ p.number }}_imissed_per_sec" class="my-1">0</h6>
                                     </div>
-                                    <div class="col-sm-3 border-left border-dark" data-toggle="tooltip" data-placement="bottom" title="Вх. ошибок (шт)">
+                                    <div class="col-sm-3 m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Вх. ошибок (шт)">
                                         <h6 id="{{ p.number }}_ierrors" class="my-1">0</h6>
                                     </div>
-                                    <div class="col-sm-3 border-left border-dark" data-toggle="tooltip" data-placement="bottom" title="Исх. ошибок (шт)">
+                                    <div class="col-sm-3 m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Исх. ошибок (шт)">
                                         <h6 id="{{ p.number }}_oerrors" class="my-1">0</h6>
                                     </div>
                                 </div>
