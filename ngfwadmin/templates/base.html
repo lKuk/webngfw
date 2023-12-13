@@ -172,6 +172,16 @@
                         </a>
                     </li>
 
+                    <!-- Запись трафика -->
+                    <li class="nav-item {% is_active request 'write' 'active' %}">
+                        <a href="{% url 'write' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-monitor"></i>
+                            </span><span class="pcoded-mtext">Запись трафика</span>
+                            <span class="pcoded-badge label label-primary">New</span>
+                        </a>
+                    </li>
+
                     <!-- Группа - Сервис -->
                     <li class="nav-item pcoded-menu-caption" hidden>
                         <label>Сервис</label>

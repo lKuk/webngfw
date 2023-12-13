@@ -4,6 +4,7 @@ from ngfwadmin.views.debug.error import error
 from ngfwadmin.views.debug.table import table
 from ngfwadmin.views.ports.ports import ports
 from ngfwadmin.views.state.state import state
+from ngfwadmin.views.write.write import write
 from ngfwadmin.views.ipsids.ipsids import ipsids
 from ngfwadmin.views.syslog.syslog import syslog
 from ngfwadmin.views.rules.history import history
@@ -57,6 +58,9 @@ urlpatterns = [
 
     #Защита сети
     path('protect/', protect, name='protect'),
+
+    #Запись трафика
+    path('write/', write, name='write'),
 
     # Протоколы
     path('protocol/arp/', protocol_arp, name='protocol_arp'),
