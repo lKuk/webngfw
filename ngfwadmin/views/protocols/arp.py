@@ -30,6 +30,6 @@ def protocol_arp(request):
         context = {'dev': dev,
                    'arp': arp }
         # Вернуть сформированную страницу
-        return render(request, 'protocols/arp.html', context=context)
+        return render(request, 'protocols/arp/arp.html', context=context)
     except Exception as ex:
         return exception(request, ex)

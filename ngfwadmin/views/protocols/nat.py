@@ -40,7 +40,7 @@ def protocol_nat(request):
                    'status': status,
                    'static_port': static_port}
         # Вернуть сформированную страницу
-        return render(request, 'protocols/nat.html', context=context)
+        return render(request, 'protocols/nat/nat.html', context=context)
     except Exception as ex:
         return exception(request, ex)
 
@@ -69,6 +69,6 @@ def protocol_nat_add(request):
                 # перейти к таблице маршрутов
                 return redirect('protocol_nat')
         # Вернуть сформированную страницу
-        return render(request, 'protocols/nat_form.html')
+        return render(request, 'protocols/nat/nat_form.html')
     except Exception as ex:
         return exception(request, ex)

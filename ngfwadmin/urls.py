@@ -10,13 +10,13 @@ from ngfwadmin.views.rules.history import history
 from ngfwadmin.views.protect.protect import protect
 from ngfwadmin.views.connect.connect import connect
 from ngfwadmin.views.protocols.arp import protocol_arp
-from ngfwadmin.views.protocols.dhcp import protocol_dhcp
 from ngfwadmin.views.inspection.inspection import inspection
 from ngfwadmin.views.rules.lists import lists, lists_add, lists_edit
 from ngfwadmin.views.protocols.nat import protocol_nat, protocol_nat_add
 from ngfwadmin.views.protocols.route import protocol_route, protocol_route_add
 from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_edit
 from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
+from ngfwadmin.views.protocols.dhcp import protocol_dhcp_table, protocol_dhcp_subnet, protocol_dhcp_static
 
 
 urlpatterns = [
@@ -66,10 +66,9 @@ urlpatterns = [
     path('protocol/route/new', protocol_route_add, name='protocol_route_add'),
     path('protocol/ipconfig/', protocol_ipconfig, name='protocol_ipconfig'),
     path('protocol/ipconfig/new', protocol_ipconfig_add, name='protocol_ipconfig_add'),
-
-    path('protocol/dhcp/table/', protocol_dhcp, name='protocol_dhcp_table'),
-    path('protocol/dhcp/subnet/', protocol_dhcp, name='protocol_dhcp_subnet'),
-    path('protocol/dhcp/static/', protocol_dhcp, name='protocol_dhcp_static'),
+    path('protocol/dhcp/table/', protocol_dhcp_table, name='protocol_dhcp_table'),
+    path('protocol/dhcp/subnet/', protocol_dhcp_subnet, name='protocol_dhcp_subnet'),
+    path('protocol/dhcp/static/', protocol_dhcp_static, name='protocol_dhcp_static'),
 
     # Справочные таблицы
     path('rules/table/<slug:name>/', table, name='table'),

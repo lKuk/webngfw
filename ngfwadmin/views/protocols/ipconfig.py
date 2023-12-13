@@ -29,7 +29,7 @@ def protocol_ipconfig(request):
         context = {'dev': dev,
                    'ipconfig': ipconfig}
         # Вернуть сформированную страницу
-        return render(request, 'protocols/ipconfig.html', context=context)
+        return render(request, 'protocols/ipconfig/ipconfig.html', context=context)
     except Exception as ex:
         return exception(request, ex)
 
@@ -58,6 +58,6 @@ def protocol_ipconfig_add(request):
                 # перейти к таблице маршрутов
                 return redirect('protocol_ipconfig')
         # Вернуть сформированную страницу
-        return render(request, 'protocols/ipconfig_form.html')
+        return render(request, 'protocols/ipconfig/ipconfig_form.html')
     except Exception as ex:
         return exception(request, ex)

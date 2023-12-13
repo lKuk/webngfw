@@ -28,7 +28,7 @@ def protocol_route(request):
         context = {'dev': dev,
                    'route': route}
         # Вернуть сформированную страницу
-        return render(request, 'protocols/route.html', context=context)
+        return render(request, 'protocols/route/route.html', context=context)
     except Exception as ex:
         return exception(request, ex)
 
@@ -55,6 +55,6 @@ def protocol_route_add(request):
                 # перейти к таблице маршрутов
                 return redirect('protocol_route')
         # Вернуть сформированную страницу
-        return render(request, 'protocols/route_form.html')
+        return render(request, 'protocols/route/route_form.html')
     except Exception as ex:
         return exception(request, ex)

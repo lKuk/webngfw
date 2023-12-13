@@ -13,9 +13,12 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-home"></i>Протокол DHCP
+            <i class="m-r-15 feather icon-wifi"></i>Настройки подсетей DHCP
         </h4>
     </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'protocol_dhcp_subnet' %}">Настройки подсетей</a></li>
+    </ul>
 {% endblock header %}
 
 {# Содержимое #}
@@ -27,7 +30,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>Протокол DHCP</h5>
+                            <h5>Настройки подсетей</h5>
                         </div>
                     </div>
                     <div class="card-body">
