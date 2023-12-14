@@ -1,5 +1,6 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
@@ -63,7 +64,8 @@ def write(request):
         # Вернуть данные
         ajax = request.GET.get("ajax")
         if ajax is not None:
-            return JsonResponse(context)
+            data = {'rendered_table': render_to_string('write/write.html', context=context)}
+            return JsonResponse(data)
 
         # Вернуть сформированную страницу
         return render(request, 'write/write.html', context=context)
