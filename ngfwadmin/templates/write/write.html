@@ -108,6 +108,9 @@
         }
         // Сохранение файла
         function SaveFile(data) {
+            // base64 преобразование
+            data = atob(data);
+            // Скачать файл
             DownloadFile(data, m_fileName, "pcap")
         }
         // Функция скачивания файла
