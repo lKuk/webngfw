@@ -15,69 +15,101 @@
     <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
     <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
     <script src="{% static 'language/ru-table.js' %}"></script>
+    <!-- Валидация -->
+    <script>
+        // Скрипт валидации
+        function Validate(elementId, validLiId, validDivId, format, text) {
+            // Получить контролы валидации
+            const element = document.getElementById(elementId);
+            const validLi = document.getElementById(validLiId);
+            const validDiv = document.getElementById(validDivId);
+            // Выполнить проверку содержимого
+            validDiv.hidden = true;
 
+            if (element.value === 'all') {
+                return true
+            }
+
+            let result = true;
+            var arrayStr = element.value.split(',')
+            for (let port of arrayStr) {
+                if (port.trim().match(format)) {
+                } else {
+                    result = false
+                    validDiv.hidden = false;
+                    validDiv.classList.add('text-danger');
+                    validDiv.classList.remove("invalid-feedback");
+                    text += port;
+                    break;
+                }
+            }
+            validLi.textContent = text;
+            return result;
+        }
+    </script>
+    <!-- Включение и отключение записи -->
     <script>
         // Запрос данных Ajax
-        function PostStatusAjax() {
-            var id = event.target.id
-            let checked = event.target.checked;
+        function PostPortAjax(val) {
+            let btnName = 'btn' + val;
+            let portName = 'port' + val;
+            let validLiName = 'validLi' + val;
+            let validDivName = 'validDiv' + val;
+            let btn = document.getElementById(btnName);
+            let port = document.getElementById(portName);
+
+            // Проверка валидации
+            const formatPort = /^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$/;
+            let res = Validate(portName, validLiName, validDivName, formatPort, "Неверное значение порта: ");
+            if (res === false)
+                return;
+
+            // Отметка о включении
+            let text = btn.textContent.trim();
+            if (text === 'Старт') {
+                btn.textContent = 'Стоп';
+                port.readOnly = true;
+            } else {
+                btn.textContent = 'Старт'
+                port.readOnly = false;
+            }
+
+            // Параметры записи
+            let btnValue = btn.value;
+            let portValue = port.value;
+
             // Параметры
             const param = {
                 type: "GET",
                 dataType: "json",
                 url: '{% url 'write' %}',
-                data: {write_status: checked, write: id},
+                data: {param: val, status: btnValue, port: portValue},
             }
             // Выполнить запрос
             $.ajax(param);
         }
-
-        // Запрос данных Ajax
-        function PostPortAjax() {
-            var id = event.target.id
-            let port = ''
-
-            if (id === 'writeInSave') {
-                port = document.getElementById('portWriteInText')
-            }
-            if (id === 'writeOutSave') {
-                port = document.getElementById('portwriteOutText')
-            }
-
-            let portValue = port.value
-            // Параметры
-            const param = {
-                type: "GET",
-                dataType: "json",
-                url: '{% url 'write' %}',
-                data: {port: portValue, write: id},
-            }
-
-            // Выполнить запрос
-            $.ajax(param);
-
-        }
-
-        var idSave = ''
-        function SavePcap() {
-            idSave = event.target.id
+    </script>
+    <!-- Сохранение файла -->
+    <script>
+        let m_fileName = '';
+        // Ajax сохранение файла pcap
+        function SavePcap(fileName) {
+            m_fileName = fileName;
             // Параметры
             const param = {
                 type: "GET",
                 dataType: "html",
-                data: {pcap: idSave},
+                data: {pcap: fileName},
                 url: '{% url 'write' %}',
-                success: Save
+                success: SaveFile
             }
             // Выполнить запрос
             $.ajax(param);
         }
-
-        // Сохранение файла конфигурации
-        function Save(data) {
-            DownloadFile(data, idSave, "pcap")
+        // Сохранение файла
+        function SaveFile(data) {
+            DownloadFile(data, m_fileName, "pcap")
         }
-
         // Функция скачивания файла
         function DownloadFile(data, filename, type) {
             const file = new Blob([data], {type: type});
@@ -125,32 +157,21 @@
                     </div>
                     <div class="card-body" style="margin-top: 0; padding-top: 10px">
                         <div class="row">
-                            <div class="col-auto">
-                                <div class="switch switch-primary d-inline m-r-10">
-                                    <input type="checkbox" id="writeIn"
-                                           {% if writeIn.write_statusin == 'write' %}checked{% endif %}
-                                           hidden onchange="PostStatusAjax()">
-                                    <label for="writeIn" class="cr"></label>
-                                    <label class="text-dark" style="margin-left: 10px">Включить запись входящего трафика</label>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
                             <div class="col">
-                                <button id="writeInSave" class="btn btn-primary shadow-2" onclick="PostPortAjax()" style="width: 160px">Сохранить</button>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="portWriteInText">Порты:</label>
-                                    <input id="portWriteInText" type="text" class="form-control" value="{{ writeIn.write_portin }}">
+                                <div class="input-group mb-3">
+                                    <label for="portIn"></label>
+                                    <div class="input-group-prepend">
+                                        <button id="btnIn" class="btn btn-primary" type="button"
+                                                value="{{ writeIn.write_statusin }}" onclick="PostPortAjax('In')" style="width: 160px">
+                                            {% if writeIn.write_statusin == 'write' %}Стоп{% else %}Старт{% endif %}</button>
+                                    </div>
+                                    <input id="portIn" type="text" class="form-control"
+                                           value="{{ writeIn.write_portin }}"
+                                           {% if writeIn.write_statusin == 'write' %}readonly{% endif %}>
                                 </div>
-                                <div class="invalid-feedback" id="validDiv_portWriteInText">
+                                <div id="validDivIn" class="invalid-feedback">
                                     <ul>
-                                        <li id="validLi_portWriteInText"></li>
+                                        <li id="validLiIn"></li>
                                     </ul>
                                 </div>
                             </div>
@@ -167,32 +188,21 @@
                     </div>
                     <div class="card-body" style="margin-top: 0; padding-top: 10px">
                         <div class="row">
-                            <div class="col-auto">
-                                <div class="switch switch-primary d-inline m-r-10">
-                                    <input type="checkbox" id="writeOut"
-                                           {% if writeOut.write_statusout == 'write' %}checked{% endif %}
-                                           hidden onchange="PostStatusAjax()">
-                                    <label for="writeOut" class="cr"></label>
-                                    <label class="text-dark" style="margin-left: 10px">Включить запись исходящего трафика</label>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
                             <div class="col">
-                                <button id="writeOutSave" class="btn btn-primary shadow-2" onclick="PostPortAjax()"style="width: 160px">Сохранить</button>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="portwriteOutText">Порты:</label>
-                                    <input id="portwriteOutText" type="text" class="form-control" value="{{ writeOut.write_portout }}">
+                                <div class="input-group mb-3">
+                                    <label for="portOut"></label>
+                                    <div class="input-group-prepend">
+                                        <button id="btnOut" class="btn btn-primary" type="button"
+                                                value="{{ writeOut.write_statusout }}" onclick="PostPortAjax('Out')" style="width: 160px">
+                                                {% if writeOut.write_statusout == 'write' %}Стоп{% else %}Старт{% endif %}</button>
+                                    </div>
+                                    <input id="portOut" type="text" class="form-control"
+                                           value="{{ writeOut.write_portout }}"
+                                           {% if writeIn.write_statusout == 'write' %}readonly{% endif %}>
                                 </div>
-                                <div class="invalid-feedback" id="validDiv_portwriteOutText">
+                                <div  id="validDivOut" class="invalid-feedback">
                                     <ul>
-                                        <li id="validLi_portwriteOutText"></li>
+                                        <li id="validLiOut"></li>
                                     </ul>
                                 </div>
                             </div>
@@ -223,7 +233,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for file in content.name %}
+                                    {% for file in writeContent.name %}
                                         <tr>
                                             <!-- Удалить -->
                                             <td style="display: table-cell;">
@@ -239,7 +249,8 @@
                                             <!-- Сохранить -->
                                             <td style="display: table-cell;">
                                                 <div>
-                                                    <a href="#"><i id="{{ file }}" onclick="SavePcap()" class="feather icon-save"></i></a>
+                                                    <a href="#"><i onclick="SavePcap('{{ file }}')"
+                                                                   class="feather icon-save"></i></a>
                                                 </div>
                                             </td>
                                         </tr>

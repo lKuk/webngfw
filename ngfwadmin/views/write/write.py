@@ -21,49 +21,35 @@ def write(request):
         # получить данные
         writeIn = get_write_in(url)
         writeOut = get_write_out(url)
-        content = get_write_content(url)
+        writeContent = get_write_content(url)
 
-        # параметры
-        pcap = request.GET.get('pcap')
+        # начать/остановить запись
         port = request.GET.get("port")
-        write = request.GET.get("write")
-        delete = request.GET.get("delete")
-        checked = request.GET.get("write_status")
-
-        # изменить статус
-        if checked is not None and write is not None:
-            # значение статуса
-            status = "stop"
-            if checked == 'true':
-                status = "write"
-            # запись входящего
-            if write == 'writeIn':
-                set_write_in(url, writeIn['write_portin'], status)
-            # запись исходящего
-            if write == 'writeOut':
-                set_write_out(url, writeOut['write_portout'], status)
-            return
-
-        # изменить порт
-        if port is not None and write is not None:
-            # сохранить порты входящего
-            if write == 'writeInSave':
-                if writeIn['write_statusin'] == 'pass':
-                    writeIn['write_statusin'] = 'stop'
-                set_write_in(url, port, writeIn['write_statusin'])
-            # сохранить порты исходящего
-            if write == 'writeOutSave':
-                if writeOut['write_statusout'] == 'pass':
-                    writeOut['write_statusout'] = 'stop'
-                set_write_out(url, port, writeOut['write_statusout'])
+        param = request.GET.get("param")
+        status = request.GET.get("status")
+        if param is not None and status is not None and port is not None:
+            # начать запись вх.
+            if param == 'In' and status != 'write':
+                set_write_in(url, port, 'write')
+            # начать запись исх.
+            elif param == 'Out' and status != 'write':
+                set_write_out(url, port, 'write')
+            # остановить запись вх.
+            elif param == 'In' and status == 'write':
+                set_write_in(url, writeIn['write_portin'], 'stop')
+            # остановить запись исх.
+            elif param == 'Out' and status == 'write':
+                set_write_out(url, writeOut['write_portout'], 'stop')
             return
 
         # скачать файл
+        pcap = request.GET.get('pcap')
         if pcap is not None:
             file = get_write_content_file(url, pcap)
             return HttpResponse(file)
 
         # удалить файл
+        delete = request.GET.get("delete")
         if delete is not None:
             delete_write_content_file(url, delete)
             return redirect('write')
@@ -72,7 +58,7 @@ def write(request):
         context = {'dev': dev,
                    'writeIn': writeIn,
                    'writeOut': writeOut,
-                   'content': content}
+                   'writeContent': writeContent}
 
         # Вернуть данные
         ajax = request.GET.get("ajax")

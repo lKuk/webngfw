@@ -25,8 +25,11 @@ def protect(request):
 
         # изменить статус
         checked = request.GET.get("status")
+        limits = request.GET.get('limits')
+        ports = request.GET.get('ports')
         proto = request.GET.get("proto")
-        if checked is not None and proto is not None:
+
+        if checked is not None and proto is not None and limits is None and ports is None:
             if proto == 'arp':
                 limits = arp['limits']
                 ports = arp['ports']
@@ -42,20 +45,14 @@ def protect(request):
                 return
             return
 
-        limits = request.GET.get('limits')
-        ports = request.GET.get('ports')
-        proto = request.GET.get("proto")
-        if limits is not None and ports is not None and proto is not None:
+        if limits is not None and ports is not None and proto is not None and checked is not None:
             if proto == 'arp':
-                status = arp['status']
-                set_arp(url, limits, ports, status)
+                set_arp(url, limits, ports, checked)
                 return
             if proto == 'icmp':
-                status = icmp['status']
-                set_ipmp(url, limits, ports, status)
+                set_ipmp(url, limits, ports, checked)
                 return
             return
-
 
         context = {'dev': dev,
                    'arp': arp,

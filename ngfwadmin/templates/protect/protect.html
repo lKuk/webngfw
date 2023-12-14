@@ -20,7 +20,7 @@
             // Выполнить проверку содержимого
             validDiv.hidden = true;
 
-            if (element.value === 'all'){
+            if (element.value === 'all') {
                 return true
             }
 
@@ -65,65 +65,99 @@
         function PostStatusAjax() {
             var id = event.target.id
             let checked = event.target.checked;
-
-            let proto = ''
-            if (id === 'statusArp') {
-                proto = 'arp'
-            }
-            if (id === 'statusICMP') {
-                proto = 'icmp'
-            }
-            if (id === 'statusDHCP') {
-                proto = 'dhcp'
-            }
-
-            // Параметры
-            const param = {
-                type: "GET",
-                dataType: "json",
-                url: '{% url 'protect' %}',
-                data: {'status': checked, proto: proto},
-            }
-            // Выполнить запрос
-            $.ajax(param);
-
-        }
-
-        function PostServerAjax() {
-            var id = event.target.id
-
             let limits = ''
             let ports = ''
             let valid = true
 
             let proto = ''
-            if (id === 'arpBtn') {
+            if (id === 'statusArp') {
                 proto = 'arp'
                 limits = document.getElementById('arplimits').value
                 ports = document.getElementById('arpports').value
                 valid = ValidateAll('arp')
             }
-            if (id === 'icmpBtn') {
+            if (id === 'statusICMP') {
                 proto = 'icmp'
                 limits = document.getElementById('icmplimits').value
                 ports = document.getElementById('icmpports').value
                 valid = ValidateAll('icmp')
             }
+            if (id === 'statusDHCP') {
+                proto = 'dhcp'
+            }
 
-            // Параметры
-            const param = {
-                type: "GET",
-                dataType: "json",
-                url: '{% url 'protect' %}',
-                data: {'limits': limits, 'ports': ports, proto: proto},
+            let param = ''
+            if (checked === false) {
+                // Параметры
+                param = {
+                    type: "GET",
+                    dataType: "json",
+                    url: '{% url 'protect' %}',
+                    data: {'status': checked, proto: proto},
+                }
+            }
+            if (checked === true) {
+                // Параметры
+                param = {
+                    type: "GET",
+                    dataType: "json",
+                    url: '{% url 'protect' %}',
+                    data: {'limits': limits, 'ports': ports, proto: proto, 'status': checked},
+                }
+            }
+
+            if (id === 'statusDHCP') {
+                // Параметры
+                param = {
+                    type: "GET",
+                    dataType: "json",
+                    url: '{% url 'protect' %}',
+                    data: {'status': checked, proto: proto},
+                }
+                $.ajax(param);
             }
 
             // Выполнить запрос
             if (valid === true) {
                 $.ajax(param);
+                if (id === 'statusArp') {
+                    let arplimits = document.getElementById('arplimits');
+                    arplimits.readOnly = checked;
+                    let arpports = document.getElementById('arpports');
+                    arpports.readOnly = checked;
+                }
+                if (id === 'statusICMP') {
+                    let icmplimits = document.getElementById('icmplimits');
+                    icmplimits.readOnly = checked;
+                    let icmpports = document.getElementById('icmpports');
+                    icmpports.readOnly = checked;
+                }
+            } else {
+                event.target.checked = false;
             }
+
+
         }
 
+        function ReadOnly() {
+            var arp = document.getElementById('statusArp').checked
+            let arplimits1 = document.getElementById('arplimits');
+            arplimits1.readOnly = arp;
+            let arpports1 = document.getElementById('arpports');
+            arpports1.readOnly = arp;
+
+            var icmp = document.getElementById('statusICMP').checked
+            let icmplimits1 = document.getElementById('icmplimits');
+            icmplimits1.readOnly = icmp;
+            let icmpports1 = document.getElementById('icmpports');
+            icmpports1.readOnly = icmp;
+
+        }
+
+        // Запуск при загрузке страницы
+        window.addEventListener('load', () => {
+            ReadOnly();
+        });
     </script>
 
 {% endblock script %}
@@ -161,7 +195,8 @@
                                            hidden
                                            onchange="PostStatusAjax()">
                                     <label for="statusDHCP" class="cr"></label>
-                                    <label class="text-dark" style="margin-left: 10px">Включить защиту от атак с использованием протокола DHCP</label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить защиту от атак с
+                                        использованием протокола DHCP</label>
                                 </div>
                             </div>
                         </div>
@@ -185,14 +220,9 @@
                                            {% if arp.status == 'true' %}checked{% endif %}
                                            hidden onchange="PostStatusAjax()">
                                     <label for="statusArp" class="cr"></label>
-                                    <label class="text-dark" style="margin-left: 10px">Включить защиту от атак с использованием протокола ARP</label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить защиту от атак с
+                                        использованием протокола ARP</label>
                                 </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col">
-                                <button id="arpBtn" class="btn btn-primary" onclick="PostServerAjax()" style="width: 160px;">Сохранить</button>
                             </div>
                         </div>
                         <hr>
@@ -231,14 +261,9 @@
                                            {% if icmp.status == 'true' %}checked{% endif %}
                                            hidden onclick="PostStatusAjax()">
                                     <label for="statusICMP" class="cr"></label>
-                                    <label class="text-dark" style="margin-left: 10px">Включить защиту от атак с использованием протокола ICMP</label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить защиту от атак с
+                                        использованием протокола ICMP</label>
                                 </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col">
-                                <button class="btn btn-primary" id="icmpBtn" onclick="PostServerAjax()" style="width: 160px;">Сохранить</button>
                             </div>
                         </div>
                         <hr>
