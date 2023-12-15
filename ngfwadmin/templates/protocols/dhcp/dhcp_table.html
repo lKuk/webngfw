@@ -1,43 +1,112 @@
 {% extends "base.html" %}
 {% load static %}
+{% load base_tag %}
+
 
 {# Стили #}
 {% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
 {% endblock style %}
 
 {# Скрипты #}
 {% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+
+    <script>
+        function PostStatusAjax() {
+            let checked = event.target.checked;
+
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'protocol_dhcp_table' %}',
+                data: {'status_dhcp_table': checked},
+            }
+            $.ajax(param);
+
+        }
+    </script>
+
 {% endblock script %}
 
 {# Заголовок #}
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-wifi"></i>Выданные адреса DHCP
+            <i class="m-r-15 feather icon-file-text"></i>Запись входящего и исходящего сетевого трафика
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
-        <li class="breadcrumb-item"><a href="{% url 'protocol_dhcp_table' %}">Выданные адреса</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'protocol_dhcp_table' %}">Запись трафика</a></li>
     </ul>
 {% endblock header %}
 
 {# Содержимое #}
 {% block content %}
-
+    {{ status_table.dhcp_enable }}
     <div class="page-wrapper">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-auto col-sm-12">
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>Выданные адреса</h5>
+                            <h5>Стаутс</h5>
+                        </div>
+                    </div>
+                    <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="switch switch-primary d-inline m-r-10">
+                                    <input type="checkbox" id="statusDHCP"
+                                           {% if status_table.dhcp_enable == 'true' %}checked{% endif %} onchange="PostStatusAjax()">
+                                    <label for="statusDHCP" class="cr"></label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить DHCP...</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Тбалица DHCP</h5>
                         </div>
                     </div>
                     <div class="card-body">
+                        <div class="col">
+                            <div class="table-responsive">
+                                <table id="col-reorder"
+                                       class="display table nowrap table-striped table-hover footable"
+                                       style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th>mac</th>
+                                        <th>ip</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for row in table %}
+                                        <tr>
+                                            <td style="display: table-cell;">{{ row.mac }}</td>
+                                            <td style="display: table-cell;">{{ row.ip }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock content %}
