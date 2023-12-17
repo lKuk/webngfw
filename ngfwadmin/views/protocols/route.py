@@ -54,7 +54,9 @@ def protocol_route_add(request):
                 ip_router_insert(url, ip, mask, ipgw)
                 # перейти к таблице маршрутов
                 return redirect('protocol_route')
+        # Данные страницы
+        context = {'dev': dev}
         # Вернуть сформированную страницу
-        return render(request, 'protocols/route/route_form.html')
+        return render(request, 'protocols/route/route_form.html', context=context)
     except Exception as ex:
         return exception(request, ex)

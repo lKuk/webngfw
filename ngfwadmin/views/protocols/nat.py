@@ -68,7 +68,9 @@ def protocol_nat_add(request):
                 static_port_insert(url, ip_lan, port_lan, ip_wan, port_wan, protocol)
                 # перейти к таблице маршрутов
                 return redirect('protocol_nat')
+        # Данные страницы
+        context = {'dev': dev}
         # Вернуть сформированную страницу
-        return render(request, 'protocols/nat/nat_form.html')
+        return render(request, 'protocols/nat/nat_form.html', context=context)
     except Exception as ex:
         return exception(request, ex)

@@ -97,24 +97,28 @@
                     </li>
 
                     <!-- Сеть -->
-                    <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_ipconfig protocol_ipconfig_add protocol_route protocol_route_add protocol_nat protocol_arp protocol_dhcp protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_static' 'active pcoded-trigger' %}">
+                    <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_ipconfig protocol_ipconfig_add protocol_route protocol_route_add protocol_nat protocol_nat_add protocol_arp protocol_dhcp protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_static' 'active pcoded-trigger' %}">
                         <a href="#" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-wifi"></i>
                             </span><span class="pcoded-mtext">Сеть</span>
                         </a>
                         <ul class="pcoded-submenu">
-                            <li class="{% is_active request 'protocol_ipconfig protocol_ipconfig_add' 'active' %}"><a
-                                    href="{% url 'protocol_ipconfig' %}" class="">IP</a></li>
-                            <li class="{% is_active request 'protocol_route protocol_route_add' 'active' %}"><a
-                                    href="{% url 'protocol_route' %}" class="">ROUTE</a></li>
-                            <li class="{% is_active request 'protocol_nat' 'active' %}"><a href="{% url 'protocol_nat' %}"
-                                                                                           class="">NAT</a></li>
-                            <li class="{% is_active request 'protocol_arp' 'active' %}"><a href="{% url 'protocol_arp' %}"
-                                                                                           class="">ARP</a></li>
-                            <li class="pcoded-hasmenu pcoded-trigger {% is_active request 'protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_static' 'active' %}" >
+                            <li class="{% is_active request 'protocol_ipconfig protocol_ipconfig_add' 'active' %}">
+                                <a href="{% url 'protocol_ipconfig' %}" class="">IP</a>
+                            </li>
+                            <li class="{% is_active request 'protocol_route protocol_route_add' 'active' %}">
+                                <a href="{% url 'protocol_route' %}" class="">ROUTE</a>
+                            </li>
+                            <li class="{% is_active request 'protocol_nat protocol_nat_add' 'active' %}">
+                                <a href="{% url 'protocol_nat' %}" class="">NAT</a>
+                            </li>
+                            <li class="{% is_active request 'protocol_arp' 'active' %}">
+                                <a href="{% url 'protocol_arp' %}" class="">ARP</a>
+                            </li>
+                            <li class="pcoded-hasmenu {% is_active request 'protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_static' 'pcoded-trigger active' %}" >
                                 <a href="#" class="">DHCP</a>
-                                <ul class="pcoded-submenu" style="display: block;">
+                                <ul class="pcoded-submenu">
                                     <li class="{% is_active request 'protocol_dhcp_table' 'active' %}"><a href="{% url 'protocol_dhcp_table' %}">Выданные адреса</a></li>
                                     <li class="{% is_active request 'protocol_dhcp_subnet' 'active' %}"><a href="{% url 'protocol_dhcp_subnet' %}">Настройки подсетей</a></li>
                                     <li class="{% is_active request 'protocol_dhcp_static' 'active' %}"><a href="{% url 'protocol_dhcp_static' %}">Статические адреса</a></li>
