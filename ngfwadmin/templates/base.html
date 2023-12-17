@@ -178,6 +178,16 @@
                         </a>
                     </li>
 
+                    <!-- Классификаторы -->
+                    <li class="nav-item {% is_active request 'classification' 'active' %}">
+                        <a href="{% url 'classification' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-clipboard"></i>
+                            </span><span class="pcoded-mtext">Классификаторы</span>
+                            <span class="pcoded-badge label label-danger">Dev</span>
+                        </a>
+                    </li>
+
                     <!-- Группа - Сервис -->
                     <li class="nav-item pcoded-menu-caption" hidden>
                         <label>Сервис</label>

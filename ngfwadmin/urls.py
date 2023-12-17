@@ -14,6 +14,7 @@ from ngfwadmin.views.protocols.arp import protocol_arp
 from ngfwadmin.views.inspection.inspection import inspection
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_table
 from ngfwadmin.views.rules.lists import lists, lists_add, lists_edit
+from ngfwadmin.views.classification.classification import classification
 from ngfwadmin.views.protocols.nat import protocol_nat, protocol_nat_add
 from ngfwadmin.views.protocols.route import protocol_route, protocol_route_add
 from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_edit
@@ -53,6 +54,9 @@ urlpatterns = [
 
     # Контентная фильтрация
     path('inspection/', inspection, name='inspection'),
+
+    # Классификаторы
+    path('classification/', classification, name='classification'),
 
     #Системный журнал
     path('syslog/', syslog, name='syslog'),
