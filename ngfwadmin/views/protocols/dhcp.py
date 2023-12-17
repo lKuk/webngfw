@@ -3,7 +3,8 @@ from django.shortcuts import redirect, render
 
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.rest.protocols.dhcp import dhcp_table_select, get_table_status, set_table_status
+from ngfwadmin.rest.protocols.dhcp import dhcp_table_select, get_table_status, set_table_status, dhcp_subnet_select, \
+    dhcp_subnet_insert, dhcp_subnet_delete
 
 
 # Страница dhcp - выданные адреса
@@ -27,7 +28,7 @@ def protocol_dhcp_table(request):
         # Данные страницы
         context = {'dev': dev,
                    'table': table,
-                   'status_table': status_table}
+                   'status_table': status_table }
         # Вернуть сформированную страницу
         return render(request, 'protocols/dhcp/dhcp_table.html', context=context)
     except Exception as ex:
@@ -44,10 +45,56 @@ def protocol_dhcp_subnet(request):
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        # удалить подсеть
+        delete = request.GET.get("delete")
+        if delete is not None:
+            port = request.GET.get("port")
+            vlan = request.GET.get("vlan")
+            ip_end = request.GET.get("ip_end")
+            ip_start = request.GET.get("ip_start")
+            # удалить подсеть
+            dhcp_subnet_delete(url, port, vlan, ip_start, ip_end)
+            # перейти к таблице списков
+            return redirect('protocol_dhcp_subnet')
+
+        table = dhcp_subnet_select(url)
         # Данные страницы
-        context = {'dev': dev}
+        context = {'dev': dev,
+                   'table': table }
         # Вернуть сформированную страницу
         return render(request, 'protocols/dhcp/dhcp_subnet.html', context=context)
+    except Exception as ex:
+        return exception(request, ex)
+
+
+# Страница dhcp - Добавить подсеть
+def protocol_dhcp_subnet_add(request):
+    try:
+        # Подключение
+        dev = dev_get(request)
+        # Проверка подключения
+        if 'url' not in dev:
+            return redirect('connect')
+        # подключение
+        url = dev.get('url')
+        # создать подсеть
+        if request.method == 'POST':
+            # добавить маршрут
+            if 'btnInsert' in request.POST:
+                # Получить параметры
+                port = request.POST.get('port')
+                vlan = request.POST.get('vlan')
+                ip_end = request.POST.get('ip_end')
+                ip_start = request.POST.get('ip_start')
+                status = request.POST.get('status')
+                # добавить маршрут
+                dhcp_subnet_insert(url, port, vlan, ip_start, ip_end, status)
+                # перейти к таблице маршрутов
+                return redirect('protocol_nat')
+        # Данные страницы
+        context = {'dev': dev }
+        # Вернуть сформированную страницу
+        return render(request, 'protocols/dhcp/dhcp_subnet_form.html', context=context)
     except Exception as ex:
         return exception(request, ex)
 

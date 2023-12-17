@@ -18,7 +18,7 @@ from ngfwadmin.views.protocols.route import protocol_route, protocol_route_add
 from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_edit
 from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_table, protocol_dhcp_subnet, protocol_dhcp_static
-
+from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_add
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -72,6 +72,7 @@ urlpatterns = [
     path('protocol/ipconfig/new', protocol_ipconfig_add, name='protocol_ipconfig_add'),
     path('protocol/dhcp/table/', protocol_dhcp_table, name='protocol_dhcp_table'),
     path('protocol/dhcp/subnet/', protocol_dhcp_subnet, name='protocol_dhcp_subnet'),
+    path('protocol/dhcp/subnet/new', protocol_dhcp_subnet_add, name='protocol_dhcp_subnet_add'),
     path('protocol/dhcp/static/', protocol_dhcp_static, name='protocol_dhcp_static'),
 
     # Справочные таблицы
