@@ -38,7 +38,7 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-wifi"></i>Выданные адреса
+            <i class="m-r-15 feather icon-wifi"></i>Выданные адреса DHCP
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
@@ -48,7 +48,6 @@
 
 {# Содержимое #}
 {% block content %}
-    {{ status_table.dhcp_enable }}
     <div class="page-wrapper">
         <div class="row">
             <div class="col-auto col-sm-12">
