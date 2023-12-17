@@ -3,8 +3,9 @@ from django.shortcuts import redirect, render
 
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.rest.protocols.dhcp import dhcp_table_select, get_table_status, set_table_status, dhcp_subnet_select, \
-    dhcp_subnet_insert, dhcp_subnet_delete
+from ngfwadmin.rest.protocols.dhcp import dhcp_table_select, get_table_status, set_table_status
+from ngfwadmin.rest.protocols.dhcp import dhcp_subnet_select, dhcp_subnet_insert, dhcp_subnet_delete, dhcp_subnet_status
+from ngfwadmin.rest.protocols.dhcp import dhcp_static_select, dhcp_static_insert, dhcp_static_delete
 
 
 # Страница dhcp - выданные адреса
@@ -45,6 +46,15 @@ def protocol_dhcp_subnet(request):
             return redirect('connect')
         # подключение
         url = dev.get('url')
+
+        # изменить состояние подсети
+        port = request.GET.get("port")
+        vlan = request.GET.get("vlan")
+        status = request.GET.get("status")
+        if port is not None and vlan is not None and status is not None:
+            dhcp_subnet_status(url, port, vlan, status)
+            return
+
         # удалить подсеть
         delete = request.GET.get("delete")
         if delete is not None:
@@ -109,9 +119,54 @@ def protocol_dhcp_static(request):
             return redirect('connect')
         # подключение
         url = dev.get('url')
+
+        # удалить подсеть
+        delete = request.GET.get("delete")
+        if delete is not None:
+            ip = request.GET.get("ip")
+            mac = request.GET.get("mac")
+            port = request.GET.get("port")
+            vlan = request.GET.get("vlan")
+            # удалить подсеть
+            dhcp_static_delete(url, port, vlan, ip, mac)
+            # перейти к таблице списков
+            return redirect('protocol_dhcp_static')
+
+        table = dhcp_static_select(url)
+        # Данные страницы
+        context = {'dev': dev,
+                   'table': table}
+        # Вернуть сформированную страницу
+        return render(request, 'protocols/dhcp/dhcp_static.html', context=context)
+    except Exception as ex:
+        return exception(request, ex)
+
+
+# Страница dhcp - Добавить статический
+def protocol_dhcp_static_add(request):
+    try:
+        # Подключение
+        dev = dev_get(request)
+        # Проверка подключения
+        if 'url' not in dev:
+            return redirect('connect')
+        # подключение
+        url = dev.get('url')
+        # создать статический
+        if request.method == 'POST':
+            if 'btnInsert' in request.POST:
+                # Получить параметры
+                ip = request.POST.get('ip')
+                mac = request.POST.get('mac')
+                port = request.POST.get('port')
+                vlan = request.POST.get('vlan')
+                # добавить маршрут
+                dhcp_static_insert(url, port, vlan, ip, mac)
+                # перейти к таблице маршрутов
+                return redirect('protocol_dhcp_static')
         # Данные страницы
         context = {'dev': dev}
         # Вернуть сформированную страницу
-        return render(request, 'protocols/dhcp/dhcp_static.html', context=context)
+        return render(request, 'protocols/dhcp/dhcp_static_form.html', context=context)
     except Exception as ex:
         return exception(request, ex)

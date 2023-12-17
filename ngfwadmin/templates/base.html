@@ -97,7 +97,7 @@
                     </li>
 
                     <!-- Сеть -->
-                    <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_ipconfig protocol_ipconfig_add protocol_route protocol_route_add protocol_nat protocol_nat_add protocol_arp protocol_dhcp protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_subnet_add protocol_dhcp_static' 'active pcoded-trigger' %}">
+                    <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_ipconfig protocol_ipconfig_add protocol_route protocol_route_add protocol_nat protocol_nat_add protocol_arp protocol_dhcp protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_subnet_add protocol_dhcp_static protocol_dhcp_static_add' 'active pcoded-trigger' %}">
                         <a href="#" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-wifi"></i>
@@ -116,12 +116,12 @@
                             <li class="{% is_active request 'protocol_arp' 'active' %}">
                                 <a href="{% url 'protocol_arp' %}" class="">ARP</a>
                             </li>
-                            <li class="pcoded-hasmenu {% is_active request 'protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_subnet_add protocol_dhcp_static' 'pcoded-trigger active' %}" >
+                            <li class="pcoded-hasmenu {% is_active request 'protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_subnet_add protocol_dhcp_static protocol_dhcp_static_add' 'pcoded-trigger active' %}" >
                                 <a href="#" class="">DHCP</a>
                                 <ul class="pcoded-submenu">
                                     <li class="{% is_active request 'protocol_dhcp_table' 'active' %}"><a href="{% url 'protocol_dhcp_table' %}">Выданные адреса</a></li>
                                     <li class="{% is_active request 'protocol_dhcp_subnet protocol_dhcp_subnet_add' 'active' %}"><a href="{% url 'protocol_dhcp_subnet' %}">Настройки подсетей</a></li>
-                                    <li class="{% is_active request 'protocol_dhcp_static' 'active' %}"><a href="{% url 'protocol_dhcp_static' %}">Статические адреса</a></li>
+                                    <li class="{% is_active request 'protocol_dhcp_static protocol_dhcp_static_add' 'active' %}"><a href="{% url 'protocol_dhcp_static' %}">Статические адреса</a></li>
                                 </ul>
                                 <span class="pcoded-badge label label-danger">Dev ??</span>
                             </li>

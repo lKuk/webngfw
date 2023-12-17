@@ -13,6 +13,25 @@
     <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
     <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
     <script src="{% static 'language/ru-table.js' %}"></script>
+    <!-- Изменение статуса-->
+    <script>
+    function PostStatusAjax(port, vlan) {
+        let name = "status_" + port + "_" + vlan;
+        let check = document.getElementById(name);
+        let status = check.checked;
+
+        // Параметры
+        const param = {
+            type: "GET",
+            dataType: "json",
+            url: '{% url 'protocol_dhcp_subnet' %}',
+            data: {'port': port,
+                   'vlan': vlan,
+                   'status': status}
+        }
+        $.ajax(param);
+    }
+</script>
 {% endblock script %}
 
 {# Заголовок #}
@@ -78,11 +97,13 @@
                                                 <td style="display: table-cell;">{{ row.vlan }}</td>
                                                 <td style="display: table-cell;">{{ row.ip_start }}</td>
                                                 <td style="display: table-cell;">{{ row.ip_end }}</td>
-                                                {% if row.enable == True %}
-                                                    <td style="display: table-cell;">Включено</td>
-                                                {% else %}
-                                                    <td style="display: table-cell;">Выключено</td>
-                                                {% endif %}
+                                                <td style="display: table-cell;" class="my-0 py-0">
+                                                    <div class="switch switch-primary" style="margin-top: -5px;">
+                                                        <input class="m-0 p-0" type="checkbox" id="status_{{ row.port }}_{{ row.vlan }}"
+                                                               {% if row.enable == True %}checked{% endif %} onchange="PostStatusAjax({{ row.port }}, {{ row.vlan }})">
+                                                        <label for="status_{{ row.port }}_{{ row.vlan }}" class="cr"></label>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
