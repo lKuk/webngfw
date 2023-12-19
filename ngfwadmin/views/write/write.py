@@ -1,3 +1,5 @@
+import base64
+
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
@@ -47,6 +49,7 @@ def write(request):
         pcap = request.GET.get('pcap')
         if pcap is not None:
             file = get_write_content_file(url, pcap)
+            #file = base64.b64decode(file)
             return HttpResponse(file)
 
         # удалить файл
