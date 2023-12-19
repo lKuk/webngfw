@@ -78,7 +78,7 @@ def protocol_dhcp_subnet(request):
 
 
 # Страница dhcp - Добавить подсеть
-def protocol_dhcp_subnet_add(request):
+def protocol_dhcp_subnet_edit(request, port, vlan):
     try:
         # Подключение
         dev = dev_get(request)
@@ -92,17 +92,26 @@ def protocol_dhcp_subnet_add(request):
             # добавить маршрут
             if 'btnInsert' in request.POST:
                 # Получить параметры
-                port = request.POST.get('port')
-                vlan = request.POST.get('vlan')
                 ip_end = request.POST.get('ip_end')
                 ip_start = request.POST.get('ip_start')
                 status = request.POST.get('status')
                 # добавить маршрут
                 dhcp_subnet_insert(url, port, vlan, ip_start, ip_end, status)
                 # перейти к таблице маршрутов
-                return redirect('protocol_nat')
+                return redirect('protocol_dhcp_subnet')
+        # диапазон ip адресов
+        ip_end = ''
+        if 'ip_end' in request.GET:
+            ip_end = request.GET.get('ip_end')
+        ip_start = ''
+        if 'ip_start' in request.GET:
+            ip_start = request.GET.get('ip_start')
         # Данные страницы
-        context = {'dev': dev }
+        context = {'dev': dev,
+                   'port': port,
+                   'vlan': vlan,
+                   'ip_end': ip_end,
+                   'ip_start': ip_start}
         # Вернуть сформированную страницу
         return render(request, 'protocols/dhcp/dhcp_subnet_form.html', context=context)
     except Exception as ex:
