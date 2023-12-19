@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
 from ngfwadmin.rest.rules.sub import sub_warp, sub_delete, sub_insert
-from ngfwadmin.rest.rules.enum import enum_format_get, enum_atomic_get
+from ngfwadmin.rest.rules.enum import enum_format_get, enum_atomic_get, enum_services_get, enum_protocols_get
 from ngfwadmin.rest.rules.lists import list_insert, content_set, list_select_all
 from ngfwadmin.rest.rules.rules import rule_apply, rule_select_all, rule_delete
 from ngfwadmin.rest.rules.rules import rule_description, rule_insert, rule_update, rule_select
@@ -217,10 +217,14 @@ def rules_sub_edit(request, id):
             if 'btnListNew' in request.POST:
                 rule = rule_select(url, id)
                 format = enum_format_get(url)
+                services = enum_services_get(url)
+                protocols = enum_protocols_get(url)
                 context = {'dev': dev,
                            'rule': rule,
                            'ftype': ftype,
                            'format': format,
+                           'services': services,
+                           'protocols': protocols,
                            'action': 'add',
                            'caption': 'Добавить новый список'}
                 return render(request, 'rules/lists/lists_form.html', context=context)

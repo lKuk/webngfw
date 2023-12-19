@@ -59,7 +59,7 @@ def get_write_content_file(url, fileName):
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.text
-    #details = base64.b64decode(details)
+    details = base64.b64decode(details)
     return details
 
 
