@@ -6,7 +6,7 @@ from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
 from ngfwadmin.rest.rules.lists import content_set, list_update, list_select, content_get
 from ngfwadmin.rest.rules.lists import list_delete, list_select_all, list_warp, list_insert
-from ngfwadmin.rest.rules.enum import enum_format_get, enum_protocols_get, enum_services_get
+from ngfwadmin.rest.rules.enum import enum_format_get, enum_protocols_get, enum_services_get, enum_mimes_get
 
 
 # Страница редактора списков
@@ -85,6 +85,8 @@ def lists_add(request):
                 # перейти к таблице списков
                 return redirect('lists')
 
+        # получить список mime
+        mimes = enum_mimes_get(url)
         # получить доступные форматы
         format = enum_format_get(url)
         # список сервисов
@@ -94,6 +96,7 @@ def lists_add(request):
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,
+                   'mimes': mimes,
                    'format': format,
                    'services': services,
                    'protocols': protocols,
@@ -142,6 +145,8 @@ def lists_edit(request, id):
         list = list_select(url, id)
         # получить содержимое списка
         content = content_get(url, id)
+        # получить список mime
+        mimes = enum_mimes_get(url)
         # получить доступные форматы
         format = enum_format_get(url)
         # список сервисов
@@ -152,6 +157,7 @@ def lists_edit(request, id):
         # отобразить страницу редактирования списка
         context = {'dev': dev,
                    'list': list,
+                   'mimes': mimes,
                    'format': format,
                    'content': content,
                    'services': services,
