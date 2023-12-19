@@ -80,7 +80,8 @@
             // Отобразить нужный контрол
             listSelect.hidden = true;
             listTextarea.hidden = false;
-            if (ftype === "PROTNAME"
+            if (ftype === "DOCEXTNAME"
+                || ftype === "PROTNAME"
                 || ftype === "SERVICENAME") {
                 listSelect.hidden = false;
                 listTextarea.hidden = true;
@@ -92,8 +93,13 @@
             }
 
             // Списки элементов выбора
+            const mimes = document.getElementsByClassName("option-mimes");
             const services = document.getElementsByClassName("option-services");
             const protocols = document.getElementsByClassName("option-protocols");
+            // Список протоколов
+            for (let i = 0; i < protocols.length; i++) {
+                mimes.item(i).hidden = (ftype !== "DOCEXTNAME");
+            }
             // Список протоколов
             for (let i = 0; i < protocols.length; i++) {
                 protocols.item(i).hidden = (ftype !== "PROTNAME");
@@ -325,19 +331,21 @@
                                     <label for="callbacks" style="padding-left: 8%;">Выбрано:</label>
                                 </div>
                             </div>
+                        {{ content }}
                             <select id="callbacks" name="select" class="searchable" multiple="multiple">
+                                {% for m in mimes %}
+                                    <option value='{{ m }}' class="option-mimes"
+                                            {% value_in_content m content %}
+                                            hidden>{{ m }}</option>
+                                {% endfor %}
                                 {% for p in protocols %}
                                     <option value='{{ p }}' class="option-protocols"
-                                            {% if p in content %}
-                                            selected
-                                            {% endif %}
+                                            {% value_in_content p content %}
                                             hidden>{{ p }}</option>
                                 {% endfor %}
                                 {% for s in services %}
                                     <option value='{{ s }}' class="option-services"
-                                            {% if s in content %}
-                                            selected
-                                            {% endif %}
+                                            {% value_in_content s content %}
                                             hidden>{{ s }}</option>
                                 {% endfor %}
                             </select>

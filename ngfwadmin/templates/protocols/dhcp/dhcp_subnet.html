@@ -15,23 +15,23 @@
     <script src="{% static 'language/ru-table.js' %}"></script>
     <!-- Изменение статуса-->
     <script>
-    function PostStatusAjax(port, vlan) {
-        let name = "status_" + port + "_" + vlan;
-        let check = document.getElementById(name);
-        let status = check.checked;
+        function PostStatusAjax(port, vlan) {
+            let name = "status_" + port + "_" + vlan;
+            let check = document.getElementById(name);
+            let status = check.checked;
 
-        // Параметры
-        const param = {
-            type: "GET",
-            dataType: "json",
-            url: '{% url 'protocol_dhcp_subnet' %}',
-            data: {'port': port,
-                   'vlan': vlan,
-                   'status': status}
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'protocol_dhcp_subnet' %}',
+                data: {'port': port,
+                       'vlan': vlan,
+                       'status': status}
+            }
+            $.ajax(param);
         }
-        $.ajax(param);
-    }
-</script>
+    </script>
 {% endblock script %}
 
 {# Заголовок #}
@@ -59,13 +59,6 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <!-- Кнопка Добавить -->
-                        <div class="row">
-                            <div class="col">
-                                <a href="{% url 'protocol_dhcp_subnet_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
-                            </div>
-                        </div>
-                        <hr>
                         <div class="row m-t-10">
                             <div class="col">
                                 <!-- Таблица списков -->
@@ -73,7 +66,7 @@
                                     <table id="col-reorder" class="display table nowrap table-striped table-hover footable">
                                         <thead>
                                         <tr>
-                                            <th title="Удаление"><i class="feather icon-trash"></i></th>
+                                            <th title="Сбросить диапазон подсети"><i class="feather icon-x-circle"></i></th>
                                             <th>Физический порт</th>
                                             <th>VLAN</th>
                                             <th>Начало IP диапазона</th>
@@ -88,15 +81,19 @@
                                                 <td style="display: table-cell;">
                                                     <div>
                                                         <a href="{% url 'protocol_dhcp_subnet' %}?delete=true&port={{ row.port }}&vlan={{ row.vlan }}&ip_start={{ row.ip_start }}&ip_end={{ row.ip_end }}"
-                                                           onclick="return confirm('Удалить подсеть DHCP?');">
-                                                            <i class="feather icon-trash"></i>
+                                                           onclick="return confirm('Сбросить диапазон подсети DHCP?');">
+                                                            <i class="feather icon-x-circle"></i>
                                                         </a>
                                                     </div>
                                                 </td>
                                                 <td style="display: table-cell;">{{ row.port }}</td>
                                                 <td style="display: table-cell;">{{ row.vlan }}</td>
-                                                <td style="display: table-cell;">{{ row.ip_start }}</td>
-                                                <td style="display: table-cell;">{{ row.ip_end }}</td>
+                                                <td style="display: table-cell;">
+                                                    <a href="{% url 'protocol_dhcp_subnet_edit' row.port row.vlan %}?ip_start={{ row.ip_start }}&ip_end={{ row.ip_end }}">{{ row.ip_start }}</a>
+                                                </td>
+                                                <td style="display: table-cell;">
+                                                    <a href="{% url 'protocol_dhcp_subnet_edit' row.port row.vlan %}?ip_start={{ row.ip_start }}&ip_end={{ row.ip_end }}">{{ row.ip_end }}</a>
+                                                </td>
                                                 <td style="display: table-cell;" class="my-0 py-0">
                                                     <div class="switch switch-primary" style="margin-top: -5px;">
                                                         <input class="m-0 p-0" type="checkbox" id="status_{{ row.port }}_{{ row.vlan }}"

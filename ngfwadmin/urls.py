@@ -19,7 +19,7 @@ from ngfwadmin.views.protocols.nat import protocol_nat, protocol_nat_add
 from ngfwadmin.views.protocols.route import protocol_route, protocol_route_add
 from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_edit
 from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
-from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_add, protocol_dhcp_subnet
+from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_dhcp_subnet
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_static, protocol_dhcp_static_add
 
 urlpatterns = [
@@ -70,16 +70,16 @@ urlpatterns = [
     # Протоколы
     path('protocol/arp/', protocol_arp, name='protocol_arp'),
     path('protocol/nat/', protocol_nat, name='protocol_nat'),
-    path('protocol/nat/new/', protocol_nat_add, name='protocol_nat_add'),
     path('protocol/route/', protocol_route, name='protocol_route'),
-    path('protocol/route/new/', protocol_route_add, name='protocol_route_add'),
+    path('protocol/nat/new/', protocol_nat_add, name='protocol_nat_add'),
     path('protocol/ipconfig/', protocol_ipconfig, name='protocol_ipconfig'),
-    path('protocol/ipconfig/new/', protocol_ipconfig_add, name='protocol_ipconfig_add'),
+    path('protocol/route/new/', protocol_route_add, name='protocol_route_add'),
     path('protocol/dhcp/table/', protocol_dhcp_table, name='protocol_dhcp_table'),
     path('protocol/dhcp/subnet/', protocol_dhcp_subnet, name='protocol_dhcp_subnet'),
-    path('protocol/dhcp/subnet/new/', protocol_dhcp_subnet_add, name='protocol_dhcp_subnet_add'),
     path('protocol/dhcp/static/', protocol_dhcp_static, name='protocol_dhcp_static'),
+    path('protocol/ipconfig/new/', protocol_ipconfig_add, name='protocol_ipconfig_add'),
     path('protocol/dhcp/static/new/', protocol_dhcp_static_add, name='protocol_dhcp_static_add'),
+    path('protocol/dhcp/subnet/<int:port>/<int:vlan>', protocol_dhcp_subnet_edit, name='protocol_dhcp_subnet_edit'),
 
     # Справочные таблицы
     path('rules/table/<slug:name>/', table, name='table'),

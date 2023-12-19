@@ -29,3 +29,15 @@ def replace(value, strOld, strNew):
     strNew = strNew.replace('\\n', '\n')
     value = value.replace(strOld, strNew)
     return value
+
+
+
+@register.simple_tag()
+def value_in_content(value, content):
+    value = '[' + value + ']'
+    content = content.replace('\r', '')
+    content = content.replace('\n', '][')
+    content = '[' + content + ']'
+    if(value in content):
+        return 'selected'
+    return ''

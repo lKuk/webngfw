@@ -51,6 +51,7 @@ def dhcp_subnet_insert(url, port, vlan, ip_start, ip_end, status):
     response = requests.post(f"{url}/router/dhcp/subnet/scope", json=details)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
+    dhcp_subnet_status(url, port, vlan, status)
     return
 
 

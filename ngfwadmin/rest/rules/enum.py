@@ -57,3 +57,15 @@ def enum_protocols_get(url):
         raise Exception(response.url, response.text)
     enum_protocols = response.json()
     return enum_protocols
+
+
+# Получить список mime
+def enum_mimes_get(url):
+    global enum_protocols
+    if enum_protocols is not None:
+        return enum_protocols
+    response = requests.get(f"{url}/rules/lists/mimes")
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    enum_protocols = response.json()
+    return enum_protocols
