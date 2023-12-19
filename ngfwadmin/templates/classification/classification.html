@@ -9,17 +9,33 @@
 
 {# Скрипты #}
 {% block script %}
+    <script>
+        // Запрос данных Ajax
+        function PostStatusAjax() {
+            var id = event.target.id
+            let checked = event.target.checked;
+            // Параметры
+            const param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'classification' %}',
+                data: {'checked': checked, param: id},
+            }
+            // Выполнить запрос
+            $.ajax(param);
+        }
+    </script>
 {% endblock script %}
 
 {# Заголовок #}
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-clipboard"></i>Параметры классификаторы
+            <i class="m-r-15 feather icon-clipboard"></i>DPI
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
-        <li class="breadcrumb-item"><a href="{% url 'classification' %}">Классификаторы</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'classification' %}">Настройки DPI</a></li>
     </ul>
 {% endblock header %}
 
@@ -32,11 +48,75 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>Классификаторы</h5>
+                            <h5>Статус DPI</h5>
                         </div>
                     </div>
                     <div class="card-body">
-
+                        <div class="col-md-12">
+                            <div class="switch switch-primary d-inline m-r-10">
+                                <input type="checkbox" id="class_enable"
+                                       {% if classification.class_enable == 'true' %}checked{% endif %} hidden
+                                       onchange="PostStatusAjax()">
+                                <label for="class_enable" class="cr"></label>
+                                <label class="text-dark" style="margin-left: 10px">Включить DPI</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="page-header-title">
+                                <h5>Праметры DPI</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-6">
+                                    <div class="switch switch-primary d-inline m-r-10">
+                                        <input type="checkbox" id="cert_enable"
+                                               {% if classification.cert_enable == 'true' %}checked{% endif %} hidden
+                                               onchange="PostStatusAjax()">
+                                        <label for="cert_enable" class="cr"></label>
+                                        <label class="text-dark" style="margin-left: 10px">Обработка
+                                            сертификатов</label>
+                                        <br>
+                                        <p class="text-muted m-0 py-0 p-l-50">Включить обработку сертификатов</p>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-6">
+                                    <div class="switch switch-primary d-inline m-r-10">
+                                        <input type="checkbox" id="signature_enable"
+                                               {% if classification.signature_enable == 'true' %}checked{% endif %}
+                                               hidden
+                                               onchange="PostStatusAjax()">
+                                        <label for="signature_enable" class="cr"></label>
+                                        <label class="text-dark" style="margin-left: 10px">Использование
+                                            сигнатур</label>
+                                        <br>
+                                        <p class="text-muted m-0 py-0 p-l-50">Использовать сигнатуры дли поиска и
+                                            классификации трафика</p>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-6">
+                                    <div class="switch switch-primary d-inline m-r-10">
+                                        <input type="checkbox" id="service_class_enable"
+                                               {% if classification.service_class_enable == 'true' %}checked{% endif %}
+                                               hidden
+                                               onchange="PostStatusAjax()">
+                                        <label for="service_class_enable" class="cr"></label>
+                                        <label class="text-dark" style="margin-left: 10px">Классификация
+                                            сервисов</label>
+                                        <br>
+                                        <p class="text-muted m-0 py-0 p-l-50">Включить классификацию сервисов</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
