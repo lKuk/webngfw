@@ -10,7 +10,7 @@ from ngfwadmin.models import Device
 class ConnectForm(forms.Form):
     ip = forms.CharField(max_length=255,
                          label='IP адрес',
-                         initial='192.168.3.250',
+                         initial='192.168.3.',
                          validators=[validate_ipv46_address],
                          widget=forms.TextInput(attrs={'class': 'form-control'}))
     port = forms.IntegerField(label='Порт',
