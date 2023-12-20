@@ -1,6 +1,6 @@
 import base64
 
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, FileResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 
@@ -45,13 +45,6 @@ def write(request):
                 set_write_out(url, writeOut['write_portout'], 'stop')
             return
 
-        # скачать файл
-        pcap = request.GET.get('pcap')
-        if pcap is not None:
-            file = get_write_content_file(url, pcap)
-            #file = base64.b64decode(file)
-            return HttpResponse(file)
-
         # удалить файл
         delete = request.GET.get("delete")
         if delete is not None:
@@ -72,5 +65,28 @@ def write(request):
 
         # Вернуть сформированную страницу
         return render(request, 'write/write.html', context=context)
+    except Exception as ex:
+        return exception(request, ex)
+
+def  write_download(request, name):
+    try:
+        # Подключение
+        dev = dev_get(request)
+        # Проверка подключения
+        if 'url' not in dev:
+            return redirect('connect')
+        # подключение
+        url = dev.get('url')
+
+        # скачать файл
+        buffer = get_write_content_file(url, name)
+        # base64
+        buffer = base64.b64decode(buffer)
+        # Вернуть файл
+        # return FileResponse(file)
+
+        response = FileResponse(buffer, as_attachment=True, filename=name)
+        return response
+
     except Exception as ex:
         return exception(request, ex)
