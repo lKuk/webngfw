@@ -88,11 +88,6 @@
 
             // Выполнить запрос
             $.ajax(param);
-
-            setTimeout(() => {
-                location.assign(document.URL);
-            }, 3000);
-
         }
 
 
@@ -114,6 +109,38 @@
             }
             // Выполнить запрос
             $.ajax(param);
+        }
+
+        // Сохранение файла
+        function SaveFile(data) {
+            // Скачать файл
+            DownloadFile(data, m_fileName, "pcap");
+        }
+
+        // Функция скачивания файла
+        function DownloadFile(data, filename, type) {
+            const file = new Blob([data], {type: type});
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, filename);
+            else { // Others
+                const a = document.createElement("a"),
+                    url = URL.createObjectURL(file);
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function () {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 0);
+            }
+        }
+    </script>
+    <script>
+        function UpdateTable() {
+            setTimeout(() => {
+                location.assign(document.URL);
+            }, 0);
         }
     </script>
 {% endblock script %}
@@ -207,6 +234,12 @@
                     <div class="card-header">
                         <div class="page-header-title">
                             <h5>Файлы записи сетевого трафика</h5>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn-primary" type="button" onclick="UpdateTable()">Обновить</button>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
