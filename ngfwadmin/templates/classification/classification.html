@@ -51,13 +51,15 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="col-md-12">
-                            <div class="switch switch-primary d-inline m-r-10">
-                                <input type="checkbox" id="class_enable"
-                                       {% if classification.class_enable == 'true' %}checked{% endif %} hidden
-                                       onchange="PostStatusAjax()">
-                                <label for="class_enable" class="cr"></label>
-                                <label class="text-dark" style="margin-left: 10px">Включить DPI</label>
+                        <div class="row">
+                            <div class="col">
+                                <div class="switch switch-primary d-inline m-r-10">
+                                    <input type="checkbox" id="class_enable"
+                                           {% if classification.class_enable == 'true' %}checked{% endif %} hidden
+                                           onchange="PostStatusAjax()">
+                                    <label for="class_enable" class="cr"></label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить DPI</label>
+                                </div>
                             </div>
                         </div>
                     </div>
