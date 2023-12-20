@@ -1,4 +1,5 @@
 import base64
+from io import BytesIO
 
 from django.http import JsonResponse, HttpResponse, FileResponse
 from django.shortcuts import redirect, render
@@ -79,14 +80,11 @@ def  write_download(request, name):
         url = dev.get('url')
 
         # скачать файл
-        buffer = get_write_content_file(url, name)
+        file = get_write_content_file(url, name)
         # base64
-        buffer = base64.b64decode(buffer)
+        buffer = base64.b64decode(file)
         # Вернуть файл
-        # return FileResponse(file)
-
-        response = FileResponse(buffer, as_attachment=True, filename=name)
-        return response
+        return FileResponse(BytesIO(buffer), as_attachment=True, filename=name)
 
     except Exception as ex:
         return exception(request, ex)
