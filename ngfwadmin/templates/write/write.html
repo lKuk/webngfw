@@ -55,8 +55,11 @@
             let portName = 'port' + val;
             let validLiName = 'validLi' + val;
             let validDivName = 'validDiv' + val;
+            let loadingName = 'loading' + val;
             let btn = document.getElementById(btnName);
             let port = document.getElementById(portName);
+            let loading = document.getElementById(loadingName);
+
 
             // Проверка валидации
             const formatPort = /^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$/;
@@ -69,9 +72,11 @@
             if (text === 'Старт') {
                 btn.textContent = 'Стоп';
                 port.readOnly = true;
+                loading.hidden = false;
             } else {
                 btn.textContent = 'Старт'
                 port.readOnly = false;
+                loading.hidden = true;
             }
 
             // Параметры записи
@@ -92,6 +97,23 @@
 
 
     </script>
+{#    <script>#}
+{#        // Ajax сохранение файла pcap#}
+{#        function saveFileLoading(fileName) {#}
+{#            alert('Начало')#}
+{#            alert(JSON.stringify(fileName))#}
+{#            // Параметры#}
+{#            const param = {#}
+{#                type: "GET",#}
+{#                dataType: "html",#}
+{#                data: {name: fileName},#}
+{#                url: '{% url 'write_download' %}',#}
+{#                success: alert("конец")#}
+{#            }#}
+{#            // Выполнить запрос#}
+{#            $.ajax(param);#}
+{#        }#}
+{#    </script>#}
     <!-- Сохранение файла -->
     <script>
         let m_fileName = '';
@@ -143,6 +165,7 @@
             }, 0);
         }
     </script>
+
 {% endblock script %}
 
 {# Заголовок #}
@@ -183,6 +206,10 @@
                                     <input id="portIn" type="text" class="form-control"
                                            value="{{ writeIn.write_portin }}"
                                            {% if writeIn.write_statusin == 'write' %}readonly{% endif %}>
+                                    <div id="loadingIn" class="spinner-border text-primary m-1" role="status"
+                                         {% if writeIn.write_statusin != 'write' %}hidden{% endif %}>
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
                                 </div>
                                 <div id="validDivIn" class="invalid-feedback">
                                     <ul>
@@ -215,7 +242,11 @@
                                     </div>
                                     <input id="portOut" type="text" class="form-control"
                                            value="{{ writeOut.write_portout }}"
-                                           {% if writeIn.write_statusout == 'write' %}readonly{% endif %}>
+                                           {% if  writeOut.write_statusout == 'write' %}readonly{% endif %}>
+                                    <div id="loadingOut" class="spinner-border text-primary m-1" role="status"
+                                         {% if writeOut.write_statusout != 'write' %}hidden{% endif %}>
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
                                 </div>
                                 <div id="validDivOut" class="invalid-feedback">
                                     <ul>
@@ -238,7 +269,9 @@
                         <br>
                         <div class="row">
                             <div class="col">
-                                <button  class="btn btn-primary" type="button" onclick="UpdateTable()" style="width: 160px">Обновить</button>
+                                <button class="btn btn-primary" type="button" onclick="UpdateTable()"
+                                        style="width: 160px">Обновить
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -275,6 +308,11 @@
                                                     <a href="{% url 'write_download' file %}">
                                                         <i class="feather icon-save"></i>
                                                     </a>
+                                                    <div id="loading_{{ file }}"
+                                                         class="spinner-border spinner-border-sm text-primary m-1"
+                                                         role="status" hidden>
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
