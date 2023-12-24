@@ -165,7 +165,7 @@
                                                        aria-expanded="true"><i class="feather icon-chevron-down"></i>
                                                     </a>
                                                     <a href="{% url 'rules_sub_edit' r.id %}">{% count_sub r %}</a>
-                                                    <div class="collapse hide devHide m-l-20" id="collapse_{{ r.id }}">
+                                                    <div class="collapse show devHide m-l-20" id="collapse_{{ r.id }}">
                                                         {% for s in r.sub2 %}
                                                             {# Инвертированное #}
                                                             {% if s.is_invert == '0' %}
