@@ -1,6 +1,7 @@
 import requests
 
 
+enum_mimes = None
 enum_atomic = None
 enum_format = None
 enum_services = None
@@ -61,11 +62,11 @@ def enum_protocols_get(url):
 
 # Получить список mime
 def enum_mimes_get(url):
-    global enum_protocols
-    if enum_protocols is not None:
-        return enum_protocols
+    global enum_mimes
+    if enum_mimes is not None:
+        return enum_mimes
     response = requests.get(f"{url}/rules/lists/mimes")
     if response.status_code != 200:
         raise Exception(response.url, response.text)
-    enum_protocols = response.json()
-    return enum_protocols
+    enum_mimes = response.json()
+    return enum_mimes

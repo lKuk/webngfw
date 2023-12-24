@@ -96,18 +96,28 @@
             const mimes = document.getElementsByClassName("option-mimes");
             const services = document.getElementsByClassName("option-services");
             const protocols = document.getElementsByClassName("option-protocols");
-            // Список протоколов
-            for (let i = 0; i < protocols.length; i++) {
-                mimes.item(i).hidden = (ftype !== "DOCEXTNAME");
+
+            // Список mimes
+            let hide = (ftype !== "DOCEXTNAME");
+            for (let i = 0; i < mimes.length; i++) {
+                mimes.item(i).hidden = hide;
             }
+            //alert('ftype: ' + ftype + ', class: mimes, ' + !hide + ', length: ' + mimes.length);
+
             // Список протоколов
+            hide = (ftype !== "PROTNAME");
             for (let i = 0; i < protocols.length; i++) {
-                protocols.item(i).hidden = (ftype !== "PROTNAME");
+                protocols.item(i).hidden = hide;
             }
+            //alert('ftype: ' + ftype + ', class: protocols, ' + !hide + ', length: ' + protocols.length);
+
             // Список сервисов
+            hide = (ftype !== "SERVICENAME");
             for (let i = 0; i < services.length; i++) {
-                services.item(i).hidden = (ftype !== "SERVICENAME");
+                services.item(i).hidden = hide;
             }
+            //alert('ftype: ' + ftype + ', class: services, ' + !hide + ', length: ' + services.length);
+
         }
 
         // Выполнить при загрузке страницы
