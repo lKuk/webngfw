@@ -156,7 +156,7 @@
                                         Инвертировано
                                     </option>
                                     <option value="0"
-                                            {% if dictsub.is_invert is None or dictsub.is_invert == 0 %}selected{% endif %}>
+                                            {% if dictsub.is_invert is None or dictsub.is_invert == 0 or dictsub.is_invert == '0' %}selected{% endif %}>
                                         Не инвертировано
                                     </option>
                                 </select>
