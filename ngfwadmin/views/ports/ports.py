@@ -2,7 +2,7 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-from ngfwadmin.rest.ports.ports import ports_get
+from ngfwadmin.rest.ports.ports import ports_get, get_mgmnt_stat
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
 
@@ -18,8 +18,10 @@ def ports(request):
         # подключение
         url = dev.get('url')
         port = ports_get(url)
+        mgmnt_stat = get_mgmnt_stat(url)
         context = {'dev': dev,
-                   'ports': port}
+                   'ports': port,
+                   'mgmnt_stat': mgmnt_stat}
         # Вернуть данные
         ajax = request.GET.get("ajax")
         if ajax is not None:
