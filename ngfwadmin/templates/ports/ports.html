@@ -23,7 +23,7 @@
             // Выполнить запрос
             $.ajax(param);
             // Запустить повторно по таймеру
-            setTimeout(RequestAjax, 6000);
+            setTimeout(RequestAjax, 1000);
         }
 
         // Преобразовать в систему СИ
@@ -136,11 +136,75 @@
                 var mgmnt_stat = response.mgmnt_stat;
                 var exMgmnt_stat = JSON.stringify(mgmnt_stat);
                 const ex = JSON.parse(exMgmnt_stat)
-                for (const [key, value] of Object.entries(ex)) {
 
-                    var tpacketsEl = document.getElementById('mgmnt_stat_' + key);
-                    tpacketsEl.textContent = value;
-                }
+                let tdrop = ex.tdrop;
+                let tdropEl = document.getElementById('mgmnt_stat_tdrop');
+                tdropEl.textContent = formatSi(tdrop) + 'байт';
+
+                let terrs = ex.terrs;
+                let terrsEl = document.getElementById('mgmnt_stat_terrs');
+                terrsEl.textContent = formatSi(terrs) + 'шт';
+
+                let tpackets = ex.tpackets;
+                let tpacketsEl = document.getElementById('mgmnt_stat_tpackets');
+                tpacketsEl.textContent = formatSi(tpackets) + 'шт';
+
+                let tbytes = ex.tbytes;
+                let tbytesEl = document.getElementById('mgmnt_stat_tbytes');
+                tbytesEl.textContent = formatSi(tbytes) + 'байт';
+
+                let rdrop = ex.rdrop;
+                let rdropEl = document.getElementById('mgmnt_stat_rdrop');
+                rdropEl.textContent = formatSi(rdrop) + 'байт';
+
+                let rerrs = ex.rerrs;
+                let rerrsEl = document.getElementById('mgmnt_stat_rerrs');
+                rerrsEl.textContent = formatSi(rerrs) + 'шт';
+
+                let rpackets = ex.rpackets;
+                let rpacketsEl = document.getElementById('mgmnt_stat_rpackets');
+                rpacketsEl.textContent = formatSi(rpackets) + 'шт';
+
+                let rbytes = ex.rbytes;
+                let rbytesEl = document.getElementById('mgmnt_stat_rbytes');
+                rbytesEl.textContent = formatSi(rbytes) + 'байт';
+            }
+            if ('graylog' in response) {
+                var graylog = response.graylog;
+                var exGraylog = JSON.stringify(graylog);
+                const ex = JSON.parse(exGraylog)
+
+                let tdrop = ex.tdrop;
+                let tdropEl = document.getElementById('graylog_tdrop');
+                tdropEl.textContent = formatSi(tdrop) + 'байт';
+
+                let terrs = ex.terrs;
+                let terrsEl = document.getElementById('graylog_terrs');
+                terrsEl.textContent = formatSi(terrs) + 'шт';
+
+                let tpackets = ex.tpackets;
+                let tpacketsEl = document.getElementById('graylog_tpackets');
+                tpacketsEl.textContent = formatSi(tpackets) + 'шт';
+
+                let tbytes = ex.tbytes;
+                let tbytesEl = document.getElementById('graylog_tbytes');
+                tbytesEl.textContent = formatSi(tbytes) + 'байт';
+
+                let rdrop = ex.rdrop;
+                let rdropEl = document.getElementById('graylog_rdrop');
+                rdropEl.textContent = formatSi(rdrop) + 'байт';
+
+                let rerrs = ex.rerrs;
+                let rerrsEl = document.getElementById('graylog_rerrs');
+                rerrsEl.textContent = formatSi(rerrs) + 'шт';
+
+                let rpackets = ex.rpackets;
+                let rpacketsEl = document.getElementById('graylog_rpackets');
+                rpacketsEl.textContent = formatSi(rpackets) + 'шт';
+
+                let rbytes = ex.rbytes;
+                let rbytesEl = document.getElementById('graylog_rbytes');
+                rbytesEl.textContent = formatSi(rbytes) + 'байт';
             }
         }
 
@@ -166,6 +230,7 @@
 
 {# Содержимое #}
 {% block content %}
+    {{ graylog }}
     <div class="page-wrapper">
         <div class="card">
             <div class="card-header">
@@ -182,38 +247,38 @@
                                     <img src="{% static 'main/svg/ethernet.svg' %}" width="26" height="26" alt=""
                                          class="bg-white">
                                 </div>
-                                <div class="col text-center p-t-5" data-toggle="tooltip" title="Управление">
+                                <div class="col text-center p-t-5" data-toggle="tooltip" title="Статистика для интерфейса управления">
                                     <h5 id="mgmnt_stat">Управление</h5>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6 border border-dark border-top-0 border-right-0 text-left p-t-5"
+                                <div class="col-sm-6 border border-dark border-top-0 border-right-0 text-center p-t-5"
                                      style="background: #ddf1ff">
                                     <div class="row-auto" data-toggle="tooltip" data-placement="left"
-                                         title="tdrop">
+                                         title="Потеряно байт при отправке">
                                         <h6 id="mgmnt_stat_tdrop">{{ mgmnt_stat.tdrop }}</h6>
                                     </div>
                                     <div class="row-auto" data-toggle="tooltip" data-placement="left"
-                                         title="tpackets">
+                                         title="Отправлено пакетов">
                                         <h6 id="mgmnt_stat_tpackets">{{ mgmnt_stat.tpackets }}</h6>
                                     </div>
                                     <div class="row-auto" data-toggle="tooltip" data-placement="left"
-                                         title="tbytes">
+                                         title="Отправлено байт">
                                         <h6 id="mgmnt_stat_tbytes">{{ mgmnt_stat.tbytes }}</h6>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 border-bottom border-right border-dark text-left p-t-5"
+                                <div class="col-sm-6 border-bottom border-right border-dark text-center p-t-5"
                                      style="background: #ddf1ff">
                                     <div class="row-auto" data-toggle="tooltip" data-placement="right"
-                                         title="rdrop">
+                                         title="Потеряно на приеме байт">
                                         <h6 id="mgmnt_stat_rdrop">{{ mgmnt_stat.rdrop }}</h6>
                                     </div>
                                     <div class="row-auto" data-toggle="tooltip" data-placement="right"
-                                         title="rpackets">
+                                         title="Получено пакетов">
                                         <h6 id="mgmnt_stat_rpackets">{{ mgmnt_stat.rpackets }}</h6>
                                     </div>
                                     <div class="row-auto" data-toggle="tooltip" data-placement="right"
-                                         title="rbytes">
+                                         title="Получено байт">
                                         <h6 id="mgmnt_stat_rbytes">{{ mgmnt_stat.rbytes }}</h6>
                                     </div>
                                 </div>
@@ -221,12 +286,68 @@
                             <div class="row border border-top-0 border-dark text-center"
                                  style="background: peachpuff">
                                 <div class="col-sm-6 m-0 p-0" data-toggle="tooltip" data-placement="bottom"
-                                     title="terrs">
+                                     title="Ошибок при отправлении">
                                     <h6 id="mgmnt_stat_terrs" class="my-1">{{ mgmnt_stat.terrs }}</h6>
                                 </div>
                                 <div class="col-sm-6 m-0 p-0" data-toggle="tooltip" data-placement="bottom"
-                                     title="rerrs">
+                                     title="Ошибок при получении">
                                     <h6 id="mgmnt_stat_rerrs" class="my-1">{{ mgmnt_stat.rerrs }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto p-0">
+                        <div class="card-body" style="width: 300px">
+                            <div class="row border border-dark p-t-5" style="background: #9dc1d3">
+                                <div class="col-auto text-right px-2">
+                                    <img src="{% static 'main/svg/ethernet.svg' %}" width="26" height="26" alt=""
+                                         class="bg-white">
+                                </div>
+                                <div class="col text-center p-t-5" data-toggle="tooltip" title="Статистика для интерфейса логирования">
+                                    <h5 id="graylog">Логирование</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 border border-dark border-top-0 border-right-0 text-center p-t-5"
+                                     style="background: #ddf1ff">
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="left"
+                                         title="Потеряно байт при отправке">
+                                        <h6 id="graylog_tdrop">{{ graylog.tdrop }}</h6>
+                                    </div>
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="left"
+                                         title="Отправлено пакетов">
+                                        <h6 id="graylog_tpackets">{{ graylog.tpackets }}</h6>
+                                    </div>
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="left"
+                                         title="Отправлено байт">
+                                        <h6 id="graylog_tbytes">{{ graylog.tbytes }}</h6>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 border-bottom border-right border-dark text-center p-t-5"
+                                     style="background: #ddf1ff">
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="right"
+                                         title="Потеряно на приеме байт">
+                                        <h6 id="graylog_rdrop">{{ graylog.rdrop }}</h6>
+                                    </div>
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="right"
+                                         title="Получено пакетов">
+                                        <h6 id="graylog_rpackets">{{ graylog.rpackets }}</h6>
+                                    </div>
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="right"
+                                         title="Получено байт">
+                                        <h6 id="graylog_rbytes">{{ graylog.rbytes }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row border border-top-0 border-dark text-center"
+                                 style="background: peachpuff">
+                                <div class="col-sm-6 m-0 p-0" data-toggle="tooltip" data-placement="bottom"
+                                     title="Ошибок при отправлении">
+                                    <h6 id="graylog_terrs" class="my-1">{{ graylog.terrs }}</h6>
+                                </div>
+                                <div class="col-sm-6 m-0 p-0" data-toggle="tooltip" data-placement="bottom"
+                                     title="Ошибок при получении">
+                                    <h6 id="graylog_rerrs" class="my-1">{{ graylog.rerrs }}</h6>
                                 </div>
                             </div>
                         </div>
