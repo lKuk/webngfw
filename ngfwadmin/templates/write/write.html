@@ -73,10 +73,12 @@
                 btn.textContent = 'Стоп';
                 port.readOnly = true;
                 loading.hidden = false;
+                btn.classList.add('btn-danger');
             } else {
                 btn.textContent = 'Старт'
                 port.readOnly = false;
                 loading.hidden = true;
+                btn.classList.remove('btn-danger');
             }
 
             // Параметры записи
@@ -97,23 +99,23 @@
 
 
     </script>
-{#    <script>#}
-{#        // Ajax сохранение файла pcap#}
-{#        function saveFileLoading(fileName) {#}
-{#            alert('Начало')#}
-{#            alert(JSON.stringify(fileName))#}
-{#            // Параметры#}
-{#            const param = {#}
-{#                type: "GET",#}
-{#                dataType: "html",#}
-{#                data: {name: fileName},#}
-{#                url: '{% url 'write_download' %}',#}
-{#                success: alert("конец")#}
-{#            }#}
-{#            // Выполнить запрос#}
-{#            $.ajax(param);#}
-{#        }#}
-{#    </script>#}
+    {#    <script>#}
+    {#        // Ajax сохранение файла pcap#}
+    {#        function saveFileLoading(fileName) {#}
+    {#            alert('Начало')#}
+    {#            alert(JSON.stringify(fileName))#}
+    {#            // Параметры#}
+    {#            const param = {#}
+    {#                type: "GET",#}
+    {#                dataType: "html",#}
+    {#                data: {name: fileName},#}
+    {#                url: '{% url 'write_download' %}',#}
+    {#                success: alert("конец")#}
+    {#            }#}
+    {#            // Выполнить запрос#}
+    {#            $.ajax(param);#}
+    {#        }#}
+    {#    </script>#}
     <!-- Сохранение файла -->
     <script>
         let m_fileName = '';
@@ -164,6 +166,24 @@
                 location.assign(document.URL);
             }, 0);
         }
+
+        function ButtonColor() {
+            let btnIn = document.getElementById('btnIn');
+            let btmOut = document.getElementById('btnOut');
+
+            if (btnIn.textContent.trim() === 'Стоп'){
+                btnIn.classList.add('btn-danger');
+            }
+             if (btmOut.textContent.trim() === 'Стоп'){
+                btmOut.classList.add('btn-danger');
+            }
+
+        }
+
+        // Запуск при загрузке страницы
+        window.addEventListener('load', () => {
+            ButtonColor();
+        });
     </script>
 
 {% endblock script %}
