@@ -3,8 +3,9 @@ from django.shortcuts import redirect, render
 
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.rest.inspection.inspection import status_set
-from ngfwadmin.rest.ipsids.ipsids import rules_get, configuration_get, rules_set, configuration_set, status_get
+from ngfwadmin.rest.ipsids.ipsids import rules_get, rules_set
+from ngfwadmin.rest.ipsids.ipsids import status_get, status_set
+from ngfwadmin.rest.ipsids.ipsids import configuration_get, configuration_set
 
 
 # Страница состояния портов
