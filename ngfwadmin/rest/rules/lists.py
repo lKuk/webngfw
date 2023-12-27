@@ -1,6 +1,7 @@
 import json
 import requests
 
+
 from ngfwadmin.rest.rules.enum import enum_format_get
 
 
@@ -63,8 +64,9 @@ def list_select_all(url):
 
 # Установить содержимое списка
 def content_set(url, login, password, idlist, filetext):
-    filetext = filetext + '\n' + '\n'
-    response = requests.put(f"{url}/rules/lists/{idlist}/content", data=filetext, auth=(login, password))
+    filetext = filetext + '\n'
+    buffer = bytes(filetext, 'utf-8')
+    response = requests.put(f"{url}/rules/lists/{idlist}/content", data=buffer, auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content

@@ -1,6 +1,5 @@
 import requests
 
-
 enum_mimes = None
 enum_atomic = None
 enum_format = None

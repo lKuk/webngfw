@@ -1,5 +1,5 @@
-import requests
 import json
+import requests
 
 
 def get_syslog_server(url):

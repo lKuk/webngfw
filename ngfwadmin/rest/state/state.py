@@ -1,5 +1,6 @@
 import requests
 
+
 # Получить версию
 def version_get(url):
     response = requests.get(f"{url}/system/version")

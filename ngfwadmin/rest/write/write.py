@@ -1,7 +1,6 @@
-import base64
-
-import requests
 import json
+import requests
+
 
 
 # Получить параметры записи входного трафика

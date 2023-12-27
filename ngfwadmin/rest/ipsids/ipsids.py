@@ -33,7 +33,8 @@ def rules_get(url):
 
 # Установить правила
 def rules_set(url, filetext):
-    response = requests.put(f"{url}/ipsids/rules", data=filetext)
+    buffer = bytes(filetext, 'utf-8')
+    response = requests.put(f"{url}/ipsids/rules", data=buffer)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content
@@ -50,7 +51,8 @@ def configuration_get(url):
 
 # Установить конфигурацию
 def configuration_set(url, filetext):
-    response = requests.put(f"{url}/ipsids/configuration", data=filetext)
+    buffer = bytes(filetext, 'utf-8')
+    response = requests.put(f"{url}/ipsids/configuration", data=buffer)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content
