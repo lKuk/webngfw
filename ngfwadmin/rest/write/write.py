@@ -33,8 +33,8 @@ def get_write_out(url):
 
 
 # Установить параметры записи выходного трафика
-def set_write_out(url, write_portout, write_statusout):
-    dic = {"write_portout": write_portout, "write_statusout": write_statusout}
+def set_write_out(url, port, protocol, write_statusout):
+    dic = {"write_portout": port, "write_protout": protocol, "write_statusout": write_statusout}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
     response = requests.put(f"{url}/system/service/write/out", json=details)

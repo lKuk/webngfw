@@ -54,12 +54,13 @@
             let btnName = 'btn' + val;
             let portName = 'port' + val;
             let validLiName = 'validLi' + val;
-            let validDivName = 'validDiv' + val;
             let loadingName = 'loading' + val;
+            let validDivName = 'validDiv' + val;
+            let protocolName = 'protocol' + val;
             let btn = document.getElementById(btnName);
             let port = document.getElementById(portName);
             let loading = document.getElementById(loadingName);
-
+            let protocol = document.getElementById(protocolName);
 
             // Проверка валидации
             const formatPort = /^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$/;
@@ -84,13 +85,16 @@
             // Параметры записи
             let btnValue = btn.value;
             let portValue = port.value;
+            let protocolValue = ""
+            if(protocol !== null)
+                protocolValue = protocol.value;
 
             // Параметры
             const param = {
                 type: "GET",
                 dataType: "json",
                 url: '{% url 'write' %}',
-                data: {param: val, status: btnValue, port: portValue},
+                data: {param: val, status: btnValue, port: portValue, protocol: protocolValue},
             }
 
             // Выполнить запрос
@@ -234,6 +238,7 @@
                     <div class="card-body" style="margin-top: 0; padding-top: 10px">
                         <div class="row">
                             <div class="col">
+                            {{ writeOut }}
                                 <div class="input-group mb-3">
                                     <label for="portOut"></label>
                                     <div class="input-group-prepend">
@@ -243,9 +248,29 @@
                                             {% if writeOut.write_statusout == 'write' %}Стоп{% else %}
                                                 Старт{% endif %}</button>
                                     </div>
-                                    <input id="portOut" type="text" class="form-control"
+                                    <input id="portOut" type="text" class="form-control" required
                                            value="{{ writeOut.write_portout }}"
                                            {% if  writeOut.write_statusout == 'write' %}readonly{% endif %}>
+                                    <label for="protocolOut" hidden=""></label>
+                                    <select id="protocolOut" name="protocolOut" class="form-control" required
+                                            {% if  writeOut.write_statusout == 'write' %}readonly{% endif %}
+                                            value="{{ writeOut.write_portout }}">
+                                        <option value="all">all</option>
+                                        <optgroup label="Протоколы">
+                                            {% for protocol in protocols %}
+                                                <option value="{{ protocol }}"
+                                                {% if writeOut.write_protout == protocol %}selected{% endif %}>
+                                                {{ protocol }}</option>
+                                            {% endfor %}
+                                        </optgroup>
+                                        <optgroup label="Сервисы">
+                                            {% for service in services %}
+                                                <option value="{{ service }}"
+                                                {% if writeOut.write_protout == service %}selected{% endif %}>
+                                                {{ service }}</option>
+                                            {% endfor %}      
+                                        </optgroup>                    
+                                    </select>                                       
                                     <div id="loadingOut" class="spinner-border text-primary m-1" role="status"
                                          {% if writeOut.write_statusout != 'write' %}hidden{% endif %}>
                                         <span class="sr-only">Loading...</span>

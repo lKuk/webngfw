@@ -5,6 +5,7 @@ from django.http import JsonResponse, HttpResponse, FileResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 
+from ngfwadmin.rest.rules.enum import enum_protocols_get, enum_services_get
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
 from ngfwadmin.rest.write.write import get_write_in, get_write_out, set_write_in, set_write_out
@@ -30,19 +31,20 @@ def write(request):
         port = request.GET.get("port")
         param = request.GET.get("param")
         status = request.GET.get("status")
+        protocol = request.GET.get("protocol")
         if param is not None and status is not None and port is not None:
             # начать запись вх.
             if param == 'In' and status != 'write':
                 set_write_in(url, port, 'write')
             # начать запись исх.
             elif param == 'Out' and status != 'write':
-                set_write_out(url, port, 'write')
+                set_write_out(url, port, protocol, 'write')
             # остановить запись вх.
             elif param == 'In' and status == 'write':
                 set_write_in(url, writeIn['write_portin'], 'stop')
             # остановить запись исх.
             elif param == 'Out' and status == 'write':
-                set_write_out(url, writeOut['write_portout'], 'stop')
+                set_write_out(url, writeOut['write_portout'], writeOut['write_protout'], 'stop')
             return
 
         # удалить файл
@@ -51,6 +53,10 @@ def write(request):
             delete_write_content_file(url, delete)
             return redirect('write')
 
+        # список сервисов
+        services = enum_services_get(url)
+        # список протоколов
+        protocols = enum_protocols_get(url)
         # получить список файлов
         writeContent = get_write_content(url)
         writeContent = sorted(writeContent, key=lambda k: k['time'], reverse=True)
@@ -59,6 +65,8 @@ def write(request):
         context = {'dev': dev,
                    'writeIn': writeIn,
                    'writeOut': writeOut,
+                   'services': services,
+                   'protocols': protocols,
                    'writeContent': writeContent}
 
         # Вернуть данные
