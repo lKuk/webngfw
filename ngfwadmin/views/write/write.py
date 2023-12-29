@@ -25,7 +25,6 @@ def write(request):
         # получить данные
         writeIn = get_write_in(url)
         writeOut = get_write_out(url)
-        writeContent = get_write_content(url)
 
         # начать/остановить запись
         port = request.GET.get("port")
@@ -51,6 +50,10 @@ def write(request):
         if delete is not None:
             delete_write_content_file(url, delete)
             return redirect('write')
+
+        # получить список файлов
+        writeContent = get_write_content(url)
+        writeContent = sorted(writeContent, key=lambda k: k['time'], reverse=True)
 
         # заполнить данные
         context = {'dev': dev,
