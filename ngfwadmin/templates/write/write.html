@@ -99,23 +99,6 @@
 
 
     </script>
-    {#    <script>#}
-    {#        // Ajax сохранение файла pcap#}
-    {#        function saveFileLoading(fileName) {#}
-    {#            alert('Начало')#}
-    {#            alert(JSON.stringify(fileName))#}
-    {#            // Параметры#}
-    {#            const param = {#}
-    {#                type: "GET",#}
-    {#                dataType: "html",#}
-    {#                data: {name: fileName},#}
-    {#                url: '{% url 'write_download' %}',#}
-    {#                success: alert("конец")#}
-    {#            }#}
-    {#            // Выполнить запрос#}
-    {#            $.ajax(param);#}
-    {#        }#}
-    {#    </script>#}
     <!-- Сохранение файла -->
     <script>
         let m_fileName = '';
@@ -304,12 +287,14 @@
                                     <thead>
                                     <tr>
                                         <th title="Удалить"><i class="feather icon-trash"></i></th>
-                                        <th>Файл</th>
+                                        <th>Имя файла</th>
+                                        <th>Время записи</th>
+                                        <th>Размер файла</th>
                                         <th title="Сохранить"><i class="feather feather icon-save"></i></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for file in writeContent.name %}
+                                    {% for file in writeContent %}
                                         <tr>
                                             <!-- Удалить -->
                                             <td style="display: table-cell;">
@@ -321,7 +306,11 @@
                                                 </div>
                                             </td>
                                             <!-- Имя файла -->
-                                            <td style="display: table-cell;">{{ file }}</td>
+                                            <td style="display: table-cell;">{{ file.name }}</td>
+                                            <!-- Время записи файла -->
+                                            <td style="display: table-cell;">{{ file.time }}</td>
+                                            <!-- Размер файла -->
+                                            <td style="display: table-cell;">{% si_format file.size %}байт</td>
                                             <!-- Сохранить -->
                                             <td style="display: table-cell;">
                                                 <div>

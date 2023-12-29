@@ -1,3 +1,5 @@
+import math
+
 from django import template
 
 register = template.Library()
@@ -41,3 +43,12 @@ def value_in_content(value, content):
     if(value in content):
         return 'selected'
     return ''
+
+
+@register.simple_tag()
+def si_format(size):
+    pwr = math.floor(math.log(size, 1024))
+    suff = ["", "К", "М", "Г", "Т", "П"]
+    if size > 1024 ** (len(suff) - 1):
+        return "не знаю как назвать такое число :)"
+    return f"{size / 1024 ** pwr:.1f} {suff[pwr]}"
