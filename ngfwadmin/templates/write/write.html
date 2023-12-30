@@ -68,6 +68,13 @@
             if (res === false)
                 return;
 
+            // Параметры записи
+            let btnValue = btn.value;
+            let portValue = port.value;
+            let protocolValue = ""
+            if (protocol !== null)
+                protocolValue = protocol.value;
+
             // Отметка о включении
             let text = btn.textContent.trim();
             if (text === 'Старт') {
@@ -75,19 +82,15 @@
                 port.readOnly = true;
                 loading.hidden = false;
                 btn.classList.add('btn-danger');
+                btn.value = 'write';
             } else {
                 btn.textContent = 'Старт'
                 port.readOnly = false;
                 loading.hidden = true;
                 btn.classList.remove('btn-danger');
+                btn.value = 'pass';
             }
 
-            // Параметры записи
-            let btnValue = btn.value;
-            let portValue = port.value;
-            let protocolValue = ""
-            if(protocol !== null)
-                protocolValue = protocol.value;
 
             // Параметры
             const param = {
@@ -158,10 +161,10 @@
             let btnIn = document.getElementById('btnIn');
             let btmOut = document.getElementById('btnOut');
 
-            if (btnIn.textContent.trim() === 'Стоп'){
+            if (btnIn.textContent.trim() === 'Стоп') {
                 btnIn.classList.add('btn-danger');
             }
-             if (btmOut.textContent.trim() === 'Стоп'){
+            if (btmOut.textContent.trim() === 'Стоп') {
                 btmOut.classList.add('btn-danger');
             }
 
@@ -258,18 +261,18 @@
                                         <optgroup label="Протоколы">
                                             {% for protocol in protocols %}
                                                 <option value="{{ protocol }}"
-                                                {% if writeOut.write_protout == protocol %}selected{% endif %}>
-                                                {{ protocol }}</option>
+                                                        {% if writeOut.write_protout == protocol %}selected{% endif %}>
+                                                    {{ protocol }}</option>
                                             {% endfor %}
                                         </optgroup>
                                         <optgroup label="Сервисы">
                                             {% for service in services %}
                                                 <option value="{{ service }}"
-                                                {% if writeOut.write_protout == service %}selected{% endif %}>
-                                                {{ service }}</option>
-                                            {% endfor %}      
-                                        </optgroup>                    
-                                    </select>                                       
+                                                        {% if writeOut.write_protout == service %}selected{% endif %}>
+                                                    {{ service }}</option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    </select>
                                     <div id="loadingOut" class="spinner-border text-primary m-1" role="status"
                                          {% if writeOut.write_statusout != 'write' %}hidden{% endif %}>
                                         <span class="sr-only">Loading...</span>
