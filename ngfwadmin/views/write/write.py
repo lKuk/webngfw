@@ -27,7 +27,7 @@ def write(request):
         writeIn = get_write_in(url)
         writeOut = get_write_out(url)
 
-        # начать/остановить запись
+        # начать/остановить записьф
         port = request.GET.get("port")
         param = request.GET.get("param")
         status = request.GET.get("status")

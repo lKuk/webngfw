@@ -326,8 +326,8 @@
                                             <!-- Удалить -->
                                             <td style="display: table-cell;">
                                                 <div>
-                                                    <a href="{% url 'write' %}?delete={{ file }}"
-                                                       onclick="return confirm('Удалить файл {{ file }}?');">
+                                                    <a href="{% url 'write' %}?delete={{ file.name }}"
+                                                       onclick="return confirm('Удалить файл {{ file.name }}?');">
                                                         <i class="feather icon-trash"></i>
                                                     </a>
                                                 </div>
@@ -341,7 +341,7 @@
                                             <!-- Сохранить -->
                                             <td style="display: table-cell;">
                                                 <div>
-                                                    <a href="{% url 'write_download' file %}">
+                                                    <a href="{% url 'write_download' file.name %}">
                                                         <i class="feather icon-save"></i>
                                                     </a>
                                                     <div id="loading_{{ file }}"
