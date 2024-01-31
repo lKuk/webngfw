@@ -12,10 +12,12 @@ def protocol_nat(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # изменить статус
         checked = request.GET.get("checked")
@@ -32,8 +34,8 @@ def protocol_nat(request):
             return redirect('protocol_nat')
 
         # Получить данные
-        status = status_get(url)
-        static_port = static_port_select(url)
+        status = status_get(url, login, password)
+        static_port = static_port_select(url, login, password)
 
         # Данные страницы
         context = {'dev': dev,
@@ -50,10 +52,12 @@ def protocol_nat_add(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
         # создать маршрут
         if request.method == 'POST':
             # добавить маршрут

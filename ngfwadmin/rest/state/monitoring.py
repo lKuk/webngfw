@@ -1,23 +1,23 @@
 import requests
 
 
-def monitoring_ram_get(url):
-    response = requests.get(f"{url}/system/monitoring/ram")
+def monitoring_ram_get(url, login, password):
+    response = requests.get(f"{url}/system/monitoring/ram", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
     return details
 
 
-def monitoring_disk_get(url):
-    response = requests.get(f"{url}/system/monitoring/disk")
+def monitoring_disk_get(url, login, password):
+    response = requests.get(f"{url}/system/monitoring/disk", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
     return details
 
-def monitoring_lcores_get(url):
-    response = requests.get(f"{url}/system/monitoring/lcores")
+def monitoring_lcores_get(url, login, password):
+    response = requests.get(f"{url}/system/monitoring/lcores", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -25,11 +25,3 @@ def monitoring_lcores_get(url):
         details = details['message']
         raise Exception(response.url, details)
     return details
-    # if 'cpu_workload' in details:
-    #     details = details['cpu_workload']
-    # lcores = {}
-    # for index in range(len(details)):
-    #     key = 'core_' + str(index)
-    #     value = details[index]
-    #     lcores[key] = value
-    # return lcores

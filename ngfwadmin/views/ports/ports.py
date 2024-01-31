@@ -13,13 +13,15 @@ def ports(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
-        port = ports_get(url)
-        mgmnt_stat = get_mgmnt_stat(url)
-        graylog = get_graylog_stat(url)
+        login = dev.get('login')
+        password = dev.get('password')
+        port = ports_get(url, login, password)
+        mgmnt_stat = get_mgmnt_stat(url, login, password)
+        graylog = get_graylog_stat(url, login, password)
         context = {'dev': dev,
                    'ports': port,
                    'mgmnt_stat': mgmnt_stat,

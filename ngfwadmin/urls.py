@@ -1,5 +1,6 @@
 from django.urls import path
 
+from ngfwadmin.views.auth.auth import auth
 from ngfwadmin.views.debug.error import error
 from ngfwadmin.views.debug.table import table
 from ngfwadmin.views.ports.ports import ports
@@ -63,6 +64,9 @@ urlpatterns = [
 
     #Защита сети
     path('protect/', protect, name='protect'),
+
+    # Аутентификация
+    path('auth/', auth, name='auth'),
 
     #Запись трафика
     path('write/', write, name='write'),

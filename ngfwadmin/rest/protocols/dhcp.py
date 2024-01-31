@@ -3,8 +3,8 @@ import requests
 
 
 # Получить dhcp таблицу
-def dhcp_table_select(url):
-    response = requests.get(f"{url}/router/dhcp/table")
+def dhcp_table_select(url, login, password):
+    response = requests.get(f"{url}/router/dhcp/table", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -12,8 +12,8 @@ def dhcp_table_select(url):
 
 
 # Получить статус dhcp
-def get_table_status(url):
-    response = requests.get(f"{url}/router/dhcp/status")
+def get_table_status(url, login, password):
+    response = requests.get(f"{url}/router/dhcp/status", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -21,19 +21,19 @@ def get_table_status(url):
 
 
 # Установить статус dhcp
-def set_table_status(url, dhcp_enable):
+def set_table_status(url, login, password, dhcp_enable):
     dic = {"dhcp_enable": dhcp_enable}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/router/dhcp/status", json=details)
+    response = requests.put(f"{url}/router/dhcp/status", json=details, auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
 
 
 # Получить таблицу подсетей
-def dhcp_subnet_select(url):
-    response = requests.get(f"{url}/router/dhcp/subnet/table")
+def dhcp_subnet_select(url, login, password):
+    response = requests.get(f"{url}/router/dhcp/subnet/table", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -41,47 +41,47 @@ def dhcp_subnet_select(url):
 
 
 # Добавить запись в таблицу подсетей
-def dhcp_subnet_insert(url, port, vlan, ip_start, ip_end, status):
+def dhcp_subnet_insert(url, login, password, port, vlan, ip_start, ip_end, status):
     # задать диапазон
     details = {"port": port,
                "vlan": vlan,
                "ip_end": ip_end,
                "ip_start": ip_start}
-    response = requests.post(f"{url}/router/dhcp/subnet/scope", json=details)
+    response = requests.post(f"{url}/router/dhcp/subnet/scope", json=details, auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
-    dhcp_subnet_status(url, port, vlan, status)
+    dhcp_subnet_status(url, login, password, port, vlan, status)
     return
 
 
 # Удалить запись в таблице подсетей
-def dhcp_subnet_delete(url, port, vlan, ip_start, ip_end):
+def dhcp_subnet_delete(url, login, password, port, vlan, ip_start, ip_end):
     details = {"port": port,
                "vlan": vlan,
                "ip_end": ip_end,
                "ip_start": ip_start}
-    response = requests.delete(f"{url}/router/dhcp/subnet/scope", json=details)
+    response = requests.delete(f"{url}/router/dhcp/subnet/scope", json=details, auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return
 
 
 # Изменить статус подсетей
-def dhcp_subnet_status(url, port, vlan, status):
+def dhcp_subnet_status(url, login, password, port, vlan, status):
     details = {"port": port,
                "vlan": vlan,}
     if status.lower() == 'true':
-        response = requests.delete(f"{url}/router/dhcp/subnet/status", json=details)
+        response = requests.delete(f"{url}/router/dhcp/subnet/status", json=details, auth=(login, password))
     else:
-        response = requests.post(f"{url}/router/dhcp/subnet/status", json=details)
+        response = requests.post(f"{url}/router/dhcp/subnet/status", json=details, auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return
 
 
 # Получить таблицу статических адресов
-def dhcp_static_select(url):
-    response = requests.get(f"{url}/router/dhcp/static/table")
+def dhcp_static_select(url, login, password):
+    response = requests.get(f"{url}/router/dhcp/static/table", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -89,24 +89,24 @@ def dhcp_static_select(url):
 
 
 # Добавить запись в таблицу статических адресов
-def dhcp_static_insert(url, port, vlan, ip, mac):
+def dhcp_static_insert(url, login, password, port, vlan, ip, mac):
     # задать диапазон
     details = {"port": port,
                "vlan": vlan,
                "ip": ip,
                "mac": mac}
-    response = requests.post(f"{url}/router/dhcp/static", json=details)
+    response = requests.post(f"{url}/router/dhcp/static", json=details, auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return
 
 
-def dhcp_static_delete(url, port, vlan, ip, mac):
+def dhcp_static_delete(url, login, password, port, vlan, ip, mac):
     details = {"port": port,
                "vlan": vlan,
                "ip": ip,
                "mac": mac}
-    response = requests.delete(f"{url}/router/dhcp/static", json=details)
+    response = requests.delete(f"{url}/router/dhcp/static", json=details, auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return

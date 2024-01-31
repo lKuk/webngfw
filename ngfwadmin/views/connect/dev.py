@@ -9,7 +9,7 @@ def dev_set(request, ip, port, login, password):
     # время подключения
     now = date.today()
     # ссылка на устройство для rest
-    url = 'http://' + ip + ':' + str(port)
+    url = get_url(ip, port)
     # Сохранить подключение
     dev = {'ip': ip,
            'port': port,
@@ -24,6 +24,10 @@ def dev_set(request, ip, port, login, password):
     # добавить для текущей сессии
     dict_dev[session_key] = dev
 
+
+# Добавить подключение к устройству
+def get_url(ip, port):
+    return 'http://' + ip + ':' + str(port)
 
 # Получить подключение к устройству
 def dev_get(request):

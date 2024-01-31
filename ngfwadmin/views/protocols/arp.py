@@ -12,19 +12,21 @@ def protocol_arp(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
         # Получить arp таблицу
-        arp = arp_select(url)
+        arp = arp_select(url, login, password)
 
         # создать список
         if request.method == 'POST':
             # добавить список
             if 'btnClear' in request.POST:
                 # Очистить arp таблицу
-                arp_clear(url)
+                arp_clear(url, login, password)
 
         # Данные страницы
         context = {'dev': dev,

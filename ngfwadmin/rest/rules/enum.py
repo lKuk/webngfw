@@ -9,11 +9,11 @@ enum_format_ftype = None
 
 
 # Получить атомарные правила
-def enum_atomic_get(url):
+def enum_atomic_get(url, login, password):
     global enum_atomic
     if enum_atomic is not None:
         return enum_atomic
-    response = requests.get(f"{url}/rules/atomic")
+    response = requests.get(f"{url}/rules/atomic", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     data = response.json()
@@ -24,11 +24,11 @@ def enum_atomic_get(url):
 
 
 # Получить форматы атомарных правил
-def enum_format_get(url):
+def enum_format_get(url, login, password):
     global enum_format
     if enum_format is not None:
         return enum_format
-    response = requests.get(f"{url}/rules/atomic/format")
+    response = requests.get(f"{url}/rules/atomic/format", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     enum_format = response.json()
@@ -36,11 +36,11 @@ def enum_format_get(url):
 
 
 # Получить список сервисов
-def enum_services_get(url):
+def enum_services_get(url, login, password):
     global enum_services
     if enum_services is not None:
         return enum_services
-    response = requests.get(f"{url}/rules/lists/services")
+    response = requests.get(f"{url}/rules/lists/services", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     enum_services = response.json()
@@ -48,11 +48,11 @@ def enum_services_get(url):
 
 
 # Получить список протоколов
-def enum_protocols_get(url):
+def enum_protocols_get(url, login, password):
     global enum_protocols
     if enum_protocols is not None:
         return enum_protocols
-    response = requests.get(f"{url}/rules/lists/protocols")
+    response = requests.get(f"{url}/rules/lists/protocols", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     enum_protocols = response.json()
@@ -60,11 +60,11 @@ def enum_protocols_get(url):
 
 
 # Получить список mime
-def enum_mimes_get(url):
+def enum_mimes_get(url, login, password):
     global enum_mimes
     if enum_mimes is not None:
         return enum_mimes
-    response = requests.get(f"{url}/rules/lists/mimes")
+    response = requests.get(f"{url}/rules/lists/mimes", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     enum_mimes = response.json()

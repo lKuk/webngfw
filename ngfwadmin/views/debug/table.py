@@ -13,8 +13,12 @@ def table(request, name):
         dev = dev_get(request)
 
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
+        # подключение
+        url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # параметры таблицы
         rows = []
@@ -23,7 +27,7 @@ def table(request, name):
 
         if name == 'atomic':
             caption = 'atomic'
-            atomic = enum_atomic_get(dev.get('url'))
+            atomic = enum_atomic_get(url, login, password)
             columns = ['id', 'file_type', 'description', 'rule_category', 'arg_type']
             for i in atomic:
                 row = atomic[i]
@@ -36,7 +40,7 @@ def table(request, name):
 
         elif name == 'format':
             caption = 'formats'
-            formats = enum_format_get(dev.get('url'))
+            formats = enum_format_get(url, login, password)
             columns = ['id', 'name', 'print', 'description', 'param']
             for row in formats['formats']:
                 id = row.get('id')
@@ -48,21 +52,21 @@ def table(request, name):
 
         elif name == 'services':
             caption = 'services'
-            services = enum_services_get(dev.get('url'))
+            services = enum_services_get(url, login, password)
             columns = ['services']
             for val in services:
                 rows.append([val])
 
         elif name == 'protocols':
             caption = 'protocols'
-            protocols = enum_protocols_get(dev.get('url'))
+            protocols = enum_protocols_get(url, login, password)
             columns = ['protocols']
             for val in protocols:
                 rows.append([val])
 
         elif name == 'ports':
             caption = 'ports'
-            ports = ports_get(dev.get('url'))
+            ports = ports_get(url, login, password)
             columns = ['link_status', 'rx_nombuf', 'link_speed', 'ibytes', 'obytes', 'number', 'oerrors', 'imissed',
                        'ibits_per_sec', 'ipackets', 'imissed_per_sec', 'opackets_per_sec', 'link_duplex',
                        'ipackets_per_sec', 'driver_name', 'opackets', 'ierrors', 'obits_per_sec']
@@ -92,7 +96,7 @@ def table(request, name):
 
         elif name == 'ports_avail':
             caption = 'ports_avail'
-            ports = ports_avail_get(dev.get('url'))
+            ports = ports_avail_get(url, login, password)
             columns = ['driver_name', 'duplex', 'numa', 'speed', 'status']
             for val in ports:
                 numa = val.get('numa')
@@ -104,7 +108,7 @@ def table(request, name):
 
         elif name == 'system_ports':
             caption = 'system_ports'
-            ports = sys_ports_get(dev.get('url'))
+            ports = sys_ports_get(url, login, password)
             columns = ['rss_type','tx_ring_size','rx_ring_size','port_number','wan','packet_max_len','name','enable','icmp_disable','dhcp','mac','description','ipconfig']
             for val in ports:
                 wan = val.get('wan')
@@ -124,7 +128,7 @@ def table(request, name):
 
         elif name == 'system_settings':
             caption = 'system_settings'
-            settings = settings_get(dev.get('url'))
+            settings = settings_get(url, login, password)
             columns = ['name','title','element','type','visible','default','min','max','description']
             for val in settings.get('parameters'):
                 min = val.get('min')

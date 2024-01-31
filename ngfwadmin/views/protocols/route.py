@@ -12,10 +12,12 @@ def protocol_route(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
         # удалить маршрут
         delete = request.GET.get("delete")
         if delete is not None:
@@ -24,7 +26,7 @@ def protocol_route(request):
             # перейти к таблице списков
             return redirect('protocol_route')
         # Данные страницы
-        route = ip_router_select_all(url)
+        route = ip_router_select_all(url, login, password)
         context = {'dev': dev,
                    'route': route}
         # Вернуть сформированную страницу
@@ -38,10 +40,12 @@ def protocol_route_add(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
         # создать маршрут
         if request.method == 'POST':
             # добавить маршрут

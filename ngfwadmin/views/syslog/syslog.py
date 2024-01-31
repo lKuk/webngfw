@@ -11,11 +11,13 @@ def syslog(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
 
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # изменить статус
         checked = request.GET.get("checked")
@@ -31,8 +33,8 @@ def syslog(request):
             server_set(url, ipServer, portServer)
             return
 
-        server = get_syslog_server(url)
-        types = get_syslog_types(url)
+        server = get_syslog_server(url, login, password)
+        types = get_syslog_types(url, login, password)
         context = {'dev': dev,
                    'server': server,
                    'types': types

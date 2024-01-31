@@ -17,15 +17,17 @@ def write(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
 
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # получить данные
-        writeIn = get_write_in(url)
-        writeOut = get_write_out(url)
+        writeIn = get_write_in(url, login, password)
+        writeOut = get_write_out(url, login, password)
 
         # начать/остановить записьф
         port = request.GET.get("port")
@@ -54,12 +56,13 @@ def write(request):
             return redirect('write')
 
         # список сервисов
-        services = enum_services_get(url)
+        services = enum_services_get(url, login, password)
         # список протоколов
-        protocols = enum_protocols_get(url)
+        protocols = enum_protocols_get(url, login, password)
         # получить список файлов
-        writeContent = get_write_content(url)
-        writeContent = sorted(writeContent, key=lambda k: k['time'], reverse=True)
+        writeContent = get_write_content(url, login, password)
+        if writeContent is not None:
+            writeContent = sorted(writeContent, key=lambda k: k['time'], reverse=True)
 
         # заполнить данные
         context = {'dev': dev,
@@ -85,10 +88,12 @@ def  write_download(request, name):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # скачать файл
         file = get_write_content_file(url, name)

@@ -13,15 +13,17 @@ def protect(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
 
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
-        arp = get_arp_protect(url)
-        icmp = get_icmp_protect(url)
-        dhcp = get_dhcp_snooping(url)
+        arp = get_arp_protect(url, login, password)
+        icmp = get_icmp_protect(url, login, password)
+        dhcp = get_dhcp_snooping(url, login, password)
 
         # изменить статус
         checked = request.GET.get("status")

@@ -45,8 +45,8 @@ def list_delete(url, login, password, idlist):
 
 
 # Получить список по id
-def list_select(url, idlist):
-    response = requests.get(f"{url}/rules/lists/{idlist}/description")
+def list_select(url, login, password, idlist):
+    response = requests.get(f"{url}/rules/lists/{idlist}/description", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -54,8 +54,8 @@ def list_select(url, idlist):
 
 
 # Получить все списки
-def list_select_all(url):
-    response = requests.get(f"{url}/rules/lists")
+def list_select_all(url, login, password):
+    response = requests.get(f"{url}/rules/lists", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -73,8 +73,8 @@ def content_set(url, login, password, idlist, filetext):
 
 
 # Получить содержимое списка
-def content_get(url, idlist):
-    response = requests.get(f"{url}/rules/lists/{idlist}/content")
+def content_get(url, login, password, idlist):
+    response = requests.get(f"{url}/rules/lists/{idlist}/content", auth=(login, password))
     if response.status_code != 200:
         return ''
     details = response.text.rstrip('\n')
@@ -82,9 +82,9 @@ def content_get(url, idlist):
 
 
 # Наполнить список
-def list_warp(url, list):
+def list_warp(url, login, password, list):
     try:
-        formats = enum_format_get(url)
+        formats = enum_format_get(url, login, password)
         # Заполнить параметры формата файла
         for f in formats['formats']:
             if f['name'].upper() == list['ftype'].upper():

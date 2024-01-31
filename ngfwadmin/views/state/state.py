@@ -13,25 +13,27 @@ def state(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # Выполнить перезапуск
         reboot = request.GET.get("reboot")
         if reboot is not None:
-            system_exit(url)
+            system_exit(url, login, password)
             return
 
         # данные
-        uptime = uptime_get(url)
-        serial = serial_get(url)
-        status = status_get(url)
-        version = version_get(url)
-        ram = monitoring_ram_get(url)
-        disk = monitoring_disk_get(url)
-        lcores = monitoring_lcores_get(url)
+        uptime = uptime_get(url, login, password)
+        serial = serial_get(url, login, password)
+        status = status_get(url, login, password)
+        version = version_get(url, login, password)
+        ram = monitoring_ram_get(url, login, password)
+        disk = monitoring_disk_get(url, login, password)
+        lcores = monitoring_lcores_get(url, login, password)
         context = {'dev': dev,
                    'ram': ram,
                    'disk': disk,

@@ -2,8 +2,8 @@ import requests
 
 
 # Получить версию
-def version_get(url):
-    response = requests.get(f"{url}/system/version")
+def version_get(url, login, password):
+    response = requests.get(f"{url}/system/version", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -13,8 +13,8 @@ def version_get(url):
 
 
 # Получить версию
-def serial_get(url):
-    response = requests.get(f"{url}/system/serial")
+def serial_get(url, login, password):
+    response = requests.get(f"{url}/system/serial", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -22,8 +22,8 @@ def serial_get(url):
 
 
 # Получить статус
-def status_get(url):
-    response = requests.get(f"{url}/system/status")
+def status_get(url, login, password):
+    response = requests.get(f"{url}/system/status", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -31,8 +31,8 @@ def status_get(url):
 
 
 # Получить статус
-def uptime_get(url):
-    response = requests.get(f"{url}/system/uptime")
+def uptime_get(url, login, password):
+    response = requests.get(f"{url}/system/uptime", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -40,8 +40,8 @@ def uptime_get(url):
 
 
 # Получить статус
-def sys_ports_get(url):
-    response = requests.get(f"{url}/system/ports")
+def sys_ports_get(url, login, password):
+    response = requests.get(f"{url}/system/ports", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -49,8 +49,8 @@ def sys_ports_get(url):
 
 
 # Получить версию
-def settings_get(url):
-    response = requests.get(f"{url}/system/settings")
+def settings_get(url, login, password):
+    response = requests.get(f"{url}/system/settings", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -58,8 +58,8 @@ def settings_get(url):
 
 
 # Получить версию
-def system_exit(url):
-    response = requests.post(f"{url}/system/exit")
+def system_exit(url, login, password):
+    response = requests.post(f"{url}/system/exit", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()

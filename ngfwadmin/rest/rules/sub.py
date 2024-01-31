@@ -7,21 +7,21 @@ from ngfwadmin.rest.rules.enum import enum_atomic_get, enum_format_get
 
 
 # Добавить подправило
-def sub_insert(url, idrule, arid, fidorval, isinvert):
+def sub_insert(url, login, password, idrule, arid, fidorval, isinvert):
     dic = {
         'ar_id': arid,
         'is_invert': str(isinvert),
         'fid_or_val': str(fidorval)}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.post(f"{url}/rules/{idrule}/sub", json=details)
+    response = requests.post(f"{url}/rules/{idrule}/sub", json=details, auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
 
 
 # Изменить подправило
-def sub_update(url, idrule, idsub, arid, fidorval, isinvert):
+def sub_update(url, login, password, idrule, idsub, arid, fidorval, isinvert):
     dic = {
         'id': idsub,
         'ar_id': arid,
@@ -29,23 +29,23 @@ def sub_update(url, idrule, idsub, arid, fidorval, isinvert):
         'fid_or_val': str(fidorval)}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/rules/{idrule}/sub/{idsub}", json=details)
+    response = requests.put(f"{url}/rules/{idrule}/sub/{idsub}", json=details, auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
 
 
 # Удалить подправило
-def sub_delete(url, idrule, idsub):
-    response = requests.delete(f"{url}/rules/{idrule}/sub/{idsub}")
+def sub_delete(url, login, password, idrule, idsub):
+    response = requests.delete(f"{url}/rules/{idrule}/sub/{idsub}", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content
 
 
 # Получить правило по id
-def sub_select(url, idrule, idsub):
-    response = requests.get(f"{url}/rules/{idrule}/sub/{idsub}")
+def sub_select(url, login, password, idrule, idsub):
+    response = requests.get(f"{url}/rules/{idrule}/sub/{idsub}", auth=(login, password))
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -53,10 +53,10 @@ def sub_select(url, idrule, idsub):
 
 
 # Наполнить подправило полями
-def sub_warp(url, rule):
+def sub_warp(url, login, password, rule):
     try:
-        atomics = enum_atomic_get(url)
-        formats = enum_format_get(url)
+        atomics = enum_atomic_get(url, login, password)
+        formats = enum_format_get(url, login, password)
         sub2 = []
         sub = rule['sub']
         for s in sub:
@@ -93,7 +93,7 @@ def sub_warp(url, rule):
             if fid_or_val.isdigit():
                 if s2['ar_format'] == 'file':
                     idlist = int(fid_or_val)
-                    list = list_select(url, idlist)
+                    list = list_select(url, login, password, idlist)
                     s2['list_id'] = idlist
                     if list is None:
                         s2['list_name'] = 'list not found, id=' + str(idlist)

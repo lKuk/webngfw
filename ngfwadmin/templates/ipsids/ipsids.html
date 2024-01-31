@@ -83,7 +83,7 @@
                 a.click();
                 setTimeout(function () {
                     document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
+                    window.URL.revokeObjectURL(url, login, password);
                 }, 0);
             }
         }

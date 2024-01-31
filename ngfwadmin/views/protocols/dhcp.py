@@ -14,12 +14,14 @@ def protocol_dhcp_table(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
-        table = dhcp_table_select(url)
-        status_table = get_table_status(url)
+        login = dev.get('login')
+        password = dev.get('password')
+        table = dhcp_table_select(url, login, password)
+        status_table = get_table_status(url, login, password)
 
         status_dhcp_table = request.GET.get("status_dhcp_table")
         if status_dhcp_table is not None:
@@ -42,10 +44,12 @@ def protocol_dhcp_subnet(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # изменить состояние подсети
         port = request.GET.get("port")
@@ -67,7 +71,7 @@ def protocol_dhcp_subnet(request):
             # перейти к таблице списков
             return redirect('protocol_dhcp_subnet')
 
-        table = dhcp_subnet_select(url)
+        table = dhcp_subnet_select(url, login, password)
         # Данные страницы
         context = {'dev': dev,
                    'table': table }
@@ -83,10 +87,12 @@ def protocol_dhcp_subnet_edit(request, port, vlan):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
         # создать подсеть
         if request.method == 'POST':
             # добавить маршрут
@@ -124,10 +130,12 @@ def protocol_dhcp_static(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # удалить подсеть
         delete = request.GET.get("delete")
@@ -141,7 +149,7 @@ def protocol_dhcp_static(request):
             # перейти к таблице списков
             return redirect('protocol_dhcp_static')
 
-        table = dhcp_static_select(url)
+        table = dhcp_static_select(url, login, password)
         # Данные страницы
         context = {'dev': dev,
                    'table': table}
@@ -157,10 +165,12 @@ def protocol_dhcp_static_add(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
         # создать статический
         if request.method == 'POST':
             if 'btnInsert' in request.POST:

@@ -12,13 +12,15 @@ def inspection(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # Определить ключ и сертификат
-        ca = ca_get(url)
+        ca = ca_get(url, login, password)
         key = ca['key']
         cer = ca['cer']
 
@@ -59,8 +61,8 @@ def inspection(request):
                 ca_set(url, key, content)
                 labelCer = 'Загрузка сертификата выполнена успешно!'
 
-        ca = ca_get(url)
-        status = status_get(url)
+        ca = ca_get(url, login, password)
+        status = status_get(url, login, password)
         context = {'ca': ca,
                    'dev': dev,
                    'status': status,

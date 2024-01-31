@@ -1,6 +1,8 @@
 from django.shortcuts import redirect, render
 
 from ngfwadmin.forms import ConnectForm
+from ngfwadmin.rest.auth import auth
+from ngfwadmin.views.connect import dev
 from ngfwadmin.views.debug.error import exception
 from ngfwadmin.views.connect.dev import dev_set, dev_del
 
@@ -8,6 +10,7 @@ from ngfwadmin.views.connect.dev import dev_set, dev_del
 # Страница подключения к устройству
 def connect(request):
     try:
+        result = ''
         # Удалить подключение
         dev_del(request)
         # Подключение
@@ -22,16 +25,22 @@ def connect(request):
                 port = obj['port']
                 login = obj['login']
                 password = obj['password']
-                # Сохранить подключение
-                dev_set(request, ip, port, login, password)
-                # Подключение выполнено
-                return redirect('state')
+                # ссылка на устройство для rest
+                url = dev.get_url(ip, port)
+                # запрос аутентификации
+                result = auth.auth_logon(url, login, password)
+                if result.lower() == 'ok':
+                    # Сохранить подключение
+                    dev_set(request, ip, port, login, password)
+                    # Подключение выполнено
+                    return redirect('state')
         # Подключение повторно
         else:
             form = ConnectForm()
 
         # Отобразить страницу подключения
-        context = {'form': form}
+        context = {'form': form,
+                   'result': result}
         return render(request, 'connect/connect.html', context=context)
 
     except Exception as ex:

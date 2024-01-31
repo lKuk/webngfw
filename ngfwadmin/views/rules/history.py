@@ -12,17 +12,22 @@ def history(request):
         dev = dev_get(request)
 
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
+
+        # подключение
+        url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # восстановить
         date = request.GET.get("date")
         if date is not None:
-            history_set(dev.get('url'), date)
+            history_set(url, date)
             return redirect('rules')
 
         # получить таблицу истории
-        result = history_get(dev.get('url'))
+        result = history_get(url, login, password)
 
         # преобразовать в словарь
         history = []

@@ -12,20 +12,22 @@ def protocol_ipconfig(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
         # удалить маршрут
         port = request.GET.get("port")
         delete = request.GET.get("delete")
         if port is not None and delete is not None:
             # удалить маршрут
-            ipconfig_delete(url, delete, port)
+            ipconfig_delete(url, login, password, delete, port)
             # перейти к таблице списков
             return redirect('protocol_ipconfig')
         # Данные страницы
-        ipconfig = ipconfig_select_all(url)
+        ipconfig = ipconfig_select_all(url, login, password)
         context = {'dev': dev,
                    'ipconfig': ipconfig}
         # Вернуть сформированную страницу
@@ -39,10 +41,12 @@ def protocol_ipconfig_add(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
         # создать маршрут
         if request.method == 'POST':
             # добавить маршрут
@@ -54,7 +58,7 @@ def protocol_ipconfig_add(request):
                 port = request.POST.get('port')
                 vlan = request.POST.get('vlan')
                 # добавить маршрут
-                ipconfig_insert(url, ip, mask, vlan, port, ipgw)
+                ipconfig_insert(url, login, password, ip, mask, vlan, port, ipgw)
                 # перейти к таблице маршрутов
                 return redirect('protocol_ipconfig')
         # Данные страницы

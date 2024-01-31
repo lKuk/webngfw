@@ -11,12 +11,14 @@ def classification(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
-        classification = classification_get(url)
+        classification = classification_get(url, login, password)
         cert_enable = classification.get('cert_enable')
         signature_enable = classification.get('signature_enable')
         service_class_enable = classification.get('service_class_enable')

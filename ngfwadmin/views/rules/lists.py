@@ -16,11 +16,13 @@ def lists(request):
         dev = dev_get(request)
 
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
 
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
         login = dev['login']
         password = dev['password']
 
@@ -33,12 +35,12 @@ def lists(request):
             return redirect('lists')
 
         # создать таблицу списков
-        lists = list_select_all(url)
+        lists = list_select_all(url, login, password)
 
         # развернуть все списки
         if lists is not None:
             for list in lists:
-                list_warp(url, list)
+                list_warp(url, login, password, list)
 
         # отобразить страницу с таблицей списков
         context = {'dev': dev,
@@ -57,7 +59,7 @@ def lists_add(request):
         dev = dev_get(request)
 
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
 
         # подключение
@@ -86,13 +88,13 @@ def lists_add(request):
                 return redirect('lists')
 
         # получить список mime
-        mimes = enum_mimes_get(url)
+        mimes = enum_mimes_get(url, login, password)
         # получить доступные форматы
-        format = enum_format_get(url)
+        format = enum_format_get(url, login, password)
         # список сервисов
-        services = enum_services_get(url)
+        services = enum_services_get(url, login, password)
         # список протоколов
-        protocols = enum_protocols_get(url)
+        protocols = enum_protocols_get(url, login, password)
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,
@@ -116,13 +118,13 @@ def lists_edit(request, id):
         dev = dev_get(request)
 
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
 
         # подключение
         url = dev.get('url')
-        login = dev['login']
-        password = dev['password']
+        login = dev.get('login')
+        password = dev.get('password')
 
         # создать список
         if request.method == 'POST':
@@ -146,13 +148,13 @@ def lists_edit(request, id):
         # получить содержимое списка
         content = content_get(url, id)
         # получить список mime
-        mimes = enum_mimes_get(url)
+        mimes = enum_mimes_get(url, login, password)
         # получить доступные форматы
-        format = enum_format_get(url)
+        format = enum_format_get(url, login, password)
         # список сервисов
-        services = enum_services_get(url)
+        services = enum_services_get(url, login, password)
         # список протоколов
-        protocols = enum_protocols_get(url)
+        protocols = enum_protocols_get(url, login, password)
 
         # отобразить страницу редактирования списка
         context = {'dev': dev,

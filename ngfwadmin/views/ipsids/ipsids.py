@@ -14,10 +14,12 @@ def ipsids(request):
         # Подключение
         dev = dev_get(request)
         # Проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
         # Подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # Изменить статус
         checked = request.GET.get("checked")
@@ -28,13 +30,13 @@ def ipsids(request):
         # Скачать правила
         get_rules = request.GET.get("get_rules")
         if get_rules is not None:
-            rules = rules_get(url)
+            rules = rules_get(url, login, password)
             return HttpResponse(rules)
 
         # Скачать конфигурацию
         get_config = request.GET.get("get_config")
         if get_config is not None:
-            config = configuration_get(url)
+            config = configuration_get(url, login, password)
             return HttpResponse(config)
 
         labelRule = 'Выберете файл загрузки правил'
@@ -59,7 +61,7 @@ def ipsids(request):
                 labelConfig = 'Загрузка конфигурации выполнена успешно!'
 
         # Данные страницы
-        status = status_get(url)
+        status = status_get(url, login, password)
         context = {'dev': dev,
                    'status': status,
                    'labelRule': labelRule,

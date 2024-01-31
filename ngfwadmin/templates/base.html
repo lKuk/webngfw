@@ -141,6 +141,16 @@
                         <label>Администрирование</label>
                     </li>
 
+                    <!-- Настройки паролей -->
+                    <li class="nav-item {% is_active request 'auth' 'active' %}">
+                        <a href="{% url 'auth' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-user"></i>
+                            </span><span class="pcoded-mtext">Аутентификация</span>
+                            <span class="pcoded-badge label label-info">New</span>
+                        </a>
+                    </li>
+                    
                     <!-- Логирование -->
                     <li class="nav-item {% is_active request 'syslog' 'active' %}">
                         <a href="{% url 'syslog' %}" class="nav-link">
@@ -183,7 +193,6 @@
                             <span class="pcoded-micon">
                                 <i class="feather icon-clipboard"></i>
                             </span><span class="pcoded-mtext">Настройки DPI</span>
-                            <span class="pcoded-badge label label-info">New</span>
                         </a>
                     </li>
 

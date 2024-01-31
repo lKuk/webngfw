@@ -23,16 +23,18 @@ def rules(request):
         dev = dev_get(request)
 
         # проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
 
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # применить настройки правил
         if request.method == 'POST':
             if 'btnApply' in request.POST:
-                rule_apply(url)
+                rule_apply(url, login, password)
                 return redirect('rules')
 
         # удалить правило
@@ -44,15 +46,15 @@ def rules(request):
             return redirect('rules')
 
         # получить все правила
-        rules = rule_select_all(url)
+        rules = rule_select_all(url, login, password)
 
         # Получить описание состояния
-        description = rule_description(url)
+        description = rule_description(url, login, password)
 
         # развернуть все подправила
         if rules is not None:
             for rule in rules:
-                sub_warp(url, rule)
+                sub_warp(url, login, password, rule)
 
         # отобразить страницу правил
         context = {'dev': dev,
@@ -72,11 +74,13 @@ def rules_add(request):
         dev = dev_get(request)
 
         # проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
 
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # создать список
         if request.method == 'POST':
@@ -112,11 +116,13 @@ def rules_edit(request, id):
         dev = dev_get(request)
 
         # проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
 
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
 
         # создать список
         if request.method == 'POST':
@@ -165,11 +171,13 @@ def rules_sub_edit(request, id):
         dev = dev_get(request)
 
         # проверка подключения
-        if 'url' not in dev:
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
             return redirect('connect')
 
         # подключение
         url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
         login = dev['login']
         password = dev['password']
 
@@ -217,10 +225,10 @@ def rules_sub_edit(request, id):
             # Страница нового списка
             if 'btnListNew' in request.POST:
                 rule = rule_select(url, id)
-                mimes = enum_mimes_get(url)
-                format = enum_format_get(url)
-                services = enum_services_get(url)
-                protocols = enum_protocols_get(url)
+                mimes = enum_mimes_get(url, login, password)
+                format = enum_format_get(url, login, password)
+                services = enum_services_get(url, login, password)
+                protocols = enum_protocols_get(url, login, password)
                 context = {'dev': dev,
                            'rule': rule,
                            'mimes': mimes,
@@ -249,10 +257,10 @@ def rules_sub_edit(request, id):
 
         # получить данные
         rule = rule_select(url, id)
-        lists = list_select_all(url)
-        atomic = enum_atomic_get(url)
+        lists = list_select_all(url, login, password)
+        atomic = enum_atomic_get(url, login, password)
         # развернуть подправило
-        sub_warp(url, rule)
+        sub_warp(url, login, password, rule)
 
         # отобразить страницу редактирования списка
         context = {'id': id,
