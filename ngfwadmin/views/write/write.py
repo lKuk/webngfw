@@ -59,7 +59,8 @@ def write(request):
         protocols = enum_protocols_get(url)
         # получить список файлов
         writeContent = get_write_content(url)
-        writeContent = sorted(writeContent, key=lambda k: k['time'], reverse=True)
+        if writeContent is not None:
+            writeContent = sorted(writeContent, key=lambda k: k['time'], reverse=True)
 
         # заполнить данные
         context = {'dev': dev,
