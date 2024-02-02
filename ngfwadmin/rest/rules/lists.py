@@ -14,7 +14,7 @@ def list_insert(url, login, password, name, ftype, mark, description):
         'description': description}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.post(f"{url}/rules/lists", json=details, auth=(login, password))
+    response = requests.post(f"{url}/rules/lists", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -30,7 +30,7 @@ def list_update(url, login, password, idlist, name, ftype, mark, description):
         'description': description}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/rules/lists/{idlist}/description", json=details, auth=(login, password))
+    response = requests.put(f"{url}/rules/lists/{idlist}/description", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -38,7 +38,7 @@ def list_update(url, login, password, idlist, name, ftype, mark, description):
 
 # Удалить список
 def list_delete(url, login, password, idlist):
-    response = requests.delete(f"{url}/rules/lists/{idlist}", auth=(login, password))
+    response = requests.delete(f"{url}/rules/lists/{idlist}", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content
@@ -46,7 +46,7 @@ def list_delete(url, login, password, idlist):
 
 # Получить список по id
 def list_select(url, login, password, idlist):
-    response = requests.get(f"{url}/rules/lists/{idlist}/description", auth=(login, password))
+    response = requests.get(f"{url}/rules/lists/{idlist}/description", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -55,7 +55,7 @@ def list_select(url, login, password, idlist):
 
 # Получить все списки
 def list_select_all(url, login, password):
-    response = requests.get(f"{url}/rules/lists", auth=(login, password))
+    response = requests.get(f"{url}/rules/lists", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -66,7 +66,7 @@ def list_select_all(url, login, password):
 def content_set(url, login, password, idlist, filetext):
     filetext = filetext + '\n'
     buffer = bytes(filetext, 'utf-8')
-    response = requests.put(f"{url}/rules/lists/{idlist}/content", data=buffer, auth=(login, password))
+    response = requests.put(f"{url}/rules/lists/{idlist}/content", data=buffer, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content
@@ -74,7 +74,7 @@ def content_set(url, login, password, idlist, filetext):
 
 # Получить содержимое списка
 def content_get(url, login, password, idlist):
-    response = requests.get(f"{url}/rules/lists/{idlist}/content", auth=(login, password))
+    response = requests.get(f"{url}/rules/lists/{idlist}/content", auth=(login, password), verify=False)
     if response.status_code != 200:
         return ''
     details = response.text.rstrip('\n')

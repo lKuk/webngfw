@@ -27,7 +27,7 @@ def dev_set(request, ip, port, login, password):
 
 # Добавить подключение к устройству
 def get_url(ip, port):
-    return 'http://' + ip + ':' + str(port)
+    return 'https://' + ip + ':' + str(port)
 
 # Получить подключение к устройству
 def dev_get(request):

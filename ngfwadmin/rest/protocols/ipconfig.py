@@ -14,7 +14,7 @@ def ipconfig_insert(url, login, password, ip, mask, vlan, port, ipgw):
         'vlan_id': str(vlan)}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.post(f"{url}/router/ip/config", json=details, auth=(login, password))
+    response = requests.post(f"{url}/router/ip/config", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -26,7 +26,7 @@ def ipconfig_delete(url, login, password, id, port):
            'port': port }
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.delete(f"{url}/router/ip/config", json=details, auth=(login, password))
+    response = requests.delete(f"{url}/router/ip/config", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content
@@ -34,7 +34,7 @@ def ipconfig_delete(url, login, password, id, port):
 
 # Получить все списки
 def ipconfig_select_all(url, login, password):
-    response = requests.get(f"{url}/router/ip/config", auth=(login, password))
+    response = requests.get(f"{url}/router/ip/config", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()

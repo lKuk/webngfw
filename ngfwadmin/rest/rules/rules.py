@@ -11,7 +11,7 @@ def rule_insert(url, login, password, rtype, is_enable, name, description):
         'description': description}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.post(f"{url}/rules", json=details, auth=(login, password))
+    response = requests.post(f"{url}/rules", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -28,7 +28,7 @@ def rule_update(url, login, password, idrule, rtype, is_enable, name, descriptio
         'sub': sub}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/rules/{idrule}", json=details, auth=(login, password))
+    response = requests.put(f"{url}/rules/{idrule}", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -36,7 +36,7 @@ def rule_update(url, login, password, idrule, rtype, is_enable, name, descriptio
 
 # Удалить правило
 def rule_delete(url, login, password, idrule):
-    response = requests.delete(f"{url}/rules/{idrule}", auth=(login, password))
+    response = requests.delete(f"{url}/rules/{idrule}", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content
@@ -44,7 +44,7 @@ def rule_delete(url, login, password, idrule):
 
 # Получить правило по id
 def rule_select(url, login, password, idrule):
-    response = requests.get(f"{url}/rules/{idrule}", auth=(login, password))
+    response = requests.get(f"{url}/rules/{idrule}", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -53,7 +53,7 @@ def rule_select(url, login, password, idrule):
 
 # Получить список всех правил
 def rule_select_all(url, login, password):
-    response = requests.get(f"{url}/rules", auth=(login, password))
+    response = requests.get(f"{url}/rules", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -62,7 +62,7 @@ def rule_select_all(url, login, password):
 
 # Применить изменения всех правил
 def rule_apply(url, login, password):
-    response = requests.put(f"{url}/rules", auth=(login, password))
+    response = requests.put(f"{url}/rules", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return
@@ -70,7 +70,7 @@ def rule_apply(url, login, password):
 
 # Получить текущее описание правил
 def rule_description(url, login, password):
-    response = requests.get(f"{url}/rules/description", auth=(login, password))
+    response = requests.get(f"{url}/rules/description", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()

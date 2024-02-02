@@ -3,7 +3,7 @@ import requests
 
 
 def get_arp_protect(url, login, password):
-    response = requests.get(f"{url}/router/arp/protect", auth=(login, password))
+    response = requests.get(f"{url}/router/arp/protect", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -11,7 +11,7 @@ def get_arp_protect(url, login, password):
 
 
 def get_icmp_protect(url, login, password):
-    response = requests.get(f"{url}/router/icmp/protect", auth=(login, password))
+    response = requests.get(f"{url}/router/icmp/protect", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -19,7 +19,7 @@ def get_icmp_protect(url, login, password):
 
 
 def get_dhcp_snooping(url, login, password):
-    response = requests.get(f"{url}/router/dhcp/snooping", auth=(login, password))
+    response = requests.get(f"{url}/router/dhcp/snooping", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -33,7 +33,7 @@ def set_arp(url, login, password, limits, ports, status):
            'status': status}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/router/arp/protect", json=details, auth=(login, password))
+    response = requests.put(f"{url}/router/arp/protect", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -45,7 +45,7 @@ def set_ipmp(url, login, password, limits, ports, status):
            'status': status}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/router/icmp/protect", json=details, auth=(login, password))
+    response = requests.put(f"{url}/router/icmp/protect", json=details, auth=(login, password), verify=False)
     code = response.status_code
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
@@ -55,7 +55,7 @@ def set_dhcp(url, login, password, status):
     dic = {'dhcp_snooping': status}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/router/dhcp/snooping", json=details, auth=(login, password))
+    response = requests.put(f"{url}/router/dhcp/snooping", json=details, auth=(login, password), verify=False)
     code = response.status_code
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)

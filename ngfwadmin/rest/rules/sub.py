@@ -14,7 +14,7 @@ def sub_insert(url, login, password, idrule, arid, fidorval, isinvert):
         'fid_or_val': str(fidorval)}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.post(f"{url}/rules/{idrule}/sub", json=details, auth=(login, password))
+    response = requests.post(f"{url}/rules/{idrule}/sub", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -29,7 +29,7 @@ def sub_update(url, login, password, idrule, idsub, arid, fidorval, isinvert):
         'fid_or_val': str(fidorval)}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/rules/{idrule}/sub/{idsub}", json=details, auth=(login, password))
+    response = requests.put(f"{url}/rules/{idrule}/sub/{idsub}", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -37,7 +37,7 @@ def sub_update(url, login, password, idrule, idsub, arid, fidorval, isinvert):
 
 # Удалить подправило
 def sub_delete(url, login, password, idrule, idsub):
-    response = requests.delete(f"{url}/rules/{idrule}/sub/{idsub}", auth=(login, password))
+    response = requests.delete(f"{url}/rules/{idrule}/sub/{idsub}", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content
@@ -45,7 +45,7 @@ def sub_delete(url, login, password, idrule, idsub):
 
 # Получить правило по id
 def sub_select(url, login, password, idrule, idsub):
-    response = requests.get(f"{url}/rules/{idrule}/sub/{idsub}", auth=(login, password))
+    response = requests.get(f"{url}/rules/{idrule}/sub/{idsub}", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()

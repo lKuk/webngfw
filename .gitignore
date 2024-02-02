@@ -137,3 +137,9 @@ GitHub.sublime-settings
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+/localhost+1-key.pem
+/cert.pem
+/db.sqlite3
+/key.pem
+/localhost+1.pem
+/localhost+1-key.pem

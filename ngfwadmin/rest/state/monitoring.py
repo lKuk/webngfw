@@ -2,7 +2,7 @@ import requests
 
 
 def monitoring_ram_get(url, login, password):
-    response = requests.get(f"{url}/system/monitoring/ram", auth=(login, password))
+    response = requests.get(f"{url}/system/monitoring/ram", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -10,14 +10,14 @@ def monitoring_ram_get(url, login, password):
 
 
 def monitoring_disk_get(url, login, password):
-    response = requests.get(f"{url}/system/monitoring/disk", auth=(login, password))
+    response = requests.get(f"{url}/system/monitoring/disk", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
     return details
 
 def monitoring_lcores_get(url, login, password):
-    response = requests.get(f"{url}/system/monitoring/lcores", auth=(login, password))
+    response = requests.get(f"{url}/system/monitoring/lcores", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()

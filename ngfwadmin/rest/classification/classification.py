@@ -3,7 +3,7 @@ import requests
 
 
 def classification_get(url, login, password):
-    response = requests.get(f"{url}/classification/status", auth=(login, password))
+    response = requests.get(f"{url}/classification/status", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -15,7 +15,7 @@ def classification_set(url, login, password, cert_enable, signature_enable, serv
            "class_enable": class_enable}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/classification/status", json=details, auth=(login, password))
+    response = requests.put(f"{url}/classification/status", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content

@@ -4,7 +4,7 @@ import requests
 
 # Получить статус
 def status_get(url, login, password):
-    response = requests.get(f"{url}/router/nat/status", auth=(login, password))
+    response = requests.get(f"{url}/router/nat/status", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -16,7 +16,7 @@ def status_set(url, login, password, enable):
     dic = {'nat_enable': enable}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/router/nat/status", json=details, auth=(login, password))
+    response = requests.put(f"{url}/router/nat/status", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -24,7 +24,7 @@ def status_set(url, login, password, enable):
 
 # Получить порты nat
 def static_port_select(url, login, password):
-    response = requests.get(f"{url}/router/nat/static_port", auth=(login, password))
+    response = requests.get(f"{url}/router/nat/static_port", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -41,7 +41,7 @@ def static_port_insert(url, login, password, ip_lan, port_lan, ip_wan, port_wan,
         'protocol': str(protocol)}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.post(f"{url}/router/nat/static_port", json=details, auth=(login, password))
+    response = requests.post(f"{url}/router/nat/static_port", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -49,7 +49,7 @@ def static_port_insert(url, login, password, ip_lan, port_lan, ip_wan, port_wan,
 
 # Удалить  порты nat
 def static_port_delete(url, login, password, id):
-    response = requests.delete(f"{url}/router/nat/static_port/" + str(id), auth=(login, password))
+    response = requests.delete(f"{url}/router/nat/static_port/" + str(id), auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content
