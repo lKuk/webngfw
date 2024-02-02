@@ -42,6 +42,7 @@
    pip install django-sslserver
    choco install mkcert
    mkcert -install  
-   mkcert -cert-file cert.pem -key-file key.pem localhost 127.0.0.1
-   python manage.py runsslserver --certificate cert.pem --key key.pem
+   mkdir cert
+   mkcert -cert-file cert/cert.pem -key-file cert/key.pem localhost 127.0.0.1
+   python manage.py runsslserver --certificate cert/cert.pem --key cert/key.pem
    ```

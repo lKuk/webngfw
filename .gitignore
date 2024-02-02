@@ -143,3 +143,5 @@ GitHub.sublime-settings
 /key.pem
 /localhost+1.pem
 /localhost+1-key.pem
+/cert/cert.pem
+/cert/key.pem
