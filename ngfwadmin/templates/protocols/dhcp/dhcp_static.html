@@ -67,7 +67,7 @@
                                                 <!-- Удаление -->
                                                 <td style="display: table-cell;">
                                                     <div>
-                                                        <a href="{% url 'protocol_dhcp_subnet' %}?delete=true&port={{ row.port }}&vlan={{ row.vlan }}&ip_start={{ row.ip_start }}&ip_end={{ row.ip_end }}"
+                                                        <a href="{% url 'protocol_dhcp_static' %}?delete=true&port={{ row.port }}&vlan={{ row.vlan }}&ip={{ row.ip }}&mac={{ row.mac }}"
                                                            onclick="return confirm('Удалить подсеть DHCP?');">
                                                             <i class="feather icon-trash"></i>
                                                         </a>
