@@ -37,22 +37,22 @@ def write(request):
         if param is not None and status is not None and port is not None:
             # начать запись вх.
             if param == 'In' and status != 'write':
-                set_write_in(url, port, 'write')
+                set_write_in(url, login, password, port, 'write')
             # начать запись исх.
             elif param == 'Out' and status != 'write':
-                set_write_out(url, port, protocol, 'write')
+                set_write_out(url, login, password, port, protocol, 'write')
             # остановить запись вх.
             elif param == 'In' and status == 'write':
-                set_write_in(url, writeIn['write_portin'], 'stop')
+                set_write_in(url, login, password, writeIn['write_portin'], 'stop')
             # остановить запись исх.
             elif param == 'Out' and status == 'write':
-                set_write_out(url, writeOut['write_portout'], writeOut['write_protout'], 'stop')
+                set_write_out(url, login, password, writeOut['write_portout'], writeOut['write_protout'], 'stop')
             return
 
         # удалить файл
         delete = request.GET.get("delete")
         if delete is not None:
-            delete_write_content_file(url, delete)
+            delete_write_content_file(url, login, password, delete)
             return redirect('write')
 
         # список сервисов
@@ -96,7 +96,7 @@ def  write_download(request, name):
         password = dev.get('password')
 
         # скачать файл
-        file = get_write_content_file(url, name)
+        file = get_write_content_file(url, login, password, name)
         # base64
         buffer = base64.b64decode(file)
         # Вернуть файл

@@ -23,14 +23,14 @@ def syslog(request):
         checked = request.GET.get("checked")
         typesys = request.GET.get("typesys")
         if checked is not None and typesys is not None:
-            type_set(url, checked, typesys)
+            type_set(url, login, password, checked, typesys)
             return
 
 
         ipServer = request.GET.get("ipServer")
         portServer = request.GET.get("portServer")
         if ipServer is not None and portServer is not None:
-            server_set(url, ipServer, portServer)
+            server_set(url, login, password, ipServer, portServer)
             return
 
         server = get_syslog_server(url, login, password)

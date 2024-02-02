@@ -22,14 +22,14 @@ def protocol_nat(request):
         # изменить статус
         checked = request.GET.get("checked")
         if checked is not None:
-            status_set(url, checked)
+            status_set(url, login, password, checked)
             return
 
         # удалить nat
         delete = request.GET.get("delete")
         if delete is not None:
             # удалить маршрут
-            static_port_delete(url, delete)
+            static_port_delete(url, login, password, delete)
             # перейти к таблице списков
             return redirect('protocol_nat')
 
@@ -69,7 +69,7 @@ def protocol_nat_add(request):
                 port_wan = request.POST.get('port_wan')
                 protocol = request.POST.get('protocol')
                 # добавить маршрут
-                static_port_insert(url, ip_lan, port_lan, ip_wan, port_wan, protocol)
+                static_port_insert(url, login, password, ip_lan, port_lan, ip_wan, port_wan, protocol)
                 # перейти к таблице маршрутов
                 return redirect('protocol_nat')
         # Данные страницы

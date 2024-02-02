@@ -29,13 +29,13 @@ def classification(request):
         if checked is not None:
             checked = str(checked).lower()
             if param == "cert_enable":
-                classification_set(url, checked, signature_enable, service_class_enable, class_enable)
+                classification_set(url, login, password, checked, signature_enable, service_class_enable, class_enable)
             if param == "signature_enable":
-                classification_set(url, cert_enable, checked, service_class_enable, class_enable)
+                classification_set(url, login, password, cert_enable, checked, service_class_enable, class_enable)
             if param == "service_class_enable":
-                classification_set(url, cert_enable, signature_enable, checked, class_enable)
+                classification_set(url, login, password, cert_enable, signature_enable, checked, class_enable)
             if param == "class_enable":
-                classification_set(url, cert_enable, signature_enable, service_class_enable, checked)
+                classification_set(url, login, password, cert_enable, signature_enable, service_class_enable, checked)
             return
 
             # Данные страницы

@@ -41,7 +41,7 @@ def rules(request):
         delete = request.GET.get("delete")
         if delete is not None:
             # удалить список
-            rule_delete(url, delete)
+            rule_delete(url, login, password, delete)
             # перейти к таблице правил
             return redirect('rules')
 
@@ -92,7 +92,7 @@ def rules_add(request):
             # добавить список
             if 'btnInsert' in request.POST:
                 # добавить правило
-                result = rule_insert(url, rtype, is_enable, name, description)
+                result = rule_insert(url, login, password, rtype, is_enable, name, description)
                 # получить id
                 details = json.loads(result)
                 id = details['id']
@@ -138,18 +138,18 @@ def rules_edit(request, id):
             # обновить правило
             if 'btnUpdate' in request.POST:
                 # добавить правило
-                rule_update(url, id, rtype, is_enable, name, description, sub)
+                rule_update(url, login, password, id, rtype, is_enable, name, description, sub)
                 # перейти к таблице правил
                 return redirect('rules')
             # обновить правило и перейти в подправила
             if 'btnUpdateGoSub' in request.POST:
                 # добавить правило
-                rule_update(url, id, rtype, is_enable, name, description, sub)
+                rule_update(url, login, password, id, rtype, is_enable, name, description, sub)
                 # перейти к таблице правил
                 return redirect('rules_sub_edit', id)
 
         # получить данные
-        rule = rule_select(url, id)
+        rule = rule_select(url, login, password, id)
 
         # отобразить страницу редактирования списка
         context = {'id': id,
@@ -178,14 +178,12 @@ def rules_sub_edit(request, id):
         url = dev.get('url')
         login = dev.get('login')
         password = dev.get('password')
-        login = dev['login']
-        password = dev['password']
 
         # удалить подправило
         delete = request.GET.get("delete")
         if delete is not None:
             # удалить список
-            sub_delete(url, id, delete)
+            sub_delete(url, login, password, login, password, id, delete)
             # перейти к таблице правил
             return redirect('rules_sub_edit', id)
 
@@ -220,11 +218,11 @@ def rules_sub_edit(request, id):
             # добавить подправило
             if 'btnSubAdd' in request.POST:
                 # добавить подправило
-                sub_insert(url, id, ar_id, list_id, is_invert)
+                sub_insert(url, login, password, id, ar_id, list_id, is_invert)
                 return redirect('rules_sub_edit', id)
             # Страница нового списка
             if 'btnListNew' in request.POST:
-                rule = rule_select(url, id)
+                rule = rule_select(url, login, password, id)
                 mimes = enum_mimes_get(url, login, password)
                 format = enum_format_get(url, login, password)
                 services = enum_services_get(url, login, password)
@@ -256,7 +254,7 @@ def rules_sub_edit(request, id):
                 content_set(url, login, password, listId, content)
 
         # получить данные
-        rule = rule_select(url, id)
+        rule = rule_select(url, login, password, id)
         lists = list_select_all(url, login, password)
         atomic = enum_atomic_get(url, login, password)
         # развернуть подправило

@@ -25,7 +25,7 @@ def protocol_dhcp_table(request):
 
         status_dhcp_table = request.GET.get("status_dhcp_table")
         if status_dhcp_table is not None:
-            set_table_status(url, status_dhcp_table)
+            set_table_status(url, login, password, status_dhcp_table)
             return
 
         # Данные страницы
@@ -56,7 +56,7 @@ def protocol_dhcp_subnet(request):
         vlan = request.GET.get("vlan")
         status = request.GET.get("status")
         if port is not None and vlan is not None and status is not None:
-            dhcp_subnet_status(url, port, vlan, status)
+            dhcp_subnet_status(url, login, password, port, vlan, status)
             return
 
         # удалить подсеть
@@ -67,7 +67,7 @@ def protocol_dhcp_subnet(request):
             ip_end = request.GET.get("ip_end")
             ip_start = request.GET.get("ip_start")
             # удалить подсеть
-            dhcp_subnet_delete(url, port, vlan, ip_start, ip_end)
+            dhcp_subnet_delete(url, login, password, port, vlan, ip_start, ip_end)
             # перейти к таблице списков
             return redirect('protocol_dhcp_subnet')
 
@@ -102,7 +102,7 @@ def protocol_dhcp_subnet_edit(request, port, vlan):
                 ip_start = request.POST.get('ip_start')
                 status = request.POST.get('status')
                 # добавить маршрут
-                dhcp_subnet_insert(url, port, vlan, ip_start, ip_end, status)
+                dhcp_subnet_insert(url, login, password, port, vlan, ip_start, ip_end, status)
                 # перейти к таблице маршрутов
                 return redirect('protocol_dhcp_subnet')
         # диапазон ip адресов
@@ -145,7 +145,7 @@ def protocol_dhcp_static(request):
             port = request.GET.get("port")
             vlan = request.GET.get("vlan")
             # удалить подсеть
-            dhcp_static_delete(url, port, vlan, ip, mac)
+            dhcp_static_delete(url, login, password, port, vlan, ip, mac)
             # перейти к таблице списков
             return redirect('protocol_dhcp_static')
 
@@ -180,7 +180,7 @@ def protocol_dhcp_static_add(request):
                 port = request.POST.get('port')
                 vlan = request.POST.get('vlan')
                 # добавить маршрут
-                dhcp_static_insert(url, port, vlan, ip, mac)
+                dhcp_static_insert(url, login, password, port, vlan, ip, mac)
                 # перейти к таблице маршрутов
                 return redirect('protocol_dhcp_static')
         # Данные страницы

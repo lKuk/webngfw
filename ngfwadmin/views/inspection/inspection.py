@@ -27,7 +27,7 @@ def inspection(request):
         # изменить статус
         checked = request.GET.get("checked")
         if checked is not None:
-            status_set(url, checked)
+            status_set(url, login, password, checked)
             return
 
         # Скачать ключ
@@ -50,7 +50,7 @@ def inspection(request):
                 content = ''
                 for chunk in file.chunks():
                     content += chunk.decode("utf-8")
-                ca_set(url, content, cer)
+                ca_set(url, login, password, content, cer)
                 labelKey = 'Загрузка ключа выполнена успешно!'
             # Загрузить конфигурацию
             if 'cer' in request.FILES:
@@ -58,7 +58,7 @@ def inspection(request):
                 content = ''
                 for chunk in file.chunks():
                     content += chunk.decode("utf-8")
-                ca_set(url, key, content)
+                ca_set(url, login, password, key, content)
                 labelCer = 'Загрузка сертификата выполнена успешно!'
 
         ca = ca_get(url, login, password)

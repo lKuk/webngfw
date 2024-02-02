@@ -19,9 +19,11 @@ def ports(request):
         url = dev.get('url')
         login = dev.get('login')
         password = dev.get('password')
+
         port = ports_get(url, login, password)
-        mgmnt_stat = get_mgmnt_stat(url, login, password)
         graylog = get_graylog_stat(url, login, password)
+        mgmnt_stat = get_mgmnt_stat(url, login, password)
+
         context = {'dev': dev,
                    'ports': port,
                    'mgmnt_stat': mgmnt_stat,

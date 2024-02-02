@@ -22,7 +22,7 @@ def protocol_route(request):
         delete = request.GET.get("delete")
         if delete is not None:
             # удалить маршрут
-            ip_router_delete(url, delete)
+            ip_router_delete(url, login, password, delete)
             # перейти к таблице списков
             return redirect('protocol_route')
         # Данные страницы
@@ -55,7 +55,7 @@ def protocol_route_add(request):
                 mask = request.POST.get('mask')
                 ipgw = request.POST.get('ipgw')
                 # добавить маршрут
-                ip_router_insert(url, ip, mask, ipgw)
+                ip_router_insert(url, login, password, ip, mask, ipgw)
                 # перейти к таблице маршрутов
                 return redirect('protocol_route')
         # Данные страницы

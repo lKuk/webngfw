@@ -23,7 +23,7 @@ def history(request):
         # восстановить
         date = request.GET.get("date")
         if date is not None:
-            history_set(url, date)
+            history_set(url, login, password, date)
             return redirect('rules')
 
         # получить таблицу истории

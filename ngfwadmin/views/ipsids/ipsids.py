@@ -24,7 +24,7 @@ def ipsids(request):
         # Изменить статус
         checked = request.GET.get("checked")
         if checked is not None:
-            status_set(url, checked)
+            status_set(url, login, password, checked)
             return
 
         # Скачать правила
@@ -49,7 +49,7 @@ def ipsids(request):
                 content = ''
                 for chunk in file.chunks():
                     content += chunk.decode("utf-8")
-                rules_set(url, content)
+                rules_set(url, login, password, content)
                 labelRule = 'Загрузка правил выполнена успешно!'
             # Загрузить конфигурацию
             if 'config' in request.FILES:
@@ -57,7 +57,7 @@ def ipsids(request):
                 content = ''
                 for chunk in file.chunks():
                     content += chunk.decode("utf-8")
-                configuration_set(url, content)
+                configuration_set(url, login, password, content)
                 labelConfig = 'Загрузка конфигурации выполнена успешно!'
 
         # Данные страницы

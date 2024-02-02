@@ -35,24 +35,24 @@ def protect(request):
             if proto == 'arp':
                 limits = arp['limits']
                 ports = arp['ports']
-                set_arp(url, limits, ports, checked)
+                set_arp(url, login, password, limits, ports, checked)
                 return
             if proto == 'icmp':
                 limits = icmp['limits']
                 ports = icmp['ports']
-                set_ipmp(url, limits, ports, checked)
+                set_ipmp(url, login, password, limits, ports, checked)
                 return
             if proto == 'dhcp':
-                set_dhcp(url, checked)
+                set_dhcp(url, login, password, checked)
                 return
             return
 
         if limits is not None and ports is not None and proto is not None and checked is not None:
             if proto == 'arp':
-                set_arp(url, limits, ports, checked)
+                set_arp(url, login, password, limits, ports, checked)
                 return
             if proto == 'icmp':
-                set_ipmp(url, limits, ports, checked)
+                set_ipmp(url, login, password, limits, ports, checked)
                 return
             return
 
