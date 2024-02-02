@@ -38,6 +38,7 @@
 2. Перейти в браузере по url http://127.0.0.1:8000/
 
 ### Запуск https:
+1. Выполнить команды по очереди:
    ```sh
    pip install django-sslserver
    choco install mkcert
@@ -46,3 +47,4 @@
    mkcert -cert-file cert/cert.pem -key-file cert/key.pem localhost 127.0.0.1
    python manage.py runsslserver --certificate cert/cert.pem --key cert/key.pem
    ```
+   
