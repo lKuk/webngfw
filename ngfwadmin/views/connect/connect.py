@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 
 from ngfwadmin.forms import ConnectForm
 from ngfwadmin.rest.auth import auth
+from ngfwadmin.rest.auth.auth import auth_permissions_get
 from ngfwadmin.views.connect import dev
 from ngfwadmin.views.debug.error import exception
 from ngfwadmin.views.connect.dev import dev_set, dev_del
@@ -30,8 +31,10 @@ def connect(request):
                 # запрос аутентификации
                 result = auth.auth_logon(url, login, password)
                 if result.lower() == 'ok':
+                    # запрос прав пользователя
+                    permissions = auth_permissions_get(url, login, password)
                     # Сохранить подключение
-                    dev_set(request, ip, port, login, password)
+                    dev_set(request, ip, port, login, password, permissions)
                     # Подключение выполнено
                     return redirect('state')
         # Подключение повторно

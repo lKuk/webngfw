@@ -144,9 +144,9 @@ def lists_edit(request, id):
                 return redirect('lists')
 
         # получить список
-        list = list_select(url, id)
+        list = list_select(url, login, password, id)
         # получить содержимое списка
-        content = content_get(url, id)
+        content = content_get(url, login, password, id)
         # получить список mime
         mimes = enum_mimes_get(url, login, password)
         # получить доступные форматы

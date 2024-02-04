@@ -2,13 +2,18 @@
 {% load static %}
 {% load base_tag %}
 
-
 {# Стили #}
 {% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
 {% endblock style %}
 
 {# Скрипты #}
 {% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
 {% endblock script %}
 
 {# Заголовок #}
@@ -31,13 +36,36 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="page-header-title">
-                            <h5>Установить пароль пользователям</h5>
+                            <h5>Пользователи</h5>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                
+                                <!-- Таблица списков -->
+                                <div class="table-responsive">
+                                    <table id="col-reorder"
+                                           class="display table nowrap table-striped table-hover footable">
+                                        <thead>
+                                        <tr>
+                                            <th>Логин</th>
+                                            <th>Пароль</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for login in users %}
+                                            <tr>
+                                                <!-- Логин -->
+                                                <td style="display: table-cell;">
+                                                    <a href="{% url 'auth_user' login %}">{{ login }}</a>
+                                                </td>
+                                                <!-- Пароль -->
+                                                <td style="display: table-cell;">{{ '********' }}</td>
+                                           </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

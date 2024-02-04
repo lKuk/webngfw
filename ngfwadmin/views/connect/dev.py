@@ -5,7 +5,7 @@ dict_dev = {}
 
 
 # Добавить подключение к устройству
-def dev_set(request, ip, port, login, password):
+def dev_set(request, ip, port, login, password, permissions):
     # время подключения
     now = date.today()
     # ссылка на устройство для rest
@@ -15,6 +15,7 @@ def dev_set(request, ip, port, login, password):
            'port': port,
            'login': login,
            'password': password,
+           'permissions': permissions,
            'datetime': now,
            'url': url}
     # получить ключ сессию
@@ -28,6 +29,7 @@ def dev_set(request, ip, port, login, password):
 # Добавить подключение к устройству
 def get_url(ip, port):
     return 'https://' + ip + ':' + str(port)
+
 
 # Получить подключение к устройству
 def dev_get(request):

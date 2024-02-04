@@ -2,8 +2,7 @@ from django.shortcuts import redirect, render
 
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.rest.inspection.inspection import status_set
-from ngfwadmin.rest.protocols.nat import static_port_delete, status_get, static_port_select, static_port_insert
+from ngfwadmin.rest.protocols.nat import static_port_delete, status_get, static_port_select, static_port_insert, status_set
 
 
 # Страница протокола nat

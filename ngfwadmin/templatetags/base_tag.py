@@ -52,3 +52,25 @@ def si_format(size):
     if size > 1024 ** (len(suff) - 1):
         return "не знаю как назвать такое число :)"
     return f"{size / 1024 ** pwr:.1f} {suff[pwr]}"
+
+
+
+@register.simple_tag()
+def dev_permissions(dev, paths, method):
+    if isinstance(dev, dict) == False:
+        return 'hidden'
+    if 'permissions' not in dev:
+        return 'hidden'
+    permissions = dev.get('permissions')
+    if isinstance(permissions, list) == False:
+        return 'hidden'
+    paths = paths.split("||")
+
+    for path in paths:
+        method = method.lower().strip()
+        path = path.strip('/').strip().lower()
+        for p in permissions:
+            if method == 'any' or method == p.get('method').lower():
+                if path == p.get('path').strip('/').strip().lower():
+                    return ''
+    return 'hidden'

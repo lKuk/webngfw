@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Стили #}
+{% block style %}
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <!-- Проверить пароли -->
+    <script>
+        // проверка паролей
+        function CheckPass() {
+            const pass1 = document.getElementById("pass1");
+            const validLi_pass1 = document.getElementById('validLi_pass1');
+            const validDiv_pass1 = document.getElementById('validDiv_pass1');
+            const val1 = pass1.value;
+            const pass2 = document.getElementById("pass2");
+            const validLi_pass2 = document.getElementById('validLi_pass2');
+            const validDiv_pass2 = document.getElementById('validDiv_pass2');
+            const val2 = pass2.value;
+
+            // Выполнить проверку содержимого
+            validDiv_pass1.hidden = true;
+            validDiv_pass2.hidden = true;
+
+            if(val1.length < 6)
+            {
+                validDiv_pass1.hidden = false;
+                validDiv_pass1.classList.add('text-danger');
+                validDiv_pass1.classList.remove("invalid-feedback");
+                validLi_pass1.textContent = "Длина пароля менее 6 символов";
+                return false;
+            }
+            if(val2.length < 6)
+            {
+                validDiv_pass2.hidden = false;
+                validDiv_pass2.classList.add('text-danger');
+                validDiv_pass2.classList.remove("invalid-feedback");
+                validLi_pass2.textContent = "Длина пароля менее 6 символов";
+                return false;
+            }
+            if(val1 !== val2)
+            {
+                validDiv_pass2.hidden = false;
+                validDiv_pass2.classList.add('text-danger');
+                validDiv_pass2.classList.remove("invalid-feedback");
+                validLi_pass2.textContent = "Пароли не совпадают";
+                return false;
+            }
+            return true;
+        }
+        // валидация 
+        function ValidateAll(event) {    
+            // проверка паролей
+            let res1 = CheckPass();
+            // отменить отправку формы на сервер
+            if (res1 === false) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+        }
+        // выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            // Подписаться на событие валидации формы
+            const userForm = document.getElementById("userForm");
+            userForm.addEventListener("submit", ValidateAll);
+        });
+    </script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-wifi"></i>Изменение пароля пользователя
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'auth' %}">Настройки паролей</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'auth_user' user %}">{{ user }}</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+    <div class="page-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>Установить новый пароль</h5>
+                </div>
+            </div>
+            <form action="" method="post" id="userForm">
+            {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <!-- Кнопки -->
+                            <button type="submit" name="btnSet" class="btn btn-primary shadow-2" style="width: 160px" onclick="CheckPass()">Установить</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <!-- Параметры -->
+                        <div class="col-md-6 col-xl-4">
+
+                            <!-- Новый пароль -->
+                            <div class="form-group">
+                                <label for="pass1">Новый пароль пользователя:</label>
+                                <input id="pass1" name="pass1" type="password" class="form-control" required>
+                                <div class="invalid-feedback" id="validDiv_pass1">
+                                    <ul>
+                                        <li id="validLi_pass1"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="pass2">Подтверждение пароля пользователя:</label>
+                                <input id="pass2" name="pass2" type="password" class="form-control" required>
+                                <div class="invalid-feedback" id="validDiv_pass2">
+                                    <ul>
+                                        <li id="validLi_pass2"></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
