@@ -149,8 +149,8 @@
 
                     <!-- Группа - Администрирование -->
                     <li class="nav-item pcoded-menu-caption"
-                        {% dev_permissions dev 'auth || syslog || write || inspection || ipsids || classification' 'Any' %}>
-                        <label>Администрирование</label>
+                        {% dev_permissions dev 'auth' 'Any' %}>
+                        <label>Аутентификация</label>
                     </li>
 
                     <!-- Настройки паролей -->
@@ -159,9 +159,25 @@
                         <a href="{% url 'auth' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-user"></i>
-                            </span><span class="pcoded-mtext">Аутентификация</span>
+                            </span><span class="pcoded-mtext">Пользователи</span>
+                        </a>
+                    </li>
+                    
+                    <!-- Настройки прав пользователей  -->
+                    <li class="nav-item {% is_active request 'permissions' 'active' %}"
+                        {% dev_permissions dev 'auth/permissions' 'Any' %}>
+                        <a href="{% url 'permissions' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-users"></i>
+                            </span><span class="pcoded-mtext">Привилегии</span>
                             <span class="pcoded-badge label label-info">New</span>
                         </a>
+                    </li>
+                    
+                    <!-- Группа - Администрирование -->
+                    <li class="nav-item pcoded-menu-caption"
+                        {% dev_permissions dev 'syslog || write || inspection || ipsids || classification' 'Any' %}>
+                        <label>Администрирование</label>
                     </li>
                     
                     <!-- Логирование -->

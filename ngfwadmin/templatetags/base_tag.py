@@ -74,3 +74,10 @@ def dev_permissions(dev, paths, method):
                 if path == p.get('path').strip('/').strip().lower():
                     return ''
     return 'hidden'
+
+
+@register.simple_tag()
+def permissions_selected(permissions, login, value):
+    if permissions.get(login) == value:
+        return 'selected'
+    return ''

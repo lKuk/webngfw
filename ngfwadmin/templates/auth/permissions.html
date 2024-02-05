@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+{% load base_tag %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-users"></i>Распределение прав пользователей системы
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'permissions' %}">Распределение прав</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Права пользователей</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                {{ permissions }}
+                                <!-- Таблица списков -->
+                                <div class="table-responsive">
+                                    <table id="col-reorder"
+                                           class="display table nowrap table-striped table-hover footable">
+                                        <thead>
+                                        <tr>
+                                            <th>Привилегия</th>
+                                            {% for login in users %}
+                                                <th>{{ login }}</th>
+                                            {% endfor %}
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for perm in permissions %}
+                                            <tr>
+                                                <!-- Привилегия -->
+                                                <td style="display: table-cell;">{{ perm.name }}</td>
+                                                {% for login in users %}
+                                                    <td style="display: table-cell;">
+                                                        <label for="permissions" hidden></label>
+                                                        <select id="permissions" class="form-control border-0">
+                                                            <option value="NONE" {% permissions_selected perm.permissions login 'NONE' %}>Запрещено</option>
+                                                            <option value="READONLY" {% permissions_selected perm.permissions login 'READONLY' %}>Просмотр</option>
+                                                            <option value="READWRITE" {% permissions_selected perm.permissions login 'READWRITE' %}>Редактирование</option>
+                                                        </select>
+{#                                                        {% get_value perm.permissions login %}#}
+                                                    
+                                                    </td>
+                                                {% endfor %}
+                                           </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
