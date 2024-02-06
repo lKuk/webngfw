@@ -23,8 +23,6 @@ def lists(request):
         url = dev.get('url')
         login = dev.get('login')
         password = dev.get('password')
-        login = dev['login']
-        password = dev['password']
 
         # удалить список
         delete = request.GET.get("delete")

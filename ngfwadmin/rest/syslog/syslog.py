@@ -3,7 +3,7 @@ import requests
 
 
 def get_syslog_server(url, login, password):
-    response = requests.get(f"{url}/system/syslog/server", auth=(login, password), verify=False)
+    response = requests.get(f"{url}/syslog/server", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -11,7 +11,7 @@ def get_syslog_server(url, login, password):
 
 
 def get_syslog_types(url, login, password):
-    response = requests.get(f"{url}/system/syslog/types", auth=(login, password), verify=False)
+    response = requests.get(f"{url}/syslog/types", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -24,7 +24,7 @@ def type_set(url, login, password, status, typesys):
     dic = {typesys: status}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/system/syslog/types/{typesys}", json=details, auth=(login, password), verify=False)
+    response = requests.put(f"{url}/syslog/types/{typesys}", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -33,7 +33,7 @@ def server_set(url, login, password, ipServer, portServer):
     dic = {"port": portServer, "host": ipServer}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/system/syslog/server", json=details, auth=(login, password), verify=False)
+    response = requests.put(f"{url}/syslog/server", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content

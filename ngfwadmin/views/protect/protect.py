@@ -3,9 +3,9 @@ from django.shortcuts import redirect, render
 
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.rest.protect.protect import get_arp_protect, set_arp
-from ngfwadmin.rest.protect.protect import get_icmp_protect, set_ipmp
-from ngfwadmin.rest.protect.protect import get_dhcp_snooping, set_dhcp
+from ngfwadmin.rest.protect.protect import get_arp_protect, set_arp_protect
+from ngfwadmin.rest.protect.protect import get_icmp_protect, set_ipmp_protect
+from ngfwadmin.rest.protect.protect import get_dhcp_protect, set_dhcp_protect
 
 
 def protect(request):
@@ -23,7 +23,7 @@ def protect(request):
 
         arp = get_arp_protect(url, login, password)
         icmp = get_icmp_protect(url, login, password)
-        dhcp = get_dhcp_snooping(url, login, password)
+        dhcp = get_dhcp_protect(url, login, password)
 
         # изменить статус
         checked = request.GET.get("status")
@@ -35,24 +35,24 @@ def protect(request):
             if proto == 'arp':
                 limits = arp['limits']
                 ports = arp['ports']
-                set_arp(url, login, password, limits, ports, checked)
+                set_arp_protect(url, login, password, limits, ports, checked)
                 return
             if proto == 'icmp':
                 limits = icmp['limits']
                 ports = icmp['ports']
-                set_ipmp(url, login, password, limits, ports, checked)
+                set_ipmp_protect(url, login, password, limits, ports, checked)
                 return
             if proto == 'dhcp':
-                set_dhcp(url, login, password, checked)
+                set_dhcp_protect(url, login, password, checked)
                 return
             return
 
         if limits is not None and ports is not None and proto is not None and checked is not None:
             if proto == 'arp':
-                set_arp(url, login, password, limits, ports, checked)
+                set_arp_protect(url, login, password, limits, ports, checked)
                 return
             if proto == 'icmp':
-                set_ipmp(url, login, password, limits, ports, checked)
+                set_ipmp_protect(url, login, password, limits, ports, checked)
                 return
             return
 
