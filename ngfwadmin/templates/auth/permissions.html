@@ -14,6 +14,38 @@
     <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
     <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
     <script src="{% static 'language/ru-table.js' %}"></script>
+
+    <script>
+    function PermissionsAjax(select, path, user)
+    {
+        let permission = select.value;
+        {#alert(path + ' - ' + user + ' - ' + permission);#}     
+                
+        if(select.classList.contains('text-danger'))
+            select.classList.remove('text-danger');
+        if(select.classList.contains('text-success'))
+            select.classList.remove('text-success');
+        if(select.classList.contains('text-primary'))
+            select.classList.remove('text-primary');
+        if(permission === 'NONE')
+            select.classList.add("text-danger");
+        if(permission === 'READONLY')
+            select.classList.add("text-primary");
+        if(permission === 'READWRITE')
+            select.classList.add("text-success");
+        
+        // Параметры
+        const param = {
+            type: "GET",
+            dataType: "json",
+            url: '{% url 'permissions' %}',
+            data: {'path': path,
+                   'user': user,
+                   'permission': permission}
+        }
+        $.ajax(param);
+    }    
+    </script>
 {% endblock script %}
 
 {# Заголовок #}
@@ -42,7 +74,6 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                {{ permissions }}
                                 <!-- Таблица списков -->
                                 <div class="table-responsive">
                                     <table id="col-reorder"
@@ -50,6 +81,7 @@
                                         <thead>
                                         <tr>
                                             <th>Привилегия</th>
+                                            <th>rest-api</th>
                                             {% for login in users %}
                                                 <th>{{ login }}</th>
                                             {% endfor %}
@@ -60,16 +92,20 @@
                                             <tr>
                                                 <!-- Привилегия -->
                                                 <td style="display: table-cell;">{{ perm.name }}</td>
+                                                <td style="display: table-cell;">{{ perm.path }}</td>
                                                 {% for login in users %}
                                                     <td style="display: table-cell;">
-                                                        <label for="permissions" hidden></label>
-                                                        <select id="permissions" class="form-control border-0">
-                                                            <option value="NONE" {% permissions_selected perm.permissions login 'NONE' %}>Запрещено</option>
-                                                            <option value="READONLY" {% permissions_selected perm.permissions login 'READONLY' %}>Просмотр</option>
-                                                            <option value="READWRITE" {% permissions_selected perm.permissions login 'READWRITE' %}>Редактирование</option>
+                                                        <label for="select" hidden></label>
+                                                        <select style="appearance: none"
+                                                                class="border-0
+                                                                {% permissions_text perm.permissions login 'NONE' 'text-danger' %}
+                                                                {% permissions_text perm.permissions login 'READONLY' 'text-primary' %}
+                                                                {% permissions_text perm.permissions login 'READWRITE' 'text-success' %}"
+                                                                id="select" onchange="PermissionsAjax(this, '{{  perm.path }}', '{{ login }}')">
+                                                            <option value="NONE" {% permissions_text perm.permissions login 'NONE' 'selected' %}>Запрещено</option>
+                                                            <option value="READONLY" {% permissions_text perm.permissions login 'READONLY' 'selected' %}>Просмотр</option>
+                                                            <option value="READWRITE" {% permissions_text perm.permissions login 'READWRITE' 'selected' %}>Редактирование</option>
                                                         </select>
-{#                                                        {% get_value perm.permissions login %}#}
-                                                    
                                                     </td>
                                                 {% endfor %}
                                            </tr>

@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 
-from ngfwadmin.rest.auth.permissions import permissions_get
+from ngfwadmin.rest.auth.permissions import permissions_get, permissions_set
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
 from ngfwadmin.rest.auth.auth import auth_users_get, auth_users_set
@@ -18,6 +18,14 @@ def permissions(request):
         url = dev.get('url')
         login = dev.get('login')
         password = dev.get('password')
+
+        # изменить состояние подсети
+        path = request.GET.get("path")
+        user = request.GET.get("user")
+        permission = request.GET.get("permission")
+        if path is not None and user is not None and permission is not None:
+            permissions_set(url, login, password, path, user, permission)
+            return
 
         # Запрос всех пользователей
         users = auth_users_get(url, login, password)
