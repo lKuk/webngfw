@@ -308,7 +308,7 @@
             <!-- переподключение -->
             {% if dev.mode != 'local' %}
                 <li>
-                    <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.ip }}</a>
+                    <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.login }} ({{ dev.ip }})</a>
                 </li>
             {% endif %}
             <!-- Полноэкранный режим -->
