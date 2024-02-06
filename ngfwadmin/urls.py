@@ -90,7 +90,7 @@ urlpatterns = [
     path('protocol/dhcp/subnet/<int:port>/<int:vlan>', protocol_dhcp_subnet_edit, name='protocol_dhcp_subnet_edit'),
 
     # Справочные таблицы
-    path('rules/table/<slug:name>/', table, name='table'),
+    path('table/<slug:name>/', table, name='table'),
 
     # Отображение ошибок
     path('error/', error, name='error'),

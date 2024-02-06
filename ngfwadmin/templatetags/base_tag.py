@@ -56,14 +56,14 @@ def si_format(size):
 
 
 @register.simple_tag()
-def dev_permissions(dev, paths, method):
+def dev_permissions(dev, paths, method, text):
     if isinstance(dev, dict) == False:
-        return 'disabled'
+        return text
     if 'permissions' not in dev:
-        return 'disabled'
+        return text
     permissions = dev.get('permissions')
     if isinstance(permissions, list) == False:
-        return 'disabled'
+        return text
     paths = paths.split("||")
 
     for path in paths:
@@ -73,7 +73,7 @@ def dev_permissions(dev, paths, method):
             if method == 'any' or method == p.get('method').lower():
                 if path == p.get('path').strip('/').strip().lower():
                     return ''
-    return 'disabled'
+    return text
 
 
 @register.simple_tag()
