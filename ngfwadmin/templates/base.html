@@ -33,14 +33,14 @@
                 {% if dev.url is not None %}
 
                     <!-- Группа - Система -->
-                    <li class="nav-item pcoded-menu-caption" 
-                        {% dev_permissions dev 'ports || system' 'Any' '' %}>
+                    <li class="nav-item pcoded-menu-caption"
+                        {% dev_permissions dev 'ports || system' 'Any' 'hidden' %}>
                         <label>Система</label>
                     </li>
 
                     <!-- Состояние -->
                     <li class="nav-item {% is_active request 'state' 'active' %}"
-                        {% dev_permissions dev 'system' 'Any' '' %}>
+                        {% dev_permissions dev 'system' 'Any' 'hidden' %}>
                         <a href="{% url 'state' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-home"></i>
@@ -51,7 +51,7 @@
 
                     <!-- Порты -->
                     <li class="nav-item {% is_active request 'ports' 'active' %}"
-                        {% dev_permissions dev 'ports' 'Any' '' %}>
+                        {% dev_permissions dev 'ports' 'Any' 'hidden' %}>
                         <a href="{% url 'ports' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-airplay"></i>
@@ -62,13 +62,13 @@
 
                     <!-- Группа - Фильтрация -->
                     <li class="nav-item pcoded-menu-caption"
-                        {% dev_permissions dev 'rules || rules/lists || rules/history' 'Any' '' %}>
+                        {% dev_permissions dev 'rules || rules/history' 'Any' 'hidden' %}>
                         <label>Межсетевой экран</label>
                     </li>
 
                     <!-- Правила -->
                     <li class="nav-item {% is_active request 'rules rules_add rules_edit' 'active' %}"
-                        {% dev_permissions dev 'rules' 'Any' '' %}>
+                        {% dev_permissions dev 'rules' 'Any' 'hidden' %}>
                         <a href="{% url 'rules' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-trending-up"></i>
@@ -78,7 +78,7 @@
 
                     <!-- Списки -->
                     <li class="nav-item {% is_active request 'lists lists_add lists_edit' 'active' %}"
-                        {% dev_permissions dev 'rules' 'Any' '' %}>
+                        {% dev_permissions dev 'rules' 'Any' 'hidden' %}>
                         <a href="{% url 'lists' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-list"></i>
@@ -88,7 +88,7 @@
 
                     <!-- История изменений  -->
                     <li class="nav-item {% is_active request 'history' 'active' %}"
-                        {% dev_permissions dev 'rules/history' 'Any' '' %}>
+                        {% dev_permissions dev 'rules/history' 'Any' 'hidden' %}>
                         <a href="{% url 'history' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-clock"></i>
@@ -98,13 +98,13 @@
 
                     <!-- Группа - Маршрутизация -->
                     <li class="nav-item pcoded-menu-caption"
-                        {% dev_permissions dev 'router/ip/config || router/arp || router/ip/route || router/nat || router/dhcp || router/protect' 'Any' '' %}>
+                        {% dev_permissions dev 'router' 'Any' '' %}>
                         <label>Маршрутизация</label>
                     </li>
 
                     <!-- Сеть -->
                     <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_ipconfig protocol_ipconfig_add protocol_route protocol_route_add protocol_nat protocol_nat_add protocol_arp protocol_dhcp protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_subnet_edit protocol_dhcp_static protocol_dhcp_static_add' 'active pcoded-trigger' %}"
-                        {% dev_permissions dev 'router' 'Any' '' %}>
+                        {% dev_permissions dev 'router || router/protect' 'Any' 'hidden' %}>
                         <a href="#" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-wifi"></i>
@@ -137,7 +137,7 @@
 
                     <!-- Защита сети -->
                     <li class="nav-item {% is_active request 'protect' 'active' %}"
-                        {% dev_permissions dev 'router/protect' 'Any' '' %}>
+                        {% dev_permissions dev 'router/protect' 'Any' 'hidden' %}>
                         <a href="{% url 'protect' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-shield"></i>
@@ -147,13 +147,13 @@
 
                     <!-- Группа - Администрирование -->
                     <li class="nav-item pcoded-menu-caption"
-                        {% dev_permissions dev 'auth/users || auth/permissions' 'Any' '' %}>
+                        {% dev_permissions dev 'auth/users || auth/permissions' 'Any' 'hidden' %}>
                         <label>Аутентификация</label>
                     </li>
 
                     <!-- Настройки паролей -->
                     <li class="nav-item {% is_active request 'auth' 'active' %}"
-                        {% dev_permissions dev 'auth/users' 'Any' '' %}>
+                        {% dev_permissions dev 'auth/users' 'Any' 'hidden' %}>
                         <a href="{% url 'auth' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-user"></i>
@@ -163,7 +163,7 @@
                     
                     <!-- Настройки прав пользователей  -->
                     <li class="nav-item {% is_active request 'permissions' 'active' %}"
-                        {% dev_permissions dev 'auth/permissions' 'Any' '' %}>
+                        {% dev_permissions dev 'auth/permissions' 'Any' 'hidden' %}>
                         <a href="{% url 'permissions' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-users"></i>
@@ -174,13 +174,13 @@
                     
                     <!-- Группа - Администрирование -->
                     <li class="nav-item pcoded-menu-caption"
-                        {% dev_permissions dev 'syslog || write || inspection || ipsids || classification' 'Any' '' %}>
+                        {% dev_permissions dev 'syslog || service || inspection || ipsids || classification' 'Any' 'hidden' %}>
                         <label>Администрирование</label>
                     </li>
                     
                     <!-- Логирование -->
                     <li class="nav-item {% is_active request 'syslog' 'active' %}"
-                        {% dev_permissions dev 'syslog' 'Any' '' %}>
+                        {% dev_permissions dev 'syslog' 'Any' 'hidden' %}>
                         <a href="{% url 'syslog' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-list"></i>
@@ -190,7 +190,7 @@
 
                     <!-- Запись трафика -->
                     <li class="nav-item {% is_active request 'write' 'active' %}"
-                        {% dev_permissions dev 'write' 'Any' '' %}>
+                        {% dev_permissions dev 'service' 'Any' 'hidden' %}>
                         <a href="{% url 'write' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-file-text"></i>
@@ -200,7 +200,7 @@
 
                     <!-- Контентная фильтрация -->
                     <li class="nav-item {% is_active request 'inspection' 'active' %}"
-                        {% dev_permissions dev 'inspection' 'Any' '' %}>
+                        {% dev_permissions dev 'inspection' 'Any' 'hidden' %}>
                         <a href="{% url 'inspection' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-filter"></i>
@@ -210,7 +210,7 @@
 
                     <!-- Система обнаружения вторжений -->
                     <li class="nav-item {% is_active request 'ipsids' 'active' %}"
-                        {% dev_permissions dev 'ipsids' 'Any' '' %}>
+                        {% dev_permissions dev 'ipsids' 'Any' 'hidden' %}>
                         <a href="{% url 'ipsids' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-alert-triangle"></i>
@@ -220,7 +220,7 @@
 
                     <!-- Настройки DPI -->
                     <li class="nav-item {% is_active request 'classification' 'active' %}"
-                        {% dev_permissions dev 'classification' 'Any' '' %}>
+                        {% dev_permissions dev 'classification' 'Any' 'hidden' %}>
                         <a href="{% url 'classification' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-clipboard"></i>
@@ -228,30 +228,30 @@
                         </a>
                     </li>
 
-                    <!-- Группа - Сервис -->
-                    <li class="nav-item pcoded-menu-caption" hidden>
-                        <label>Сервис</label>
-                    </li>
-
-                    <!-- Debug -->
-                    <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}" hidden>
-                        <a href="#" class="nav-link">
-                            <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>
-                        </a>
-                        <ul class="pcoded-submenu">
-
-                            <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>
-                            <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>
-                            <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>
-                            <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>
-
-                            <li class="{% is_active request 'ports' 'active' %}"><a href="{% url 'table' 'ports'%}" class="">Ports</a></li>
-                            <li class="{% is_active request 'ports_avail' 'active' %}"><a href="{% url 'table' 'ports_avail'%}" class="">Ports avail</a></li>
-                            <li class="{% is_active request 'system_ports' 'active' %}"><a href="{% url 'table' 'system_ports'%}" class="">System ports</a></li>
-                            <li class="{% is_active request 'system_settings' 'active' %}"><a href="{% url 'table' 'system_settings'%}" class="">System settings</a></li>
-
-                        </ul>
-                    </li>
+{#                    <!-- Группа - Сервис -->#}
+{#                    <li class="nav-item pcoded-menu-caption" hidden>#}
+{#                        <label>Сервис</label>#}
+{#                    </li>#}
+{##}
+{#                    <!-- Debug -->#}
+{#                    <li class="nav-item pcoded-hasmenu {% is_active request 'table' 'active pcoded-trigger' %}" hidden>#}
+{#                        <a href="#" class="nav-link">#}
+{#                            <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span><span class="pcoded-mtext">Debug</span>#}
+{#                        </a>#}
+{#                        <ul class="pcoded-submenu">#}
+{##}
+{#                            <li class="{% is_active request 'atomic' 'active' %}"><a href="{% url 'table' 'atomic' %}" class="">Atomic</a></li>#}
+{#                            <li class="{% is_active request 'format' 'active' %}"><a href="{% url 'table' 'format'%}" class="">Format</a></li>#}
+{#                            <li class="{% is_active request 'services' 'active' %}"><a href="{% url 'table' 'services'%}" class="">Services</a></li>#}
+{#                            <li class="{% is_active request 'protocols' 'active' %}"><a href="{% url 'table' 'protocols'%}" class="">Protocols</a></li>#}
+{##}
+{#                            <li class="{% is_active request 'ports' 'active' %}"><a href="{% url 'table' 'ports'%}" class="">Ports</a></li>#}
+{#                            <li class="{% is_active request 'ports_avail' 'active' %}"><a href="{% url 'table' 'ports_avail'%}" class="">Ports avail</a></li>#}
+{#                            <li class="{% is_active request 'system_ports' 'active' %}"><a href="{% url 'table' 'system_ports'%}" class="">System ports</a></li>#}
+{#                            <li class="{% is_active request 'system_settings' 'active' %}"><a href="{% url 'table' 'system_settings'%}" class="">System settings</a></li>#}
+{##}
+{#                        </ul>#}
+{#                    </li>#}
 
                 {% endif %}
 
