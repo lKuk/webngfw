@@ -250,6 +250,10 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'rules/history' 'readwrite' as  readwrite %} 
+    
     <div class="page-wrapper">
         <div class="card">
             <div class="card-header">
@@ -260,7 +264,8 @@
             <form action="" method="post" id="listEditForm">
                 {% csrf_token %}
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row" 
+                        {% if not readwrite %} hidden {% endif %}>
                         <div class="col">
                             <!-- Кнопки -->
                             {% if action == 'add' %}
@@ -284,12 +289,13 @@
                             <div class="form-group">
                                 <label for="name">Название:</label>
                                 <input id="name" name="name" value="{{ list.name }}" type="text" class="form-control"
-                                       required>
+                                       {% if not readwrite %} disabled {% endif %} required>
                             </div>
                             <!-- Метка -->
                             <div class="form-group">
                                 <label for="type">Метка:</label>
-                                <select id="type" name="type" class="form-control" value="{{ list.type }}" required>
+                                <select id="type" name="type" class="form-control" value="{{ list.type }}" 
+                                        {% if not readwrite %} disabled {% endif %} required>
                                     <option value="lib" {% if list.type == f %}selected{% endif %}>
                                         Библиотека
                                     </option>
@@ -303,6 +309,7 @@
                             <div class="form-group">
                                 <label for="ftype">Тип списка:</label>
                                 <select id="ftype" name="ftype" class="form-control" value="{{ list.ftype }}"
+                                        {% if not readwrite %} disabled {% endif %}
                                         id="listId" required onchange="ChangeFtype()">
                                     {% for f in format.formats %}
                                         <option value="{{ f.name }}"
@@ -316,15 +323,22 @@
                             <div class="form-group">
                                 <label for="description">Описание:</label>
                                 <textarea id="description" name="description" class="form-control"
+                                          {% if not readwrite %} disabled readonly {% endif %}
                                           rows="11">{{ list.description }}</textarea>
                             </div>
                         </div>
                         <!-- Содержимое списка -->
                         <div class="col-xl-8 col-md-6" id="list-textarea">
-                            <label for="content">Содержимое</label>
-                            <div class="form-control">
-                                <textarea id="content" name="content" rows="20">{{ content }}</textarea>
-                            </div>
+                            {% if not readwrite %}
+                                <label for="desc_readonly">Содержимое:</label>
+                                <textarea id="desc_readonly" name="desc_readonly" class="form-control" 
+                                          disabled readonly rows="23">{{ content }}</textarea>
+                            {% else %}
+                                <label for="content">Содержимое</label>
+                                <div class="form-control">
+                                    <textarea id="content" name="content" rows="20">{{ content }}</textarea>                            
+                                </div>
+                            {% endif %}    
                             <div class="invalid-feedback" id="validDivId">
                                 <ul>
                                     <li id="validLiId"></li>
@@ -341,8 +355,9 @@
                                     <label for="callbacks" style="padding-left: 8%;">Выбрано:</label>
                                 </div>
                             </div>
-                        {{ content }}
-                            <select id="callbacks" name="select" class="searchable" multiple="multiple">
+                            {{ content }}
+                            <select id="callbacks" name="select" class="searchable" multiple="multiple"
+                                {% if not readwrite %} disabled {% endif %}>
                                 {% for m in mimes %}
                                     <option value='{{ m }}' class="option-mimes"
                                             {% value_in_content m content %}

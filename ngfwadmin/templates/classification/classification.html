@@ -41,6 +41,10 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'classification' 'readwrite' as  readwrite %} 
+    
     <div class="page-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -55,6 +59,7 @@
                             <div class="col">
                                 <div class="switch switch-primary d-inline m-r-10">
                                     <input type="checkbox" id="class_enable"
+                                           {% if not readwrite %} disabled {% endif %}
                                            {% if classification.class_enable == 'true' %}checked{% endif %} hidden
                                            onchange="PostStatusAjax()">
                                     <label for="class_enable" class="cr"></label>
@@ -80,6 +85,7 @@
                                 <div class="col-xl-4 col-lg-6">
                                     <div class="switch switch-primary d-inline m-r-10">
                                         <input type="checkbox" id="cert_enable"
+                                               {% if not readwrite %} disabled {% endif %}
                                                {% if classification.cert_enable == 'true' %}checked{% endif %} hidden
                                                onchange="PostStatusAjax()">
                                         <label for="cert_enable" class="cr"></label>
@@ -92,6 +98,7 @@
                                 <div class="col-xl-4 col-lg-6">
                                     <div class="switch switch-primary d-inline m-r-10">
                                         <input type="checkbox" id="signature_enable"
+                                               {% if not readwrite %} disabled {% endif %}
                                                {% if classification.signature_enable == 'true' %}checked{% endif %}
                                                hidden
                                                onchange="PostStatusAjax()">
@@ -106,6 +113,7 @@
                                 <div class="col-xl-4 col-lg-6">
                                     <div class="switch switch-primary d-inline m-r-10">
                                         <input type="checkbox" id="service_class_enable"
+                                               {% if not readwrite %} disabled {% endif %}
                                                {% if classification.service_class_enable == 'true' %}checked{% endif %}
                                                hidden
                                                onchange="PostStatusAjax()">

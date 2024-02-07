@@ -34,13 +34,13 @@
 
                     <!-- Группа - Система -->
                     <li class="nav-item pcoded-menu-caption"
-                        {% check_permissions dev 'ports || system ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'ports || system' 'readonly' %}>
                         <label>Система</label>
                     </li>
 
                     <!-- Состояние -->
                     <li class="nav-item {% is_active request 'state' 'active' %}"
-                        {% check_permissions dev 'system ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'system' 'readonly' %}>
                         <a href="{% url 'state' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-home"></i>
@@ -51,7 +51,7 @@
 
                     <!-- Порты -->
                     <li class="nav-item {% is_active request 'ports' 'active' %}"
-                        {% check_permissions dev 'ports ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'ports' 'readonly' %}>
                         <a href="{% url 'ports' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-airplay"></i>
@@ -62,13 +62,13 @@
 
                     <!-- Группа - Фильтрация -->
                     <li class="nav-item pcoded-menu-caption"
-                        {% check_permissions dev 'rules || rules/history ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'rules || rules/history' 'readonly' %}>
                         <label>Межсетевой экран</label>
                     </li>
 
                     <!-- Правила -->
                     <li class="nav-item {% is_active request 'rules rules_add rules_edit' 'active' %}"
-                        {% check_permissions dev 'rules  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'rules ' 'readonly' %}>
                         <a href="{% url 'rules' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-trending-up"></i>
@@ -78,7 +78,7 @@
 
                     <!-- Списки -->
                     <li class="nav-item {% is_active request 'lists lists_add lists_edit' 'active' %}"
-                        {% check_permissions dev 'rules  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'rules ' 'readonly' %}>
                         <a href="{% url 'lists' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-list"></i>
@@ -88,7 +88,7 @@
 
                     <!-- История изменений  -->
                     <li class="nav-item {% is_active request 'history' 'active' %}"
-                        {% check_permissions dev 'rules/history  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'rules/history ' 'readonly' %}>
                         <a href="{% url 'history' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-clock"></i>
@@ -98,13 +98,13 @@
 
                     <!-- Группа - Маршрутизация -->
                     <li class="nav-item pcoded-menu-caption"
-                        {% check_permissions dev 'router ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'router' 'readonly' %}>
                         <label>Маршрутизация</label>
                     </li>
 
                     <!-- Сеть -->
                     <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_ipconfig protocol_ipconfig_add protocol_route protocol_route_add protocol_nat protocol_nat_add protocol_arp protocol_dhcp protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_subnet_edit protocol_dhcp_static protocol_dhcp_static_add' 'active pcoded-trigger' %}"
-                        {% check_permissions dev 'router || router/protect  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'router || router/protect ' 'readonly' %}>
                         <a href="#" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-wifi"></i>
@@ -137,7 +137,7 @@
 
                     <!-- Защита сети -->
                     <li class="nav-item {% is_active request 'protect' 'active' %}"
-                        {% check_permissions dev 'router/protect  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'router/protect ' 'readonly' %}>
                         <a href="{% url 'protect' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-shield"></i>
@@ -147,13 +147,13 @@
 
                     <!-- Группа - Администрирование -->
                     <li class="nav-item pcoded-menu-caption"
-                        {% check_permissions dev 'auth/users || auth/permissions  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'auth/users || auth/permissions ' 'readonly' %}>
                         <label>Аутентификация</label>
                     </li>
 
                     <!-- Настройки паролей -->
                     <li class="nav-item {% is_active request 'auth' 'active' %}"
-                        {% check_permissions dev 'auth/users  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'auth/users ' 'readonly' %}>
                         <a href="{% url 'auth' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-user"></i>
@@ -163,7 +163,7 @@
                     
                     <!-- Настройки прав пользователей  -->
                     <li class="nav-item {% is_active request 'permissions' 'active' %}"
-                        {% check_permissions dev 'auth/permissions  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'auth/permissions ' 'readonly' %}>
                         <a href="{% url 'permissions' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-users"></i>
@@ -174,13 +174,13 @@
                     
                     <!-- Группа - Администрирование -->
                     <li class="nav-item pcoded-menu-caption"
-                        {% check_permissions dev 'syslog || service || inspection || ipsids || classification  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'syslog || service || inspection || ipsids || classification ' 'readonly' %}>
                         <label>Администрирование</label>
                     </li>
                     
                     <!-- Логирование -->
                     <li class="nav-item {% is_active request 'syslog' 'active' %}"
-                        {% check_permissions dev 'syslog  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'syslog ' 'readonly' %}>
                         <a href="{% url 'syslog' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-list"></i>
@@ -190,7 +190,7 @@
 
                     <!-- Запись трафика -->
                     <li class="nav-item {% is_active request 'write' 'active' %}"
-                        {% check_permissions dev 'service  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'service ' 'readonly' %}>
                         <a href="{% url 'write' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-file-text"></i>
@@ -200,7 +200,7 @@
 
                     <!-- Контентная фильтрация -->
                     <li class="nav-item {% is_active request 'inspection' 'active' %}"
-                        {% check_permissions dev 'inspection  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'inspection ' 'readonly' %}>
                         <a href="{% url 'inspection' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-filter"></i>
@@ -210,7 +210,7 @@
 
                     <!-- Система обнаружения вторжений -->
                     <li class="nav-item {% is_active request 'ipsids' 'active' %}"
-                        {% check_permissions dev 'ipsids  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'ipsids ' 'readonly' %}>
                         <a href="{% url 'ipsids' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-alert-triangle"></i>
@@ -220,7 +220,7 @@
 
                     <!-- Настройки DPI -->
                     <li class="nav-item {% is_active request 'classification' 'active' %}"
-                        {% check_permissions dev 'classification  ' 'readonly' 'hidden' %}>
+                        {% check_permissions_hidden dev 'classification ' 'readonly' %}>
                         <a href="{% url 'classification' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-clipboard"></i>

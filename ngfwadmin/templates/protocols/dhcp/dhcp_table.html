@@ -48,6 +48,10 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'router' 'readwrite' as  readwrite %} 
+    
     <div class="page-wrapper">
         <div class="row">
             <div class="col-auto col-sm-12">
@@ -62,6 +66,7 @@
                             <div class="col-auto">
                                 <div class="switch switch-primary d-inline m-r-10">
                                     <input type="checkbox" id="statusDHCP"
+                                           {% if not readwrite %} disabled {% endif %}
                                            {% if status_table.dhcp_enable == 'true' %}checked{% endif %} onchange="PostStatusAjax()">
                                     <label for="statusDHCP" class="cr"></label>
                                     <label class="text-dark" style="margin-left: 10px">Включить DHCP</label>

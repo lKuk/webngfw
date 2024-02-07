@@ -62,6 +62,10 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'auth/permissions' 'readwrite' as  readwrite %} 
+    
     <div class="page-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -94,14 +98,15 @@
                                                 <td style="display: table-cell;">{{ perm.name }}</td>
                                                 <td style="display: table-cell;">{{ perm.path }}</td>
                                                 {% for login in users %}
-                                                    <td style="display: table-cell;">
+                                                    <td style="display: table-cell;">                                                    	
                                                         <label for="select" hidden></label>
                                                         <select style="appearance: none"
-                                                                class="border-0
+                                                                class="border-0 
                                                                 {% permissions_text perm.permissions login 'NONE' 'text-danger' %}
                                                                 {% permissions_text perm.permissions login 'READONLY' 'text-primary' %}
                                                                 {% permissions_text perm.permissions login 'READWRITE' 'text-success' %}"
-                                                                id="select" onchange="PermissionsAjax(this, '{{  perm.path }}', '{{ login }}')">
+                                                                id="select" onchange="PermissionsAjax(this, '{{ perm.path }}', '{{ login }}')"                                                            
+                                                                {% if not readwrite %} disabled {% endif %}>
                                                             <option value="NONE" {% permissions_text perm.permissions login 'NONE' 'selected' %}>Запрещено</option>
                                                             <option value="READONLY" {% permissions_text perm.permissions login 'READONLY' 'selected' %}>Просмотр</option>
                                                             <option value="READWRITE" {% permissions_text perm.permissions login 'READWRITE' 'selected' %}>Редактирование</option>

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load base_tag %}
 
 {# Стили #}
 {% block style %}
@@ -249,6 +250,9 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'syslog' 'readwrite' as  readwrite %} 
 
     <div class="page-wrapper">
         <div class="row">
@@ -287,7 +291,9 @@
                                             </div>
                                             <div class="col-auto">
                                                 <h4 class="text-muted f-w-300">{{ uptime.start_time }}</h4>
-                                                <a href="#" onclick="RebootAjax()">Перезагрузка системы</a>
+                                                <a href="#" 
+                                                   {% if not readwrite %} hidden {% endif %}
+                                                   onclick="RebootAjax()">Перезагрузка системы</a>
                                             </div>
                                         </div>
                                     </div>

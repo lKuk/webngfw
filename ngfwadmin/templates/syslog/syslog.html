@@ -103,6 +103,10 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'syslog' 'readwrite' as  readwrite %} 
+    
     <div class="page-wrapper">
         <div class="row">
             <div class="col-md-12 col-lg-6 col-xl-4">
@@ -115,7 +119,9 @@
                     <div class="card-body" style="margin-top: 0; padding-top: 10px">
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-primary shadow-2" onclick="PostServerAjax()" style="width: 160px">Сохранить</button>
+                                <button class="btn btn-primary shadow-2" 
+                                        {% if not readwrite %} disabled {% endif %}
+                                        onclick="PostServerAjax()" style="width: 160px">Сохранить</button>
                             </div>
                         </div>
                         <hr>
@@ -123,7 +129,9 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="ipText">IP адрес:</label>
-                                    <input id="ipText" type="text" class="form-control" value="{{ server.host }}">
+                                    <input id="ipText" type="text" class="form-control" 
+                                           {% if not readwrite %} disabled {% endif %} 
+                                           value="{{ server.host }}">
                                 </div>
                                 <div class="invalid-feedback" id="validDiv_ipText">
                                     <ul>
@@ -132,7 +140,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="portText">Порт:</label>
-                                    <input id="portText" type="text" class="form-control" value="{{ server.port }}">
+                                    <input id="portText" type="text" class="form-control" 
+                                           {% if not readwrite %} disabled {% endif %}
+                                           value="{{ server.port }}">
                                 </div>
                                 <div class="invalid-feedback" id="validDiv_portText">
                                     <ul>
@@ -156,7 +166,9 @@
                             {% for key, value in types.items %}
                                 <div class="col-xl-4 col-lg-6">
                                     <div class="switch switch-primary d-inline m-r-10">
-                                        <input type="checkbox" id="{{ key }}" {% if value.status %}checked{% endif %} hidden
+                                        <input type="checkbox" id="{{ key }}" 
+                                               {% if not readwrite %} disabled {% endif %}
+                                               {% if value.status %}checked{% endif %} hidden
                                                onchange="PostStatusAjax()">
                                         <label for="{{ key }}" class="cr"></label>
                                         <label class="text-dark" style="margin-left: 10px">{{ value.name }}</label>

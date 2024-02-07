@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% load static %}
 {% load base_tag %}
 
@@ -30,7 +29,11 @@
 {% endblock header %}
 
 {# Содержимое #}
-{% block content %}
+{% block content %}    
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'rules/history' 'readwrite' as  readwrite %} 
+    
     <div class="page-wrapper">
         <div class="row">
             <div class="col-sm-12">
@@ -42,7 +45,7 @@
                     </div>
                     <div class="card-body">
                         <!-- Кнопки  -->
-                        <div class="row">
+                        <div class="row" {% if not readwrite %} hidden {% endif %}>
                             <div class="col text-left">
                                 <form action="" method="post" id="ruleApplyForm">
                                     {% csrf_token %}
@@ -91,7 +94,10 @@
                                            style="width:100%">
                                         <thead>
                                         <tr>
-                                            <th title="Удаление"><i class="feather icon-trash"></i></th>
+                                            <th title="Удаление"
+                                                {% if not readwrite %} hidden {% endif %}>
+                                                <i class="feather icon-trash"></i>
+                                            </th>
                                             <th title="Статус"><i class="feather icon-check-square"
                                                                   style="font-size: 1.05rem;"></i></th>
                                             <th title="Включено/Выключено">Вкл</th>
@@ -105,7 +111,8 @@
                                         {% for r in rules %}
                                             <tr>
                                                 {# Удаление #}
-                                                <td style="display: table-cell;">
+                                                <td style="display: table-cell;"
+                                                    {% if not readwrite %} hidden {% endif %}>
                                                     <div>
                                                         <a href="{% url 'rules' %}?delete={{ r.id }}"
                                                            onclick="return confirm('{{ r.name }}\nУдалить правило?');">
@@ -155,7 +162,11 @@
                                                 </td>
                                                 {# Название #}
                                                 <td style="display: table-cell;">
-                                                    <a href="{% url 'rules_edit' r.id %}">{{ r.name|truncatechars:50 }}</a>
+                                                    {% if not readwrite %} 
+                                                          {{ r.name|truncatechars:50 }}                            	
+                                                    {% else %}
+                                                        <a href="{% url 'rules_edit' r.id %}">{{ r.name|truncatechars:50 }}</a>
+                                                    {% endif %}
                                                 </td>
                                                 {# Подправила #}
                                                 <td style="display: table-cell;">
@@ -163,8 +174,12 @@
                                                        href="#collapse_{{ r.id }}"
                                                        role="button"
                                                        aria-expanded="true"><i class="feather icon-chevron-down"></i>
-                                                    </a>
-                                                    <a href="{% url 'rules_sub_edit' r.id %}">{% count_sub r %}</a>
+                                                    </a>       
+                                                    {% if not readwrite %}
+                                                         {% count_sub r %}                        	
+                                                    {% else %}
+                                                        <a href="{% url 'rules_sub_edit' r.id %}">{% count_sub r %}</a>
+                                                    {% endif %}
                                                     <div class="collapse show devHide m-l-20" id="collapse_{{ r.id }}">
                                                         {% for s in r.sub2 %}
                                                             {# Инвертированное #}

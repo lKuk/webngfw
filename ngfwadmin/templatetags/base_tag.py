@@ -65,29 +65,32 @@ def permissions_text(permissions, login, value, text):
 
 
 @register.simple_tag()
-def check_permissions(dev, paths, method, text):
+def check_permissions(dev, path, method):
     if isinstance(dev, dict) == False:
-        return text
+        return False
     if 'permissions' not in dev:
-        return text
-    permissions = dev.get('permissions')
-    if isinstance(permissions, list) == False:
-        return text
-    paths = paths.split("||")
+        return False
+    perm = dev.get('permissions')
+    method = method.lower().strip()
+    path = path.lower().strip().strip('/').strip('\\')
+    # проверяем доступ
+    if path not in perm:
+        return False
+    if perm[path] == 'readwrite':
+        return True
+    if perm[path] == 'readonly' and method == 'readonly':
+        return True
+    return False
 
-    # все проверяемые привилегии
+
+@register.simple_tag()
+def check_permissions_hidden(dev, paths, method):
+    paths = paths.split("||")
     for path in paths:
-        method = method.lower().strip()
-        path = path.strip('/').strip().lower()
-        # все доступные привилегии
-        for p in permissions:
-            m = p.get('method').lower()
-            p = p.get('path').strip('/').strip().lower()
-            # путь совпал
-            if path == p:
-                # проверяем доступ
-                if m == 'readwrite':
-                    return ''
-                if m == 'readonly' and method == 'readonly':
-                    return ''
-    return text
+        readonly = check_permissions(dev, path, 'readonly')
+        readwrite = check_permissions(dev, path, 'readwrite')
+        if readwrite is True:
+            return ''
+        if readonly is True and method == 'readonly':
+            return ''
+    return 'hidden'

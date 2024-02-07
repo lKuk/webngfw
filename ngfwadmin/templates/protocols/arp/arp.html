@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load base_tag %}
 
 {# Стили #}
 {% block style %}
@@ -29,6 +30,9 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'router' 'readwrite' as  readwrite %} 
 
     <div class="page-wrapper">
         <div class="row">
@@ -45,7 +49,9 @@
                             <div class="col">
                                 <form action="" method="post" id="listEditForm">
                                     {% csrf_token %}
-                                    <button type="submit" name="btnClear" class="btn btn-primary shadow-2" style="width: 160px">Очистить</button>
+                                    <button type="submit" name="btnClear" 
+                                            {% if not readwrite %} hidden {% endif %}
+                                            class="btn btn-primary shadow-2" style="width: 160px">Очистить</button>
                                 </form>
                             </div>
                         </div>

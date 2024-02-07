@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load base_tag %}
 
 {# Стили #}
 {% block style %}
@@ -30,6 +31,9 @@
 {# Содержимое #}
 {% block content %}
 
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'rules/history' 'readwrite' as  readwrite %} 
+    
     <div class="page-wrapper">
         <div class="row">
             <div class="col-sm-12">
@@ -41,7 +45,7 @@
                     </div>
                     <div class="card-body">
                         <!-- Кнопка Добавить -->
-                        <div class="row">
+                        <div class="row" {% if not readwrite %} hidden {% endif %}>
                             <div class="col">
                                 <a href="{% url 'lists_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
                             </div>
@@ -55,7 +59,10 @@
                                            class="display table nowrap table-striped table-hover footable">
                                         <thead>
                                         <tr>
-                                            <th title="Удаление"><i class="feather icon-trash"></i></th>
+                                            <th title="Удаление"
+                                                {% if not readwrite %} hidden {% endif %}>
+                                                <i class="feather icon-trash"></i>
+                                            </th>
                                             <th>Метка</th>
                                             <th>Тип</th>
                                             <th>Название</th>
@@ -66,7 +73,8 @@
                                         {% for l in lists %}
                                             <tr>
                                                 <!-- Удаление -->
-                                                <td style="display: table-cell;">
+                                                <td style="display: table-cell;"
+                                                    {% if not readwrite %} hidden {% endif %}>
                                                     <div>
                                                         <a href="{% url 'lists' %}?delete={{ l.id }}"
                                                            onclick="return confirm('{{ l.description|truncatechars:50 }}\nУдалить список?');">

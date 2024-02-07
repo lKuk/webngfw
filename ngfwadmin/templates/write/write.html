@@ -192,6 +192,10 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'service' 'readwrite' as  readwrite %} 
+    
     <div class="page-wrapper">
         <div class="row">
             <div class="col-auto col-sm-6">
@@ -208,6 +212,7 @@
                                     <label for="portIn"></label>
                                     <div class="input-group-prepend">
                                         <button id="btnIn" class="btn btn-primary" type="button"
+                                                {% if not readwrite %} disabled {% endif %}
                                                 value="{{ writeIn.write_statusin }}" onclick="PostPortAjax('In')"
                                                 style="width: 160px">
                                             {% if writeIn.write_statusin == 'write' %}Стоп{% else %}
@@ -215,6 +220,7 @@
                                     </div>
                                     <input id="portIn" type="text" class="form-control"
                                            value="{{ writeIn.write_portin }}"
+                                           {% if not readwrite %} disabled {% endif %}
                                            {% if writeIn.write_statusin == 'write' %}readonly{% endif %}>
                                     <div id="loadingIn" class="spinner-border text-primary m-1" role="status"
                                          {% if writeIn.write_statusin != 'write' %}hidden{% endif %}>
@@ -245,6 +251,7 @@
                                     <label for="portOut"></label>
                                     <div class="input-group-prepend">
                                         <button id="btnOut" class="btn btn-primary" type="button"
+                                                {% if not readwrite %} disabled {% endif %}
                                                 value="{{ writeOut.write_statusout }}" onclick="PostPortAjax('Out')"
                                                 style="width: 160px">
                                             {% if writeOut.write_statusout == 'write' %}Стоп{% else %}
@@ -252,9 +259,11 @@
                                     </div>
                                     <input id="portOut" type="text" class="form-control" required
                                            value="{{ writeOut.write_portout }}"
+                                           {% if not readwrite %} disabled {% endif %}
                                            {% if  writeOut.write_statusout == 'write' %}readonly{% endif %}>
                                     <label for="protocolOut" hidden=""></label>
                                     <select id="protocolOut" name="protocolOut" class="form-control" required
+                                            {% if not readwrite %} disabled {% endif %}
                                             {% if  writeOut.write_statusout == 'write' %}readonly{% endif %}
                                             value="{{ writeOut.write_portout }}">
                                         <option value="all">all</option>
@@ -313,7 +322,10 @@
                                        style="width:100%">
                                     <thead>
                                     <tr>
-                                        <th title="Удалить"><i class="feather icon-trash"></i></th>
+                                        <th title="Удалить"
+                                            {% if not readwrite %} hidden="" {% endif %}>
+                                            <i class="feather icon-trash"></i>
+                                        </th>
                                         <th>Имя файла</th>
                                         <th>Время записи</th>
                                         <th>Размер файла</th>
@@ -324,7 +336,8 @@
                                     {% for file in writeContent %}
                                         <tr>
                                             <!-- Удалить -->
-                                            <td style="display: table-cell;">
+                                            <td style="display: table-cell;"
+                                                {% if not readwrite %} hidden="" {% endif %}>
                                                 <div>
                                                     <a href="{% url 'write' %}?delete={{ file.name }}"
                                                        onclick="return confirm('Удалить файл {{ file.name }}?');">

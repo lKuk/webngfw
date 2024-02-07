@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load base_tag %}
 
 {# Стили #}
 {% block style %}
@@ -48,6 +49,9 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'router' 'readwrite' as  readwrite %} 
 
     <div class="page-wrapper">
         <div class="row">
@@ -89,14 +93,17 @@
                                                 <td style="display: table-cell;">{{ row.port }}</td>
                                                 <td style="display: table-cell;">{{ row.vlan }}</td>
                                                 <td style="display: table-cell;">
-                                                    <a href="{% url 'protocol_dhcp_subnet_edit' row.port row.vlan %}?ip_start={{ row.ip_start }}&ip_end={{ row.ip_end }}">{{ row.ip_start }}</a>
+                                                    <a {% if not readwrite %} disabled {% endif %}
+                                                            href="{% url 'protocol_dhcp_subnet_edit' row.port row.vlan %}?ip_start={{ row.ip_start }}&ip_end={{ row.ip_end }}">{{ row.ip_start }}</a>
                                                 </td>
                                                 <td style="display: table-cell;">
-                                                    <a href="{% url 'protocol_dhcp_subnet_edit' row.port row.vlan %}?ip_start={{ row.ip_start }}&ip_end={{ row.ip_end }}">{{ row.ip_end }}</a>
+                                                    <a {% if not readwrite %} disabled {% endif %}
+                                                            href="{% url 'protocol_dhcp_subnet_edit' row.port row.vlan %}?ip_start={{ row.ip_start }}&ip_end={{ row.ip_end }}">{{ row.ip_end }}</a>
                                                 </td>
                                                 <td style="display: table-cell;" class="my-0 py-0">
                                                     <div class="switch switch-primary" style="margin-top: -5px;">
-                                                        <input class="m-0 p-0" type="checkbox" id="status_{{ row.port }}_{{ row.vlan }}"
+                                                        <input class="m-0 p-0" type="checkbox" id="status_{{ row.port }}_{{ row.vlan }}"                                                                                  
+                                                               {% if not readwrite %} disabled {% endif %}
                                                                {% if row.enable == True %}checked{% endif %} onchange="PostStatusAjax({{ row.port }}, {{ row.vlan }})">
                                                         <label for="status_{{ row.port }}_{{ row.vlan }}" class="cr"></label>
                                                     </div>

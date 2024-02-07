@@ -33,8 +33,14 @@ def connect(request):
                 if result.lower() == 'ok':
                     # запрос прав пользователя
                     permissions = auth_authorization(url, login, password)
+                    # переформатировать привилегии для комфортного использования
+                    dic_permissions = {}
+                    for p in permissions:
+                        method = p['method'].lower().strip()
+                        path = p['path'].lower().strip().strip('/').strip('\\')
+                        dic_permissions[path] = method
                     # Сохранить подключение
-                    dev_set(request, ip, port, login, password, permissions)
+                    dev_set(request, ip, port, login, password, dic_permissions)
                     # Подключение выполнено
                     return redirect('state')
         # Подключение повторно

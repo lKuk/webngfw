@@ -132,6 +132,10 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'inspection' 'readwrite' as  readwrite %} 
+    
     <div class="page-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -145,7 +149,9 @@
                         <div class="row">
                             <div class="col">
                                 <div class="switch switch-primary d-inline m-r-10">
-                                    <input type="checkbox" id="status" onchange="PostStatusAjax()" {% if status.tls_mitm_enable == 'true' %}checked{% endif %}>
+                                    <input type="checkbox" id="status" onchange="PostStatusAjax()"
+                                           {% if not readwrite %} disabled {% endif %}
+                                           {% if status.tls_mitm_enable == 'true' %}checked{% endif %}>
                                     <label for="status" class="cr"></label>
                                 </div>
                                 <label class="text-dark">Включить контентную фильтрацию</label>
@@ -164,7 +170,8 @@
                     <div class="card-body">
                         <h6>Скачать ключ:</h6>
                         <div class="input-group cust-file-button mb-3">
-                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"                                    
+                                    {% if not readwrite %} disabled {% endif %}
                                     onclick="LoadKeyAjax()">Скачать</button>
                             <div id="keyDownload" class="spinner-border text-primary m-1" role="status" hidden>
                                 <span class="sr-only">Loading...</span>
@@ -176,10 +183,13 @@
                         {% csrf_token %}
                             <div class="input-group cust-file-button mb-3">
                                 <div class="input-group-prepend">
-                                    <button class="btn btn-primary shadow-2" onclick="Visible('keyLoading', true)" style="width: 160px">Загрузить</button>
+                                    <button class="btn btn-primary shadow-2"                                 
+                                            {% if not readwrite %} disabled {% endif %}
+                                            onclick="Visible('keyLoading', true)" style="width: 160px">Загрузить</button>
                                 </div>
                                 <div class="custom-file">
-                                    <input id="keyFile" name="key" type="file" class="custom-file-input"
+                                    <input id="keyFile" name="key" type="file" class="custom-file-input"                                                                           
+                                           {% if not readwrite %} disabled {% endif %}
                                            onchange="FileSelect('keyFile', 'keyFileName')">
                                     <label id="keyFileName" class="custom-file-label">{{ labelKey }}</label>
                                 </div>
@@ -188,11 +198,10 @@
                                 </div>
                             </div>
                         </form>
-                        {#<p class="text-muted">{% replace ca.key|truncatechars:1000 '\n' '' %}</p>#}
-                        {#<p class="text-muted" style="font-family: monospace;">{{ ca.key|linebreaksbr }}</p>#}
                         <div class="form-group">
                             <label for="key"></label>
-                            <textarea id="key" class="form-control" style="font-family: monospace;" rows="20" readonly>{{ ca.key }}</textarea>
+                            <textarea id="key" class="form-control" style="font-family: monospace;" rows="20"       
+                                      readonly>{{ ca.key }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -207,7 +216,8 @@
                     <div class="card-body">
                         <h6>Скачать сертификат:</h6>
                         <div class="input-group cust-file-button mb-3">
-                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"                               
+                                    {% if not readwrite %} disabled {% endif %}
                                     onclick="LoadCerAjax()">Скачать</button>
                             <div id="cerDownload" class="spinner-border text-primary m-1" role="status" hidden>
                                 <span class="sr-only">Loading...</span>
@@ -219,10 +229,13 @@
                         {% csrf_token %}
                             <div class="input-group cust-file-button mb-3">
                                 <div class="input-group-prepend">
-                                    <button class="btn btn-primary shadow-2" onclick="Visible('cerLoading', true)" style="width: 160px">Загрузить</button>
+                                    <button class="btn btn-primary shadow-2"                                
+                                            {% if not readwrite %} disabled {% endif %}
+                                            onclick="Visible('cerLoading', true)" style="width: 160px">Загрузить</button>
                                 </div>
                                 <div class="custom-file">
-                                    <input id="cerFile" name="cer" type="file" class="custom-file-input"
+                                    <input id="cerFile" name="cer" type="file" class="custom-file-input"                                                                          
+                                           {% if not readwrite %} disabled {% endif %}
                                            onchange="FileSelect('cerFile', 'cerFileName')">
                                     <label id="cerFileName" class="custom-file-label">{{ labelCer }}</label>
                                 </div>
@@ -231,11 +244,10 @@
                                 </div>
                             </div>
                         </form>
-                        {#<p class="text-muted te">{% replace ca.cer|truncatechars:1000 '\n' '' %}</p>#}
-                        {#<p class="text-muted" style="font-family: monospace;">{{ ca.cer|linebreaksbr }}</p>#}
                         <div class="form-group">
                             <label for="cer"></label>
-                            <textarea id="cer" class="form-control" style="font-family: monospace;" rows="20" readonly>{{ ca.cer }}</textarea>
+                            <textarea id="cer" class="form-control" style="font-family: monospace;" rows="20"         
+                                      readonly>{{ ca.cer }}</textarea>
                         </div>
                     </div>
                 </div>

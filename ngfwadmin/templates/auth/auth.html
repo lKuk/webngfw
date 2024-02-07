@@ -30,6 +30,10 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'auth/users' 'readwrite' as  readwrite %}
+    
     <div class="page-wrapper">
         <div class="row">
             <div class="col-md-12">
@@ -57,8 +61,12 @@
                                             <tr>
                                                 <!-- Логин -->
                                                 <td style="display: table-cell;">
-                                                    <a href="{% url 'auth_user' login %}">{{ login }}</a>
-                                                </td>
+                                                    {% if readwrite %}
+                                                        <a href="{% url 'auth_user' login %}">{{ login }}</a>
+                                                    {% else %}               
+                                                        {{ login }}
+                                                    {% endif %} 
+                                                </td> 
                                                 <!-- Пароль -->
                                                 <td style="display: table-cell;">{{ '********' }}</td>
                                            </tr>

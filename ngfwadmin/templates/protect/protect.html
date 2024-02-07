@@ -177,6 +177,10 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'router' 'readwrite' as  readwrite %} 
+    
     <div class="page-wrapper">
         <div class="row">
             <div class="col-sm-12">
@@ -192,8 +196,8 @@
                                 <div class="switch switch-primary d-inline m-r-10">
                                     <input type="checkbox" id="statusDHCP"
                                            {% if dhcp.dhcp_snooping == 'true' %}checked{% endif %}
-                                           hidden
-                                           onchange="PostStatusAjax()">
+                                           {% if not readwrite %} disabled {% endif %}
+                                           hidden onchange="PostStatusAjax()">
                                     <label for="statusDHCP" class="cr"></label>
                                     <label class="text-dark" style="margin-left: 10px">Включить защиту от атак с
                                         использованием протокола DHCP</label>
@@ -217,6 +221,7 @@
                             <div class="col">
                                 <div class="switch switch-primary d-inline m-r-10">
                                     <input type="checkbox" id="statusArp"
+                                           {% if not readwrite %} disabled {% endif %}
                                            {% if arp.status == 'true' %}checked{% endif %}
                                            hidden onchange="PostStatusAjax()">
                                     <label for="statusArp" class="cr"></label>
@@ -230,11 +235,15 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="arplimits">Ограничение количества пакетов:</label>
-                                    <input id="arplimits" type="text" class="form-control" value="{{ arp.limits }}">
+                                    <input id="arplimits" type="text" class="form-control"
+                                           {% if not readwrite %} disabled {% endif %}
+                                           value="{{ arp.limits }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="arpports">Список портов устройства:</label>
-                                    <input id="arpports" type="text" class="form-control" value="{{ arp.ports }}">
+                                    <input id="arpports" type="text" class="form-control" 
+                                           {% if not readwrite %} disabled {% endif %}
+                                           value="{{ arp.ports }}">
                                 </div>
                                 <div class="invalid-feedback" id="validDiv_arpports">
                                     <ul>
@@ -259,6 +268,7 @@
                                 <div class="switch switch-primary d-inline m-r-10">
                                     <input type="checkbox" id="statusICMP"
                                            {% if icmp.status == 'true' %}checked{% endif %}
+                                           {% if not readwrite %} disabled {% endif %}
                                            hidden onclick="PostStatusAjax()">
                                     <label for="statusICMP" class="cr"></label>
                                     <label class="text-dark" style="margin-left: 10px">Включить защиту от атак с
@@ -271,11 +281,15 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="icmplimits">Ограничение количества пакетов:</label>
-                                    <input id="icmplimits" type="text" class="form-control" value="{{ icmp.limits }}">
+                                    <input id="icmplimits" type="text" class="form-control" 
+                                           {% if not readwrite %} disabled {% endif %}
+                                           value="{{ icmp.limits }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="icmpports">Список портов устройства:</label>
-                                    <input id="icmpports" type="text" class="form-control" value="{{ icmp.ports }}">
+                                    <input id="icmpports" type="text" class="form-control" 
+                                           {% if not readwrite %} disabled {% endif %}
+                                           value="{{ icmp.ports }}">
                                 </div>
                                 <div class="invalid-feedback" id="validDiv_icmpports">
                                     <ul>

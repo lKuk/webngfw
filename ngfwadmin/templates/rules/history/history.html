@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load base_tag %}
 
 {# Стили #}
 {% block style %}
@@ -29,6 +30,9 @@
 
 {# Содержимое #}
 {% block content %}
+    
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'rules/history' 'readwrite' as  readwrite %} 
 
     <div class="page-wrapper">
         <div class="row">
@@ -47,14 +51,18 @@
                                    style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th title="Восстановить"><i class="feather icon-corner-up-left"></i></th>
+                                    <th title="Восстановить"
+                                        {% if not readwrite %} hidden {% endif %}>
+                                        <i class="feather icon-corner-up-left"></i>
+                                    </th>
                                     <th>Дата</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for h in history %}
                                     <tr>
-                                        <td style="display: table-cell;">
+                                        <td style="display: table-cell;"
+                                            {% if not readwrite %} hidden {% endif %}>
                                             <div>
                                                 <a href="{% url 'history' %}?date={{ h.date }}"
                                                    onclick="return confirm('{{ h.date }}\nВыполнить восстановление правил?');">
