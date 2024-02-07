@@ -47,6 +47,8 @@ def value_in_content(value, content):
 
 @register.simple_tag()
 def si_format(size):
+    if size == 0:
+        return size
     pwr = math.floor(math.log(size, 1024))
     suff = ["", "К", "М", "Г", "Т", "П"]
     if size > 1024 ** (len(suff) - 1):
