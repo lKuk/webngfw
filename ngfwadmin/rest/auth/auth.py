@@ -2,14 +2,23 @@ import json
 import requests
 
 
-# Вход в систему
-def auth_logon(url, login, password):
-    response = requests.get(f"{url}/auth", auth=(login, password), verify=False)
+# процедура проверки подлинности пользователя
+def auth_authentication(url, login, password):
+    response = requests.get(f"{url}/auth/authentication", auth=(login, password), verify=False)
     if response.status_code == 401:
         return response.text
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return 'ok'
+
+
+# предоставление прав на выполнение определённых действий
+def auth_authorization(url, login, password):
+    response = requests.get(f"{url}/auth/authorization", auth=(login, password), verify=False)
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    details = response.json()
+    return details
 
 
 # получить список пользователей
@@ -30,12 +39,3 @@ def auth_users_set(url, login, password, log, pwd):
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     return response.content
-
-
-# установить пользователя
-def auth_permissions_get(url, login, password):
-    response = requests.get(f"{url}/auth/users/permissions", auth=(login, password), verify=False)
-    if response.status_code != 200:
-        raise Exception(response.url, response.text)
-    details = response.json()
-    return details

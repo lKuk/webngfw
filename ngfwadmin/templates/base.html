@@ -78,7 +78,7 @@
 
                     <!-- Списки -->
                     <li class="nav-item {% is_active request 'lists lists_add lists_edit' 'active' %}"
-                        {% dev_permissions dev 'rules/lists' 'Any' '' %}>
+                        {% dev_permissions dev 'rules' 'Any' '' %}>
                         <a href="{% url 'lists' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-list"></i>
@@ -104,31 +104,26 @@
 
                     <!-- Сеть -->
                     <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_ipconfig protocol_ipconfig_add protocol_route protocol_route_add protocol_nat protocol_nat_add protocol_arp protocol_dhcp protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_subnet_edit protocol_dhcp_static protocol_dhcp_static_add' 'active pcoded-trigger' %}"
-                        {% dev_permissions dev 'router/ip/config || router/arp || router/ip/route || router/nat || router/dhcp' 'Any' '' %}>
+                        {% dev_permissions dev 'router' 'Any' '' %}>
                         <a href="#" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-wifi"></i>
                             </span><span class="pcoded-mtext">Сеть</span>
                         </a>
                         <ul class="pcoded-submenu">
-                            <li class="{% is_active request 'protocol_ipconfig protocol_ipconfig_add' 'active' %}"
-                                {% dev_permissions dev 'router/ip/config' 'Any' '' %}>
+                            <li class="{% is_active request 'protocol_ipconfig protocol_ipconfig_add' 'active' %}">
                                 <a href="{% url 'protocol_ipconfig' %}" class="">IP</a>
                             </li>
-                            <li class="{% is_active request 'protocol_route protocol_route_add' 'active' %}"
-                                {% dev_permissions dev 'router/ip/route' 'Any' '' %}>
+                            <li class="{% is_active request 'protocol_route protocol_route_add' 'active' %}">
                                 <a href="{% url 'protocol_route' %}" class="">ROUTE</a>
                             </li>
-                            <li class="{% is_active request 'protocol_nat protocol_nat_add' 'active' %}"
-                                {% dev_permissions dev 'router/nat' 'Any' '' %}>
+                            <li class="{% is_active request 'protocol_nat protocol_nat_add' 'active' %}">
                                 <a href="{% url 'protocol_nat' %}" class="">NAT</a>
                             </li>
-                            <li class="{% is_active request 'protocol_arp' 'active' %}"
-                                {% dev_permissions dev 'router/arp' 'Any' '' %}>
+                            <li class="{% is_active request 'protocol_arp' 'active' %}">
                                 <a href="{% url 'protocol_arp' %}" class="">ARP</a>
                             </li>
-                            <li class="pcoded-hasmenu {% is_active request 'protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_subnet_edit protocol_dhcp_static protocol_dhcp_static_add' 'pcoded-trigger active' %}"
-                                {% dev_permissions dev 'router/dhcp' 'Any' '' %}>
+                            <li class="pcoded-hasmenu {% is_active request 'protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_subnet_edit protocol_dhcp_static protocol_dhcp_static_add' 'pcoded-trigger active' %}">
                                 <a href="#" class="">DHCP</a>
                                 <ul class="pcoded-submenu">
                                     <li class="{% is_active request 'protocol_dhcp_table' 'active' %}"><a href="{% url 'protocol_dhcp_table' %}">Выданные адреса</a></li>

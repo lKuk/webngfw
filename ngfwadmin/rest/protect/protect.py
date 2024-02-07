@@ -22,7 +22,7 @@ def get_icmp_protect(url, login, password):
 
 def get_dhcp_protect(url, login, password):
     # response = requests.get(f"{url}/router/dhcp/snooping", auth=(login, password), verify=False)
-    response = requests.get(f"{url}/router/protect/dhcp", auth=(login, password), verify=False)
+    response = requests.get(f"{url}/router/protect/dhcp/snooping", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -59,7 +59,7 @@ def set_dhcp_protect(url, login, password, status):
     dic = {'dhcp_snooping': status}
     sjson = json.dumps(dic)
     details = json.loads(sjson)
-    response = requests.put(f"{url}/router/protect/dhcp", json=details, auth=(login, password), verify=False)
+    response = requests.put(f"{url}/router/protect/dhcp/snooping", json=details, auth=(login, password), verify=False)
     code = response.status_code
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)

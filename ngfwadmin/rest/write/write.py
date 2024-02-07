@@ -6,7 +6,7 @@ import requests
 # Получить параметры записи входного трафика
 def get_write_in(url, login, password):
     # response = requests.get(f"{url}/system/service/write/in", auth=(login, password), verify=False)
-    response = requests.get(f"{url}/write/in", auth=(login, password), verify=False)
+    response = requests.get(f"{url}/service/write/in", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -19,7 +19,7 @@ def set_write_in(url, login, password, write_portin, write_statusin):
     sjson = json.dumps(dic)
     details = json.loads(sjson)
     # response = requests.put(f"{url}/system/service/write/in", json=details, auth=(login, password), verify=False)
-    response = requests.put(f"{url}/write/in", json=details, auth=(login, password), verify=False)
+    response = requests.put(f"{url}/service/write/in", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -28,7 +28,7 @@ def set_write_in(url, login, password, write_portin, write_statusin):
 # Получить параметры записи выходного трафика
 def get_write_out(url, login, password):
     # response = requests.get(f"{url}/system/service/write/out", auth=(login, password), verify=False)
-    response = requests.get(f"{url}/write/out", auth=(login, password), verify=False)
+    response = requests.get(f"{url}/service/write/out", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -41,7 +41,7 @@ def set_write_out(url, login, password, port, protocol, write_statusout):
     sjson = json.dumps(dic)
     details = json.loads(sjson)
     # response = requests.put(f"{url}/system/service/write/out", json=details, auth=(login, password), verify=False)
-    response = requests.put(f"{url}/write/out", json=details, auth=(login, password), verify=False)
+    response = requests.put(f"{url}/service/write/out", json=details, auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text, details)
     return response.content
@@ -50,7 +50,7 @@ def set_write_out(url, login, password, port, protocol, write_statusout):
 # Получить таблицу записанных файлов
 def get_write_content(url, login, password):
     # response = requests.get(f"{url}/system/service/write/content", auth=(login, password), verify=False)
-    response = requests.get(f"{url}/write/content", auth=(login, password), verify=False)
+    response = requests.get(f"{url}/service/write/content", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -60,7 +60,7 @@ def get_write_content(url, login, password):
 # Получить содержимое файла
 def get_write_content_file(url, login, password, fileName):
     # response = requests.get(f"{url}/system/service/write/content/{fileName}", auth=(login, password), verify=False)
-    response = requests.get(f"{url}/write/content/{fileName}", auth=(login, password), verify=False)
+    response = requests.get(f"{url}/service/write/content/{fileName}", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.text
@@ -70,7 +70,7 @@ def get_write_content_file(url, login, password, fileName):
 # Удалить файл
 def delete_write_content_file(url, login, password, fileName):
     # response = requests.delete(f"{url}/system/service/write/content/{fileName}", auth=(login, password), verify=False)
-    response = requests.delete(f"{url}/write/content/{fileName}", auth=(login, password), verify=False)
+    response = requests.delete(f"{url}/service/write/content/{fileName}", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.text

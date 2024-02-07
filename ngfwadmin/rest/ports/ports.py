@@ -19,7 +19,7 @@ def ports_avail_get(url, login, password):
 
 def get_mgmnt_stat(url, login, password):
     # response = requests.get(f"{url}/system/monitoring/interfaces/mgmnt", auth=(login, password), verify=False)
-    response = requests.get(f"{url}/ports/mgmnt", auth=(login, password), verify=False)
+    response = requests.get(f"{url}/ports/internal/mgmnt", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
@@ -27,7 +27,7 @@ def get_mgmnt_stat(url, login, password):
 
 def get_graylog_stat(url, login, password):
     # response = requests.get(f"{url}/system/monitoring/interfaces/graylog", auth=(login, password), verify=False)
-    response = requests.get(f"{url}/ports/graylog", auth=(login, password), verify=False)
+    response = requests.get(f"{url}/ports/internal/graylog", auth=(login, password), verify=False)
     if response.status_code != 200:
         raise Exception(response.url, response.text)
     details = response.json()
