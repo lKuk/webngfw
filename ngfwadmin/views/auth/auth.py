@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 
-from ngfwadmin.views.connect.dev import dev_get
+from ngfwadmin.views.connect.dev import dev_get, dev_del
 from ngfwadmin.views.debug.error import exception
 from ngfwadmin.rest.auth.auth import auth_users_get, auth_users_set
 
@@ -50,6 +50,12 @@ def auth_user(request, user):
                 pass2 = request.POST.get('pass2')
                 if pass1 == pass2:
                     auth_users_set(url, login, password, user, pass1)
+                    # Смена пароля у самого себя
+                    if user.lower() == login.lower():
+                        # Удалить подключение
+                        dev_del(request)
+                        # Переподключиться
+                        return redirect('connect')
                     return redirect('auth')
 
          # данные страницы
