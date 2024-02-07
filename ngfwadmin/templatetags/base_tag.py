@@ -56,9 +56,16 @@ def si_format(size):
     return f"{size / 1024 ** pwr:.1f} {suff[pwr]}"
 
 
+@register.simple_tag()
+def permissions_text(permissions, login, value, text):
+    if permissions.get(login) == value:
+        return text
+    return ''
+
+
 
 @register.simple_tag()
-def dev_permissions(dev, paths, method, text):
+def check_permissions(dev, paths, method, text):
     if isinstance(dev, dict) == False:
         return text
     if 'permissions' not in dev:
@@ -68,18 +75,19 @@ def dev_permissions(dev, paths, method, text):
         return text
     paths = paths.split("||")
 
+    # все проверяемые привилегии
     for path in paths:
         method = method.lower().strip()
         path = path.strip('/').strip().lower()
+        # все доступные привилегии
         for p in permissions:
-            if method == 'any' or method == p.get('method').lower():
-                if path == p.get('path').strip('/').strip().lower():
+            m = p.get('method').lower()
+            p = p.get('path').strip('/').strip().lower()
+            # путь совпал
+            if path == p:
+                # проверяем доступ
+                if m == 'readwrite':
+                    return ''
+                if m == 'readonly' and method == 'readonly':
                     return ''
     return text
-
-
-@register.simple_tag()
-def permissions_text(permissions, login, value, text):
-    if permissions.get(login) == value:
-        return text
-    return ''
