@@ -27,10 +27,14 @@ def permissions(request):
             permissions_set(url, login, password, path, user, permission)
             return
 
-        # Запрос всех пользователей
-        users = auth_users_get(url, login, password)
         # Запрос всех прав пользователей
         permissions = permissions_get(url, login, password)
+        # Получить всех пользователей
+        users = []
+        for perm in permissions:
+            for user in perm.get('permissions'):
+                if user not in users:
+                    users.append(user)
 
          # данные страницы
         context = {'dev': dev,

@@ -1,5 +1,5 @@
 {
-  "ip": { "visible": true, "default": "192.168." },
+  "ip": { "visible": true, "default": "192.168.3.35" },
   "port": { "visible": false, "default": "18888" },
   "login": { "visible": true, "default": "administrator" },
   "password": { "visible": true, "default": "111111" }
