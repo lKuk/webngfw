@@ -47,4 +47,3 @@
    mkcert -cert-file cert/cert.pem -key-file cert/key.pem localhost 127.0.0.1
    python manage.py runsslserver --certificate cert/cert.pem --key cert/key.pem
    ```
-   

@@ -49,20 +49,23 @@ def connect(request):
                     # Подключение выполнено
                     return redirect('state')
 
-        # Прочитать файл предварительных настроек
+        # Прочитать предварительные настройки
         settings = {}
         path = 'settings.json'
         if os.path.exists(path):
             with open(path) as f:
                 settings = json.load(f)
-                if 'ip' in settings and 'default' in settings['ip']:
-                    form.base_fields.get('ip').initial = settings['ip']['default']
-                if 'port' in settings and 'default' in settings['port']:
-                    form.base_fields.get('port').initial = settings['port']['default']
-                if 'login' in settings and 'default' in settings['login']:
-                    form.base_fields.get('login').initial = settings['login']['default']
-                if 'password' in settings and 'default' in settings['password']:
-                    form.base_fields.get('password').initial = settings['password']['default']
+
+        # Заполнить форму настройками по умолчанию
+        if request.method == 'GET':
+            if 'ip' in settings and 'default' in settings['ip']:
+                form.base_fields.get('ip').initial = settings['ip']['default']
+            if 'port' in settings and 'default' in settings['port']:
+                form.base_fields.get('port').initial = settings['port']['default']
+            if 'login' in settings and 'default' in settings['login']:
+                form.base_fields.get('login').initial = settings['login']['default']
+            if 'password' in settings and 'default' in settings['password']:
+                form.base_fields.get('password').initial = settings['password']['default']
 
         # Отобразить страницу подключения
         context = {'form': form,
