@@ -1,4 +1,5 @@
 {% load static %}
+{% load base_tag %}
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -29,11 +30,13 @@
                         {% csrf_token %}
                             <p>{{ form.non_field_errors }}</p>
                             {% for f in form %}
-                                <div class="form-group text-left">
-                                    <label for="{{ f.id_for_label }}" id="">{{ f.label }}: </label>
-                                    {{ f }}
-                                    <div class="text-danger">{{ f.errors }}</div>
-                                </div>
+                                {% get_val settings f.name as f_set %}                                
+                                    <div class="form-group text-left"
+                                        {% if f_set.visible == False %} hidden {% endif %}>
+                                        <label for="{{ f.id_for_label }}" id="">{{ f.label }}: </label>    
+                                        {{ f }}
+                                        <div class="text-danger">{{ f.errors }}</div>
+                                    </div>      
                             {% endfor %}
                         <button type="submit" class="btn btn-primary shadow-2 m-t-4" style="width: 160px">Подключиться</button>
                         <div class="text-danger">{{ result }}</div>

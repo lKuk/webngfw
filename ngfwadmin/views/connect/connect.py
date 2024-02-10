@@ -1,3 +1,6 @@
+import json
+import os
+
 from django.shortcuts import redirect, render
 
 from ngfwadmin.forms import ConnectForm
@@ -14,7 +17,9 @@ def connect(request):
         result = ''
         # Удалить подключение
         dev_del(request)
+
         # Подключение
+        form = ConnectForm()
         if request.method == 'POST':
             form = ConnectForm(request.POST)
             # Проверка заполнения
@@ -43,13 +48,26 @@ def connect(request):
                     dev_set(request, ip, port, login, password, dic_permissions)
                     # Подключение выполнено
                     return redirect('state')
-        # Подключение повторно
-        else:
-            form = ConnectForm()
+
+        # Прочитать файл предварительных настроек
+        settings = {}
+        path = 'settings.json'
+        if os.path.exists(path):
+            with open(path) as f:
+                settings = json.load(f)
+                if 'ip' in settings and 'default' in settings['ip']:
+                    form.base_fields.get('ip').initial = settings['ip']['default']
+                if 'port' in settings and 'default' in settings['port']:
+                    form.base_fields.get('port').initial = settings['port']['default']
+                if 'login' in settings and 'default' in settings['login']:
+                    form.base_fields.get('login').initial = settings['login']['default']
+                if 'password' in settings and 'default' in settings['password']:
+                    form.base_fields.get('password').initial = settings['password']['default']
 
         # Отобразить страницу подключения
         context = {'form': form,
-                   'result': result}
+                   'result': result,
+                   'settings': settings}
         return render(request, 'connect/connect.html', context=context)
 
     except Exception as ex:

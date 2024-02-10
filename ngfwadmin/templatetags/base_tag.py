@@ -5,6 +5,14 @@ from django import template
 register = template.Library()
 
 
+
+@register.simple_tag()
+def get_val(dict, key):
+    if key in dict:
+        return dict[key]
+    return None
+
+
 @register.simple_tag()
 def is_active(request, urllist, text):
     list = urllist.split()

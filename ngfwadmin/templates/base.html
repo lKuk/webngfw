@@ -284,10 +284,14 @@
         </ul>
         <!-- Справа -->
         <ul class="navbar-nav ml-auto">
-            <!-- переподключение -->
+            <!-- переподключение --> 
             {% if dev.mode != 'local' %}
                 <li>
-                    <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.login }} ({{ dev.ip }})</a>
+                    {% if dev.ip == 'localhost' or  dev.ip == '127.0.0.1' %}
+                        <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.login }}</a>                    	
+                    {% else %}
+                        <a href="{% url 'connect' %}" onclick="return confirm('Сменить подключение?');">{{ dev.login }} ({{ dev.ip }})</a>                    	
+                    {% endif %} 
                 </li>
             {% endif %}
             <!-- Полноэкранный режим -->
