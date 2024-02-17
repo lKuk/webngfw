@@ -38,9 +38,9 @@
                         <li class="layer" data-depth="0.40"><img src="{% static 'error/images/text-01.png' %}" alt=""></li>
                         <li class="layer" data-depth="0.10"><img src="{% static 'error/images/monster-eyes-01.png' %}" alt=""></li>
                     </ul>
-                    <h1>{{ name }}</h1>
+                    <h1 style="color: red">{{ name }}</h1>
                     {% for arg in ex.args  %}
-                        <h5>{{ arg }}</h5><br/>
+                        <h5 style="color: red">{{ arg }}</h5><br/>
                     {% endfor %}
                 </div>
             </div>

@@ -23,7 +23,8 @@ $(document).ready(function() {
             }
         });
     };
-    notify('Вас приветствует NGFW "Барбакан"', 'inverse');
+    // notify('Вас приветствует NGFW "Барбакан"', 'inverse');
+    notify('Вас приветствует CoreBit.NGFW', 'inverse');
 
     // [ world-low chart ] start
     var latlong = {};

@@ -5,7 +5,8 @@
 {% load base_tag %}
 
 <head>
-    <title>NGFW "Барбакан"</title>
+{#    <title>NGFW "Барбакан"</title>#}
+    <title>CoreBit.NGFW</title>
     <!-- [ блок стилей css ] start --->
     {% block style %}
     {% endblock style %}
@@ -14,17 +15,19 @@
     <!-- [ блок стилей css ] end --->
 </head>
 
-<body style="background: #C5D8FF">
+<body style="background: #FFF">
 
 <!-- [ navigation menu ] start -->
 <nav class="pcoded-navbar">
     <div class="navbar-wrapper">
         <div class="navbar-brand header-logo">
             <a href="#" class="b-brand">
-                <div class="b-bg">
-                    <i class="feather icon-trending-up"></i>
-                </div>
-                <span class="b-title">NGFW "Барбакан"</span>
+{#                <div class="b-bg">#}
+{#                    <i class="feather icon-trending-up"></i>#}
+{#                </div>#}
+{#                <span class="b-title">NGFW "Барбакан"</span>#}
+                <img src="{% static 'main/images/logo_corebit.png' %}" width="32" height="32">
+                <span class="b-title">CoreBit.NGFW</span>
             </a>
         </div>
         <div class="navbar-content scroll-div overflow-auto">
@@ -130,7 +133,7 @@
                                     <li class="{% is_active request 'protocol_dhcp_subnet protocol_dhcp_subnet_edit' 'active' %}"><a href="{% url 'protocol_dhcp_subnet' %}">Настройки подсетей</a></li>
                                     <li class="{% is_active request 'protocol_dhcp_static protocol_dhcp_static_add' 'active' %}"><a href="{% url 'protocol_dhcp_static' %}">Статические адреса</a></li>
                                 </ul>
-                                <span class="pcoded-badge label label-danger">Develop</span>
+{#                                <span class="pcoded-badge label label-danger">Develop</span>#}
                             </li>
                         </ul>
                     </li>
@@ -168,7 +171,7 @@
                             <span class="pcoded-micon">
                                 <i class="feather icon-users"></i>
                             </span><span class="pcoded-mtext">Привилегии</span>
-                            <span class="pcoded-badge label label-info">New</span>
+{#                            <span class="pcoded-badge label label-info">New</span>#}
                         </a>
                     </li>
                     
@@ -269,7 +272,8 @@
             <div class="b-bg">
                 <i class="feather icon-trending-up"></i>
             </div>
-            <span class="b-title">NGFW "Барбакан"</span>
+{#            <span class="b-title">NGFW "Барбакан"</span>#}
+            <span class="b-title">CoreBit.NGFW</span>
         </a>
     </div>
     <a class="mobile-menu" id="mobile-header" href="#">
