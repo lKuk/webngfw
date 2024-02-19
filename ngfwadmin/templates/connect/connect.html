@@ -22,6 +22,7 @@
 {#                <span class="r s"></span>#}
 {#                <span class="r"></span>#}
 {#            </div>#}
+
             <div class="card">
                 <div class="card-header">
                     <h5>Подключение</h5>
@@ -39,11 +40,12 @@
                                         <div class="text-danger">{{ f.errors }}</div>
                                     </div>      
                             {% endfor %}
-                        <button type="submit" class="btn btn-primary shadow-2 m-t-4" style="width: 160px">Подключиться</button>
+                        <button type="submit" class="btn btn-primary shadow-2 m-t-4" style="width: 180px">Подключиться</button>
                         <div class="text-danger">{{ result }}</div>
                     </form>
                 </div>
             </div>
+            <img class="p-0 m-0" width="350" src="{% static 'gif/start.gif' %}" alt="">
         </div>
     </div>
 

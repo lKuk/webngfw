@@ -47,7 +47,7 @@
                         <!-- Кнопка Добавить -->
                         <div class="row" {% if not readwrite %} hidden {% endif %}>
                             <div class="col">
-                                <a href="{% url 'lists_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
+                                <a href="{% url 'lists_add' %}" class="btn btn-primary shadow-2" style="width: 180px">Добавить</a>
                             </div>
                         </div>
                         <hr>
@@ -61,7 +61,7 @@
                                         <tr>
                                             <th title="Удаление"
                                                 {% if not readwrite %} hidden {% endif %}>
-                                                <i class="feather icon-trash"></i>
+                                                <i class="feather icon-trash" style="color: #D43D17"></i>
                                             </th>
                                             <th>Метка</th>
                                             <th>Тип</th>
@@ -78,7 +78,7 @@
                                                     <div>
                                                         <a href="{% url 'lists' %}?delete={{ l.id }}"
                                                            onclick="return confirm('{{ l.description|truncatechars:50 }}\nУдалить список?');">
-                                                            <i class="feather icon-trash"></i>
+                                                            <i class="feather icon-trash" style="color: #D43D17"></i>
                                                         </a>
                                                     </div>
                                                 </td>

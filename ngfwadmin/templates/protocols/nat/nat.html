@@ -82,7 +82,7 @@
                 <!-- Кнопка Добавить -->
                 <div class="row" {% if not readwrite %} hidden {% endif %}>
                     <div class="col">
-                        <a href="{% url 'protocol_nat_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
+                        <a href="{% url 'protocol_nat_add' %}" class="btn btn-primary shadow-2" style="width: 180px">Добавить</a>
                     </div>
                 </div>
                 <hr>
@@ -96,7 +96,7 @@
                                 <tr>
                                     <th title="Удаление"
                                         {% if not readwrite %} hidden {% endif %}>
-                                        <i class="feather icon-trash"></i>
+                                        <i class="feather icon-trash" style="color: #D43D17"></i>
                                     </th>
                                     <th>№</th>
                                     <th>Порт LAN</th>
@@ -115,7 +115,7 @@
                                             <div>
                                                 <a href="{% url 'protocol_nat' %}?delete={{ p.ind }}"
                                                    onclick="return confirm('Удалить запись?');">
-                                                    <i class="feather icon-trash"></i>
+                                                    <i class="feather icon-trash" style="color: #D43D17"></i>
                                                 </a>
                                             </div>
                                         </td>

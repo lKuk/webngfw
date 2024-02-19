@@ -100,7 +100,7 @@
                     <div class="row">
                         <!-- Кнопки -->
                         <div class="col text-left">
-                            <button type="submit" class="btn btn-primary shadow-2" style="width: 160px"
+                            <button type="submit" class="btn btn-primary shadow-2" style="width: 180px"
                                     name="btnSubAdd">Добавить
                             </button>
                         </div>
@@ -170,7 +170,9 @@
                                        style="width:100%">
                                     <thead>
                                     <tr>
-                                        <th title="Удаление"><i class="feather icon-trash"></i></th>
+                                        <th title="Удаление">
+                                            <i class="feather icon-trash"></i>
+                                        </th>
                                         <th>Подправило</th>
                                         <th>Список</th>
                                     </tr>
@@ -183,7 +185,7 @@
                                                 <div>
                                                     <a href="{% url 'rules_sub_edit' rule.id %}?delete={{ s.id }}"
                                                        onclick="return confirm('{{ s.ar_description|truncatechars:50 }}\nУдалить подправило?');">
-                                                        <i class="feather icon-trash"></i>
+                                                        <i class="feather icon-trash" style="color: #D43D17"></i>
                                                     </a>
                                                 </div>
                                             </td>

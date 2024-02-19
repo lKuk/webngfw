@@ -48,7 +48,7 @@
                         <div class="row" 
                             {% if not readwrite %} hidden {% endif %}>
                             <div class="col">
-                                <a href="{% url 'protocol_dhcp_static_add' %}" class="btn btn-primary shadow-2" style="width: 160px">Добавить</a>
+                                <a href="{% url 'protocol_dhcp_static_add' %}" class="btn btn-primary shadow-2" style="width: 180px">Добавить</a>
                             </div>
                         </div>
                         <hr>
@@ -61,7 +61,7 @@
                                         <tr>
                                             <th title="Удаление"                                            
                                                 {% if not readwrite %} hidden {% endif %}>
-                                                <i class="feather icon-trash"></i>
+                                                <i class="feather icon-trash" style="color: #D43D17"></i>
                                             </th>
                                             <th>Физический порт</th>
                                             <th>VLAN</th>
@@ -78,7 +78,7 @@
                                                     <div>
                                                         <a href="{% url 'protocol_dhcp_static' %}?delete=true&port={{ row.port }}&vlan={{ row.vlan }}&ip={{ row.ip }}&mac={{ row.mac }}"
                                                            onclick="return confirm('Удалить подсеть DHCP?');">
-                                                            <i class="feather icon-trash"></i>
+                                                            <i class="feather icon-trash"  style="color: #D43D17"></i>
                                                         </a>
                                                     </div>
                                                 </td>

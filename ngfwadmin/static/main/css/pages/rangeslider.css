@@ -17,7 +17,7 @@
 }
 
 #RC .slider-handle {
-    background: red;
+    background: #D43D17;
 }
 
 #GC .slider-selection {
@@ -58,7 +58,7 @@
 
 #slider12b .slider-track-low,
 #slider12c .slider-track-low {
-    background: red;
+    background: #D43D17;
 }
 
 #slider12c .slider-selection {

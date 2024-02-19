@@ -214,7 +214,7 @@
                                         <button id="btnIn" class="btn btn-primary" type="button"
                                                 {% if not readwrite %} disabled {% endif %}
                                                 value="{{ writeIn.write_statusin }}" onclick="PostPortAjax('In')"
-                                                style="width: 160px">
+                                                style="width: 180px">
                                             {% if writeIn.write_statusin == 'write' %}Стоп{% else %}
                                                 Старт{% endif %}</button>
                                     </div>
@@ -253,7 +253,7 @@
                                         <button id="btnOut" class="btn btn-primary" type="button"
                                                 {% if not readwrite %} disabled {% endif %}
                                                 value="{{ writeOut.write_statusout }}" onclick="PostPortAjax('Out')"
-                                                style="width: 160px">
+                                                style="width: 180px">
                                             {% if writeOut.write_statusout == 'write' %}Стоп{% else %}
                                                 Старт{% endif %}</button>
                                     </div>
@@ -309,7 +309,7 @@
                         <div class="row">
                             <div class="col">
                                 <button class="btn btn-primary" type="button" onclick="UpdateTable()"
-                                        style="width: 160px">Обновить
+                                        style="width: 180px">Обновить
                                 </button>
                             </div>
                         </div>
@@ -324,7 +324,7 @@
                                     <tr>
                                         <th title="Удалить"
                                             {% if not readwrite %} hidden="" {% endif %}>
-                                            <i class="feather icon-trash"></i>
+                                            <i class="feather icon-trash" style="color: #D43D17"></i>
                                         </th>
                                         <th>Имя файла</th>
                                         <th>Время записи</th>
@@ -341,7 +341,7 @@
                                                 <div>
                                                     <a href="{% url 'write' %}?delete={{ file.name }}"
                                                        onclick="return confirm('Удалить файл {{ file.name }}?');">
-                                                        <i class="feather icon-trash"></i>
+                                                        <i class="feather icon-trash" style="color: #D43D17"></i>
                                                     </a>
                                                 </div>
                                             </td>

@@ -50,11 +50,11 @@
                                 <form action="" method="post" id="ruleApplyForm">
                                     {% csrf_token %}
                                     <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2"
-                                       style="width: 160px">Добавить</a>
+                                       style="width: 180px">Добавить</a>
                                     <button type="submit" name="btnApply"
                                             onclick="{% if description.status.upper == 'SET' %}return false{% endif %}"
                                             class="btn {% if description.status.upper == 'SET' %}disabled btn-secondary{% else %}btn-warning{% endif %} shadow-2"
-                                            style="width: 160px">Установить
+                                            style="width: 180px">Установить
                                     </button>
                                 </form>
                             </div>
@@ -70,15 +70,17 @@
                         {% if description.status.upper != 'SET' %}
                             <div class="row m-t-10">
                                 <div class="col">
-                                    <div class="col alert alert-warning my-0" role="alert">
+                                    <div class="col alert alert-warning my-0" role="alert" style="background-color: #BFFCFF">
                                         <div class="row">
                                             <div class="col-md-auto">
-                                                <div class="spinner-border text-warning" role="status"></div>
+                                                <div class="spinner-border" role="status" style="color: #00F4FF"></div>
                                             </div>
                                             <div class="col">
-                                                Изменено: <a class="text-dark">{{ description.date_edit }}</a><br/>
-                                                Последняя установка правил выполнена: <a
-                                                    class="text-dark">{{ description.date_set }}</a>
+                                                <a class="text-dark">Изменено: </a>
+                                                <a class="text-dark">{{ description.date_edit }}</a>
+                                                <br/>
+                                                <a class="text-dark">Последняя установка правил выполнена: </a>
+                                                <a class="text-dark">{{ description.date_set }}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -96,7 +98,7 @@
                                         <tr>
                                             <th title="Удаление"
                                                 {% if not readwrite %} hidden {% endif %}>
-                                                <i class="feather icon-trash"></i>
+                                                <i class="feather icon-trash" style="color: #D43D17"></i>
                                             </th>
                                             <th title="Статус"><i class="feather icon-check-square"
                                                                   style="font-size: 1.05rem;"></i></th>
@@ -116,7 +118,7 @@
                                                     <div>
                                                         <a href="{% url 'rules' %}?delete={{ r.id }}"
                                                            onclick="return confirm('{{ r.name }}\nУдалить правило?');">
-                                                            <i class="feather icon-trash"></i>
+                                                            <i class="feather icon-trash" style="color: #D43D17"></i>
                                                         </a>
                                                     </div>
                                                 </td>
