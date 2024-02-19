@@ -252,8 +252,7 @@
 {% block content %}
     
     <!-- Проверка привилегий -->
-    {% check_permissions dev 'syslog' 'readwrite' as  readwrite %}
-    
+    {% check_permissions dev 'syslog' 'readwrite' as  readwrite %}    
     <div class="page-wrapper">
         <div class="row">
             <div class="col-md-12">            
@@ -401,5 +400,4 @@
             </div>
         </div>
     </div>
-
 {% endblock content %}
