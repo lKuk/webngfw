@@ -53,13 +53,17 @@ File: style.css
 @import url("../fonts/datta/datta-icon.css");
 @import url("../plugins/jquery-scrollbar/css/perfect-scrollbar.css");
 @import url("../fonts/feather/css/feather.css");
-@import url("/ngfwadmin/static/main/fonts/fronts.css");
 
 /**  =====================
       Custom css start
 ==========================  **/
+@font-face {
+  font-family: 'Montserrat';
+  src: url("../fonts/montserrat/Montserrat-Medium.ttf");
+}
+
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Montserrat";
   font-size: 14px;
   color: #888;
   font-weight: 400;
