@@ -75,3 +75,11 @@ def connect(request):
 
     except Exception as ex:
         return exception(request, ex)
+
+
+def welcome(request):
+    try:
+        # Отобразить страницу приветствия
+        return render(request, 'connect/welcome.html')
+    except Exception as ex:
+        return exception(request, ex)
