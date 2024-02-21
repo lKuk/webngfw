@@ -4,12 +4,25 @@
 <!DOCTYPE html>
 <html lang="ru">
 
+
+<script>       
+    // Переход на другую страницу
+    function Redirect() {
+        window.location.href = '{% url 'connect' %}';
+    }
+    // Запуск при загрузке страницы
+    window.addEventListener('load', () => {     
+        // Запустить по таймеру
+        setTimeout(Redirect, 6600);
+    });
+</script>
+
 <head>
     <title>Подключение NGFW</title>
     <link rel="icon" href="{% static 'main/images/favicon.ico' %}" type="image/x-icon">
 </head>
 
-<body style="background-color: #000000;">
-    <ima
+<body style="background-color: #000;">
+    <img src="{% static 'main/gif/start.gif' %}" alt="" width="100%">
 </body>
 </html>
