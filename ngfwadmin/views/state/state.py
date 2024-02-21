@@ -14,7 +14,7 @@ def state(request):
         dev = dev_get(request)
         # Проверка подключения
         if 'url' not in dev or 'login' not in dev or 'password' not in dev:
-            return redirect('connect')
+            return redirect('welcome')
         # подключение
         url = dev.get('url')
         login = dev.get('login')
