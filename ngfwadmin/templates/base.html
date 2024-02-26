@@ -11,29 +11,29 @@
     {% block style %}
     {% endblock style %}
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
-    <link rel="icon" href="{% static 'main/images/corebit.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'main/images/corebit.png' %}" type="image/x-icon">
     <!-- [ блок стилей css ] end --->
 </head>
 
 <body style="background: #FFF">
 
-<script>       
+<script>
     // Функция отключает мерцание
     function stop_flicker() {
         const logo_png = document.getElementById('logo_png');
         const logo_gif = document.getElementById('logo_gif');
         logo_png.hidden = true;
         logo_gif.hidden = false;
-    }    
+    }
     // Функция включает мерцание
     function start_flicker() {
         const logo_png = document.getElementById('logo_png');
         const logo_gif = document.getElementById('logo_gif');
         logo_gif.hidden = true;
         logo_png.hidden = false;
-    }   
+    }
     // Запуск при загрузке страницы
-    window.addEventListener('load', () => {    
+    window.addEventListener('load', () => {
         start_flicker();
         // Запустить по таймеру
         setTimeout(stop_flicker, 1000);
