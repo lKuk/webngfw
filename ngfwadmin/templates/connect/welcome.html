@@ -13,7 +13,7 @@
     // Запуск при загрузке страницы
     window.addEventListener('load', () => {     
         // Запустить по таймеру
-        setTimeout(Redirect, 6600);
+        setTimeout(Redirect, 6400);
     });
 </script>
 
@@ -23,6 +23,6 @@
 </head>
 
 <body style="background-color: #000;">
-    <img src="{% static 'main/gif/start.gif' %}" alt="" width="100%">
+    <img src="{% static 'main/gif/start.gif' %}" alt="" width="100%" onclick="Redirect()">
 </body>
 </html>

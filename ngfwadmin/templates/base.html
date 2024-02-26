@@ -31,7 +31,13 @@
         const logo_gif = document.getElementById('logo_gif');
         logo_gif.hidden = true;
         logo_png.hidden = false;
-    }
+    }   
+    // Запуск при загрузке страницы
+    window.addEventListener('load', () => {    
+        start_flicker();
+        // Запустить по таймеру
+        setTimeout(stop_flicker, 1000);
+    });
 </script>
 
 <!-- [ navigation menu ] start -->
@@ -62,7 +68,7 @@
                     <!-- Состояние -->
                     <li class="nav-item {% is_active request 'state' 'active' %}"
                         {% check_permissions_hidden dev 'system' 'readonly' %}>
-                        <a href="{% url 'state' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'state' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-home"></i>
                             </span>
@@ -73,7 +79,7 @@
                     <!-- Порты -->
                     <li class="nav-item {% is_active request 'ports' 'active' %}"
                         {% check_permissions_hidden dev 'ports' 'readonly' %}>
-                        <a href="{% url 'ports' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'ports' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-airplay"></i>
                             </span>
@@ -90,7 +96,7 @@
                     <!-- Правила -->
                     <li class="nav-item {% is_active request 'rules rules_add rules_edit' 'active' %}"
                         {% check_permissions_hidden dev 'rules ' 'readonly' %}>
-                        <a href="{% url 'rules' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'rules' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-trending-up"></i>
                             </span><span class="pcoded-mtext">Правила</span>
@@ -100,7 +106,7 @@
                     <!-- Списки -->
                     <li class="nav-item {% is_active request 'lists lists_add lists_edit' 'active' %}"
                         {% check_permissions_hidden dev 'rules ' 'readonly' %}>
-                        <a href="{% url 'lists' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'lists' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-list"></i>
                             </span><span class="pcoded-mtext">Списки</span>
@@ -110,7 +116,7 @@
                     <!-- История изменений  -->
                     <li class="nav-item {% is_active request 'history' 'active' %}"
                         {% check_permissions_hidden dev 'rules/history ' 'readonly' %}>
-                        <a href="{% url 'history' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'history' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-clock"></i>
                             </span><span class="pcoded-mtext">История</span>
@@ -126,7 +132,7 @@
                     <!-- Сеть -->
                     <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_ipconfig protocol_ipconfig_add protocol_route protocol_route_add protocol_nat protocol_nat_add protocol_arp protocol_dhcp protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_subnet_edit protocol_dhcp_static protocol_dhcp_static_add' 'active pcoded-trigger' %}"
                         {% check_permissions_hidden dev 'router || router/protect ' 'readonly' %}>
-                        <a href="#" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="#" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-wifi"></i>
                             </span><span class="pcoded-mtext">Сеть</span>
@@ -159,7 +165,7 @@
                     <!-- Защита сети -->
                     <li class="nav-item {% is_active request 'protect' 'active' %}"
                         {% check_permissions_hidden dev 'router/protect ' 'readonly' %}>
-                        <a href="{% url 'protect' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'protect' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-shield"></i>
                             </span><span class="pcoded-mtext">Защита сети</span>
@@ -175,7 +181,7 @@
                     <!-- Настройки паролей -->
                     <li class="nav-item {% is_active request 'auth' 'active' %}"
                         {% check_permissions_hidden dev 'auth/users ' 'readonly' %}>
-                        <a href="{% url 'auth' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'auth' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-user"></i>
                             </span><span class="pcoded-mtext">Пользователи</span>
@@ -185,7 +191,7 @@
                     <!-- Настройки прав пользователей  -->
                     <li class="nav-item {% is_active request 'permissions' 'active' %}"
                         {% check_permissions_hidden dev 'auth/permissions ' 'readonly' %}>
-                        <a href="{% url 'permissions' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'permissions' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-users"></i>
                             </span><span class="pcoded-mtext">Привилегии</span>
@@ -202,7 +208,7 @@
                     <!-- Логирование -->
                     <li class="nav-item {% is_active request 'syslog' 'active' %}"
                         {% check_permissions_hidden dev 'syslog ' 'readonly' %}>
-                        <a href="{% url 'syslog' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'syslog' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-list"></i>
                             </span><span class="pcoded-mtext">Логирование</span>
@@ -212,7 +218,7 @@
                     <!-- Запись трафика -->
                     <li class="nav-item {% is_active request 'write' 'active' %}"
                         {% check_permissions_hidden dev 'service ' 'readonly' %}>
-                        <a href="{% url 'write' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'write' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-file-text"></i>
                             </span><span class="pcoded-mtext">Запись трафика</span>
@@ -222,7 +228,7 @@
                     <!-- Контентная фильтрация -->
                     <li class="nav-item {% is_active request 'inspection' 'active' %}"
                         {% check_permissions_hidden dev 'inspection ' 'readonly' %}>
-                        <a href="{% url 'inspection' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'inspection' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-filter"></i>
                             </span><span class="pcoded-mtext">Контентная фильтрация</span>
@@ -232,7 +238,7 @@
                     <!-- Система обнаружения вторжений -->
                     <li class="nav-item {% is_active request 'ipsids' 'active' %}"
                         {% check_permissions_hidden dev 'ipsids ' 'readonly' %}>
-                        <a href="{% url 'ipsids' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'ipsids' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-alert-triangle"></i>
                             </span><span class="pcoded-mtext">Обнаружение вторжений</span>
@@ -242,7 +248,7 @@
                     <!-- Настройки DPI -->
                     <li class="nav-item {% is_active request 'classification' 'active' %}"
                         {% check_permissions_hidden dev 'classification ' 'readonly' %}>
-                        <a href="{% url 'classification' %}" class="nav-link" onmouseout="stop_flicker()" onmouseover="start_flicker()">
+                        <a href="{% url 'classification' %}" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-clipboard"></i>
                             </span><span class="pcoded-mtext">Настройки DPI</span>
