@@ -183,7 +183,7 @@ def rules_sub_edit(request, id):
         delete = request.GET.get("delete")
         if delete is not None:
             # удалить список
-            sub_delete(url, login, password, login, password, id, delete)
+            sub_delete(url, login, password, id, delete)
             # перейти к таблице правил
             return redirect('rules_sub_edit', id)
 
