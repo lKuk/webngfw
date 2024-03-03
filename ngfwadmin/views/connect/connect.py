@@ -1,6 +1,7 @@
 import json
 import os
 
+import psycopg2
 from django.shortcuts import redirect, render
 
 from ngfwadmin.forms import ConnectForm
@@ -24,6 +25,18 @@ def connect(request):
         if os.path.exists(path):
             with open(path) as f:
                 settings = json.load(f)
+
+        # параметры
+        ip = ""
+        port = ""
+        login = ""
+        password = ""
+        connect_pg = ""
+        form = None
+
+        # заполнить строку подключения
+        if 'connect_pg' in settings:
+            connect_pg = settings['connect_pg']
 
         # Заполнить форму для метода GET
         if request.method == 'GET':
@@ -63,7 +76,7 @@ def connect(request):
                         path = p['path'].lower().strip().strip('/').strip('\\')
                         dic_permissions[path] = method
                     # Сохранить подключение
-                    dev_set(request, ip, port, login, password, dic_permissions)
+                    dev_set(request, ip, port, login, password, connect_pg, dic_permissions)
                     # Подключение выполнено
                     return redirect('state')
 

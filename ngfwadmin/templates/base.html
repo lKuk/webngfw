@@ -94,6 +94,18 @@
                     </li>
 
                     <!-- Правила -->
+                    <li class="nav-item {% is_active request 'rulepg' 'active' %}"
+                        {% check_permissions_hidden dev 'rules ' 'readonly' %}>
+                        <a href="{% url 'rulepg' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-trending-up"></i>
+                            </span><span class="pcoded-mtext">Правила PG</span>
+                            <span class="pcoded-badge label label-danger">New</span>
+                        </a>
+                    </li>
+
+                    
+                    <!-- Правила -->
                     <li class="nav-item {% is_active request 'rules rules_add rules_edit' 'active' %}"
                         {% check_permissions_hidden dev 'rules ' 'readonly' %}>
                         <a href="{% url 'rules' %}" class="nav-link">

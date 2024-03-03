@@ -1,19 +1,20 @@
 from django.urls import path
 
-from ngfwadmin.views.auth.auth import auth, auth_user
-from ngfwadmin.views.auth.permissions import permissions
 from ngfwadmin.views.debug.error import error
 from ngfwadmin.views.debug.table import table
 from ngfwadmin.views.ports.ports import ports
 from ngfwadmin.views.state.state import state
-from ngfwadmin.views.write.write import write, write_download
+from ngfwadmin.views.rulepg.rulepg import rulepg
 from ngfwadmin.views.ipsids.ipsids import ipsids
 from ngfwadmin.views.syslog.syslog import syslog
 from ngfwadmin.views.rules.history import history
 from ngfwadmin.views.protect.protect import protect
-from ngfwadmin.views.connect.connect import connect, welcome
+from ngfwadmin.views.auth.auth import auth, auth_user
 from ngfwadmin.views.protocols.arp import protocol_arp
+from ngfwadmin.views.auth.permissions import permissions
+from ngfwadmin.views.connect.connect import connect, welcome
 from ngfwadmin.views.inspection.inspection import inspection
+from ngfwadmin.views.write.write import write, write_download
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_table
 from ngfwadmin.views.rules.lists import lists, lists_add, lists_edit
 from ngfwadmin.views.classification.classification import classification
@@ -21,8 +22,8 @@ from ngfwadmin.views.protocols.nat import protocol_nat, protocol_nat_add
 from ngfwadmin.views.protocols.route import protocol_route, protocol_route_add
 from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_edit
 from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
-from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_dhcp_subnet
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_static, protocol_dhcp_static_add
+from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_dhcp_subnet
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -43,6 +44,9 @@ urlpatterns = [
     path('rules/new/', rules_add, name='rules_add'),
     path('rules/<int:id>/', rules_edit, name='rules_edit'),
     path('rules/<int:id>/sub', rules_sub_edit, name='rules_sub_edit'),
+
+    # Редактор правил в базе данных
+    path('rulepg/', rulepg, name='rulepg'),
 
     # Редактор списков
     path('rules/lists/', lists, name='lists'),

@@ -5,7 +5,7 @@ dict_dev = {}
 
 
 # Добавить подключение к устройству
-def dev_set(request, ip, port, login, password, permissions):
+def dev_set(request, ip, port, login, password, connect_pg, permissions):
     # время подключения
     now = date.today()
     # ссылка на устройство для rest
@@ -15,6 +15,7 @@ def dev_set(request, ip, port, login, password, permissions):
            'port': port,
            'login': login,
            'password': password,
+           'connect_pg': connect_pg,
            'permissions': permissions,
            'datetime': now,
            'url': url}
