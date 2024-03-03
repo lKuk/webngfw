@@ -59,8 +59,7 @@ def rulepg(request):
 
 
         # получить параметры пагинации страниц
-        pagination = get_pagination(math.ceil(rules_count / page_len), page_num)
-
+        pagination = get_pagination(rules_count, page_len, page_num)
 
         # отобразить страницу правил
         context = {'dev': dev,
@@ -75,7 +74,8 @@ def rulepg(request):
 
 
 # Страница правил
-def get_pagination(count, num):
+def get_pagination(count, len, num):
+    count = math.ceil(count / len)
     # список страниц
     list = []
     if count <= 7:
@@ -96,5 +96,6 @@ def get_pagination(count, num):
     # значения пагинации
     pagination = {}
     pagination['num'] = num
+    pagination['len'] = len
     pagination['list'] = list
     return pagination
