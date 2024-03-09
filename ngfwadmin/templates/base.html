@@ -45,10 +45,6 @@
     <div class="navbar-wrapper">
         <div class="navbar-brand header-logo">
             <a id="logo" href="#" class="b-brand" onmouseout="stop_flicker()" onmouseover="start_flicker()">
-{#                <div class="b-bg">#}
-{#                    <i class="feather icon-trending-up"></i>#}
-{#                </div>#}
-{#                <span class="b-title">NGFW "Барбакан"</span>#}
                 <img id="logo_png" src="{% static 'main/gif/logo.gif' %}" width="32" height="32" hidden alt="">
                 <img id="logo_gif" src="{% static 'main/images/logo_corebit.png' %}" width="32" height="32" alt="">
                 <span class="b-title">CoreBit.NGFW</span>
@@ -141,7 +137,7 @@
                         <label>Маршрутизация</label>
                     </li>
 
-                    <!-- Сеть -->
+                 <!-- Сеть -->
                     <li class="nav-item pcoded-hasmenu {% is_active request 'protocol_ipconfig protocol_ipconfig_add protocol_route protocol_route_add protocol_nat protocol_nat_add protocol_arp protocol_dhcp protocol_dhcp_table protocol_dhcp_subnet protocol_dhcp_subnet_edit protocol_dhcp_static protocol_dhcp_static_add' 'active pcoded-trigger' %}"
                         {% check_permissions_hidden dev 'router || router/protect ' 'readonly' %}>
                         <a href="#" class="nav-link">
@@ -363,7 +359,7 @@
 
 <!-- [ блок скриптов ] start --->
 <script src="{% static 'main/js/vendor-all.min.js' %}"></script>
-{#<script src="{% static 'main/plugins/bootstrap/js/bootstrap.min.js' %}"></script>#}
+<script src="{% static 'main/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 {#<script src="{% static 'main/js/pcoded.min.js' %}"></script>#}
 
 {% block script %}

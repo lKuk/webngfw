@@ -1,0 +1,44 @@
+
+<div class="row p-0 m-0 editor" style="position: relative;" hidden>
+    <div style="position: absolute; right: 0;">
+        <p class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false"></p>
+        <div class="dropdown-menu border border-info p-2" x-placement="bottom-start" style="width: 300px">
+            <p>id_cat:{{ id_cat }}</p>
+            <p>id_rule:{{ id_rule }}</p>
+            {% for ct in cat_type %}
+            	{% if ct.id_cat == id_cat %}
+                    {% if ct.is_attr_val == 1 %}
+                    	<p>val: {{ ct.name_type }}</p>
+                    {% endif %} 
+                    {% if ct.is_attr_kit == 1 %}
+                    	<p>kit: {{ ct.name_type }}</p>
+                    {% endif %}             		
+            	{% endif %} 
+            {% endfor %}
+            
+            
+            
+            <label for="cat_add" hidden></label>
+            <input id="cat_add" class="border border-info" type="text" style="width: 100%"> 
+        </div>
+    </div>
+</div>
+
+{% if cat is None %}
+    <p class="py-0 my-0"
+       style="color: darkgrey; cursor: default" >*Any</p>
+{% else %}
+    {% for attr in cat %}
+        <p class="py-0 my-0"
+           style="cursor: default">
+            {% if attr.attr == 'kit' %}
+                <i class="feather icon-grid"></i>
+            {% else %}
+                <i class="feather icon-filter"></i>
+            {% endif %}
+            {{ attr.name }}
+        </p>
+    {% endfor %}
+{% endif %}
+

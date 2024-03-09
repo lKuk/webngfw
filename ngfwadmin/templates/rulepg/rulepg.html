@@ -9,6 +9,7 @@
 {# Скрипты #}
 {% block script %}
 
+    <!-- Пагинация -->
     <script>
         // функция смены страницы
         function change_page_num(num) {
@@ -27,6 +28,49 @@
         }
     </script>
 
+    <!-- Фокусная строка с правилом -->
+    <script>
+        // Глобальные переменные
+        let m_row_cell = null;
+        let m_row_focus = null;
+        // Событие выделения ячейки
+        function cell_click(this_cell)
+        {
+            if(m_row_cell === this_cell)
+                return;
+            m_row_cell = this_cell;
+            const cell_focus = document.getElementsByClassName('cell_focus');
+            for (let i = 0; i < cell_focus.length; i++) {
+                show_editor(cell_focus[i], false);
+                cell_focus[i].style.backgroundColor = '#0000';
+                cell_focus[i].classList.remove('border');
+                cell_focus[i].classList.remove('border-info');
+            }
+            show_editor(this_cell, true);
+            this_cell.classList.add('border');
+            this_cell.classList.add('border-info');
+            this_cell.style.backgroundColor = '#fff';
+        }
+        // Событие выделения строки
+        function row_click(this_row)
+        {
+            if(m_row_cell === this_row)
+                return;
+            m_row_focus = this_row;
+            const row_focus = document.getElementsByClassName('row_focus');
+            for (let i = 0; i < row_focus.length; i++)
+                row_focus[i].style.backgroundColor = '#fff';
+            this_row.style.backgroundColor = '#ddd';
+        }
+        // Скрыть/показать редактор строки
+        function show_editor(element, visible)
+        {
+            let editor = element.getElementsByClassName('editor');
+            for (let i = 0; i < editor.length; i++)
+                editor[i].hidden = !visible;
+        }
+    </script>
+    
 {% endblock script %}
 
 {# Заголовок #}
@@ -43,85 +87,87 @@
 
 {# Содержимое #}
 {% block content %}
+  
     <div class="page-wrapper">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="page-header-title">
-                            <h5>Редактор правил фильтрации PG</h5>
-                        </div>
-                    </div>
-                    <div class="card-body">
-
-                        <!-- Количество строк отображаемых на странице таблицы -->
-                        <div class="row">
-                            <div class="col-auto p-r-0">
-                                <p class="py-2">Показать</p>
-                            </div>
-                            <div class="col-auto">
-                                <label>
-                                <select id="page_len" class="form-control" required onchange="change_page_len()">
-                                    <option value="10" {% if pagination.len == 10 %}selected{% endif %}>10</option>
-                                    <option value="20" {% if pagination.len == 20 %}selected{% endif %}>20</option>
-                                    <option value="30" {% if pagination.len == 30 %}selected{% endif %}>30</option>
-                                    <option value="50" {% if pagination.len == 50 %}selected{% endif %}>50</option>
-                                </select>
-                                </label>
-                            </div>
-                            <div class="col-auto p-l-0">
-                                <p class="py-2">записей</p>
+        <div class="page-content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="page-header-title">
+                                <h5>Редактор правил фильтрации PG</h5>
                             </div>
                         </div>
-
-                        <!-- Колонки таблицы -->
-                        <div class="row">
-                            <div class="col">
-                                <p class="text-dark m-0">Название</p>
-                            </div>
-                            {% for ct in cat_type %}
-                                <div class="col text-center">
-                                    <p class="text-dark m-0">{{ ct.1 }}</p>
-                                    <p class="text-muted m-0">({{ ct.2 }})</p>
+                        <div class="card-body">
+                        
+                            <!-- Количество строк отображаемых на странице таблицы -->
+                            <div class="row">
+                                <div class="col-auto p-r-0">
+                                    <p class="py-2">Показать</p>
                                 </div>
+                                <div class="col-auto">
+                                    <label>
+                                    <select id="page_len" class="form-control" required onchange="change_page_len()">
+                                        <option value="10" {% if pagination.len == 10 %}selected{% endif %}>10</option>
+                                        <option value="20" {% if pagination.len == 20 %}selected{% endif %}>20</option>
+                                        <option value="30" {% if pagination.len == 30 %}selected{% endif %}>30</option>
+                                        <option value="50" {% if pagination.len == 50 %}selected{% endif %}>50</option>
+                                    </select>
+                                    </label>
+                                </div>
+                                <div class="col-auto p-l-0">
+                                    <p class="py-2">записей</p>
+                                </div>
+                            </div>
+                        
+                            <!-- Колонки таблицы -->
+                            <div class="row">
+                                <div class="col px-1 mx-0 text-center">
+                                    <p class="text-dark m-0">Название</p>
+                                </div>
+                                {% for c in cat %}
+                                    <div class="col px-1 mx-0 text-center">
+                                        <p class="text-dark m-0">{{ c.name }}</p>
+                                        <p class="text-muted m-0">({{ c.note }})</p>
+                                    </div>
+                                {% endfor %}
+                                <div class="col px-1 mx-0 text-center">
+                                    <p class="text-dark m-0">Описание</p>
+                                </div>
+                                <div class="col px-0 mx-0 text-center" style="max-width: 30px; width: 30px;">
+                                    <p class="text-dark m-0">Лог</p>
+                                </div>
+                            </div>
+    
+                            <!-- Строка разделитель -->
+                            <div class="row" style="background-color: lightgrey">
+                                <div style="height: 1px;"></div>
+                            </div>
+
+                            {% for row in rules %}
+                                {% include 'rulepg/rulepg_row.html' with rule=row cat_type=cat_type %}
                             {% endfor %}
-                            <div class="col">
-                                <p class="text-dark m-0">Описание</p>
+    
+                            <!-- Страницы строк таблицы -->
+                            <div class="row">
+                                <div class="col-auto">
+                                    <nav aria-label="Page navigation example">
+                                        <ul id="page_num" class="pagination">
+                                            {% for p in pagination.list %}
+                                                {% if pagination.num != p %}
+                                                    <li class="page-item" onclick="change_page_num({{ p }})">
+                                                        <a class="page-link" href="#">{{ p }}</a></li>
+                                                {% else %}
+                                                    <li class="page-item active" onclick="change_page_num({{ p }})">
+                                                        <a class="page-link" href="#">{{ p }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
-                            <div class="col" style="max-width: 57px; width: 57px;">
-                                <p class="text-dark m-0">Лог</p>
-                            </div>
+    
                         </div>
-
-                        <!-- Строка разделитель -->
-                        <div class="row" style="background-color: lightgrey">
-                            <div style="height: 1px;"></div>
-                        </div>
-
-                        <!-- Строка с правилами -->
-                        {% for row in rules %}
-                            {% include 'rulepg/rulepg_row.html' with rule=row %}
-                        {% endfor %}
-
-                        <!-- Страницы строк таблицы -->
-                        <div class="row">
-                            <div class="col-auto">
-                                <nav aria-label="Page navigation example">
-                                    <ul id="page_num" class="pagination">
-                                        {% for p in pagination.list %}
-                                            {% if pagination.num != p %}
-                                        	    <li class="page-item" onclick="change_page_num({{ p }})">
-                                                    <a class="page-link" href="#">{{ p }}</a></li>
-                                            {% else %}
-                                        	    <li class="page-item active" onclick="change_page_num({{ p }})">
-                                                    <a class="page-link" href="#">{{ p }}</a></li>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>

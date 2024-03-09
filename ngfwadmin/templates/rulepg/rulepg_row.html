@@ -1,45 +1,53 @@
 <div class="row" style="background-color: lightgrey">
     <div style="height: 1px;"></div>
 </div>
-<div class="row py-1">
+
+<div class="row_focus row py-1" onclick="row_click(this)">
     <!-- Название правила -->
-    <div class="col">
+    <div class="col mx-0 cell_focus" onclick="cell_click(this)">
         <div class="row">
-            <div class="col-auto">
-                <select id="status_{{ rule.1 }}" class="border-0" style="-webkit-appearance: none; -moz-appearance: none;">
-                    <option value="0">Выкл</option>
-                    <option value="1">Запр</option>
-                    <option value="2">Разр</option>
+            <div class="col-auto px-1 mx-0">
+                <select id="status_{{ rule.id }}" style="-webkit-appearance: none; 
+                                                         -moz-appearance: none; 
+                                                         background: transparent"                
+                    {% if rule.status == 0 %}class="border-0 text-secondary"{% endif %}
+                    {% if rule.status == 1 %}class="border-0 text-danger"{% endif %}
+                    {% if rule.status == 2 %}class="border-0 text-success"{% endif %}>
+                    <option value="0" {% if rule.status == 0 %}selected{% endif %}>Выкл</option>
+                    <option value="1" {% if rule.status == 1 %}selected{% endif %}>Запр</option>
+                    <option value="2" {% if rule.status == 2 %}selected{% endif %}>Разр</option>
                 </select>
             </div>
-            <div class="col p-0">
-                <label for="status_{{ rule.1 }}">{{ rule.1 }}</label>
+            <div class="col-auto px-1 mx-0">                
+                <label class="text-dark" for="status_{{ rule.id }}">{{ rule.name }}</label>
             </div>
         </div>
     </div>
-
-
-    <div class="col">
+    <!-- Атрибуты правила фильтрации -->
+    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">        
+        {% include 'rulepg/rulepg_cell.html' with id_cat=1 id_rule=rule.id cat=rule.cat1 cat_type=cat_type %}
     </div>
-    <div class="col">
+    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
+        {% include 'rulepg/rulepg_cell.html' with id_cat=2 id_rule=rule.id cat=rule.cat2 cat_type=cat_type %}
     </div>
-    <div class="col">
+    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
+        {% include 'rulepg/rulepg_cell.html' with id_cat=3 id_rule=rule.id cat=rule.cat3 cat_type=cat_type %}
     </div>
-    <div class="col">
+    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
+        {% include 'rulepg/rulepg_cell.html' with id_cat=4 id_rule=rule.id cat=rule.cat4 cat_type=cat_type %}
     </div>
-    <div class="col">
+    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
+        {% include 'rulepg/rulepg_cell.html' with id_cat=5 id_rule=rule.id cat=rule.cat5 cat_type=cat_type %}
     </div>
-    <div class="col">
+    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
+        {% include 'rulepg/rulepg_cell.html' with id_cat=6 id_rule=rule.id cat=rule.cat6 cat_type=cat_type %}
     </div>
-
-
     <!-- Описание правила -->
-    <div class="col">
-        <p class="p-0 m-0">{{ rule.2 }}</p>
+    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
+        <p class="text-muted p-0 m-0">{{ rule.description }}</p>
     </div>
-
-    <!-- Описание правила -->
-    <div class="col" style="max-width: 57px; width: 57px;">
+    <!-- Лог правила -->
+    <div class="col px-1 mx-0" style="max-width: 30px; width: 30px;">
         <div class="form-check">
             <input class="form-check-input" type="checkbox" id="is_log">
             <label class="form-check-label" for="is_log" hidden></label>

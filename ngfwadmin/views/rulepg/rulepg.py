@@ -1,6 +1,8 @@
+import json
 import math
 
 import psycopg2
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from ngfwadmin.views.connect.dev import dev_get
@@ -13,15 +15,17 @@ def rulepg(request):
         # Подключение
         dev = dev_get(request)
 
-        # проверка подключения
-        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
-            return redirect('connect')
+        # # проверка подключения
+        # if 'url' not in dev or 'login' not in dev or 'password' not in dev:
+        #     return redirect('connect')
+        #
+        # # подключение
+        # url = dev.get('url')
+        # login = dev.get('login')
+        # password = dev.get('password')
+        # connect_pg = dev.get('connect_pg')
 
-        # подключение
-        url = dev.get('url')
-        login = dev.get('login')
-        password = dev.get('password')
-        connect_pg = dev.get('connect_pg')
+        connect_pg = {'dbname': 'ngfw', 'host': '127.0.0.1', 'password': '111111', 'port': '5432', 'user': 'postgres'}
 
         # подключиться к базе данных
         connection = psycopg2.connect(user=connect_pg["user"],
@@ -31,6 +35,15 @@ def rulepg(request):
                                       password=connect_pg["password"])
         # открыть курсор к базе данных
         cursor = connection.cursor()
+
+        db_proc = request.GET.get("db_proc")
+        if db_proc is not None:
+            db_param = request.GET.get("db_param")
+            db_param = json.loads(db_param)
+            cursor.callproc(db_proc, db_param)
+            result = cursor.fetchall()[0][0]
+            result = {db_proc: result}
+            return JsonResponse(result)
 
         # номер страницы
         page_num = request.GET.get("page_num")
@@ -43,26 +56,30 @@ def rulepg(request):
         page_len = int(page_len)
 
         # получить количество правил
-        cursor.callproc('filter.web_rules_count')
-        rules_count = cursor.fetchall()
-        rules_count = rules_count[0][0]
+        cursor.callproc('filter.web_rules_count_json') #.callproc('filter.web_rules_count')
+        rules_count = cursor.fetchall()[0][0]
+        rules_count = rules_count[0]['count']
 
         # получить категории
-        cursor.callproc('filter.web_cat_type_select')
-        cat_type = cursor.fetchall()
+        cursor.callproc('filter.web_cat_json')
+        cat = cursor.fetchall()[0][0]
+
+        # получить категории с типами
+        cursor.callproc('filter.web_cat_type_json')
+        cat_type = cursor.fetchall()[0][0]
 
         # получить страницу с правилами
         limit = page_len
         offset = (page_num - 1) * page_len
-        cursor.callproc('filter.web_rules_select', [limit,offset])
-        rules = cursor.fetchall()
-
+        cursor.callproc('filter.web_rules_json', [limit,offset])
+        rules = cursor.fetchall()[0][0]
 
         # получить параметры пагинации страниц
         pagination = get_pagination(rules_count, page_len, page_num)
 
         # отобразить страницу правил
         context = {'dev': dev,
+                   'cat': cat,
                    'rules': rules,
                    'cat_type': cat_type,
                    'pagination': pagination}
