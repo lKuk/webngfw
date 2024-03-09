@@ -1,9 +1,11 @@
-
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
 from ngfwadmin.rest.protocols.arp import arp_select, arp_clear
+from ngfwadmin.rest.service.ping import ping_post
+
 
 # Страница протокола arp
 def ping(request):
@@ -17,19 +19,20 @@ def ping(request):
         url = dev.get('url')
         login = dev.get('login')
         password = dev.get('password')
-        # Получить arp таблицу
-        arp = arp_select(url, login, password)
+        ipServer = request.GET.get("ipServer")
+        portServer = request.GET.get("portServer")
+        req_amount = request.GET.get("req_amount")
+        delay = request.GET.get("delay")
 
-        # создать список
-        if request.method == 'POST':
-            # добавить список
-            if 'btnClear' in request.POST:
-                # Очистить arp таблицу
-                arp_clear(url, login, password)
+        if ipServer is not None and portServer is not None and req_amount is not None and delay is not None:
+            response = ping_post(url, login, password, ipServer, portServer, req_amount, delay)
+            # Данные страницы
+            context = {'dev': dev,
+                       'data': response}
+            return render(request, 'Service/ping.html', context=context)
 
         # Данные страницы
         context = {'dev': dev,
-                   'arp': arp,
                    }
         # Вернуть сформированную страницу
         return render(request, 'Service/ping.html', context=context)

@@ -29,13 +29,22 @@
 
             // Параметры
             const param = {
-                type: "GET",
+                type: "get",
                 dataType: "json",
-                url: '{% url 'syslog' %}',
+                url: '{% url 'ping' %}',
                 data: {ipServer: ipValue, portServer: portValue, req_amount: req_amountValue, delay: delayValue},
+                success: function(){
+                    alert("asd")
+                }
             }
-
             $.ajax(param);
+        }
+
+        function CheckPing(data) {
+            alert("asd")
+            let ansver = document.getElementById("answer")
+            alert(data)
+            ansver.textContent = data
         }
     </script>
 
@@ -69,6 +78,7 @@
                         </div>
                     </div>
                     <div class="card-body">
+
                         <div class="row">
                             <div class="col">
                                 <button class="btn btn-primary shadow-2"
@@ -83,7 +93,7 @@
                                 <div class="form-group">
                                     <label for="ipText">IP адрес:</label>
                                     <input id="ipText" type="text" class="form-control"
-                                           value="yandex.ru">
+                                           value="192.168.3.35">
                                 </div>
                                 <div class="invalid-feedback" id="validDiv_ipText">
                                     <ul>
@@ -125,12 +135,11 @@
                                 <div class="form-group">
                                     <label for="answer">Ответ:</label>
                                     <textarea id="answer" class="form-control" style="font-family: monospace;" rows="20"
-                                              readonly></textarea>
+                                              readonly>{{ data }}</textarea>
                                 </div>
                             </div>
                         </div>
                         <hr>
-
                     </div>
                 </div>
             </div>
