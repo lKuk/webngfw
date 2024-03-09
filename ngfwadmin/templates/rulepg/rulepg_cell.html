@@ -3,16 +3,27 @@
     <div style="position: absolute; right: 0;">
         <p class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false" style=" cursor: pointer;"></p>
-        <div class="dropdown-menu border border-info p-2" x-placement="bottom-start">
+        <div class="dropdown-menu border border-info p-2" x-placement="bottom-start" style="width: 40em">
             <p>id_cat: {{ id_cat }} - id_rule: {{ id_rule }}</p>
             {% for ct in cat_type %}
             	{% if ct.id_cat == id_cat %}
+                    
+                    
+{#                    #}
+{#                    {% if ct.is_attr_kit == 1 %}  #}
+{#                    	<p>kit: {{ ct.name_type }}</p>#}
+{#                    {% endif %}#}
+{#                    #}
+{#                    <p>{{ kit }}</p>#}
+                    
                     {% if ct.is_attr_val == 1 %}
-                    	<p>val: {{ ct.name_type }}</p>                        
-                    {% endif %} 
+                    	<p>val: {{ ct.name_type }}</p>
+                    {% endif %}
                     {% if ct.is_attr_kit == 1 %}
                     	<p>kit: {{ ct.name_type }}</p>
-                    {% endif %}             		
+                    {% endif %}
+                    
+                    
             	{% endif %} 
             {% endfor %}
                         

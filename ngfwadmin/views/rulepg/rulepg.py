@@ -25,7 +25,7 @@ def rulepg(request):
         # password = dev.get('password')
         # connect_pg = dev.get('connect_pg')
 
-        connect_pg = {'dbname': 'ngfw', 'host': '127.0.0.1', 'password': '111111', 'port': '5432', 'user': 'postgres'}
+        connect_pg = {'dbname': 'ngfw', 'host': '192.168.1.235', 'password': '111111', 'port': '5432', 'user': 'postgres'}
 
         # подключиться к базе данных
         connection = psycopg2.connect(user=connect_pg["user"],
@@ -60,6 +60,10 @@ def rulepg(request):
         rules_count = cursor.fetchall()[0][0]
         rules_count = rules_count[0]['count']
 
+        # получить наборы
+        cursor.callproc('filter.web_kit_json')
+        kit = cursor.fetchall()[0][0]
+
         # получить категории
         cursor.callproc('filter.web_cat_json')
         cat = cursor.fetchall()[0][0]
@@ -80,6 +84,7 @@ def rulepg(request):
         # отобразить страницу правил
         context = {'dev': dev,
                    'cat': cat,
+                   'kit': kit,
                    'rules': rules,
                    'cat_type': cat_type,
                    'pagination': pagination}
