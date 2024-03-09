@@ -48,21 +48,6 @@
                         <!-- Кнопки  -->
                         <div class="row" {% if not readwrite %} hidden {% endif %}>
                             <div class="col text-left">
-                            
-                        <!-- Времянка DropDown -->    
-                        <div class="row p-0 m-0 editor" style="position: relative;">
-                            <div style="position: absolute; right: 0;">
-                                <p class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                   aria-expanded="false">DropDown</p>
-                                <div class="dropdown-menu border border-info p-2" x-placement="bottom-start"
-                                     style="width: 300px">
-                                    <p>Меню</p>
-                                    <label for="cat_add" hidden></label>
-                                    <input id="cat_add" class="border border-info" type="text" style="width: 100%">
-                                </div>
-                            </div>
-                        </div>
-                            
                                 <form action="" method="post" id="ruleApplyForm">
                                     {% csrf_token %}
                                     <a href="{% url 'rules_add' %}" class="btn btn-primary shadow-2"
