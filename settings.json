@@ -3,5 +3,5 @@
   "port": { "visible": false, "default": "18888" },
   "login": { "visible": true, "default": "administrator" },
   "password": { "visible": true, "default": "111111" },
-  "connect_pg": { "dbname":"ngfw", "host":"127.0.0.1", "port":"5432", "user": "postgres", "password": "111111" }
+  "connect_pg": { "dbname":"ngfw", "host":"192.168.1.235", "port":"5432", "user": "postgres", "password": "111111" }
 }
