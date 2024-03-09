@@ -23,6 +23,7 @@ from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_
 from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_dhcp_subnet
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_static, protocol_dhcp_static_add
+from ngfwadmin.views.Service.Ping import ping
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -61,10 +62,10 @@ urlpatterns = [
     # Классификаторы
     path('classification/', classification, name='classification'),
 
-    #Системный журнал
+    # Системный журнал
     path('syslog/', syslog, name='syslog'),
 
-    #Защита сети
+    # Защита сети
     path('protect/', protect, name='protect'),
 
     # Аутентификация
@@ -72,7 +73,7 @@ urlpatterns = [
     path('permissions/', permissions, name='permissions'),
     path('auth/user/<str:user>', auth_user, name='auth_user'),
 
-    #Запись трафика
+    # Запись трафика
     path('write/', write, name='write'),
     path('write/download/<str:name>', write_download, name='write_download'),
 
@@ -89,6 +90,9 @@ urlpatterns = [
     path('protocol/ipconfig/new/', protocol_ipconfig_add, name='protocol_ipconfig_add'),
     path('protocol/dhcp/static/new/', protocol_dhcp_static_add, name='protocol_dhcp_static_add'),
     path('protocol/dhcp/subnet/<int:port>/<int:vlan>', protocol_dhcp_subnet_edit, name='protocol_dhcp_subnet_edit'),
+
+    # Сервис
+    path('service/ping', ping, name='ping'),
 
     # Справочные таблицы
     path('table/<slug:name>/', table, name='table'),
