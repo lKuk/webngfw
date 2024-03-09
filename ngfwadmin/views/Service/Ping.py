@@ -26,10 +26,8 @@ def ping(request):
 
         if ipServer is not None and portServer is not None and req_amount is not None and delay is not None:
             response = ping_post(url, login, password, ipServer, portServer, req_amount, delay)
-            # Данные страницы
-            context = {'dev': dev,
-                       'data': response}
-            return render(request, 'Service/ping.html', context=context)
+            data = {'text': str(response)}
+            return JsonResponse(data)
 
         # Данные страницы
         context = {'dev': dev,

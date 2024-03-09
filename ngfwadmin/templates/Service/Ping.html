@@ -33,18 +33,16 @@
                 dataType: "json",
                 url: '{% url 'ping' %}',
                 data: {ipServer: ipValue, portServer: portValue, req_amount: req_amountValue, delay: delayValue},
-                success: function(){
-                    alert("asd")
-                }
+                success: CheckPing,
             }
             $.ajax(param);
         }
 
         function CheckPing(data) {
-            alert("asd")
-            let ansver = document.getElementById("answer")
-            alert(data)
-            ansver.textContent = data
+            alert("asd");
+            //let ansver = document.getElementById("answer")
+            //alert(data)
+            //ansver.textContent = data
         }
     </script>
 
