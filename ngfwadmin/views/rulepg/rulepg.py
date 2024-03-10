@@ -36,14 +36,19 @@ def rulepg(request):
         # открыть курсор к базе данных
         cursor = connection.cursor()
 
-        db_proc = request.GET.get("db_proc")
-        if db_proc is not None:
-            db_param = request.GET.get("db_param")
-            db_param = json.loads(db_param)
-            cursor.callproc(db_proc, db_param)
-            result = cursor.fetchall()[0][0]
-            result = {db_proc: result}
-            return JsonResponse(result)
+        db_func = request.GET.get("db_func")
+        if db_func is not None:
+            try:
+                db_param = request.GET.get("db_param")
+                db_param = json.loads(db_param)
+                cursor.callproc(db_func, db_param)
+                result = cursor.fetchall()[0][0]
+                connection.commit()
+                result = {db_func: result}
+                return JsonResponse(result)
+            except Exception as ex:
+                result = {db_func: str(ex) }
+                return JsonResponse(result)
 
         # номер страницы
         page_num = request.GET.get("page_num")
@@ -68,9 +73,9 @@ def rulepg(request):
         cursor.callproc('filter.web_cat_json')
         cat = cursor.fetchall()[0][0]
 
-        # получить категории с типами
-        cursor.callproc('filter.web_cat_type_json')
-        cat_type = cursor.fetchall()[0][0]
+        # # получить категории с типами
+        # cursor.callproc('filter.web_cat_type_json')
+        # cat_type = cursor.fetchall()[0][0]
 
         # получить страницу с правилами
         limit = page_len
@@ -86,7 +91,7 @@ def rulepg(request):
                    'cat': cat,
                    'kit': kit,
                    'rules': rules,
-                   'cat_type': cat_type,
+                   #'cat_type': cat_type,
                    'pagination': pagination}
         return render(request, 'rulepg/rulepg.html', context=context)
 

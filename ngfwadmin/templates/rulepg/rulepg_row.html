@@ -23,25 +23,13 @@
             </div>
         </div>
     </div>
-    <!-- Атрибуты правила фильтрации -->
-    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">        
-        {% include 'rulepg/rulepg_cell.html' with id_cat=1 id_rule=rule.id cat=rule.cat1 cat_type=cat_type %}
-    </div>
-    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
-        {% include 'rulepg/rulepg_cell.html' with id_cat=2 id_rule=rule.id cat=rule.cat2 cat_type=cat_type %}
-    </div>
-    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
-        {% include 'rulepg/rulepg_cell.html' with id_cat=3 id_rule=rule.id cat=rule.cat3 cat_type=cat_type %}
-    </div>
-    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
-        {% include 'rulepg/rulepg_cell.html' with id_cat=4 id_rule=rule.id cat=rule.cat4 cat_type=cat_type %}
-    </div>
-    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
-        {% include 'rulepg/rulepg_cell.html' with id_cat=5 id_rule=rule.id cat=rule.cat5 cat_type=cat_type %}
-    </div>
-    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
-        {% include 'rulepg/rulepg_cell.html' with id_cat=6 id_rule=rule.id cat=rule.cat6 cat_type=cat_type %}
-    </div>
+    <!-- Атрибуты правила фильтрации -->   
+    {% include 'rulepg/rulepg_cell.html' with id_cat=1 id_rule=rule.id rule_cat=rule.cat1 %}
+    {% include 'rulepg/rulepg_cell.html' with id_cat=2 id_rule=rule.id rule_cat=rule.cat2 %}
+    {% include 'rulepg/rulepg_cell.html' with id_cat=3 id_rule=rule.id rule_cat=rule.cat3 %}
+    {% include 'rulepg/rulepg_cell.html' with id_cat=4 id_rule=rule.id rule_cat=rule.cat4 %}
+    {% include 'rulepg/rulepg_cell.html' with id_cat=5 id_rule=rule.id rule_cat=rule.cat5 %}
+    {% include 'rulepg/rulepg_cell.html' with id_cat=6 id_rule=rule.id rule_cat=rule.cat6 %}
     <!-- Описание правила -->
     <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
         <p class="text-muted p-0 m-0">{{ rule.description }}</p>

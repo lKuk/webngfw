@@ -32,6 +32,7 @@
         // Глобальные переменные
         let m_row_cell = null;
         let m_row_focus = null;
+
         // Событие выделения ячейки
         function cell_click(this_cell)
         {
@@ -45,10 +46,12 @@
                 cell_focus[i].classList.remove('border');
                 cell_focus[i].classList.remove('border-info');
             }
-            show_editor(this_cell, true);
-            this_cell.classList.add('border');
-            this_cell.classList.add('border-info');
-            this_cell.style.backgroundColor = '#fff';
+            if(this_cell !== null) {
+                show_editor(this_cell, true);
+                this_cell.classList.add('border');
+                this_cell.classList.add('border-info');
+                this_cell.style.backgroundColor = '#fff';
+            }
         }
         // Событие выделения строки
         function row_click(this_row)
@@ -59,7 +62,8 @@
             const row_focus = document.getElementsByClassName('row_focus');
             for (let i = 0; i < row_focus.length; i++)
                 row_focus[i].style.backgroundColor = '#fff';
-            this_row.style.backgroundColor = '#ddd';
+            if(this_row !== null)
+                this_row.style.backgroundColor = '#ddd';
         }
         // Скрыть/показать редактор строки
         function show_editor(element, visible)
@@ -69,7 +73,6 @@
                 editor[i].hidden = !visible;
         }
     </script>
-    
 {% endblock script %}
 
 {# Заголовок #}
@@ -127,7 +130,7 @@
                                 {% for c in cat %}
                                     <div class="col px-1 mx-0 text-center">
                                         <p class="text-dark m-0">{{ c.name }}</p>
-                                        <p class="text-muted m-0">({{ c.note }})</p>
+                                        <p class="text-muted m-0">({{ c.name_type }})</p>
                                     </div>
                                 {% endfor %}
                                 <div class="col px-1 mx-0 text-center">
@@ -144,7 +147,7 @@
                             </div>
 
                             {% for row in rules %}
-                                {% include 'rulepg/rulepg_row.html' with rule=row cat_type=cat_type %}
+                                {% include 'rulepg/rulepg_row.html' with rule=row %}
                             {% endfor %}
     
                             <!-- Страницы строк таблицы -->
