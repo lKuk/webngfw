@@ -67,10 +67,14 @@
         }
         // Скрыть/показать редактор строки
         function show_editor(element, visible)
-        {
-            let editor = element.getElementsByClassName('editor');
-            for (let i = 0; i < editor.length; i++)
-                editor[i].hidden = !visible;
+        {            
+            let editor_on = element.getElementsByClassName('editor_on');
+            for (let i = 0; i < editor_on.length; i++)
+                editor_on[i].hidden = !visible;
+            
+            let editor_off = element.getElementsByClassName('editor_off');
+            for (let i = 0; i < editor_off.length; i++)
+                editor_off[i].hidden = visible;
         }
     </script>
 {% endblock script %}
