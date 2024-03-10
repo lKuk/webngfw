@@ -128,19 +128,19 @@
                         
                             <!-- Колонки таблицы -->
                             <div class="row">
-                                <div class="col px-1 mx-0 text-center">
+                                <div class="col px-1 mx-0">
                                     <p class="text-dark m-0">Название</p>
                                 </div>
                                 {% for c in cat %}
-                                    <div class="col px-1 mx-0 text-center">
+                                    <div class="col px-1 mx-0">
                                         <p class="text-dark m-0">{{ c.name }}</p>
                                         <p class="text-muted m-0">({{ c.name_type }})</p>
                                     </div>
                                 {% endfor %}
-                                <div class="col px-1 mx-0 text-center">
+                                <div class="col px-1 mx-0">
                                     <p class="text-dark m-0">Описание</p>
                                 </div>
-                                <div class="col px-0 mx-0 text-center" style="max-width: 30px; width: 30px;">
+                                <div class="col px-0 mx-0" style="max-width: 30px; width: 30px;">
                                     <p class="text-dark m-0">Лог</p>
                                 </div>
                             </div>
