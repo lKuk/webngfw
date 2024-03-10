@@ -15,17 +15,17 @@ def rulepg(request):
         # Подключение
         dev = dev_get(request)
 
-        # # проверка подключения
-        # if 'url' not in dev or 'login' not in dev or 'password' not in dev:
-        #     return redirect('connect')
-        #
-        # # подключение
-        # url = dev.get('url')
-        # login = dev.get('login')
-        # password = dev.get('password')
-        # connect_pg = dev.get('connect_pg')
+        # проверка подключения
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
+            return redirect('connect')
 
-        connect_pg = {'dbname': 'ngfw', 'host': '192.168.1.235', 'password': '111111', 'port': '5432', 'user': 'postgres'}
+        # подключение
+        url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
+        connect_pg = dev.get('connect_pg')
+
+        # connect_pg = {'dbname': 'ngfw', 'host': '192.168.1.235', 'password': '111111', 'port': '5432', 'user': 'postgres'}
 
         # подключиться к базе данных
         connection = psycopg2.connect(user=connect_pg["user"],
