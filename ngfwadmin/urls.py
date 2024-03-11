@@ -23,7 +23,7 @@ from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_
 from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_dhcp_subnet
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_static, protocol_dhcp_static_add
-from ngfwadmin.views.Service.Ping import ping
+from ngfwadmin.views.service.ping import ping
 
 urlpatterns = [
     # Форма подключения к устройству

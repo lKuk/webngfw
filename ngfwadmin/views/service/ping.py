@@ -33,6 +33,6 @@ def ping(request):
         context = {'dev': dev,
                    }
         # Вернуть сформированную страницу
-        return render(request, 'Service/ping.html', context=context)
+        return render(request, 'service/ping.html', context=context)
     except Exception as ex:
         return exception(request, ex)
