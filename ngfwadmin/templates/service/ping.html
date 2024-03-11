@@ -15,6 +15,23 @@
     <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
     <script src="{% static 'language/ru-table.js' %}"></script>
 
+     <!-- Отображение нумерации строк -->
+    <script>
+        // Отображение нумерации строк
+        function EditorTextArea() {
+            CodeMirror.fromTextArea(document.getElementById("answer"), {
+                lineNumbers: true,
+                mode: "text/html",
+                matchBrackets: true
+            });
+        }
+
+        // Выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            EditorTextArea();
+        });
+    </script>
+
     <script>
         // Запрос данных Ajax
         function PostPingAjax() {
@@ -41,7 +58,7 @@
         function CheckPing(data) {
             let answer = document.getElementById("answer")
             let text = data['text']
-            answer.textContent = text
+            answer.value = text
         }
     </script>
 
@@ -141,7 +158,7 @@
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="form-group">
+                                <div class="form-control">
                                     <label for="answer">Ответ:</label>
                                     <textarea id="answer" class="form-control" style="font-family: monospace;" rows="14"
                                               readonly>{{ data }}</textarea>
