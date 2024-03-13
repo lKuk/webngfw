@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+{% load base_tag %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+
+
+    <script>
+        // Запрос данных Ajax
+        function PutPortAjax() {
+            let port = document.getElementById("port")
+            let portValue = port.value
+
+            alert(portValue)
+            // Параметры
+            const param = {
+                type: "get",
+                dataType: "json",
+                url: '{% url 'ldap' %}',
+                data: {port: portValue},
+                success: CheckPort(portValue),
+            }
+            $.ajax(param);
+        }
+
+        function CheckPort(portValue) {
+            let port = document.getElementById("port")
+            port.value = portValue
+        }
+    </script>
+
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-target"></i>Коллектор событий AD
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'ldap' %}">LDAP</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+    {{ collector }}
+    {{ users }}
+
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-md-12 col-lg-6 col-xl-4">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Настройка коллектора событий AD</h5>
+                        </div>
+                    </div>
+                    <div class="card-body" style="margin-top: 0; padding-top: 10px">
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary shadow-2"
+                                        onclick="PutPortAjax()" style="width: 180px">Сохранить</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="port">Порт:</label>
+                                    <input id="port" type="text" class="form-control"
+                                           value="{{ collector.port }}">
+                                </div>
+                                <div class="invalid-feedback" id="validDiv_ipText">
+                                    <ul>
+                                        <li id="validLi_ipText"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>Пользователи</h5>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Кнопка Добавить -->
+                <div class="row" {% if not readwrite %} hidden {% endif %}>
+                    <div class="col">
+                        <a href="{% url 'protocol_nat_add' %}" class="btn btn-primary shadow-2" style="width: 180px">Добавить</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        <!-- Таблица списков -->
+                        <div class="table-responsive">
+                            <table id="col-reorder"
+                                   class="display table nowrap table-striped table-hover footable">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>IP адрес</th>
+                                    <th>Логин</th>
+                                    <th>Группа</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for p in users %}
+                                    <tr>
+                                        <!-- Удаление -->
+                                        <td style="display: table-cell;"
+                                           >
+                                            Удалить
+                                        </td>
+                                        <!-- Тип файла -->
+                                        <td style="display: table-cell;">{{ p.ip }}</td>
+                                        <td style="display: table-cell;">{{ p.login }}</td>
+                                        <td style="display: table-cell;">{{ p.groups }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

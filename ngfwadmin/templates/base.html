@@ -275,6 +275,15 @@
                         </a>
                     </li>
 
+                    <!-- LDAP -->
+                    <li class="nav-item {% is_active request 'ldap' 'active' %}">
+                        <a href="{% url 'ldap' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-target"></i>
+                            </span><span class="pcoded-mtext">LDAP</span>
+                        </a>
+                    </li>
+
                     {#                    <!-- Группа - Сервис -->#}
                     {#                    <li class="nav-item pcoded-menu-caption" hidden>#}
                     {#                        <label>Сервис</label>#}
