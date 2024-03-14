@@ -1,0 +1,95 @@
+{% extends "rules/../base.html" %}
+
+{% load static %}
+{% load base_tag %}
+
+{# Стили #}
+{% block style %}
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-trending-up"></i>{{ caption }}
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'ldap' %}">LDAP</a></li>
+        <li class="breadcrumb-item"><a href="#">Новое</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+    <div class="page-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <div class="page-header-title">
+                    <h5>Параметры пользователя</h5>
+                </div>
+            </div>
+            <form action="" method="post" id="ruleEditForm">
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Кнопки -->
+                        <div class="col text-left">
+                            {% if action == 'add' %}
+                                <button type="submit" name="btnInsert" class="btn btn-primary shadow-2"
+                                        style="width: 180px">Создать
+                                </button>
+                            {% else %}
+                                <button type="submit" name="btnUpdate" class="btn btn-primary shadow-2"
+                                        style="width: 180px">Сохранить
+                                </button>
+                                <a href="{% url 'rules_sub_edit' rule.id %}" class="btn btn-outline-primary shadow-2"
+                                   style="width: 180px">{% count_sub rule %}</a>
+                            {% endif %}
+                        </div>
+                        <div class="col text-right">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <!-- Параметры правила -->
+                        <div class="col-md-6 col-xl-4">
+                            <input name="id" value="{{ rule.id }}" type="hidden">
+                            <input name="sub" value="{{ rule.sub }}" type="hidden">
+                            <!-- Название -->
+                            <div class="form-group">
+                                <label for="ip">IP адрес:</label>
+                                <input id="ip" name="ip" value="" type="text" class="form-control"
+                                       required>
+                            </div>
+                            <!-- Включено -->
+                            <div class="form-group">
+                                <label for="login">Логин:</label>
+                                 <input id="login" name="login" value="" type="text" class="form-control"
+                                       required>
+                            </div>
+                            <!-- Тип правила -->
+                            <div class="form-group">
+                                <label for="group">Тип правила:</label>
+                                <select id="group" name="group" value="" class="form-control" required>
+                                    <option value="Администраторы домена">
+                                        Администраторы домена
+                                    </option>
+                                    <option value="Пользователи домена">
+                                        Пользователи домена
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
