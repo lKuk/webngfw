@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 # Получить collector(порт)
 def colector_get(url, login, password):
     response = requests.get(f"{url}/ldap/collector", auth=(login, password), verify=False)
@@ -8,6 +9,7 @@ def colector_get(url, login, password):
         raise Exception(response.url, response.text)
     details = response.json()
     return details
+
 
 # Изменить collector(порт)
 def collector_put(url, login, password, port):
@@ -29,6 +31,20 @@ def users_get(url, login, password):
     details = response.json()
     return details
 
+
+# Добавить пользователя
+def user_insert(url, login, password, ip, loginLDAP, groups):
+    dic = {
+        'ip': ip,
+        'login': loginLDAP,
+        'groups': groups,
+    }
+    sjson = json.dumps(dic)
+    details = json.loads(sjson)
+    response = requests.post(f"{url}/ldap/user", json=details, auth=(login, password), verify=False)
+    if response.status_code != 200:
+        raise Exception(response.url, response.text, details)
+    return response.content
 
 # # Отправить пинг
 # def ping_post(url, login, password,ipServer ,portServer, req_amount,delay):

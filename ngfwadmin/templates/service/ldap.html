@@ -21,8 +21,6 @@
         function PutPortAjax() {
             let port = document.getElementById("port")
             let portValue = port.value
-
-            alert(portValue)
             // Параметры
             const param = {
                 type: "get",
@@ -56,9 +54,6 @@
 
 {# Содержимое #}
 {% block content %}
-    {{ collector }}
-    {{ users }}
-
     <div class="page-wrapper">
         <div class="row">
             <div class="col-md-12 col-lg-6 col-xl-4">
@@ -72,7 +67,8 @@
                         <div class="row">
                             <div class="col">
                                 <button class="btn btn-primary shadow-2"
-                                        onclick="PutPortAjax()" style="width: 180px">Сохранить</button>
+                                        onclick="PutPortAjax()" style="width: 180px">Сохранить
+                                </button>
                             </div>
                         </div>
                         <hr>
@@ -94,55 +90,60 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-header">
-                <div class="page-header-title">
-                    <h5>Пользователи</h5>
-                </div>
-            </div>
-            <div class="card-body">
-                <!-- Кнопка Добавить -->
-                <div class="row" {% if not readwrite %} hidden {% endif %}>
-                    <div class="col">
-                        <a href="{% url 'protocol_nat_add' %}" class="btn btn-primary shadow-2" style="width: 180px">Добавить</a>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Пользователи</h5>
+                        </div>
                     </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col">
-                        <!-- Таблица списков -->
-                        <div class="table-responsive">
-                            <table id="col-reorder"
-                                   class="display table nowrap table-striped table-hover footable">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>IP адрес</th>
-                                    <th>Логин</th>
-                                    <th>Группа</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for p in users %}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col" style="margin-left: 0">
+                                <a href="{% url 'ldap_add' %}" class="btn btn-primary shadow-2"
+                                   style="width: 180px">Добавить</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <!-- Таблица списков -->
+                            <div class="table-responsive">
+                                <table id="col-reorder"
+                                       class="display table nowrap table-striped table-hover footable">
+                                    <thead>
                                     <tr>
-                                        <!-- Удаление -->
-                                        <td style="display: table-cell;"
-                                           >
-                                            Удалить
-                                        </td>
-                                        <!-- Тип файла -->
-                                        <td style="display: table-cell;">{{ p.ip }}</td>
-                                        <td style="display: table-cell;">{{ p.login }}</td>
-                                        <td style="display: table-cell;">{{ p.groups }}</td>
+                                        <th></th>
+                                        <th>IP адрес</th>
+                                        <th>Логин</th>
+                                        <th>Группа</th>
                                     </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    {% for p in users %}
+                                        <tr>
+                                            <!-- Удаление -->
+                                            <td style="display: table-cell;"
+                                            >
+                                                <i class="feather icon-trash" style="color: #D43D17"></i>
+                                            </td>
+                                            <!-- Тип файла -->
+                                            <td style="display: table-cell;">{{ p.ip }}</td>
+                                            <td style="display: table-cell;">{{ p.login }}</td>
+                                            <td style="display: table-cell;">{{ p.groups }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 {% endblock content %}
