@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.rest.service.ldap import colector_get, users_get, collector_put, user_insert
+from ngfwadmin.rest.service.ldap import colector_get, users_get, collector_put, user_insert, user_delete
 
 
 # Страница протокола arp
@@ -23,6 +23,12 @@ def ldap(request):
         if collectorPut is not None:
             collector_put(url, login, password, collectorPut)
 
+        # удалить пользователя
+        delete = request.GET.get("delete")
+        if delete is not None:
+            user_delete(url, login, password, delete)
+            # перейти к таблице правил
+            return redirect('ldap')
         # ldap
         collector = colector_get(url, login, password)
         users = users_get(url, login, password)

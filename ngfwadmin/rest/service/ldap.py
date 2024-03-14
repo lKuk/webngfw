@@ -46,6 +46,19 @@ def user_insert(url, login, password, ip, loginLDAP, groups):
         raise Exception(response.url, response.text, details)
     return response.content
 
+# Удалить пользователя
+def user_delete(url, login, password, ip):
+    dic = {
+        'ip': ip,
+    }
+    sjson = json.dumps(dic)
+    details = json.loads(sjson)
+    response = requests.delete(f"{url}/ldap/user", json=details, auth=(login, password), verify=False)
+    if response.status_code != 200:
+        raise Exception(response.url, response.text)
+    return response.content
+
+
 # # Отправить пинг
 # def ping_post(url, login, password,ipServer ,portServer, req_amount,delay):
 #     dic = {"ip_or_host": ipServer, "port": int(portServer), "req_amount": int(req_amount), "delay" : int(delay)}
