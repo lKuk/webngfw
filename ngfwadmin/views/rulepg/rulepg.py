@@ -15,17 +15,17 @@ def rulepg(request):
         # Подключение
         dev = dev_get(request)
 
-        # проверка подключения
-        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
-            return redirect('connect')
+        # # проверка подключения
+        # if 'url' not in dev or 'login' not in dev or 'password' not in dev:
+        #     return redirect('connect')
+        #
+        # # подключение
+        # url = dev.get('url')
+        # login = dev.get('login')
+        # password = dev.get('password')
+        # connect_pg = dev.get('connect_pg')
 
-        # подключение
-        url = dev.get('url')
-        login = dev.get('login')
-        password = dev.get('password')
-        connect_pg = dev.get('connect_pg')
-
-        # connect_pg = {'dbname': 'ngfw', 'host': '192.168.1.235', 'password': '111111', 'port': '5432', 'user': 'postgres'}
+        connect_pg = {'dbname': 'ngfw', 'host': '192.168.1.235', 'password': '111111', 'port': '5432', 'user': 'postgres'}
 
         # подключиться к базе данных
         connection = psycopg2.connect(user=connect_pg["user"],
@@ -36,6 +36,15 @@ def rulepg(request):
         # открыть курсор к базе данных
         cursor = connection.cursor()
 
+        # создать список
+        action = ''
+        if request.method == 'POST':
+            # добавить список
+            if 'btnInsert' in request.POST:
+                action = 'new_row'
+
+
+        # выполнить функцию в базе данных
         db_func = request.GET.get("db_func")
         if db_func is not None:
             try:
@@ -80,8 +89,9 @@ def rulepg(request):
         # получить страницу с правилами
         limit = page_len
         offset = (page_num - 1) * page_len
-        cursor.callproc('filter.web_rules_json', [limit,offset])
+        cursor.callproc('filter.web_rules_json', [limit,offset,action])
         rules = cursor.fetchall()[0][0]
+        connection.commit()
 
         # получить параметры пагинации страниц
         pagination = get_pagination(rules_count, page_len, page_num)

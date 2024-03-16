@@ -35,11 +35,12 @@
                                                     alert(result);
                                                     return;
                                                 }
-                                                let cell = document.getElementById('cell_{{ id_rule }}_{{ id_cat }}');
+                                                let cell = document.getElementById('cell_{{ id_rule }}_{{ id_cat }}');   
                                                 let select = document.getElementById('kit_{{ id_rule }}_{{ id_cat }}');
-                                                let kit = select.options[select.value].text;
+                                                let kit = select.options[select.selectedIndex].text;
+                                                                                        
                                                 cell.innerHTML += '<p class=\'py-0 my-0\' style=\'cursor: default\'>'
-                                                                + '<i class=\'feather icon-x editor_on\' style=\'font-size: 0.8em; cursor: pointer;\'></i>'
+                                                                + '<i class=\'feather icon-check editor_on\' style=\'font-size: 0.8em;\'></i>'
                                                                 + '<i class=\'feather icon-grid\'></i>' + kit + '</p>';
                                                 
                                                 document.getElementById('any_{{ id_rule }}_{{ id_cat }}').remove();
@@ -51,7 +52,9 @@
                                     style="width: 100%; font-size: 0.9em; height: 21px;">
                                 <option value="0" selected></option>
                                 {% for k in kit %}
-                                    <option value="{{ k.id }}">{{ k.name }}</option>
+                                    {% if k.id_cat == id_cat %}
+                                        <option value="{{ k.id }}">{{ k.name }}</option>
+                                    {% endif %} 
                                 {% endfor %}
                             </select>
                         </div>

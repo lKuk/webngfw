@@ -2,18 +2,72 @@
     <div style="height: 1px;"></div>
 </div>
 
-<div class="row_focus row py-1" onclick="row_click(this)">
+<div id="rule_{{ rule.id }}" class="row_focus row py-1" onclick="row_click(this)">
     <!-- Название правила -->
-    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
-    
-        <label for="status_{{ rule.id }}" hidden=></label>
-        <select id="status_{{ rule.id }}" class="border-0 text-info mb-0"
-                style="-webkit-appearance: none; -moz-appearance: none; background: transparent">
-            <option value="0" {% if rule.status == 0 %}selected{% endif %}>Выкл</option>
-            <option value="1" {% if rule.status == 1 %}selected{% endif %}>Запрещено</option>
-            <option value="2" {% if rule.status == 2 %}selected{% endif %}>Разрешено</option>
-        </select>
-    
+    <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)"
+         {% if rule.name == 'Новое правило' %}
+            style="background:  #DDFFDD"
+         {% endif %}>
+
+        <div class="input-group" style="background: #0000;">
+            <div class="input-group-prepend editor_on p-t-5" hidden>
+                <i class="feather icon-x text-danger" style="cursor: pointer;"
+                    onclick="{
+                                // получить параметры
+                                let id_rule = {{ rule.id }};
+                                var result = confirm('Вы действительно хотите удалить правило?');        
+                                if(result === false)
+                                    return; 
+                                // поменять отображение
+                                let rule = document.getElementById('rule_{{ rule.id }}');
+                                rule.textContent = '';
+                                // выполнить запрос
+                                $.ajax({
+                                    type: 'GET',
+                                    dataType: 'json',
+                                    data: {db_func: 'filter.web_rule_delete',
+                                           db_param: JSON.stringify([id_rule]) },
+                                    url: '{% url 'rulepg' %}',
+                                    success: completed
+                                });
+                                // обработать результат
+                                function completed(data) {
+                                    result = data['filter.web_rule_delete'];
+                                    if(result !== '')
+                                        alert(result);
+                                }                      
+                            }"></i></div>
+            <div class="form-control p-0 m-0 border-0" style="background: #0000;">
+                <label for="status_{{ rule.id }}" hidden=></label>
+                <select id="status_{{ rule.id }}" class="border-0 mb-0
+                        {% if rule.status == 0 %}text-info{% endif %}
+                        {% if rule.status == 1 %}text-danger{% endif %}
+                        {% if rule.status == 2 %}text-success{% endif %}"
+                        onchange="{
+                                    let status_rule = document.getElementById('status_{{ rule.id }}');
+
+                                        if(status_rule.classList.contains('text-info'))
+                                            status_rule.classList.remove('text-info');
+                                        if(status_rule.classList.contains('text-danger'))
+                                            status_rule.classList.remove('text-danger');
+                                        if(status_rule.classList.contains('text-success'))
+                                            status_rule.classList.remove('text-success');
+                                        
+                                        if(status_rule.value === '0')
+                                            status_rule.classList.add('text-info');
+                                        if(status_rule.value === '1')
+                                            status_rule.classList.add('text-danger');
+                                        if(status_rule.value === '2')
+                                            status_rule.classList.add('text-success');
+                                  }"
+                        style="-webkit-appearance: none; -moz-appearance: none; background: transparent">
+                    <option value="0" {% if rule.status == 0 %}selected{% endif %}>Выкл</option>
+                    <option value="1" {% if rule.status == 1 %}selected{% endif %}>Запрещено</option>
+                    <option value="2" {% if rule.status == 2 %}selected{% endif %}>Разрешено</option>
+                </select>
+            </div>
+        </div>
+
         <div class="input-group" style="background: #0000;">
             <div class="input-group-prepend editor_on p-t-5" hidden>
                 <i class="feather icon-check text-info" style="cursor: pointer;"
@@ -23,7 +77,7 @@
                             let name_rule = document.getElementById('name_{{ rule.id }}').value;
                             let status_rule = Number(document.getElementById('status_{{ rule.id }}').value);    
                             // поменять отображение
-                            document.getElementById('label_name_{{ rule.id }}').text = name_rule;                                
+                            document.getElementById('label_name_{{ rule.id }}').textContent = name_rule;
                             // выполнить запрос
                             $.ajax({
                                 type: 'GET',
@@ -60,13 +114,68 @@
     {% include 'rulepg/rulepg_cell.html' with id_cat=6 id_rule=rule.id rule_cat=rule.cat6 %}
     <!-- Описание правила -->
     <div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
-        <p class="text-muted p-0 m-0">{{ rule.description }}</p>
+
+        <div class="input-group" style="background: #0000;">
+            <div class="input-group-prepend editor_on p-t-5" hidden>
+                <i class="feather icon-check text-info" style="cursor: pointer;"
+                onclick="{
+                            // получить параметры
+                            let id_rule = {{ rule.id }};
+                            let description = document.getElementById('description_{{ rule.id }}');
+                            let label_description = document.getElementById('label_description_{{ rule.id }}')
+                            // поменять отображение
+                            label_description.textContent = description.value;
+                            // выполнить запрос
+                            $.ajax({
+                                type: 'GET',
+                                dataType: 'json',
+                                data: {db_func: 'filter.web_rule_update_description',
+                                       db_param: JSON.stringify([id_rule, description.value]) },
+                                url: '{% url 'rulepg' %}',
+                                success: completed
+                            });
+                            // обработать результат
+                            function completed(data) {
+                                result = data['filter.web_rule_update_description'];
+                                if(result !== '')
+                                    alert(result);
+                                else
+                                    alert('Описание правила сохранено.');
+                            }
+                        }"></i>
+            </div>
+            <div class="form-control p-0 m-0 border-0" style="background: #0000;">
+                <label class="text-dark editor_off" id="label_description_{{ rule.id }}"
+                       for="description_{{ rule.id }}">{{ rule.description }}</label>
+                <textarea id="description_{{ rule.id }}" class="border border-info p-0 m-1 editor_on"
+                          style="background: #0000; width: 98%; font-size: 0.9em;"
+                          rows="4" hidden>{{ rule.description }}</textarea>
+            </div>
+        </div>
     </div>
     <!-- Лог правила -->
     <div class="col px-1 mx-0" style="max-width: 30px; width: 30px;">
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="is_log">
-            <label class="form-check-label" for="is_log" hidden></label>
+            <label class="form-check-label" for="is_log_{{ rule.id }}" hidden></label>
+            <input class="form-check-input" type="checkbox" id="is_log_{{ rule.id }}"
+                   {% if rule.is_log == 1 %}checked{% endif %}
+                   onclick="{
+                            // получить параметры
+                            let id_rule = {{ rule.id }};
+                            let is_log = document.getElementById('is_log_{{ rule.id }}').checked;
+                            let val_is_log = 0;
+                            if(is_log === true)
+                                val_is_log = 1;
+
+                            // выполнить запрос
+                            $.ajax({
+                                type: 'GET',
+                                dataType: 'json',
+                                data: {db_func: 'filter.web_rule_setlog',
+                                       db_param: JSON.stringify([id_rule, val_is_log]) },
+                                url: '{% url 'rulepg' %}'
+                            });
+                        }">
         </div>
     </div>
 </div>

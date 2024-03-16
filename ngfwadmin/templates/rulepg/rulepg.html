@@ -105,10 +105,28 @@
                             </div>
                         </div>
                         <div class="card-body">
+                            <!-- Кнопки  -->
+                            <div class="row">
+                                <div class="col-auto p-0 text-left">
+                                    <form action="" method="post" id="rule_add">
+                                        {% csrf_token %}
+                                        <label>
+                                            <input name="page_num" value="{{ pagination.num }}" hidden>
+                                        </label>      
+                                        <label>
+                                            <input name="page_len" value="{{ pagination.len }}" hidden>
+                                        </label>                                        
+                                        <button type="submit" name="btnInsert" class="btn btn-primary shadow-2"
+                                            style="width: 180px">Добавить
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <hr>
                         
                             <!-- Количество строк отображаемых на странице таблицы -->
                             <div class="row">
-                                <div class="col-auto p-r-0">
+                                <div class="col-auto px-0">
                                     <p class="py-2">Показать</p>
                                 </div>
                                 <div class="col-auto">
@@ -150,13 +168,16 @@
                                 <div style="height: 1px;"></div>
                             </div>
 
-                            {% for row in rules %}
-                                {% include 'rulepg/rulepg_row.html' with rule=row %}
-                            {% endfor %}
+                            <!-- Все строки таблицы -->
+                            <div id="all_rows">
+                                {% for row in rules %}
+                                    {% include 'rulepg/rulepg_row.html' with rule=row %}
+                                {% endfor %}
+                            </div>
     
                             <!-- Страницы строк таблицы -->
                             <div class="row">
-                                <div class="col-auto">
+                                <div class="col-auto px-0">
                                     <nav aria-label="Page navigation example">
                                         <ul id="page_num" class="pagination">
                                             {% for p in pagination.list %}
