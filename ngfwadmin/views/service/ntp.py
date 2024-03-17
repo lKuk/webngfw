@@ -3,8 +3,7 @@ from django.shortcuts import redirect, render
 
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
-from ngfwadmin.rest.protocols.arp import arp_select, arp_clear
-from ngfwadmin.rest.service.ntp import ntp_server_get, ntp_status_get
+from ngfwadmin.rest.service.ntp import ntp_server_get, ntp_status_get, ntp_server_add, ntp_server_delete
 
 
 # Страница протокола arp
@@ -20,6 +19,13 @@ def ntp(request):
         login = dev.get('login')
         password = dev.get('password')
 
+        # удалить пользователя
+        delete = request.GET.get("delete")
+        if delete is not None:
+            ntp_server_delete(url, login, password, delete)
+            # перейти к таблице правил
+            return redirect('ntp')
+
         server = ntp_server_get(url, login, password)
         status = ntp_status_get(url, login, password)
 
@@ -30,5 +36,36 @@ def ntp(request):
                    }
         # Вернуть сформированную страницу
         return render(request, 'service/ntp.html', context=context)
+    except Exception as ex:
+        return exception(request, ex)
+
+
+# Страница добавления пользователя
+def client_add(request):
+    try:
+        # Подключение
+        dev = dev_get(request)
+
+        # проверка подключения
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
+            return redirect('connect')
+
+        # подключение
+        url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
+
+        if request.method == 'POST':
+            ip = request.POST.get('ip')
+            prefer = request.POST.get('prefer')
+            ntp_server_add(url, login, password, ip, prefer)
+            return redirect('ntp')
+        # отобразить страницу редактирования списка
+        context = {'dev': dev,
+                   'action': 'add',
+                   'caption': 'Добавить сервер NTP'}
+        return render(request, 'service/ntp_form.html', context=context)
+
+    # обработка ошибок
     except Exception as ex:
         return exception(request, ex)
