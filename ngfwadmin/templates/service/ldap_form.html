@@ -40,17 +40,9 @@
                     <div class="row">
                         <!-- Кнопки -->
                         <div class="col text-left">
-                            {% if action == 'add' %}
-                                <button type="submit" name="btnInsert" class="btn btn-primary shadow-2"
-                                        style="width: 180px">Создать
-                                </button>
-                            {% else %}
-                                <button type="submit" name="btnUpdate" class="btn btn-primary shadow-2"
-                                        style="width: 180px">Сохранить
-                                </button>
-                                <a href="{% url 'rules_sub_edit' rule.id %}" class="btn btn-outline-primary shadow-2"
-                                   style="width: 180px">{% count_sub rule %}</a>
-                            {% endif %}
+                            <button type="submit" name="btnInsert" class="btn btn-primary shadow-2"
+                                    style="width: 180px">Создать
+                            </button>
                         </div>
                         <div class="col text-right">
                         </div>
@@ -70,7 +62,7 @@
                             <!-- Включено -->
                             <div class="form-group">
                                 <label for="login">Логин:</label>
-                                 <input id="login" name="login" value="" type="text" class="form-control"
+                                <input id="login" name="login" value="" type="text" class="form-control"
                                        required>
                             </div>
                             <!-- Тип правила -->

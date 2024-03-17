@@ -25,6 +25,7 @@ from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_d
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_static, protocol_dhcp_static_add
 from ngfwadmin.views.service.ping import ping
 from ngfwadmin.views.service.ldap import ldap, user_add
+from ngfwadmin.views.service.ntp import ntp
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -96,6 +97,7 @@ urlpatterns = [
     path('service/ping', ping, name='ping'),
     path('service/ldap', ldap, name='ldap'),
     path('service/ldap/new', user_add, name='ldap_add'),
+    path('service/ntp', ntp, name='ntp'),
 
     # Справочные таблицы
     path('table/<slug:name>/', table, name='table'),

@@ -279,8 +279,17 @@
                     <li class="nav-item {% is_active request 'ldap' 'active' %}">
                         <a href="{% url 'ldap' %}" class="nav-link">
                             <span class="pcoded-micon">
-                                <i class="feather icon-target"></i>
+                                <i class="feather icon-package"></i>
                             </span><span class="pcoded-mtext">LDAP</span>
+                        </a>
+                    </li>
+
+                    <!-- NTp -->
+                    <li class="nav-item {% is_active request 'ntp' 'active' %}">
+                        <a href="{% url 'ntp' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-clock"></i>
+                            </span><span class="pcoded-mtext">NTP</span>
                         </a>
                     </li>
 

@@ -15,26 +15,50 @@
     <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
     <script src="{% static 'language/ru-table.js' %}"></script>
 
+    <!-- Отображение нумерации строк -->
+    <script>
+        // Отображение нумерации строк
+        function EditorTextArea() {
+            CodeMirror.fromTextArea(document.getElementById("answer"), {
+                lineNumbers: true,
+                mode: "text/html",
+                matchBrackets: true
+            });
+        }
+
+        // Выполнить при загрузке страницы
+        window.addEventListener('load', () => {
+            EditorTextArea();
+        });
+    </script>
 
     <script>
         // Запрос данных Ajax
-        function PutPortAjax() {
-            let port = document.getElementById("port")
+        function PostPingAjax() {
+            let ip = document.getElementById("ipText")
+            let port = document.getElementById("portText")
+            let req_amount = document.getElementById("req_amount")
+            let delay = document.getElementById("delay")
+            let ipValue = ip.value
             let portValue = port.value
+            let req_amountValue = req_amount.value
+            let delayValue = delay.value
+
             // Параметры
             const param = {
                 type: "get",
                 dataType: "json",
-                url: '{% url 'ldap' %}',
-                data: {port: portValue},
-                success: CheckPort(portValue),
+                url: '{% url 'ping' %}',
+                data: {ipServer: ipValue, portServer: portValue, req_amount: req_amountValue, delay: delayValue},
+                success: CheckPing,
             }
             $.ajax(param);
         }
 
-        function CheckPort(portValue) {
-            let port = document.getElementById("port")
-            port.value = portValue
+        function CheckPing(data) {
+            let answer = document.getElementById("answer")
+            let text = data['text']
+            answer.value = text
         }
     </script>
 
@@ -44,52 +68,21 @@
 {% block header %}
     <li class="m-l-5 m-t-5">
         <h4>
-            <i class="m-r-15 feather icon-package"></i>Коллектор событий AD
+            <i class="m-r-15 feather icon-target"></i>Сервер времени NTP
         </h4>
     </li>
     <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
-        <li class="breadcrumb-item"><a href="{% url 'ldap' %}">LDAP</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'ntp' %}">NTP</a></li>
     </ul>
 {% endblock header %}
 
 {# Содержимое #}
 {% block content %}
+    {{ server }}
+    {{ status }}
+    <!-- Проверка привилегий -->
+
     <div class="page-wrapper">
-        <div class="row">
-            <div class="col-md-12 col-lg-6 col-xl-4">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="page-header-title">
-                            <h5>Настройка коллектора событий AD</h5>
-                        </div>
-                    </div>
-                    <div class="card-body" style="margin-top: 0; padding-top: 10px">
-                        <div class="row">
-                            <div class="col">
-                                <button class="btn btn-primary shadow-2"
-                                        onclick="PutPortAjax()" style="width: 180px">Сохранить
-                                </button>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="port">Порт:</label>
-                                    <input id="port" type="text" class="form-control"
-                                           value="{{ collector.port }}">
-                                </div>
-                                <div class="invalid-feedback" id="validDiv_ipText">
-                                    <ul>
-                                        <li id="validLi_ipText"></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col">
                 <div class="card">
@@ -117,27 +110,24 @@
                                     <tr>
                                         <th><i class="feather icon-trash" style="color: #D43D17"></i></th>
                                         <th>IP адрес</th>
-                                        <th>Логин</th>
-                                        <th>Группа</th>
+                                        <th>Главный</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for p in users %}
+                                    {% for s in server %}
                                         <tr>
-                                            <!-- Удаление -->
-                                            <td style="display: table-cell;"
-                                            >
+{#                                            <!-- Удаление -->#}
+                                            <td style="display: table-cell;">
                                                 <div>
-                                                    <a href="{% url 'ldap' %}?delete={{ p.ip }}"
+                                                    <a href="{% url 'ldap' %}?delete={{ s.ip }}"
                                                        onclick="return confirm('{{ p.login }}\nУдалить пользователя?');">
                                                         <i class="feather icon-trash" style="color: #D43D17"></i>
                                                     </a>
                                                 </div>
                                             </td>
                                             <!-- Тип файла -->
-                                            <td style="display: table-cell;">{{ p.ip }}</td>
-                                            <td style="display: table-cell;">{{ p.login }}</td>
-                                            <td style="display: table-cell;">{{ p.groups }}</td>
+                                            <td style="display: table-cell;">{{ s.ip }}</td>
+                                            <td style="display: table-cell;">{{ s.prefer }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
@@ -149,6 +139,5 @@
             </div>
         </div>
     </div>
-
 
 {% endblock content %}
