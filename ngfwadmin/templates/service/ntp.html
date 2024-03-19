@@ -180,7 +180,7 @@
                                             </td>
                                             <!-- Тип файла -->
                                             <td style="display: table-cell;">{{ s.ip }}</td>
-                                            <td style="display: table-cell;">{{ s.prefer }}</td>
+                                            <td style="display: table-cell;">{% if s.prefer == False %} Нет {% else %} Да {%  endif %}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
