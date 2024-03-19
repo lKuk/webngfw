@@ -14,22 +14,21 @@
     <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
     <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
     <script src="{% static 'language/ru-table.js' %}"></script>
-
-     <!-- Отображение нумерации строк -->
-    <script>
-        // Отображение нумерации строк
-        function EditorTextArea() {
-            CodeMirror.fromTextArea(document.getElementById("answer"), {
-                lineNumbers: true,
-                mode: "text/html",
-                matchBrackets: true
-            });
-        }
-
-        // Выполнить при загрузке страницы
-        window.addEventListener('load', () => {
-            EditorTextArea();
-        });
+    <!-- Отображение нумерации строк -->
+{#    <script>#}
+{#        // Отображение нумерации строк#}
+{#        function EditorTextArea() {#}
+{#            CodeMirror.fromTextArea(document.getElementById("answer"), {#}
+{#                lineNumbers: true,#}
+{#                mode: "text/html",#}
+{#                matchBrackets: true#}
+{#            });#}
+{#        }#}
+{##}
+{#        // Выполнить при загрузке страницы#}
+{#        window.addEventListener('load', () => {#}
+{#            EditorTextArea();#}
+{#        });#}
     </script>
 
     <script>
@@ -56,10 +55,12 @@
         }
 
         function CheckPing(data) {
-            let answer = document.getElementById("answer")
+            let answerA = document.getElementById("answer")
             let text = data['text']
-            answer.value = text
+            answerA.value = data['text']
         }
+
+
     </script>
 
 {% endblock script %}
@@ -106,8 +107,8 @@
                             <div class="col col-md-12 col-lg-6 col-xl-4">
                                 <div class="form-group">
                                     <div class="row-auto" data-toggle="tooltip" data-placement="top"
-                                  title="Пингуемый IPv4 адрес или имя хоста">
-                                    <label for="ipText">IP адрес:</label>
+                                         title="Пингуемый IPv4 адрес или имя хоста">
+                                        <label for="ipText">IP адрес:</label>
                                     </div>
                                     <input id="ipText" type="text" class="form-control"
                                            value="192.168.3.35">
@@ -119,8 +120,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="row-auto" data-toggle="tooltip" data-placement="top"
-                                        title="Порт с которого происходит проверка ip ('-1' - порт выбирается автоматически)">
-                                    <label for="portText">Порт:</label>
+                                         title="Порт с которого происходит проверка ip ('-1' - порт выбирается автоматически)">
+                                        <label for="portText">Порт:</label>
                                     </div>
                                     <input id="portText" type="text" class="form-control"
                                            value="-1">
@@ -131,10 +132,10 @@
                                     </ul>
                                 </div>
                                 <div class="form-group">
-                                     <div class="row-auto" data-toggle="tooltip" data-placement="top"
-                                        title="Количество запросов ('-1' - 3 запроса)">
-                                    <label for="req_amount">Количество запросов:</label>
-                                     </div>
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="top"
+                                         title="Количество запросов ('-1' - 3 запроса)">
+                                        <label for="req_amount">Количество запросов:</label>
+                                    </div>
                                     <input id="req_amount" type="text" class="form-control"
                                            value="3">
                                 </div>
@@ -144,10 +145,10 @@
                                     </ul>
                                 </div>
                                 <div class="form-group">
-                                     <div class="row-auto" data-toggle="tooltip" data-placement="top"
-                                        title="Интервал между запросами ('-1' - 1 секунда)">
-                                    <label for="delay">Интервал между запросами:</label>
-                                     </div>
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="top"
+                                         title="Интервал между запросами ('-1' - 1 секунда)">
+                                        <label for="delay">Интервал между запросами:</label>
+                                    </div>
                                     <input id="delay" type="text" class="form-control"
                                            value="1">
                                 </div>
@@ -158,10 +159,9 @@
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="form-control">
+                                <div class="form-group">
                                     <label for="answer">Ответ:</label>
-                                    <textarea id="answer" class="form-control" style="font-family: monospace;" rows="14"
-                                              readonly>{{ data }}</textarea>
+                                    <textarea id="answer" class="form-control" style="font-family: monospace;" rows="13" readonly>{{ data }}</textarea>
                                 </div>
                             </div>
                         </div>
