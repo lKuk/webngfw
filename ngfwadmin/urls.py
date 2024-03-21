@@ -21,12 +21,12 @@ from ngfwadmin.views.protocols.nat import protocol_nat, protocol_nat_add
 from ngfwadmin.views.protocols.route import protocol_route, protocol_route_add
 from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_edit
 from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
-from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_dhcp_subnet
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_static, protocol_dhcp_static_add
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_dhcp_subnet
 from ngfwadmin.views.service.ping import ping
 from ngfwadmin.views.service.ldap import ldap, user_add
 from ngfwadmin.views.service.ntp import ntp, client_add, ntp_servers
+from ngfwadmin.views.rulepg.rulepg import rulepg
 
 urlpatterns = [
     # Форма подключения к устройству
