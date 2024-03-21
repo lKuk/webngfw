@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load static %}
+{% load base_tag %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+    <!-- Отображение нумерации строк -->
+{#    <script>#}
+{#        // Отображение нумерации строк#}
+{#        function EditorTextArea() {#}
+{#            CodeMirror.fromTextArea(document.getElementById("answer"), {#}
+{#                lineNumbers: true,#}
+{#                mode: "text/html",#}
+{#                matchBrackets: true#}
+{#            });#}
+{#        }#}
+{##}
+{#        // Выполнить при загрузке страницы#}
+{#        window.addEventListener('load', () => {#}
+{#            EditorTextArea();#}
+{#        });#}
+    </script>
+
+    <script>
+        // Запрос данных Ajax
+        function PostPingAjax() {
+            let ip = document.getElementById("ipText")
+            let port = document.getElementById("portText")
+            let req_amount = document.getElementById("req_amount")
+            let delay = document.getElementById("delay")
+            let ipValue = ip.value
+            let portValue = port.value
+            let req_amountValue = req_amount.value
+            let delayValue = delay.value
+
+            // Параметры
+            const param = {
+                type: "get",
+                dataType: "json",
+                url: '{% url 'ping' %}',
+                data: {ipServer: ipValue, portServer: portValue, req_amount: req_amountValue, delay: delayValue},
+                success: CheckPing,
+            }
+            $.ajax(param);
+        }
+
+        function CheckPing(data) {
+            let answerA = document.getElementById("answer")
+            answerA.value = data['text']
+        }
+    </script>
+
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-target"></i>Проверка доступности сетевого ресурса
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'ping' %}">Ping</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'router' 'readwrite' as  readwrite %}
+
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Ping</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary shadow-2"
+                                        {% if not readwrite %} disabled {% endif %}
+                                        onclick="PostPingAjax()" style="width: 180px">Проверить
+                                </button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col col-md-12 col-lg-6 col-xl-4">
+                                <div class="form-group">
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="top"
+                                         title="Пингуемый IPv4 адрес или имя хоста">
+                                        <label for="ipText">IP адрес:</label>
+                                    </div>
+                                    <input id="ipText" type="text" class="form-control"
+                                           value="192.168.3.35">
+                                </div>
+                                <div class="invalid-feedback" id="validDiv_ipText">
+                                    <ul>
+                                        <li id="validLi_ipText"></li>
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="top"
+                                         title="Порт с которого происходит проверка ip ('-1' - порт выбирается автоматически)">
+                                        <label for="portText">Порт:</label>
+                                    </div>
+                                    <input id="portText" type="text" class="form-control"
+                                           value="-1">
+                                </div>
+                                <div class="invalid-feedback" id="validDiv_portText">
+                                    <ul>
+                                        <li id="validLi_portText"></li>
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="top"
+                                         title="Количество запросов ('-1' - 3 запроса)">
+                                        <label for="req_amount">Количество запросов:</label>
+                                    </div>
+                                    <input id="req_amount" type="text" class="form-control"
+                                           value="3">
+                                </div>
+                                <div class="invalid-feedback" id="validDiv_portText">
+                                    <ul>
+                                        <li id="validLi_portText"></li>
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row-auto" data-toggle="tooltip" data-placement="top"
+                                         title="Интервал между запросами ('-1' - 1 секунда)">
+                                        <label for="delay">Интервал между запросами:</label>
+                                    </div>
+                                    <input id="delay" type="text" class="form-control"
+                                           value="1">
+                                </div>
+                                <div class="invalid-feedback" id="validDiv_portText">
+                                    <ul>
+                                        <li id="validLi_portText"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="answer">Ответ:</label>
+                                    <textarea id="answer" class="form-control" style="font-family: monospace;" rows="13" readonly>{{ data }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

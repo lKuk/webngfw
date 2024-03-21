@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+{% load base_tag %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-clock"></i>Сервер времени NTP
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'ntp' %}">NTP</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Список серверов NTP</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col" style="margin-left: 0">
+                                <a href="{% url 'ntp_add' %}" class="btn btn-primary shadow-2"
+                                   style="width: 180px">Добавить</a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <!-- Таблица списков -->
+                                <div class="table-responsive">
+                                    <table id="col-reorder"
+                                           class="display table nowrap table-striped table-hover footable">
+                                        <thead>
+                                        <tr>
+                                            <th><i class="feather icon-trash" style="color: #D43D17"></i></th>
+                                            <th>IP адрес</th>
+                                            <th>Главный</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for s in server %}
+                                            <tr>
+                                                {#                                            <!-- Удаление -->#}
+                                                <td style="display: table-cell;">
+                                                    <div>
+                                                        <a href="{% url 'ntp_servers' %}?delete={{ s.ip }}"
+                                                           onclick="return confirm('{{ s.ip }}\nУдалить сервер?');">
+                                                            <i class="feather icon-trash" style="color: #D43D17"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <!-- Тип файла -->
+                                                <td style="display: table-cell;">{{ s.ip }}</td>
+                                                <td style="display: table-cell;">{% if s.prefer == False %}
+                                                    Нет {% else %} Да {% endif %}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

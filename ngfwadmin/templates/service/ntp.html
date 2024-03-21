@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+{% load base_tag %}
+
+{# Стили #}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'main/plugins/data-tables/css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/plugins/footable/css/footable.standalone.min.css' %}">
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script src="{% static 'main/js/pages/tbl-datatable-custom.js' %}"></script>
+    <script src="{% static 'main/plugins/data-tables/js/datatables.min.js' %}"></script>
+    <script src="{% static 'language/ru-table.js' %}"></script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-clock"></i>Сервер времени NTP
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'ntp' %}">NTP</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Конфигурация NTP</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <!-- Таблица списков -->
+                                <div class="table-responsive">
+                                    <table id="col-reorder"
+                                           class="display table nowrap table-striped table-hover footable">
+                                        <thead>
+                                        <tr>
+                                            <th>IP адрес</th>
+                                            <th>Вышестоящий сервер</th>
+                                            <th>Уровень сервера</th>
+                                            <th>Пир</th>
+                                            <th>Последняя проверка</th>
+                                            <th>Периодичность проверки</th>
+                                            <th>Состояние работоспособности</th>
+                                            <th>Задержка</th>
+                                            <th>Разница во времени</th>
+                                            <th>Смещение</th>
+                                            <th>Состояние</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for s in status %}
+                                            <tr>
+
+                                                <!-- Тип файла -->
+                                                <td style="display: table-cell;">{{ s.remote }}</td>
+                                                <td style="display: table-cell;">{{ s.refid }}</td>
+                                                <td style="display: table-cell;">{{ s.st }}</td>
+                                                <td style="display: table-cell;">{{ s.t }}</td>
+                                                <td style="display: table-cell;">{{ s.when }}</td>
+                                                <td style="display: table-cell;">{{ s.poll }}</td>
+                                                <td style="display: table-cell;">{{ s.reach }}</td>
+                                                <td style="display: table-cell;">{{ s.delay }}</td>
+                                                <td style="display: table-cell;">{{ s.offset }}</td>
+                                                <td style="display: table-cell;">{{ s.jitter }}</td>
+                                                <td style="display: table-cell;">{{ s.remote_type }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

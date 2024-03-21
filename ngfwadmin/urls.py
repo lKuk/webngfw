@@ -1,20 +1,19 @@
 from django.urls import path
 
+from ngfwadmin.views.auth.auth import auth, auth_user
+from ngfwadmin.views.auth.permissions import permissions
 from ngfwadmin.views.debug.error import error
 from ngfwadmin.views.debug.table import table
 from ngfwadmin.views.ports.ports import ports
 from ngfwadmin.views.state.state import state
-from ngfwadmin.views.rulepg.rulepg import rulepg
+from ngfwadmin.views.write.write import write, write_download
 from ngfwadmin.views.ipsids.ipsids import ipsids
 from ngfwadmin.views.syslog.syslog import syslog
 from ngfwadmin.views.rules.history import history
 from ngfwadmin.views.protect.protect import protect
-from ngfwadmin.views.auth.auth import auth, auth_user
-from ngfwadmin.views.protocols.arp import protocol_arp
-from ngfwadmin.views.auth.permissions import permissions
 from ngfwadmin.views.connect.connect import connect, welcome
+from ngfwadmin.views.protocols.arp import protocol_arp
 from ngfwadmin.views.inspection.inspection import inspection
-from ngfwadmin.views.write.write import write, write_download
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_table
 from ngfwadmin.views.rules.lists import lists, lists_add, lists_edit
 from ngfwadmin.views.classification.classification import classification
@@ -22,8 +21,12 @@ from ngfwadmin.views.protocols.nat import protocol_nat, protocol_nat_add
 from ngfwadmin.views.protocols.route import protocol_route, protocol_route_add
 from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_edit
 from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
+from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_dhcp_subnet
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_static, protocol_dhcp_static_add
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_dhcp_subnet
+from ngfwadmin.views.service.ping import ping
+from ngfwadmin.views.service.ldap import ldap, user_add
+from ngfwadmin.views.service.ntp import ntp, client_add, ntp_servers
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -93,6 +96,14 @@ urlpatterns = [
     path('protocol/ipconfig/new/', protocol_ipconfig_add, name='protocol_ipconfig_add'),
     path('protocol/dhcp/static/new/', protocol_dhcp_static_add, name='protocol_dhcp_static_add'),
     path('protocol/dhcp/subnet/<int:port>/<int:vlan>', protocol_dhcp_subnet_edit, name='protocol_dhcp_subnet_edit'),
+
+    # Сервис
+    path('service/ping', ping, name='ping'),
+    path('service/ldap', ldap, name='ldap'),
+    path('service/ldap/new', user_add, name='ldap_add'),
+    path('service/ntp', ntp, name='ntp'),
+    path('service/ntp_servers', ntp_servers, name='ntp_servers'),
+    path('service/ntp/new', client_add, name='ntp_add'),
 
     # Справочные таблицы
     path('table/<slug:name>/', table, name='table'),
