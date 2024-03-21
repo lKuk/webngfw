@@ -284,14 +284,34 @@
                         </a>
                     </li>
 
-                    <!-- NTp -->
-                    <li class="nav-item {% is_active request 'ntp' 'active' %}">
-                        <a href="{% url 'ntp' %}" class="nav-link">
+{#                    <!-- NTp -->#}
+{#                    <li class="nav-item {% is_active request 'ntp' 'active' %}">#}
+{#                        <a href="{% url 'ntp' %}" class="nav-link">#}
+{#                            <span class="pcoded-micon">#}
+{#                                <i class="feather icon-clock"></i>#}
+{#                            </span><span class="pcoded-mtext">NTP</span>#}
+{#                        </a>#}
+{#                    </li>#}
+
+                     <!-- Сеть -->
+                    <li class="nav-item pcoded-hasmenu {% is_active request 'ntp' 'active pcoded-trigger' %}"
+                            {% check_permissions_hidden dev 'router || router/protect ' 'readonly' %}>
+                        <a href="#" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-clock"></i>
                             </span><span class="pcoded-mtext">NTP</span>
                         </a>
+                        <ul class="pcoded-submenu">
+                            <li class="{% is_active request 'ntp' 'active' %}">
+                                <a href="{% url 'ntp' %}" class="">Конфигурация</a>
+                            </li>
+                            <li class="{% is_active request 'ntp_servers' 'active' %}">
+                                <a href="{% url 'ntp_servers' %}" class="">Сервера</a>
+                            </li>
+                        </ul>
                     </li>
+
+
 
                     {#                    <!-- Группа - Сервис -->#}
                     {#                    <li class="nav-item pcoded-menu-caption" hidden>#}

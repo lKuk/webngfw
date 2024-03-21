@@ -26,6 +26,7 @@ def ping(request):
 
         if ipServer is not None and portServer is not None and req_amount is not None and delay is not None:
             response = ping_post(url, login, password, ipServer, portServer, req_amount, delay)
+            response = response.decode()
             data = {'text': str(response)}
             return JsonResponse(data)
 
