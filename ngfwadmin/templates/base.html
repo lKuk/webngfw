@@ -283,6 +283,7 @@
                             <span class="pcoded-micon">
                                 <i class="feather icon-target"></i>
                             </span><span class="pcoded-mtext">Ping</span>
+                            <span class="pcoded-badge label label-danger">New</span>
                         </a>
                     </li>
 
@@ -292,6 +293,7 @@
                             <span class="pcoded-micon">
                                 <i class="feather icon-package"></i>
                             </span><span class="pcoded-mtext">LDAP</span>
+                            <span class="pcoded-badge label label-danger">New</span>
                         </a>
                     </li>
 
@@ -304,12 +306,14 @@
                     {#                        </a>#}
                     {#                    </li>#}
 
-                    <!-- NTP -->
-                    <li class="nav-item pcoded-hasmenu {% is_active request 'ntp' 'active pcoded-trigger' %}">
+                    <!-- Сеть -->
+                    <li class="nav-item pcoded-hasmenu {% is_active request 'ntp ntp_servers' 'active pcoded-trigger' %}"
+                            {% check_permissions_hidden dev 'router || router/protect ' 'readonly' %}>
                         <a href="#" class="nav-link">
                             <span class="pcoded-micon">
                                 <i class="feather icon-clock"></i>
                             </span><span class="pcoded-mtext">NTP</span>
+                            <span class="pcoded-badge label label-danger">New</span>
                         </a>
                         <ul class="pcoded-submenu">
                             <li class="{% is_active request 'ntp' 'active' %}">
@@ -421,8 +425,8 @@
 
 <!-- [ блок скриптов ] start --->
 <script src="{% static 'main/js/vendor-all.min.js' %}"></script>
-{#<script src="{% static 'main/plugins/bootstrap/js/bootstrap.min.js' %}"></script>#}
-{#<script src="{% static 'main/js/pcoded.min.js' %}"></script>#}
+<script src="{% static 'main/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'main/js/pcoded.min.js' %}"></script>
 
 {% block script %}
 {% endblock script %}
