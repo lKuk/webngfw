@@ -21,11 +21,12 @@ from ngfwadmin.views.protocols.nat import protocol_nat, protocol_nat_add
 from ngfwadmin.views.protocols.route import protocol_route, protocol_route_add
 from ngfwadmin.views.rules.rules import rules, rules_add, rules_edit, rules_sub_edit
 from ngfwadmin.views.protocols.ipconfig import protocol_ipconfig, protocol_ipconfig_add
-from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_dhcp_subnet
 from ngfwadmin.views.protocols.dhcp import protocol_dhcp_static, protocol_dhcp_static_add
+from ngfwadmin.views.protocols.dhcp import protocol_dhcp_subnet_edit, protocol_dhcp_subnet
 from ngfwadmin.views.service.ping import ping
 from ngfwadmin.views.service.ldap import ldap, user_add
 from ngfwadmin.views.service.ntp import ntp, client_add, ntp_servers
+from ngfwadmin.views.rulepg.rulepg import rulepg
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -47,6 +48,9 @@ urlpatterns = [
     path('rules/<int:id>/', rules_edit, name='rules_edit'),
     path('rules/<int:id>/sub', rules_sub_edit, name='rules_sub_edit'),
 
+    # Редактор правил в базе данных
+    path('rulepg/', rulepg, name='rulepg'),
+
     # Редактор списков
     path('rules/lists/', lists, name='lists'),
     path('rules/lists/new/', lists_add, name='lists_add'),
@@ -64,10 +68,10 @@ urlpatterns = [
     # Классификаторы
     path('classification/', classification, name='classification'),
 
-    # Системный журнал
+    #Системный журнал
     path('syslog/', syslog, name='syslog'),
 
-    # Защита сети
+    #Защита сети
     path('protect/', protect, name='protect'),
 
     # Аутентификация
@@ -75,7 +79,7 @@ urlpatterns = [
     path('permissions/', permissions, name='permissions'),
     path('auth/user/<str:user>', auth_user, name='auth_user'),
 
-    # Запись трафика
+    #Запись трафика
     path('write/', write, name='write'),
     path('write/download/<str:name>', write_download, name='write_download'),
 

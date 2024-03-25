@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% load static %}
+{% load base_tag %}
+
+{# Стили #}
+{% block style %}
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+
+    <!-- Пагинация -->
+    <script>
+        // функция смены страницы
+        function change_page_num(num) {
+            const page_len = document.getElementById("page_len");
+            redirect_rulepg(num, page_len.value)
+        }
+        // функция смены количество записей на странице
+        function change_page_len() {
+            const page_len = document.getElementById("page_len");
+            redirect_rulepg(1, page_len.value)
+        }
+        // переход на указанную страницу правил
+        function redirect_rulepg(page_num, page_len)
+        {
+            window.location.href = '{% url 'rulepg' %}?page_num=' + page_num + '&page_len=' + page_len;
+        }
+    </script>
+    <!-- Фокусная строка с правилом -->
+    <script>
+        // Глобальные переменные
+        let m_row_cell = null;
+        let m_row_focus = null;
+
+        // Событие выделения ячейки
+        function cell_click(this_cell)
+        {
+            if(m_row_cell === this_cell)
+                return;
+            m_row_cell = this_cell;
+            const cell_focus = document.getElementsByClassName('cell_focus');
+            for (let i = 0; i < cell_focus.length; i++) {
+                show_editor(cell_focus[i], false);
+                cell_focus[i].style.backgroundColor = '#0000';
+                cell_focus[i].classList.remove('border');
+                cell_focus[i].classList.remove('border-info');
+            }
+            if(this_cell !== null) {
+                show_editor(this_cell, true);
+                this_cell.classList.add('border');
+                this_cell.classList.add('border-info');
+                this_cell.style.backgroundColor = '#fff';
+            }
+        }
+        // Событие выделения строки
+        function row_click(this_row)
+        {
+            if(m_row_cell === this_row)
+                return;
+            m_row_focus = this_row;
+            const row_focus = document.getElementsByClassName('row_focus');
+            for (let i = 0; i < row_focus.length; i++)
+                row_focus[i].style.backgroundColor = '#fff';
+            if(this_row !== null)
+                this_row.style.backgroundColor = '#ddd';
+        }
+        // Скрыть/показать редактор строки
+        function show_editor(element, visible)
+        {            
+            let editor_on = element.getElementsByClassName('editor_on');
+            for (let i = 0; i < editor_on.length; i++)
+                editor_on[i].hidden = !visible;
+            
+            let editor_off = element.getElementsByClassName('editor_off');
+            for (let i = 0; i < editor_off.length; i++)
+                editor_off[i].hidden = visible;
+        }
+    </script>
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-trending-up"></i>Правила фильтрации сетевого трафика
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'rulepg' %}">Правила</a></li>
+    </ul>
+{% endblock header %}
+
+{# Содержимое #}
+{% block content %}
+  
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="page-header-title">
+                                <h5>Редактор правил фильтрации PG</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Кнопки  -->
+                            <div class="row">
+                                <div class="col-auto p-0 text-left">
+                                    <form action="" method="post" id="rule_add">
+                                        {% csrf_token %}
+                                        <label>
+                                            <input name="page_num" value="{{ pagination.num }}" hidden>
+                                        </label>      
+                                        <label>
+                                            <input name="page_len" value="{{ pagination.len }}" hidden>
+                                        </label>                                        
+                                        <button type="submit" name="btnInsert" class="btn btn-primary shadow-2"
+                                            style="width: 180px">Добавить
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <hr>
+                        
+                            <!-- Количество строк отображаемых на странице таблицы -->
+                            <div class="row">
+                                <div class="col-auto px-0">
+                                    <p class="py-2">Показать</p>
+                                </div>
+                                <div class="col-auto">
+                                    <label>
+                                    <select id="page_len" class="form-control" required onchange="change_page_len()">
+                                        <option value="10" {% if pagination.len == 10 %}selected{% endif %}>10</option>
+                                        <option value="20" {% if pagination.len == 20 %}selected{% endif %}>20</option>
+                                        <option value="30" {% if pagination.len == 30 %}selected{% endif %}>30</option>
+                                        <option value="50" {% if pagination.len == 50 %}selected{% endif %}>50</option>
+                                    </select>
+                                    </label>
+                                </div>
+                                <div class="col-auto p-l-0">
+                                    <p class="py-2">записей</p>
+                                </div>
+                            </div>
+                        
+                            <!-- Колонки таблицы -->
+                            <div class="row">
+                                <div class="col px-1 mx-0">
+                                    <p class="text-dark m-0">Название</p>
+                                </div>
+                                {% for c in cat %}
+                                    <div class="col px-1 mx-0">
+                                        <p class="text-dark m-0">{{ c.name }}</p>
+                                        <p class="text-muted m-0">({{ c.name_type }})</p>
+                                    </div>
+                                {% endfor %}
+                                <div class="col px-1 mx-0">
+                                    <p class="text-dark m-0">Описание</p>
+                                </div>
+                                <div class="col px-0 mx-0" style="max-width: 30px; width: 30px;">
+                                    <p class="text-dark m-0">Лог</p>
+                                </div>
+                            </div>
+    
+                            <!-- Строка разделитель -->
+                            <div class="row" style="background-color: lightgrey">
+                                <div style="height: 1px;"></div>
+                            </div>
+
+                            <!-- Все строки таблицы -->
+                            <div id="all_rows">
+                                {% for row in rules %}
+                                    {% include 'rulepg/rulepg_row.html' with rule=row %}
+                                {% endfor %}
+                            </div>
+    
+                            <!-- Страницы строк таблицы -->
+                            <div class="row">
+                                <div class="col-auto px-0">
+                                    <nav aria-label="Page navigation example">
+                                        <ul id="page_num" class="pagination">
+                                            {% for p in pagination.list %}
+                                                {% if pagination.num != p %}
+                                                    <li class="page-item" onclick="change_page_num({{ p }})">
+                                                        <a class="page-link" href="#">{{ p }}</a></li>
+                                                {% else %}
+                                                    <li class="page-item active" onclick="change_page_num({{ p }})">
+                                                        <a class="page-link" href="#">{{ p }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

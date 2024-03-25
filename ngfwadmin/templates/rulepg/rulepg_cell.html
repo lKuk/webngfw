@@ -1,0 +1,247 @@
+
+<div class="col px-1 mx-0 cell_focus" onclick="cell_click(this)">
+
+    <!-- Добавление Наборы -->
+    <div class="editor_on" hidden>
+        {% for c in cat %}
+            {% if c.id == id_cat %}
+
+                <!-- Наборы -->
+                {% if c.is_attr_kit == 1 %}
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <i class="feather icon-plus text-info p-t-10"
+                               style="font-size: 0.8em; cursor: pointer;"
+                                onclick="{
+                                            // получить параметры
+                                            let id_cat = {{ id_cat }};
+                                            let id_rule = {{ id_rule }};
+                                            let select = document.getElementById('kit_{{ id_rule }}_{{ id_cat }}');
+                                            let id_kit = Number(select.value);
+                                            // выполнить запрос
+                                            $.ajax({
+                                                type: 'GET',
+                                                dataType: 'json',
+                                                data: {db_func: 'filter.web_rule_cat_kit_add',
+                                                       db_param: JSON.stringify([id_rule, id_cat, id_kit]) },
+                                                url: '{% url 'rulepg' %}',
+                                                success: completed
+                                            });
+                                            // обработать результат
+                                            function completed(data) {
+                                                result = data['filter.web_rule_cat_kit_add'];
+                                                if(result !== '')
+                                                {
+                                                    alert(result);
+                                                    return;
+                                                }
+                                                let cell = document.getElementById('cell_{{ id_rule }}_{{ id_cat }}');   
+                                                let select = document.getElementById('kit_{{ id_rule }}_{{ id_cat }}');
+                                                let kit = select.options[select.selectedIndex].text;
+                                                                                        
+                                                cell.innerHTML += '<p class=\'py-0 my-0\' style=\'cursor: default\'>'
+                                                                + '<i class=\'feather icon-check editor_on\' style=\'font-size: 0.8em;\'></i>'
+                                                                + '<i class=\'feather icon-grid\'></i>' + kit + '</p>';
+                                                
+                                                document.getElementById('any_{{ id_rule }}_{{ id_cat }}').remove();
+                                            }
+                                        }"></i></div>
+                        <div class="form-control p-0 m-1">
+                            <label for="kit_{{ id_rule }}_{{ id_cat }}" hidden></label>
+                            <select id="kit_{{ id_rule }}_{{ id_cat }}" class="border border-info p-0 m-0"
+                                    style="width: 100%; font-size: 0.9em; height: 21px;">
+                                <option value="0" selected></option>
+                                {% for k in kit %}
+                                    {% if k.id_cat == id_cat %}
+                                        <option value="{{ k.id }}">{{ k.name }}</option>
+                                    {% endif %} 
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Отображение наборов и значений -->
+    <div id="cell_{{ id_rule }}_{{ id_cat }}">
+        {% if rule_cat is None %}
+            <p class="py-0 my-0" 
+               id="any_{{ id_rule }}_{{ id_cat }}"
+               style="color: darkgrey; cursor: default" >*Any</p>
+        {% else %}
+            {% for attr in rule_cat %}
+                <p class="py-0 my-0"
+                   id="p_{{ id_rule }}_{{ id_cat }}_{{ attr.attr }}_{{ attr.id }}"
+                   style="cursor: default">
+                    {% if attr.attr == 'kit' %}
+                        <i class="feather icon-x editor_on" style="font-size: 0.8em; cursor: pointer;" hidden
+                            onclick="{
+                                        // получить параметры
+                                        let id_attr_kit = {{ attr.id }};
+                                        // выполнить запрос
+                                        $.ajax({
+                                            type: 'GET',
+                                            dataType: 'json',
+                                            data: {db_func: 'filter.web_rule_attr_kit_del',
+                                                   db_param: JSON.stringify([id_attr_kit]) },
+                                            url: '{% url 'rulepg' %}',
+                                            success: completed
+                                        });
+                                        // обработать результат
+                                        function completed(data) {
+                                            result = data['filter.web_rule_attr_kit_del'];
+                                            if(result !== '')
+                                            {
+                                                alert(result);
+                                                return;
+                                            }
+                                            let p = document.getElementById('p_{{ id_rule }}_{{ id_cat }}_{{ attr.attr }}_{{ attr.id }}');
+                                            p.remove();
+                                        }
+                                    }"></i>
+                        <i class="feather icon-grid"></i>
+                    {% else %}
+                        <i class="feather icon-x editor_on" style="font-size: 0.8em; cursor: pointer;" hidden   
+                           onclick="{
+                                        // получить параметры
+                                        let id_attr_val = {{ attr.id }};
+                                        // выполнить запрос
+                                        $.ajax({
+                                            type: 'GET',
+                                            dataType: 'json',
+                                            data: {db_func: 'filter.web_rule_attr_val_del',
+                                                   db_param: JSON.stringify([id_attr_val]) },
+                                            url: '{% url 'rulepg' %}',
+                                            success: completed
+                                        });
+                                        // обработать результат
+                                        function completed(data) {
+                                            result = data['filter.web_rule_attr_val_del'];
+                                            if(result !== '')
+                                            {
+                                                alert(result);
+                                                return;
+                                            }
+                                            let p = document.getElementById('p_{{ id_rule }}_{{ id_cat }}_{{ attr.attr }}_{{ attr.id }}');
+                                            p.remove();
+                                        }
+                                    }"></i>
+                        <i class="feather icon-filter"></i>
+                    {% endif %}
+                    {{ attr.name|truncatechars:24 }}
+                </p>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Добавление значения -->
+    <div class="editor_on" hidden>
+        {% for c in cat %}
+            {% if c.id == id_cat %}
+    
+                <!-- Редактор значения -->
+                {% if c.is_attr_val == 1 %}
+                    {% if c.is_list == 1 %}
+                        <!-- Выпадающий список -->
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <i class="feather icon-plus text-info p-t-10" style="font-size: 0.8em; cursor: pointer;"
+                                    onclick="{
+                                                // получить параметры
+                                                let id_cat = {{ id_cat }};
+                                                let id_rule = {{ id_rule }};
+                                                let select = document.getElementById('list_{{ id_rule }}_{{ id_cat }}');
+                                                let val = select.value;
+                                                 // выполнить запрос
+                                                $.ajax({
+                                                    type: 'GET',
+                                                    dataType: 'json',
+                                                    data: {db_func: 'filter.web_rule_cat_val_add',
+                                                           db_param: JSON.stringify([id_rule, id_cat, val]) },
+                                                    url: '{% url 'rulepg' %}',
+                                                    success: completed
+                                                });
+                                                // обработать результат
+                                                function completed(data) {
+                                                    result = data['filter.web_rule_cat_val_add'];
+                                                    if(result !== '')
+                                                    {
+                                                        alert(result);
+                                                        return;
+                                                    }
+                                                    let cell = document.getElementById('cell_{{ id_rule }}_{{ id_cat }}');
+                                                    let select = document.getElementById('list_{{ id_rule }}_{{ id_cat }}');
+                                                    let val = select.value;
+                                                    cell.innerHTML += '<p class=\'py-0 my-0\' style=\'cursor: default\'>'
+                                                                    + '<i class=\'feather icon-check editor_on\' style=\'font-size: 0.8em;\'></i>'
+                                                                    + '<i class=\'feather icon-filter\'></i>' + val + '</p>';
+                                                    
+                                                    document.getElementById('any_{{ id_rule }}_{{ id_cat }}').remove();
+                                                }
+                                            }"></i></div>
+                            <div class="form-control p-0 m-1">
+                                <label for="list_{{ id_rule }}_{{ id_cat }}" hidden></label>
+                                <select id="list_{{ id_rule }}_{{ id_cat }}" class="border border-info p-0 m-0" style="width: 100%; font-size: 0.9em; height: 21px;">
+                                    <option selected></option>
+                                    {% for val in c.list %}
+                                        <option>{{ val }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Текстовый редактор -->
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <i class="feather icon-plus text-info p-t-10" style="font-size: 0.8em; cursor: pointer;"
+                                   onclick="{
+                                                // получить параметры
+                                                let id_cat = {{ id_cat }};
+                                                let id_rule = {{ id_rule }};
+                                                let input = document.getElementById('val_{{ id_rule }}_{{ id_cat }}');
+                                                let val = input.value;
+                                                 // выполнить запрос
+                                                $.ajax({
+                                                    type: 'GET',
+                                                    dataType: 'json',
+                                                    data: {db_func: 'filter.web_rule_cat_val_add',
+                                                           db_param: JSON.stringify([id_rule, id_cat, val]) },
+                                                    url: '{% url 'rulepg' %}',
+                                                    success: completed
+                                                });
+                                                // обработать результат
+                                                function completed(data) {
+                                                    result = data['filter.web_rule_cat_val_add'];
+                                                    if(result !== '')
+                                                    {
+                                                        alert(result);
+                                                        return;
+                                                    }
+                                                    let cell = document.getElementById('cell_{{ id_rule }}_{{ id_cat }}');
+                                                    let input = document.getElementById('val_{{ id_rule }}_{{ id_cat }}');
+                                                    let val = input.value;
+                                                    cell.innerHTML += '<p class=\'py-0 my-0\' style=\'cursor: default\'>'
+                                                                    + '<i class=\'feather icon-check editor_on\' style=\'font-size: 0.8em;\'></i>'
+                                                                    + '<i class=\'feather icon-filter\'></i>' + val + '</p>';
+                                                    
+                                                    document.getElementById('any_{{ id_rule }}_{{ id_cat }}').remove();
+                                                }
+                                            }"></i></div>
+                            <label for="val_{{ id_rule }}_{{ id_cat }}" hidden></label>
+                            <div class="form-control p-0 m-1">
+                                <input id="val_{{ id_rule }}_{{ id_cat }}"
+                                       type="text" class="border border-info p-0 m-0"
+                                       style="width: 100%; font-size: 0.9em; height: 21px;">
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+

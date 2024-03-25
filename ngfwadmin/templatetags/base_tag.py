@@ -5,6 +5,9 @@ from django import template
 register = template.Library()
 
 
+@register.simple_tag()
+def set(val):
+    return val
 
 @register.simple_tag()
 def get_val(dict, key):
