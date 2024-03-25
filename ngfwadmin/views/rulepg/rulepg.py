@@ -5,6 +5,7 @@ import psycopg2
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
+from ngfwadmin.rest.command import command
 from ngfwadmin.views.connect.dev import dev_get
 from ngfwadmin.views.debug.error import exception
 
@@ -15,24 +16,27 @@ def rulepg(request):
         # Подключение
         dev = dev_get(request)
 
-        # # проверка подключения
-        # if 'url' not in dev or 'login' not in dev or 'password' not in dev:
-        #     return redirect('connect')
-        #
-        # # подключение
-        # url = dev.get('url')
-        # login = dev.get('login')
-        # password = dev.get('password')
-        # connect_pg = dev.get('connect_pg')
+        # проверка подключения
+        if 'url' not in dev or 'login' not in dev or 'password' not in dev:
+            return redirect('connect')
 
-        connect_pg = {'dbname': 'ngfw', 'host': '192.168.1.235', 'password': '111111', 'port': '5432', 'user': 'postgres'}
+        # подключение
+        url = dev.get('url')
+        login = dev.get('login')
+        password = dev.get('password')
+        connect_pg = dev.get('connect_pg')
+
+        # connect_pg = {'dbname': 'ngfw', 'host': '192.168.1.235', 'password': '111111', 'port': '5432', 'user': 'postgres'}
 
         # подключиться к базе данных
-        connection = psycopg2.connect(user=connect_pg["user"],
-                                      host=connect_pg["host"],
-                                      port=connect_pg["port"],
-                                      dbname=connect_pg["dbname"],
-                                      password=connect_pg["password"])
+        str_connection = ''
+        str_connection += 'user=' + connect_pg["user"] + ' '
+        str_connection += 'host=' + connect_pg["host"] + ' '
+        str_connection += 'port=' + connect_pg["port"] + ' '
+        str_connection += 'dbname=' + connect_pg["dbname"] + ' '
+        str_connection += 'password=' + connect_pg["password"] + ' '
+        connection = psycopg2.connect(str_connection)
+
         # открыть курсор к базе данных
         cursor = connection.cursor()
 
@@ -42,7 +46,8 @@ def rulepg(request):
             # добавить список
             if 'btnInsert' in request.POST:
                 action = 'new_row'
-
+            if 'btnSet' in request.POST:
+                command(url, login, password, 'rules_set', str_connection)
 
         # выполнить функцию в базе данных
         db_func = request.GET.get("db_func")
