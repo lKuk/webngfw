@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% load base_tag %}
+
+
+{# Стили #}
+{% block style %}
+{% endblock style %}
+
+{# Скрипты #}
+{% block script %}
+    <script>
+        // Запрос данных Ajax
+        function PostStatusAjax() {
+            let checked = document.getElementById('statusBridge');
+
+            param = {
+                type: "GET",
+                dataType: "json",
+                url: '{% url 'bridge' %}',
+                data: {'status': checked.checked},
+            }
+            $.ajax(param);
+        }
+    </script>
+
+{% endblock script %}
+
+{# Заголовок #}
+{% block header %}
+    <li class="m-l-5 m-t-5">
+        <h4>
+            <i class="m-r-15 feather icon-link"></i>Режим моста
+        </h4>
+    </li>
+    <ul class="breadcrumb my-0 py-0 m-l-30 p-l-50 bg-transparent">
+        <li class="breadcrumb-item"><a href="{% url 'bridge' %}">Режим моста</a></li>
+    </ul>
+{% endblock header %}
+
+
+{# Содержимое #}
+{% block content %}
+    <!-- Проверка привилегий -->
+    {% check_permissions dev 'router' 'readwrite' as  readwrite %}
+
+    <div class="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="page-header-title">
+                            <h5>Режим моста</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="switch switch-primary d-inline m-r-10">
+                                    <input type="checkbox" id="statusBridge"
+                                           {% if bridge.l2 == True %}checked{% endif %} onchange="PostStatusAjax()">
+                                    <label for="statusBridge" class="cr"></label>
+                                    <label class="text-dark" style="margin-left: 10px">Включить режим прозрачного моста
+                                        а уровне L2</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

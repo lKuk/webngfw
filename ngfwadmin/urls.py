@@ -27,6 +27,7 @@ from ngfwadmin.views.service.ping import ping
 from ngfwadmin.views.service.ldap import ldap, user_add
 from ngfwadmin.views.service.ntp import ntp, client_add, ntp_servers
 from ngfwadmin.views.rulepg.rulepg import rulepg
+from ngfwadmin.views.bridge.bridge import bridge
 
 urlpatterns = [
     # Форма подключения к устройству
@@ -68,18 +69,21 @@ urlpatterns = [
     # Классификаторы
     path('classification/', classification, name='classification'),
 
-    #Системный журнал
+    # Системный журнал
     path('syslog/', syslog, name='syslog'),
 
-    #Защита сети
+    # Защита сети
     path('protect/', protect, name='protect'),
+
+    # Режим моста
+    path('bridge/', bridge, name='bridge'),
 
     # Аутентификация
     path('auth/', auth, name='auth'),
     path('permissions/', permissions, name='permissions'),
     path('auth/user/<str:user>', auth_user, name='auth_user'),
 
-    #Запись трафика
+    # Запись трафика
     path('write/', write, name='write'),
     path('write/download/<str:name>', write_download, name='write_download'),
 

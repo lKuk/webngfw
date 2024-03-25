@@ -188,6 +188,17 @@
                         </a>
                     </li>
 
+                    <!-- Режим моста -->
+                    <li class="nav-item {% is_active request 'bridge' 'active' %}"
+                            {% check_permissions_hidden dev 'router/protect ' 'readonly' %}>
+                        <a href="{% url 'bridge' %}" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-link"></i>
+                            </span><span class="pcoded-mtext">Режим моста</span>
+                            <span class="pcoded-badge label label-danger">New</span>
+                        </a>
+                    </li>
+
                     <!-- Группа - Администрирование -->
                     <li class="nav-item pcoded-menu-caption"
                             {% check_permissions_hidden dev 'auth/users || auth/permissions ' 'readonly' %}>
